@@ -38,6 +38,57 @@ const styles = StyleSheet.create({
         elevation:0,
         borderBottomWidth:0.2,
         borderColor:'gray'
+    },
+    dictionaryRow:{
+        flexDirection:'row',
+        width:'100%',
+        backgroundColor:'lightblue',
+        padding:15,
+        alignItems:'center',
+        borderRadius:20,
+        marginBottom:15,
+        elevation:5
+    },
+    dictionaryCover:{
+        width:60,
+        height:60,
+        borderRadius:25
+    },
+    addDictButton:{
+        backgroundColor:'green',
+        borderRadius:30,
+        width:60,
+        aspectRatio:1,
+        justifyContent:'center',
+        alignItems:'center',
+        position:'absolute',
+        right:15,
+        bottom:20
+    },
+    collectionContainer:{
+        backgroundColor:'#A78BFA',
+        padding:10,
+        marginRight:15,
+        marginBottom:10,
+        borderRadius:10,
+        alignItems:'center'
+    },
+    collectionTitle:{
+        color:'white',
+        fontSize:15,
+        fontWeight:'700',
+        marginVertical:5
+    },
+    collectionTags:{
+        borderRadius:15,
+        backgroundColor:'#7C3AED',
+        borderWidth:1,
+        borderColor:'pink',
+        color:'white',
+        textAlign:'center',
+        paddingHorizontal:5,
+        paddingVertical:3,
+        fontSize:10
     }
 })
 
