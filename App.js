@@ -7,7 +7,7 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 export default function App() {
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={{flex:1}}>
+      <SafeAreaView style={{flex:1}} edges={["top","right","left"]}>
         <NavigationContainer>
           <BottomNavbar />
         </NavigationContainer>

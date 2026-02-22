@@ -1,0 +1,84 @@
+import {StyleSheet} from 'react-native'
+
+const styles = StyleSheet.create({
+    wordInput:{
+        backgroundColor:'white',
+        borderWidth:1,
+        borderTopRightRadius:10,
+        borderTopLeftRadius:10,
+        paddingHorizontal:10,
+        borderColor:'gray',
+        elevation:10,
+        width:'100%',
+        position:'relative',
+        zIndex:1001
+    },
+    directionItem:{
+        backgroundColor:'white',
+        elevation:5,
+        paddingHorizontal:10,
+        paddingVertical:5,
+        alignItems:'center',
+        justifyContent:'center',
+        borderRadius:15,
+        flex:1,
+        textAlign:'center',
+        fontWeight:'900'
+    },
+    convertButton:{
+        backgroundColor:'#6D28D9',
+        paddingVertical: 10,
+        paddingHorizontal:10,
+        borderRadius:25,
+        width:'100%',
+        elevation:15,
+        justifyContent:'center',
+        alignItems:'center',
+        marginTop:10
+    },
+    translateTitle:{
+        fontSize:30,
+        fontWeight:'900',
+        alignSelf:'center',
+        textAlign:'center',
+        marginBottom:20
+    },
+    resultContainer:{
+        flex:1,
+        width:'90%',
+        alignSelf:'center',
+        gap:7,
+        marginTop:20,
+        backgroundColor:'#F3D6E4',
+        paddingVertical:20,
+        paddingHorizontal:20,
+        borderRadius:25
+    },
+    addMyDictButton:{
+        backgroundColor:'#F3D6E4',
+        marginLeft:'auto',
+        paddingHorizontal:15,
+        paddingVertical:5,
+        borderRadius:25,
+        borderWidth:1,
+        borderColor:'#6D28D9',
+        elevation:5
+    },
+    suggestionContainer:{
+        position:'absolute',
+        backgroundColor:'white',
+        width:'100%',
+        zIndex:1000,
+        borderBottomLeftRadius:15,
+        borderBottomRightRadius:15
+    },
+    suggestion:{
+        paddingVertical:8,
+        borderTopWidth:0.5,
+        borderTopColor:'gray',
+        borderRadius:-15,
+        paddingHorizontal:10
+    }
+})
+
+export default styles
