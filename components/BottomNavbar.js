@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomePage from '../pages/homePage';
 import Dictionaries from '../pages/dictionaries';
-import ProfileRow from '../homePageLayout/HomePageComponents/profileRow';
+import ProfileRow from './profileRow';
 import {MaterialIcons,Ionicons,Entypo} from '@expo/vector-icons';
 import Translate from '../pages/translate';
 import Games from '../pages/games';

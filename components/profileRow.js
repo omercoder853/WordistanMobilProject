@@ -1,15 +1,18 @@
 import { View, Text, Image } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import styles from "../HomePageStyles/homeStyles";
+import styles from "../homePageLayout/HomePageStyles/homeStyles";
+import { useAuth } from "../contextapis/AuthContext";
 
-const ProfileRow = () => (
+const ProfileRow = () => {
+    const {user} = useAuth();
+    return(
     <View style={styles.profileRowContainer}>
         <View style={styles.greeting}>
             <Image
                 style={styles.logoImage}
-                source={require("../../assets/logo.png")}/>
-            <Text style={styles.textWelcome}>elcome </Text>
-            <Text style={{fontSize:18}}>Ömer,</Text>
+                source={require("../assets/logo.png")}/>
+            <Text style={styles.textWelcome}>elcome, </Text>
+            <Text style={{fontSize:18}}>{user['nick_name']}</Text>
         </View>
         <View style={styles.profileContainer}>
             <Image
@@ -22,6 +25,6 @@ const ProfileRow = () => (
             <Ionicons  name="notifications" size={24} color="black" />
         </View>
     </View>
-);
+)};
 
 export default ProfileRow;
