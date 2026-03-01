@@ -12,7 +12,7 @@ const ProfileRow = () => {
                 style={styles.logoImage}
                 source={require("../assets/logo.png")}/>
             <Text style={styles.textWelcome}>elcome, </Text>
-            <Text style={{fontSize:18}}>{user['nick_name']}</Text>
+            <Text style={{fontSize:18}}>omrfrk</Text>
         </View>
         <View style={styles.profileContainer}>
             <Image

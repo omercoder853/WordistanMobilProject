@@ -39,15 +39,20 @@ const styles = StyleSheet.create({
         borderBottomWidth:0.2,
         borderColor:'gray'
     },
+    dictionaryButton:{
+        borderRadius:20,
+        marginBottom:15,
+        elevation:5,
+        backgroundColor:'lightblue'
+    },
     dictionaryRow:{
         flexDirection:'row',
         width:'100%',
-        backgroundColor:'lightblue',
         padding:15,
         alignItems:'center',
         borderRadius:20,
-        marginBottom:15,
-        elevation:5
+        
+
     },
     dictionaryCover:{
         width:60,
@@ -89,6 +94,76 @@ const styles = StyleSheet.create({
         paddingHorizontal:5,
         paddingVertical:3,
         fontSize:10
+    },
+    wordRow:{
+        height:52,
+        flexDirection:'row',
+        alignItems:'center',
+        marginBottom:8,
+    },
+    wordTarget:{
+        paddingTop:7,
+        fontWeight:700,
+        fontSize:15
+    },
+    wordMeaning:{
+        paddingBottom:7,
+        fontWeight:500,
+        fontSize:13
+    },
+    wordList:{
+        paddingVertical:15,
+        borderRadius:10,
+        elevation:5,
+        backgroundColor:'white'
+    },
+    wordId:{
+        borderTopRightRadius:10,
+        borderBottomRightRadius:10,
+        paddingHorizontal:5,
+        backgroundColor:'#b565f5',
+        marginRight:10,
+        height:'100%',
+        justifyContent:'center',
+        width:27,
+        alignItems:'center'
+    },
+    wordsTable:{
+        backgroundColor:'#f5e4fb',
+        width:'100%',
+        alignSelf:'center',
+        paddingHorizontal:5,
+        borderColor:'#d8aef9',
+        borderRadius:10,
+        borderWidth:2,
+        flex:1
+    },
+    wordsTitle:{
+        backgroundColor:'white',
+        borderRadius:10,
+        padding:15,
+        borderColor:'#d8aef9',
+        borderWidth:2,
+        marginVertical:15,
+        marginHorizontal:10
+    },
+    dictName :{
+        fontWeight:'900',
+        fontSize:30,
+        color:'#c566e9'
+    },
+    dictDirection:{
+        paddingVertical:5,
+        paddingHorizontal:10,
+        borderRadius:10,
+        borderWidth:1,
+        borderColor:'#d4a7f9',
+        backgroundColor:'#f4ebfe',
+        color:'#b565f5',
+        fontWeight:'700',
+        fontSize:10,
+        width:'auto',
+        marginTop:5
     }
 })
 

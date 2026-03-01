@@ -7,11 +7,13 @@ export const AuthenticationContext = createContext()
 
 export const AuthProvider = ({children}) => {
     const [user,SetUser] = useState();
+    const [isLoading,setLoading] = useState(true);
     const [accToken,setAccToken] = useState();
     const [refToken,setRefToken] = useState();
     const [isLogin,setLogin] = useState(false);
     useEffect(()=>{
         const getTokens = async () => {
+            console.log("Is loading beginning: ",isLoading)
             const tempAccToken = await getDataStorage("access-token")
             const tempRefToken = await getDataStorage("refresh-token")
             const tempUser = await getDataStorage("user")
@@ -24,33 +26,37 @@ export const AuthProvider = ({children}) => {
                 setLogin(false)
             }
             else {
-                verifyToken(tempAccToken,tempRefToken);
+                await verifyToken(tempAccToken,tempRefToken);
             }
+            setLoading(false);
             }
         getTokens();
         },[])
 
     const getNewToken = async (ReToken) => {
-        const res = await fetch('http://192.168.1.4/api/token/refresh',{body:JSON.stringify({refresh:ReToken}),method:'POST',headers:{'Content-Type': 'application/json'}})
+        const res = await fetch('https://terribilita-milissa-unpermitted.ngrok-free.dev/api/token/refresh',{body:JSON.stringify({refresh:ReToken}),method:'POST',headers:{'Content-Type': 'application/json'}})
         if (res.status===200) {
             const data = await res.json();
-            console.log("Token was taken for the first time")
             setAccToken(data['access'])
-            setDataStorage("access-token",data['access'])
-            setLogin(true)
+            await setDataStorage("access-token",data['access'])
+            if (!isLogin) {
+                setLogin(true)
+            }
+            return(data['access'])
         }
         else{
             console.log("I cant reach the api")
+            return(false)
         }
     }
 
     const verifyToken = async (Actoken,ReToken) => {
-        const res = await fetch('http://192.168.1.4/api/token/verify',{body:JSON.stringify({token:Actoken}),method:'POST',headers:{'Content-Type': 'application/json'}})
+        const res = await fetch('https://terribilita-milissa-unpermitted.ngrok-free.dev/api/token/verify',{body:JSON.stringify({token:Actoken}),method:'POST',headers:{'Content-Type': 'application/json'}})
         if (res.status===200) {
             setLogin(true)
         }
         else {
-            getNewToken(ReToken);
+            await getNewToken(ReToken);
         }
     }
 
@@ -73,7 +79,7 @@ export const AuthProvider = ({children}) => {
         }
     }
 
-    return (<AuthenticationContext.Provider value={{isLogin,setLogin,setDataStorage,setAccToken,setRefToken,SetUser,user}}>{children}</AuthenticationContext.Provider>)
+    return (<AuthenticationContext.Provider value={{isLogin,isLoading,setLogin,setDataStorage,setAccToken,getNewToken,setRefToken,SetUser,user,accToken,refToken}}>{children}</AuthenticationContext.Provider>)
 }
 
 export const useAuth = () => {

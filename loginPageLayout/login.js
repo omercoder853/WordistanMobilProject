@@ -9,9 +9,10 @@ export default function LoginPage(){
     const [password,setPassword] = useState();
     const {setLogin,setDataStorage,setAccToken,setRefToken,setUser} = useAuth();
     const login = async () => {
-        const res = await fetch('http://192.168.1.4/api/token',
+        const res = await fetch('https://terribilita-milissa-unpermitted.ngrok-free.dev/api/token',
                     {body:JSON.stringify({email,password}),method:'POST',headers:{'Content-Type': 'application/json'}})
         if (res.status == 200) {
+            setLogin(true)
             const data = await res.json();
             setDataStorage("access-token",data['access'])
             setAccToken(data['access'])
@@ -19,7 +20,6 @@ export default function LoginPage(){
             setRefToken(data['refresh'])
             setDataStorage("user",JSON.stringify(data['user']))
             setUser(data['user'])
-            setLogin(true)
             console.log("giriş başarılı")
         }
         else {
