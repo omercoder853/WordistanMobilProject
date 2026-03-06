@@ -1,0 +1,69 @@
+import { StyleSheet } from "react-native";
+
+const styles = StyleSheet.create({
+    mainContainer:{
+        paddingHorizontal:25,
+        paddingVertical:15,
+        backgroundColor:'#fcfaff',
+        borderWidth:2,
+        borderColor:'#e8cdfc',
+        width:'90%',
+        borderRadius:15
+    },
+    titleText:{
+        fontSize:28,
+        fontWeight:'700',
+        marginBottom:25
+    },
+    inputArea:{
+        borderWidth:1,
+        borderColor:'#e8d0fc',
+        borderRadius:10,
+        paddingHorizontal:10,
+        marginBottom:15,
+        marginTop:8
+    },
+    inputLabel:{
+        color:'#6b3fa0',
+        fontWeight:'700',
+        textAlignVertical:'center'
+    },
+    dateInput:{
+        borderWidth:1,
+        borderColor:'#e8d0fc',
+        borderRadius:10,
+        paddingHorizontal:10,
+        marginBottom:15,
+        paddingVertical:10,
+        marginTop:8
+    },
+    buttonsArea:{
+        width:'100%',
+        flexDirection:'row',
+        marginTop:10
+    },
+    navigationButton:{
+        backgroundColor:'#e86ad0',
+        paddingVertical:9,
+        paddingHorizontal:15,
+        borderRadius:10
+    },
+    languageButton:{
+        paddingVertical:13,
+        paddingHorizontal:15,
+        borderWidth:1,
+        borderColor:'#fce4f4',
+        borderRadius:10,
+        backgroundColor:'white',
+        elevation:2,
+        marginTop:12
+    },
+    warningText:{
+        color:"#FF3B30",
+        marginTop:-15,
+        fontSize:13,
+        marginBottom:20
+    }
+})
+
+export default styles

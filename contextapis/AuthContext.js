@@ -1,6 +1,5 @@
 import { createContext,useContext,useState,useEffect, useEffectEvent } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { jsx } from "react/jsx-runtime";
 
 
 export const AuthenticationContext = createContext() 
@@ -11,9 +10,10 @@ export const AuthProvider = ({children}) => {
     const [accToken,setAccToken] = useState();
     const [refToken,setRefToken] = useState();
     const [isLogin,setLogin] = useState(false);
+    const [registerData,setRegisterData] = useState({});
+    const [registerLoading,setRegisterLoading] = useState(false)
     useEffect(()=>{
         const getTokens = async () => {
-            console.log("Is loading beginning: ",isLoading)
             const tempAccToken = await getDataStorage("access-token")
             const tempRefToken = await getDataStorage("refresh-token")
             const tempUser = await getDataStorage("user")
@@ -79,7 +79,19 @@ export const AuthProvider = ({children}) => {
         }
     }
 
-    return (<AuthenticationContext.Provider value={{isLogin,isLoading,setLogin,setDataStorage,setAccToken,getNewToken,setRefToken,SetUser,user,accToken,refToken}}>{children}</AuthenticationContext.Provider>)
+    const register = async(data)=>{
+        setRegisterLoading(true)
+        console.log("Register data",data)
+        const res =await fetch('https://terribilita-milissa-unpermitted.ngrok-free.dev/api/register',{method:'POST',headers:{
+            'Content-Type': 'application/json'},body:JSON.stringify(data)})
+        setRegisterLoading(false)
+        return (res.status)
+        
+    }
+
+    return (<AuthenticationContext.Provider value={{isLogin,isLoading,setLogin,setDataStorage,
+        setAccToken,getNewToken,setRefToken,SetUser,user,accToken,refToken,registerData,
+        setRegisterData,register,registerLoading}}>{children}</AuthenticationContext.Provider>)
 }
 
 export const useAuth = () => {
