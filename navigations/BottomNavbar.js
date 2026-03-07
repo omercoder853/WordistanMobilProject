@@ -28,7 +28,7 @@ export default function BottomNavbar(){
             <Bottom.Screen name='Games' component={Games} 
             options={{tabBarIcon:({focused})=>(<Ionicons name="game-controller" size={24} color={focused ? "#5B3FD3":"#A6A1B8"} />)}}></Bottom.Screen>
             <Bottom.Screen name='Profile' component={Profile} 
-            options={{tabBarIcon:({focused})=>(<MaterialIcons name="account-box" size={24} color={focused ? "#5B3FD3":"#A6A1B8"} />)}}></Bottom.Screen>
+            options={{headerShown:false, tabBarIcon:({focused})=>(<MaterialIcons name="account-box" size={24} color={focused ? "#5B3FD3":"#A6A1B8"} />)}}></Bottom.Screen>
         </Bottom.Navigator>
     )
 } 

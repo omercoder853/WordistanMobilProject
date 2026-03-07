@@ -4,12 +4,16 @@ import LogoArea from "./logoArea";
 import NavigationButtons from "./navigationButtons";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useState,useEffect } from "react";
+import CustomAlert from "../../commonComponents/customAlert/customAlert";
+import { useNavigation } from "@react-navigation/native";
 
 export default function EntryInfoPage(){
+    const navigation = useNavigation();
     const [email,setEmail] = useState("");
     const [password,setPassword] = useState("");
     const [passwordVerification,setPasswordVerification] = useState("");
     const [error,setError] = useState();
+    const [isSuccess,setSuccess] = useState(null);
 
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
     const emailRegex = /^\S+@\S+\.[a-z]{2,}$/;
@@ -60,8 +64,18 @@ export default function EntryInfoPage(){
                         <TextInput onChangeText={(value)=>setPasswordVerification(value)} style={styles.inputArea} placeholder="Enter Your Password Again"/>
                         {!validPasswordVerification && passwordVerification.length>0 && <Text style={styles.warningText}>* The passwords are not the same! </Text>}
                     </View>
-                    <NavigationButtons anyError={error} data={data}/>
+
+                    <NavigationButtons anyError={error} data={data} setSuccess={setSuccess}/>
+
+                    <CustomAlert visible={isSuccess==true} title="You are all set!" 
+                    message="We're taking you to the login page to get started." 
+                    buttons={[{text:"Login" , style:"success" , action:()=>{navigation.navigate("Login"),setSuccess(null)}}]} />
+                
+                    <CustomAlert visible={isSuccess==false} title="Ooops!" 
+                    message="Something went wrong. Let's get you back in!" 
+                    buttons={[{text:"Cancel" ,style:"danger" , action:()=>setSuccess(null)}]} />
                 </View>
+                
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
     )

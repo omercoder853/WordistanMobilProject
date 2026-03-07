@@ -13,18 +13,13 @@ export default function LoginPage(){
     const emailRegex = /^\S+@\S+\.[a-z]{2,}$/;
     const [email,setEmail] = useState();
     const [password,setPassword] = useState();
-    const [emailError,setEmailError] = useState(false)
-    const [passwordError,setPasswordError] = useState(false)
     const {setLogin,setDataStorage,setAccToken,setRefToken,setUser} = useAuth();
     const [isLoading,setLoading] = useState(false)
+
+    const isValidEmail = emailRegex.test(email)
+    const isValidPassword = passwordRegex.test(password)
+
     const login = async () => {
-
-        const isValidEmail = emailRegex.test(email)
-        const isValidPassword = passwordRegex.test(password)
-
-        setEmailError(!isValidEmail)
-        setPasswordError(!isValidPassword)
-
         if (isValidEmail && isValidPassword) {
             setLoading(true)
             const res = await fetch('https://terribilita-milissa-unpermitted.ngrok-free.dev/api/token',
@@ -32,11 +27,11 @@ export default function LoginPage(){
             if (res.status == 200) {
                 setLogin(true)
                 const data = await res.json();
-                setDataStorage("access-token",data['access'])
+                await setDataStorage("access-token",data['access'])
                 setAccToken(data['access'])
-                setDataStorage("refresh-token",data['refresh'])
+                await setDataStorage("refresh-token",data['refresh'])
                 setRefToken(data['refresh'])
-                setDataStorage("user",JSON.stringify(data['user']))
+                await setDataStorage("user",JSON.stringify(data['user']))
                 setUser(data['user'])
             }
             else {
@@ -62,15 +57,15 @@ export default function LoginPage(){
                             <Text style={styles.inputLabel}>Email: </Text>
                         </View>
                         <TextInput style={styles.textInput} autoCapitalize="none" placeholder="email@example.com" 
-                        onChangeText={(value) => {setEmail(value.trim().toLowerCase()),setEmailError(false)}}/>
-                        {emailError && <Text style={styles.warningText}>* Please enter a valid email address</Text>}
+                        onChangeText={(value) => setEmail(value.trim().toLowerCase())}/>
+                        {!isValidEmail && email?.length>0 && <Text style={styles.warningText}>* Please enter a valid email address</Text>}
                         <View style={styles.inputLabelRow}>
                             <MaterialIcons name="vpn-key" size={18} color="#b565f5"/>
                             <Text style={styles.inputLabel}>Password: </Text>
                         </View>
                         <TextInput style={styles.textInput} autoCapitalize="none" placeholder="Password" 
-                        onChangeText={(value)=>{setPassword(value.trim()),setPasswordError(false)}}/>
-                        {passwordError && <Text style={styles.warningText}>* Password must be at least 8 characters long and include an uppercase letter, 
+                        onChangeText={(value)=>setPassword(value.trim())}/>
+                        {!isValidPassword && password?.length>0 && <Text style={styles.warningText}>* Password must be at least 8 characters long and include an uppercase letter, 
                             a lowercase letter, and a number.</Text>}
                         <TouchableOpacity onPress={login} style={styles.loginButton}>
                             {isLoading ?

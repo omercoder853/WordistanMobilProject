@@ -12,6 +12,7 @@ export const AuthProvider = ({children}) => {
     const [isLogin,setLogin] = useState(false);
     const [registerData,setRegisterData] = useState({});
     const [registerLoading,setRegisterLoading] = useState(false)
+    
     useEffect(()=>{
         const getTokens = async () => {
             const tempAccToken = await getDataStorage("access-token")
@@ -81,17 +82,25 @@ export const AuthProvider = ({children}) => {
 
     const register = async(data)=>{
         setRegisterLoading(true)
-        console.log("Register data",data)
         const res =await fetch('https://terribilita-milissa-unpermitted.ngrok-free.dev/api/register',{method:'POST',headers:{
             'Content-Type': 'application/json'},body:JSON.stringify(data)})
         setRegisterLoading(false)
-        return (res.status)
-        
+        return (res.status)  
+    }
+
+    const logout = async () =>{
+        await AsyncStorage.removeItem("@wordistan:access-token")
+        await AsyncStorage.removeItem("@wordistan:refresh-token")
+        await AsyncStorage.removeItem("@wordistan:user")
+        setAccToken(null)
+        setRefToken(null)
+        SetUser(null)
+        setLogin(false)
     }
 
     return (<AuthenticationContext.Provider value={{isLogin,isLoading,setLogin,setDataStorage,
         setAccToken,getNewToken,setRefToken,SetUser,user,accToken,refToken,registerData,
-        setRegisterData,register,registerLoading}}>{children}</AuthenticationContext.Provider>)
+        setRegisterData,register,registerLoading,getDataStorage,logout}}>{children}</AuthenticationContext.Provider>)
 }
 
 export const useAuth = () => {

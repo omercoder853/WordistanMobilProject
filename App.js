@@ -9,13 +9,11 @@ import { NavigationContainer } from "@react-navigation/native";
 export default function App() { 
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={{flex:1}} edges={["top","right","left"]}>
         <AuthProvider>
           <NavigationContainer>
             <RootNavigation/>
           </NavigationContainer>
         </AuthProvider>
-      </SafeAreaView>
     </SafeAreaProvider>
   );
 }
