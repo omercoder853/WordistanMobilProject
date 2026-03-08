@@ -2,8 +2,8 @@ import { useState } from "react";
 import { View, TextInput, Text,TouchableOpacity } from "react-native";
 import styles from "../translateStyles/transStyles";
 import wordData from '../../assets/data/words.json'
-export default function InputArea({ setInput, setDisplay, input,suggestionDisplay,setSuggestionDisplay }) {
-    const data = filterData(input) != null ? filterData(input) : null
+export default function InputArea({ setInput, setDisplay, input,suggestionDisplay,setSuggestionDisplay,from }) {
+    const data = filterData(input) != null ? filterData(input,from) : null
     const [height,setHeight] = useState()
     return (
         <View style={{ alignItems: 'center' }}>
@@ -26,16 +26,27 @@ function Suggestion({word,setInput,setSuggestionDisplay}){
     )
 }
 
-function filterData(query) {
+function filterData(query,from) {
     if (query !== "") {
         let suggestions = new Set()
-        wordData.forEach(word => {
+        if (from == "TR") {
+            wordData.forEach(word => {
             if (suggestions.size < 4) {
                 if (word.tr.toLocaleLowerCase().startsWith(query.toLowerCase())) {
                     suggestions.add(word.tr)
                 }
             }
-        });
+            });
+        }
+        else{
+            wordData.forEach(word => {
+            if (suggestions.size < 4) {
+                if (word.en.toLocaleLowerCase().startsWith(query.toLowerCase())) {
+                    suggestions.add(word.en)
+                }
+            }
+            });
+        }
         return suggestions
     }
     return null

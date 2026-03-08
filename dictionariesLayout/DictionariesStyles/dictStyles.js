@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     addDictButton:{
         backgroundColor:'green',
         borderRadius:30,
-        width:60,
+        padding:15,
         aspectRatio:1,
         justifyContent:'center',
         alignItems:'center',
@@ -164,6 +164,36 @@ const styles = StyleSheet.create({
         fontSize:10,
         width:'auto',
         marginTop:5
+    },
+    addDictTitle:{
+        color:'#dd69d8',
+        marginBottom:20,
+        fontWeight:'900',
+        fontSize:20,
+        alignSelf:'center'
+    },
+    addDictLabel:{
+        color:'#6b3fa0',
+        marginBottom:10,
+        fontWeight:'500'
+    },
+    addDictInput:{
+        borderRadius:15,
+        borderWidth:2,
+        borderColor:'#e8d0fc',
+        marginBottom:15,
+        width:'100%',
+        paddingHorizontal:10
+    },
+    dictLangButton:{
+    backgroundColor: '#c967e6', 
+    paddingVertical: 6,
+    paddingHorizontal: 30,
+    borderRadius: 12,
+    alignItems: 'center',
+    flex:1,
+    borderWidth:1,
+    borderColor:"#c967e6"
     }
 })
 

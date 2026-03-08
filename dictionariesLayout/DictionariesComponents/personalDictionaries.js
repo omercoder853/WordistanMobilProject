@@ -3,15 +3,20 @@ import Dictionary from "./dictionary"
 import styles from "../DictionariesStyles/dictStyles"
 import { useDictionary } from "../../contextapis/DictContext";
 import { useIsFocused } from "@react-navigation/native";
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 import NoDictionary from "./noDictionary";
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import CreateDictionary from "./addDict";
 
 export default function Personal(){
     const isFocused = useIsFocused();
+    const [visible,setVisible] = useState(false);
+
     const {setFocus,dicts} = useDictionary()
     useEffect(()=>{
         setFocus(isFocused)
     },[isFocused])
+
     
     return (
         <View style={{flex:1,paddingHorizontal:15}}>
@@ -23,9 +28,10 @@ export default function Personal(){
                 renderItem={({item}) => (<Dictionary title={item.name} length={item.words.length} id={item.id}/>)} 
                 keyExtractor={item => item.id} 
                 ListEmptyComponent={(<NoDictionary/>)}/>
-            <TouchableOpacity style={styles.addDictButton}>
-                <Text style={{fontWeight:'900',color:'white',fontSize:25,textAlign:'center'}}>+</Text>
+            <TouchableOpacity style={styles.addDictButton} onPress={()=>setVisible(true)}>
+                <MaterialCommunityIcons style={{fontWeight:'900'}} name="book-plus-outline" size={24} color="white" />
             </TouchableOpacity>
+            <CreateDictionary visible={visible} setVisible={setVisible}/>
         </View>
     )
 }

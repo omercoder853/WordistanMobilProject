@@ -8,18 +8,20 @@ export const DictionaryProvider = ({children}) => {
     const [dicts, setDicts] = useState([]);
     const [isFocused,setFocus] = useState(false);
     const { accToken, refToken, getNewToken, setLogin, isLogin, setAccToken } = useAuth();
+    const [dictReload,setDictReload] = useState(true)
 
     useEffect(()=>{
-        if (!isFocused || !accToken || !isLogin) return;
-        fetchDicts(getNewToken,setLogin,accToken,setDicts,refToken,setAccToken)
-    },[accToken,isFocused])
+        if (!isFocused || !accToken || !isLogin || !dictReload) return;
+        fetchDicts()
+    },[dictReload,isFocused,accToken,refToken])
 
-    async function fetchDicts(getNewToken, setLogin, accToken, setDicts, refToken, setAccToken) {
+    async function fetchDicts(manualToken=null) {
+        const currentToken = manualToken || accToken
         const res = await fetch('https://terribilita-milissa-unpermitted.ngrok-free.dev/api/dictionaries',
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${accToken}`
+                    'Authorization': `Bearer ${currentToken}`
                 }
             })
         if (res.status === 200) {
@@ -30,12 +32,14 @@ export const DictionaryProvider = ({children}) => {
             const tempToken = await getNewToken(refToken)
             if (tempToken) {
                 setAccToken(tempToken)
+                return await fetchDicts(tempToken)
             }
         }
         else {
             console.log("Something went wrong!")
             setLogin(false)
         }
+        setDictReload(false)
     }
 
     function getWords(dictId){
@@ -48,7 +52,65 @@ export const DictionaryProvider = ({children}) => {
         return targetDict
     }
 
-    return (<DictContext.Provider value={{setFocus,dicts,getWords,getDict}}>{children}</DictContext.Provider>)
+    async function createDictionary({name,description,language},manualToken = null) {
+        const currentToken = manualToken || accToken
+        const res = await fetch('https://terribilita-milissa-unpermitted.ngrok-free.dev/api/dictionaries/add/',
+            {
+                method:'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${currentToken}`
+                },
+                body:JSON.stringify({name,description,language})
+            })
+        if (res.status===401) {
+            const tempToken = await getNewToken(refToken)
+            if (tempToken) {
+                console.log("yeni token alındı")
+                setAccToken(tempToken)
+                return await createDictionary({name,description,language},tempToken);
+            }
+            else{
+                setLogin(false)
+            }
+        }
+        else if (res.status===201) {
+            setDictReload(true)
+        }
+        return res.status
+    }
+
+    async function saveWord({word,meaning,dict_id},manualToken = null) {
+        const currentToken = manualToken || accToken
+        const res = await fetch(`https://terribilita-milissa-unpermitted.ngrok-free.dev/api/words/add/dict_id-${dict_id}`,
+            {
+                method:'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${currentToken}`
+                },
+                body:JSON.stringify({word,meaning})
+            })
+        if (res.status===401) {
+            const tempToken = await getNewToken(refToken)
+            if (tempToken) {
+                console.log("yeni token alındı")
+                setAccToken(tempToken)
+                return await saveWord({word,meaning},tempToken);
+            }
+            else{
+                setLogin(false)
+            }
+        }
+        else if (res.ok) {
+            setDictReload(true)
+        }
+        return res.ok
+    }
+
+    
+
+    return (<DictContext.Provider value={{setFocus,dicts,getWords,getDict,createDictionary,setDictReload,saveWord}}>{children}</DictContext.Provider>)
 }
 
 export function useDictionary() {

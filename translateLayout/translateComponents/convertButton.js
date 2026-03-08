@@ -2,12 +2,12 @@ import { View, TouchableOpacity, Text } from "react-native";
 import styles from "../translateStyles/transStyles";
 import wordData from '../../assets/data/words.json'
 
-export default function ConvertButton({ setDisplay, input, addWord,setResult,setSuggestionDisplay }) {
+export default function ConvertButton({ setDisplay, input, addWord,setResult,setSuggestionDisplay,from }) {
   const showResult = () => {
     if (input != "") {
       setSuggestionDisplay("none")
       setDisplay("flex");
-      const foundResult = findWord(input,setResult)
+      const foundResult = findWord(input,from)
       console.log(foundResult)
       if (foundResult) {
         setResult(foundResult)
@@ -25,13 +25,22 @@ export default function ConvertButton({ setDisplay, input, addWord,setResult,set
   );
 }
 
-function findWord(target){
-  for (const word of wordData) {
-    if (word.tr.toLowerCase() === target.toLowerCase()) {
-      return word.en
-    }
+function findWord(target,from){
+  console.log("From",from)
+  if (from=="TR") {
+    for (const word of wordData) {
+      if (word.tr.toLowerCase() === target.toLowerCase()) {
+        return word.en
+      }}
+    return null;
   }
-  return null;
+  else {
+    for (const word of wordData) {
+      if (word.en.toLowerCase() === target.toLowerCase()) {
+        return word.tr
+      }}
+    return null;
+  }
 }
 
 
