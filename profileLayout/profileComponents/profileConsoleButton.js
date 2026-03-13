@@ -14,7 +14,7 @@ export default function ConsoleButton({item,setAlertVisible}){
     }
 
     return(
-        <TouchableOpacity onPress={item.name === "Logout" ? handleLogout : () => navigation.navigate(item.name) }>
+        <TouchableOpacity onPress={item.name === "Logout" ? handleLogout : () => navigation.navigate("Settings Navigation",{screen:item.name}) }>
             <View style={[styles.consoleButton,item.name === "Logout" && {borderColor:'red',borderWidth:1}]}>
                 <View style={{backgroundColor:'white',padding:6,borderRadius:16,marginHorizontal:10}}>
                     <Ionicons name={item.icon} size={25} color={item.name === "Logout" ? "red" : "black"} />

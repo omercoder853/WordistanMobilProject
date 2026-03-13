@@ -6,16 +6,16 @@ import { useIsFocused } from "@react-navigation/native";
 import { useEffect,useState } from "react";
 import NoDictionary from "./noDictionary";
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import CreateDictionary from "./addDict";
+import CreateDictionary from "./createDict";
 
 export default function Personal(){
     const isFocused = useIsFocused();
     const [visible,setVisible] = useState(false);
 
-    const {setFocus,dicts} = useDictionary()
+    const {setDictReload,dicts} = useDictionary()
     useEffect(()=>{
-        setFocus(isFocused)
-    },[isFocused])
+        setDictReload(true)
+    },[])
 
     
     return (

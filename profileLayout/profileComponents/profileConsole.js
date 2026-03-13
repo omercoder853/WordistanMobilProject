@@ -1,4 +1,4 @@
-import { View,ScrollView } from "react-native";
+import { ScrollView } from "react-native";
 import ConsoleButton from "./profileConsoleButton";
 
 const consoleItems = [

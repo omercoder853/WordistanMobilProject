@@ -11,13 +11,12 @@ import CustomAlert from "../../commonComponents/customAlert/customAlert"
 export default function AddDictPage({visible,input,result,setVisible,from}){
     const [open,setOpen] = useState(false)
     const [value,setValue] = useState(null)
-    const {dicts,setDictReload,setFocus,saveWord} = useDictionary();
+    const {dicts,setDictReload,saveWord} = useDictionary();
     const [success,setSuccess] = useState(false)
     const [fail,setFail] = useState(false)
 
     useEffect(()=>{
-        setDictReload(true),
-        setFocus(true)
+        setDictReload(true)
     },[])
 
     const filteredDicts = dicts.filter((dict)=>dict.language.slice(0,2) == from)
@@ -27,7 +26,6 @@ export default function AddDictPage({visible,input,result,setVisible,from}){
     }));
 
     const saveButton = async () => {
-        console.log("tıklandı")
         const status = await saveWord({word:input,meaning:result,dict_id:value});
         console.log("Status",status)
         if (status) {

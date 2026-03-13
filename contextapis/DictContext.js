@@ -6,14 +6,13 @@ const DictContext = createContext();
 
 export const DictionaryProvider = ({children}) => {
     const [dicts, setDicts] = useState([]);
-    const [isFocused,setFocus] = useState(false);
     const { accToken, refToken, getNewToken, setLogin, isLogin, setAccToken } = useAuth();
-    const [dictReload,setDictReload] = useState(true)
+    const [dictReload,setDictReload] = useState(false)
 
     useEffect(()=>{
-        if (!isFocused || !accToken || !isLogin || !dictReload) return;
+        if ( !accToken || !isLogin || !dictReload) return;
         fetchDicts()
-    },[dictReload,isFocused,accToken,refToken])
+    },[dictReload,accToken,refToken])
 
     async function fetchDicts(manualToken=null) {
         const currentToken = manualToken || accToken
@@ -66,7 +65,6 @@ export const DictionaryProvider = ({children}) => {
         if (res.status===401) {
             const tempToken = await getNewToken(refToken)
             if (tempToken) {
-                console.log("yeni token alındı")
                 setAccToken(tempToken)
                 return await createDictionary({name,description,language},tempToken);
             }
@@ -94,7 +92,6 @@ export const DictionaryProvider = ({children}) => {
         if (res.status===401) {
             const tempToken = await getNewToken(refToken)
             if (tempToken) {
-                console.log("yeni token alındı")
                 setAccToken(tempToken)
                 return await saveWord({word,meaning},tempToken);
             }
@@ -110,7 +107,7 @@ export const DictionaryProvider = ({children}) => {
 
     
 
-    return (<DictContext.Provider value={{setFocus,dicts,getWords,getDict,createDictionary,setDictReload,saveWord}}>{children}</DictContext.Provider>)
+    return (<DictContext.Provider value={{dicts,getWords,getDict,createDictionary,setDictReload,saveWord}}>{children}</DictContext.Provider>)
 }
 
 export function useDictionary() {

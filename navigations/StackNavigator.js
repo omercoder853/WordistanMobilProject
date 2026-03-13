@@ -3,11 +3,8 @@ import BottomNavbar from "./BottomNavbar";
 import DictDetails from "../pages/dictDetails";
 import { DictionaryProvider } from "../contextapis/DictContext";
 import PersonalDetails from "../profileLayout/profilPages/personalDetails";
-import Statistics from "../profileLayout/profilPages/statistics";
-import Achievements from "../profileLayout/profilPages/achievements";
-import Preferences from "../profileLayout/profilPages/preferences";
-import HelpSupport from "../profileLayout/profilPages/helpSupport";
-import About from "../profileLayout/profilPages/about";
+import GamesNavigation from "./gamesNavigation";
+import SettingsNavigation from "./settingsNavigation";
 
 const Stack = createStackNavigator();
 
@@ -18,11 +15,8 @@ export default function AppNavigation(){
                 <Stack.Screen name="MainTabs" component={BottomNavbar} options={{headerShown:false}}/>
                 <Stack.Screen name="DictDetails" component={DictDetails}/>
                 <Stack.Screen name="Personal Details" component={PersonalDetails}/>
-                <Stack.Screen name="Statistics" component={Statistics}/>
-                <Stack.Screen name="Achievements" component={Achievements}/>
-                <Stack.Screen name="Preferences" component={Preferences}/>
-                <Stack.Screen name="Help & Support" component={HelpSupport}/>
-                <Stack.Screen name="About Wordistan" component={About}/>
+                <Stack.Screen name="Settings Navigation" component={SettingsNavigation} options={{headerShown:false}}/>
+                <Stack.Screen name="Game Navigation" component={GamesNavigation} options={{headerShown:false}}/>
             </Stack.Navigator>
         </DictionaryProvider>
     )

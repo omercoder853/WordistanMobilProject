@@ -8,7 +8,6 @@ export default function ConvertButton({ setDisplay, input, addWord,setResult,set
       setSuggestionDisplay("none")
       setDisplay("flex");
       const foundResult = findWord(input,from)
-      console.log(foundResult)
       if (foundResult) {
         setResult(foundResult)
         addWord(input, foundResult);
@@ -26,7 +25,6 @@ export default function ConvertButton({ setDisplay, input, addWord,setResult,set
 }
 
 function findWord(target,from){
-  console.log("From",from)
   if (from=="TR") {
     for (const word of wordData) {
       if (word.tr.toLowerCase() === target.toLowerCase()) {
