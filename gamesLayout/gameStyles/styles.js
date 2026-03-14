@@ -103,6 +103,33 @@ const styles = StyleSheet.create({
         color:'white',
         fontWeight:'900',
         textAlign:'center'
+    },
+    gameHeaderRow:{
+        flexDirection:'row',
+        width:'100%',
+        justifyContent:'space-between',
+        marginTop:25
+    },
+    gameHeaderItem:{
+        backgroundColor:'#382E45',
+        paddingVertical:10,
+        paddingHorizontal:15,
+        borderRadius:5,
+        borderWidth:1,
+        borderColor:'#5A4E6B'
+    },
+    questionNavArea:{
+        width:'100%',
+        flexDirection:'row',
+        justifyContent:'space-between',
+        marginBottom:35,
+        marginTop:'auto',
+        alignItems:'center'
+    },
+    questionNavButton:{
+        paddingVertical:15,
+        paddingHorizontal:25,
+        borderRadius:15
     }
 })
 

@@ -10,50 +10,44 @@ import WcSettings from "../gamesLayout/gameComponents/wcSettings";
 import NumericInput from "../gamesLayout/gameComponents/numericInput";
 import McqSettings from "../gamesLayout/gameComponents/mcqSettings";
 import MpSettings from "../gamesLayout/gameComponents/mpSettings";
+import { useGame } from "../contextapis/GamesContext";
 
 export default function GameSetupPage(){
     const navigation = useNavigation();
     const {dicts,setDictReload,getWords} = useDictionary();
+    const {source,setSource,value,setValue,numberQuestion,setNumberQuestion,seconds,setSeconds,
+        hints,setHints,visibleFirstLetter,setVisibleFirstLetter,numberOptions,setnumberOptions,perPage,setPerPage,createQuestion,setGameType} = useGame();
+    
+    const router = useRoute();
+    const {gameType} = router.params
 
     useEffect(()=>{
         if (dicts.length == 0){
             setDictReload(true)
         }
+        setGameType(gameType)
     },[])
 
-    const [source,setSource] = useState(null)
-    const [value,setValue] = useState(null)
     const [open,setOpen] = useState(false)
     const [items,setItems] = useState([])
-    const [numberQuestion,setNumberQuestion] = useState(5)
-    const [seconds,setSeconds] = useState(2)
-    const [hints,setHints] = useState(0)
     const [maxQuestion,setMaxQuestion] = useState()
-    const [visibleFirstLetter,setVisibleFirstLetter] = useState()
-    const [options,setOptions] = useState(3)
-    const [perPage,setPerPage] = useState(3)
-
-    const router = useRoute();
-    const {gameType} = router.params
 
     const validGame = source && value
 
     const startGame = () => {
         switch (gameType) {
             case "wc":
-                navigation.navigate("Word Completion",
-                    {source:source,value:value,numberQuestion:numberQuestion,seconds:seconds,hints:hints,firstLetter:visibleFirstLetter})
+                navigation.replace("Word Completion")
                 break;
             case "mcq":
-                navigation.navigate("Multiple Choice Quiz",
-                    {source:source,value:value,numberQuestion:numberQuestion,seconds:seconds,hints:hints,options:options})
+                navigation.replace("Multiple Choice Quiz")
                 break;
             case "mp":
-                navigation.navigate("Matching Pairs",
-                    {source:source,value:value,numberQuestion:numberQuestion,seconds:seconds,hints:hints,perPage:perPage})
+                navigation.replace("Matching Pairs")
             default:
                 break;
         }
+        createQuestion();
     }
     return (
         <TouchableWithoutFeedback onPress={()=>Keyboard.dismiss()}>
@@ -126,7 +120,7 @@ export default function GameSetupPage(){
             {gameType == "wc" ? 
             <WcSettings visibleFirstLetter={visibleFirstLetter} setVisibleFirstLetter={setVisibleFirstLetter}/>:
             gameType=="mcq" ? 
-            <McqSettings options={options} setOptions={setOptions}/>:<MpSettings perPage={perPage} setPerPage={setPerPage}/>}
+            <McqSettings options={numberOptions} setOptions={setnumberOptions}/>:<MpSettings perPage={perPage} setPerPage={setPerPage}/>}
             <TouchableOpacity style={[styles.startGameButton,!validGame&&{backgroundColor:'gray'}]} disabled={!validGame} onPress={startGame}>
                 <Text style={styles.startGameText}>Start Game</Text>
             </TouchableOpacity>
