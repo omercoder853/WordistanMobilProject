@@ -1,17 +1,25 @@
 import {View,Text,TouchableOpacity} from 'react-native'
-import mcqStyles from '../gameStyles/mcqStyles'
 import styles from '../gameStyles/styles'
-import { useState } from 'react'
 import { useGame } from '../../contextapis/GamesContext'
 import { useNavigation } from '@react-navigation/native'
 
 
-export default function QuestionNavigation({currentQuestion,setCurrentQuestion,setVisible,setEmptyQuestion,setPause,remainTime}){
-    const {numberQuestion,userAnswers} = useGame();
+export default function QuestionNavigation({currentQuestion,setCurrentQuestion,
+    setVisible,setEmptyQuestion,setPause,remainTime,perPage,setSelectedQuestion,totalTry}){
+    const {numberQuestion,userAnswers,gameType} = useGame();
     const navigation = useNavigation()
     const isFirst = currentQuestion+1==1
-    const isLast = currentQuestion+1==numberQuestion
+    let isLast;
+    if (gameType==="mp") {
+        isLast = currentQuestion+1==Math.ceil(numberQuestion/perPage)
+    }
+    else{
+        isLast = currentQuestion+1==numberQuestion
+    } 
     const nextQuestion = ()=>{
+        if (gameType==="mp") {
+            setSelectedQuestion(null)
+        }
         setCurrentQuestion(currentQuestion+1)
     }
     const pastQuestion = ()=>{
@@ -24,7 +32,13 @@ export default function QuestionNavigation({currentQuestion,setCurrentQuestion,s
         }
         else{
             setPause(true)
-            navigation.replace("Finish Game",{remainTime})
+            if (gameType=="mp") {
+                navigation.replace("Finish Game",{remainTime,totalTry})
+            }
+            else{
+                navigation.replace("Finish Game",{remainTime})
+            }
+            
         }
     }
     return (
@@ -32,7 +46,7 @@ export default function QuestionNavigation({currentQuestion,setCurrentQuestion,s
             <TouchableOpacity style={[styles.questionNavButton,{backgroundColor:'#E5989B'}]} onPress={isFirst ? ()=>{setVisible(true),setPause(true)}:pastQuestion}>
                 <Text>{isFirst ? "Exit":"Back"}</Text>
             </TouchableOpacity>
-            <Text style={{color:'white'}}>{currentQuestion+1}/{numberQuestion}</Text>
+            <Text style={{color:'white'}}>{currentQuestion+1}/{gameType=="mp" ? Math.ceil(numberQuestion/perPage) : numberQuestion}</Text>
             <TouchableOpacity style={[styles.questionNavButton,{backgroundColor:'#94C973'}]} onPress={isLast ? finishGame : nextQuestion}>
                 <Text>{isLast ? "Finish":"Next"}</Text>
             </TouchableOpacity>

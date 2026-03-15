@@ -110,9 +110,9 @@ export default function WordCompletionPage(){
                         <View key={index} style={styles.letterInputContainer}>
                             <TextInput onChangeText={(value)=>handleTextChange(value,index)} 
                             ref={(el)=>inputs.current[index] = el} 
-                            style={[styles.letterInput,!isAnswered ? {} : isAnswered.userAnswer[index].toLowerCase()==answer[index].toLowerCase() 
-                            ? {backgroundColor:'green'}
-                            :{backgroundColor:'red'}]}
+                            style={[styles.letterInput,!isAnswered ? {} : isAnswered.userAnswer[index].toLocaleLowerCase('tr-TR')==answer[index].toLocaleLowerCase('tr-TR') 
+                            ? {backgroundColor:'green',color:'white'}
+                            :{backgroundColor:'red',color:'white'}]}
                             autoCapitalize="characters" autoCorrect={false} spellCheck={false
                                 
                             }

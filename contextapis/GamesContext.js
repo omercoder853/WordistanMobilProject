@@ -87,6 +87,10 @@ export const GameProvider = ({children}) => {
                     break;
                 case "wc":
                     tempQuestions.push({id:i,question,answer})
+                    break;
+                case "mp":
+                    tempQuestions.push({id:i,question,answer})
+                    break;
                 default:
                     break;
             }
@@ -97,7 +101,7 @@ export const GameProvider = ({children}) => {
     return (<GameContext.Provider value={{source,setSource,value,setValue,numberQuestion,
         setNumberQuestion,seconds,setSeconds,hints,setHints,visibleFirstLetter,setVisibleFirstLetter,
         numberOptions,setnumberOptions,perPage,setPerPage,createQuestion,
-        questions,userAnswers,setUserAnswers,setGameType,gameType}}>{children}</GameContext.Provider>)
+        questions,userAnswers,setUserAnswers,setGameType,gameType,randomIndexCreater}}>{children}</GameContext.Provider>)
 }
 
 export const useGame = ()=>{

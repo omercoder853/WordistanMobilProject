@@ -18,6 +18,7 @@ export default function MultipleChoiceGamePage(){
     const [exitVisible,setExitVisible] = useState(false)
     const [emptyQuestion,setEmptyQuestion]  = useState(false)
     const [isPause,setPause] = useState(false)
+    
     const options = questions[currentQuestion].options
     const correctOption = questions[currentQuestion].correctAnswerIndex
 

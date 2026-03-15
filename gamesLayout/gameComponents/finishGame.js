@@ -7,21 +7,31 @@ import { useNavigation,useRoute } from "@react-navigation/native";
 
 export default function FinishGame(){
     const router = useRoute()
-    const {remainTime} = router.params
+    const {remainTime,totalTry} = router.params
     const navigation = useNavigation();
     const {numberQuestion,userAnswers,gameType} = useGame();
     let true_count;
+    let empty_count;
+    let success;
     switch (gameType) {
         case "mcq":
             true_count = userAnswers.filter(answer=>answer.userAnswer == answer.correctAnswer).length;
+            empty_count = numberQuestion - userAnswers.length
+            success = Math.ceil(100*true_count/numberQuestion)
             break;
         case "wc":
-            true_count = userAnswers.filter(ans=>ans.userAnswer.join('').toLowerCase() == ans.answer.toLowerCase()).length
+            true_count = userAnswers.filter(ans=>ans.userAnswer.join('').toLocaleLowerCase('tr-TR') == ans.answer.toLocaleLowerCase('tr-TR')).length
+            empty_count = numberQuestion - userAnswers.length
+            success = Math.ceil(100*true_count/numberQuestion)
+            break;
+        case "mp":
+            true_count = userAnswers.length
+            empty_count = numberQuestion - true_count
+            success = Math.ceil(100*true_count/totalTry)
+            break;
         default:
             break;
     }
-
-    const empty_count = numberQuestion - userAnswers.length
     const wrong_count = numberQuestion - empty_count - true_count
     return(
         <SafeAreaView style={{flex:1,justifyContent:'center',alignItems:'center',width:'90%',alignSelf:'center'}}>
@@ -36,7 +46,7 @@ export default function FinishGame(){
                 </View>
                 <View style={[styles.gameResulItem,{backgroundColor:"purple"}]}>
                     <Text style={styles.resultLabel}>Success</Text>
-                    <Text style={styles.result}>{Math.ceil(100*true_count/numberQuestion)} %</Text>
+                    <Text style={styles.result}>{success} %</Text>
                 </View>
             </View>
             <View style={styles.gameResultRow}>
