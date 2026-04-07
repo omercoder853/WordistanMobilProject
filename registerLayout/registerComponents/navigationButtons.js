@@ -2,8 +2,10 @@ import { View,TouchableOpacity,Text,ActivityIndicator,Alert } from "react-native
 import styles from "../registerStyles/styles";
 import { useRoute,useNavigation } from "@react-navigation/native";
 import { useAuth } from "../../contextapis/AuthContext";
+import { useTranslation } from "react-i18next";
 
 export default function NavigationButtons({anyError,data,setSuccess}){
+    const { t } = useTranslation()
     const {registerData,setRegisterData,register,registerLoading} = useAuth();
     const pages = ["Login","Personal Info","Preferences","Entry Info"]
     const route = useRoute();
@@ -42,11 +44,11 @@ export default function NavigationButtons({anyError,data,setSuccess}){
     return(
         <View style={styles.buttonsArea}>
             <TouchableOpacity onPress={backPage} style={styles.navigationButton}>
-                <Text style={{color:'white',fontWeight:'900'}}>{isFirst?"Login Page":"Back"}</Text>
+                <Text style={{color:'white',fontWeight:'900'}}>{isFirst?t('loginPage'):t('back')}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={isLast ? registerButton:nextPage} style={[styles.navigationButton,{marginLeft:'auto'}]}>
-                {registerLoading ? (<ActivityIndicator/>):(<Text style={{color:'white',fontWeight:'900',fontSize:15}}>{isLast ? "Create Account":"Next"}</Text>)}
+                {registerLoading ? (<ActivityIndicator/>):(<Text style={{color:'white',fontWeight:'900',fontSize:15}}>{isLast ? t('createAccount'):t('next')}</Text>)}
             </TouchableOpacity>
         </View>
     )

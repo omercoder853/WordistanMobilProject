@@ -9,8 +9,10 @@ import { useState,useEffect } from "react";
 import CustomAlert from "../commonComponents/customAlert/customAlert"
 import { useNavigation } from "@react-navigation/native";
 import GameHeader from "../gamesLayout/gameComponents/gameHeader";
+import { useTranslation } from "react-i18next";
 
 export default function MultipleChoiceGamePage(){
+    const { t } = useTranslation();
     const navigation = useNavigation();
     const {hints,questions,seconds,numberQuestion} = useGame();
     const [remainTime,setRemainTime] = useState(seconds * numberQuestion)
@@ -63,15 +65,15 @@ export default function MultipleChoiceGamePage(){
             setCurrentQuestion={setCurrentQuestion} setVisible={setExitVisible} 
             setEmptyQuestion={setEmptyQuestion} setPause={setPause} remainTime={remainTime}/>
 
-            <CustomAlert visible={exitVisible} title="Warning!" buttons={[
-                {text:"Exit",style:"danger",action:()=>{setExitVisible(false),
+            <CustomAlert visible={exitVisible} title={t('warning')} buttons={[
+                {text:t('exit'),style:"danger",action:()=>{setExitVisible(false),
                     navigation.replace("MainTabs",{screen:"Games"})}},
-                {text:"Cancel",style:"cancel",action:()=>{setExitVisible(false),setPause(false)}}]} 
-            message="Do you really want to exit the game? Your process will not be saved."/>
+                {text:t('cancel'),style:"cancel",action:()=>{setExitVisible(false),setPause(false)}}]} 
+            message={t('exitGameWarning')}/>
 
-            <CustomAlert visible={emptyQuestion} title="Warning" message="Finish with unanswered questions?" 
-            buttons={[{text:"Cancel",style:"cancel",action:()=>{setEmptyQuestion(false),setPause(false)}},
-                {text:"Finish",action:()=>{setEmptyQuestion(false),navigation.replace("Finish Game",{remainTime})}}
+            <CustomAlert visible={emptyQuestion} title={t('warningShort')} message={t('finishWithUnanswered')} 
+            buttons={[{text:t('cancel'),style:"cancel",action:()=>{setEmptyQuestion(false),setPause(false)}},
+                {text:t('finish'),action:()=>{setEmptyQuestion(false),navigation.replace("Finish Game",{remainTime})}}
             ]}/>
         </SafeAreaView>
     )

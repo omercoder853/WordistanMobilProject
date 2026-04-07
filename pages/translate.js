@@ -7,7 +7,10 @@ import ResultArea from "../translateLayout/translateComponents/translateResult";
 import styles from "../translateLayout/translateStyles/transStyles";
 import AddDictPage from "../translateLayout/translateComponents/addToDict";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
+
 const Translate = ({ recentWords, addWord }) => {
+    const { t } = useTranslation();
     const [input, setInput] = useState("");
     const [display, setDisplay] = useState("none");
     const [from,setFrom] = useState("TR")
@@ -23,7 +26,7 @@ const Translate = ({ recentWords, addWord }) => {
                     alignSelf: "center",
                     gap: 7,
                     marginTop: 20,}}>
-                <Text style={styles.translateTitle}>Translate</Text>
+                <Text style={styles.translateTitle}>{t('translate')}</Text>
                 <InputArea 
                     setInput={setInput} 
                     setDisplay={setDisplay} input={input} 

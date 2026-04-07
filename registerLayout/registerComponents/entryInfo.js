@@ -6,8 +6,10 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useState,useEffect } from "react";
 import CustomAlert from "../../commonComponents/customAlert/customAlert";
 import { useNavigation } from "@react-navigation/native";
+import { useTranslation } from 'react-i18next';
 
 export default function EntryInfoPage(){
+    const { t } = useTranslation();
     const navigation = useNavigation();
     const [email,setEmail] = useState("");
     const [password,setPassword] = useState("");
@@ -42,38 +44,37 @@ export default function EntryInfoPage(){
             <TouchableWithoutFeedback onPress={()=>Keyboard.dismiss()}>
                 <View style={styles.mainContainer}>
                     <LogoArea/>
-                    <Text style={styles.titleText}>Join the Kingdom</Text>
+                    <Text style={styles.titleText}>{t('joinTheKingdom')}</Text>
                     <View>
                         <View style={{flexDirection:'row',alignItems:'center',gap:8}}>
                             <MaterialIcons name="email" size={20} color="#6b3fa0" />
-                            <Text style={styles.inputLabel}>E-Mail:</Text>
+                            <Text style={styles.inputLabel}>{t('email')}</Text>
                         </View>
-                        <TextInput autoCapitalize="none" onChangeText={(value)=>setEmail(value.toLowerCase())} style={styles.inputArea} placeholder="name@domain.com"/>
-                        {!validEmail && email.length>0 && <Text style={styles.warningText}>* Enter a valid email!</Text> }
+                        <TextInput autoCapitalize="none" onChangeText={(value)=>setEmail(value.toLowerCase())} style={styles.inputArea} placeholder={t('emailPlaceholder')}/>
+                        {!validEmail && email.length>0 && <Text style={styles.warningText}>{t('validEmailWarning')}</Text> }
                         <View style={{flexDirection:'row',alignItems:'center',gap:8}}>
                             <MaterialIcons name="password" size={20} color="#6b3fa0" />
-                            <Text style={styles.inputLabel}>Password:</Text>
+                            <Text style={styles.inputLabel}>{t('passwordLabel')}</Text>
                         </View>
-                        <TextInput onChangeText={(value) => setPassword(value)} style={styles.inputArea} placeholder="Your Password"/>
-                        {!validPassword && password.length>0 && <Text style={styles.warningText}>* Password must be at least 8 characters long and include an uppercase letter, 
-                            a lowercase letter, and a number.</Text>}
+                        <TextInput onChangeText={(value) => setPassword(value)} style={styles.inputArea} placeholder={t('yourPassword')}/>
+                        {!validPassword && password.length>0 && <Text style={styles.warningText}>{t('passwordRule')}</Text>}
                         <View style={{flexDirection:'row',alignItems:'center',gap:8}}>
                             <MaterialIcons name="password" size={20} color="#6b3fa0" />
-                            <Text style={styles.inputLabel}>Password Verification:</Text>
+                            <Text style={styles.inputLabel}>{t('passwordVerification')}</Text>
                         </View>
-                        <TextInput onChangeText={(value)=>setPasswordVerification(value)} style={styles.inputArea} placeholder="Enter Your Password Again"/>
-                        {!validPasswordVerification && passwordVerification.length>0 && <Text style={styles.warningText}>* The passwords are not the same! </Text>}
+                        <TextInput onChangeText={(value)=>setPasswordVerification(value)} style={styles.inputArea} placeholder={t('enterPasswordAgain')}/>
+                        {!validPasswordVerification && passwordVerification.length>0 && <Text style={styles.warningText}>{t('passwordsNotSameWarning')}</Text>}
                     </View>
 
                     <NavigationButtons anyError={error} data={data} setSuccess={setSuccess}/>
 
-                    <CustomAlert visible={isSuccess==true} title="You are all set!" 
-                    message="We're taking you to the login page to get started." 
-                    buttons={[{text:"Login" , style:"success" , action:()=>{navigation.navigate("Login"),setSuccess(null)}}]} />
+                    <CustomAlert visible={isSuccess==true} title={t('allSet')} 
+                    message={t('takingYouToLogin')} 
+                    buttons={[{text:t('login') , style:"success" , action:()=>{navigation.navigate("Login"),setSuccess(null)}}]} />
                 
-                    <CustomAlert visible={isSuccess==false} title="Ooops!" 
-                    message="Something went wrong. Let's get you back in!" 
-                    buttons={[{text:"Cancel" ,style:"danger" , action:()=>setSuccess(null)}]} />
+                    <CustomAlert visible={isSuccess==false} title={t('ooopsShort')} 
+                    message={t('somethingWentWrong')} 
+                    buttons={[{text:t('cancel') ,style:"danger" , action:()=>setSuccess(null)}]} />
                 </View>
                 
             </TouchableWithoutFeedback>

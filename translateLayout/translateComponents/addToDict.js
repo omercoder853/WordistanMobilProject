@@ -7,8 +7,10 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { useState,useEffect } from "react";
 import {useDictionary} from "../../contextapis/DictContext"
 import CustomAlert from "../../commonComponents/customAlert/customAlert"
+import { useTranslation } from "react-i18next";
 
 export default function AddDictPage({visible,input,result,setVisible,from}){
+    const { t } = useTranslation();
     const [open,setOpen] = useState(false)
     const [value,setValue] = useState(null)
     const {dicts,setDictReload,saveWord} = useDictionary();
@@ -44,12 +46,12 @@ export default function AddDictPage({visible,input,result,setVisible,from}){
                 <View style={alertStyles.overlay}>
                     <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding":"height"}>
                         <View style={[alertStyles.alertBox,{alignItems:'flex-start'}]}>
-                            <Text style={dictStyles.addDictTitle}>Add to Your Dictionary</Text>
-                            <Text style={dictStyles.addDictLabel}>Word:</Text>
+                            <Text style={dictStyles.addDictTitle}>{t('addToYourDictionary')}</Text>
+                            <Text style={dictStyles.addDictLabel}>{t('wordLabel')}</Text>
                             <TextInput style={dictStyles.addDictInput} value={input} editable={false}/>
-                            <Text style={dictStyles.addDictLabel}>Meaning:</Text>
+                            <Text style={dictStyles.addDictLabel}>{t('meaningLabel')}</Text>
                             <TextInput style={dictStyles.addDictInput} value={result} editable={false}/>
-                            <Text style={dictStyles.addDictLabel}>Choose One of Your Dictionary:</Text>
+                            <Text style={dictStyles.addDictLabel}>{t('chooseOneOfYourDictionary')}</Text>
                             <DropDownPicker
                             style={{marginBottom:25}}
                             open={open}
@@ -57,24 +59,24 @@ export default function AddDictPage({visible,input,result,setVisible,from}){
                             items={items}
                             value={value}
                             setValue={setValue}
-                            placeholder="Select a dictionary" />
+                            placeholder={t('selectDictionary')} />
                             <View style={alertStyles.buttonContainer}>
                                 <TouchableOpacity style={alertStyles.cancel} onPress={()=>setVisible(false)}>
-                                    <Text style={{color:'white',fontWeight:'600'}}>Cancel</Text>
+                                    <Text style={{color:'white',fontWeight:'600'}}>{t('cancel')}</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={alertStyles.success} onPress={saveButton}>
-                                    <Text style={{color:'white',fontWeight:'900'}}>Add</Text>
+                                    <Text style={{color:'white',fontWeight:'900'}}>{t('add')}</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
                     </KeyboardAvoidingView>
                     <CustomAlert visible={success} 
-                    title="Word Added" 
-                    message="We have just added the word into your dictionary successfully!" 
-                    buttons={[{text:"Got it!" ,style:"success",action:()=>{setSuccess(false),setVisible(false)}}]}/>
-                    <CustomAlert visible={fail} title="Ooops.." 
-                    message="Something went wrong. Sorry about that" 
-                    buttons={[{text:"Cancel",style:"danger",action:()=>setFail(false)}]}/>
+                    title={t('wordAdded')} 
+                    message={t("wordAddedSuccessfully")} 
+                    buttons={[{text:t("ok") ,style:"success",action:()=>{setSuccess(false),setVisible(false)}}]}/>
+                    <CustomAlert visible={fail} title={t('ooops')} 
+                    message={t("somethingWentWrong")} 
+                    buttons={[{text:t('cancel'),style:"danger",action:()=>setFail(false)}]}/>
                 </View>
             </TouchableWithoutFeedback>
         </Modal>

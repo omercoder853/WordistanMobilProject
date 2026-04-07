@@ -5,8 +5,10 @@ import styles from "../registerStyles/styles";
 import LogoArea from "./logoArea";
 import NavigationButtons from "./navigationButtons";
 import {Ionicons,FontAwesome} from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 
 export default function PersonalInfoPage(){
+    const { t } = useTranslation();
     const maxDate = new Date();
     maxDate.setFullYear(maxDate.getFullYear() - 12)
     const minDate = new Date();
@@ -48,23 +50,23 @@ export default function PersonalInfoPage(){
             <TouchableWithoutFeedback onPress={()=>Keyboard.dismiss()}>
                 <View style={styles.mainContainer}>
                     <LogoArea/>
-                    <Text style={styles.titleText}>Who's joining us?</Text>
+                    <Text style={styles.titleText}>{t('whosJoiningUs')}</Text>
                     <View>
                         <View style={{flexDirection:'row',alignItems:'center',gap:8}}>
                             <Ionicons name="person" size={15} color="#6b3fa0" />
-                            <Text style={styles.inputLabel}>First Name:</Text>
+                            <Text style={styles.inputLabel}>{t('firstName')}</Text>
                         </View>
-                        <TextInput autoCapitalize="words" onChangeText={(value) => setName(value)} style={styles.inputArea} placeholder="Your name"/>
-                        {!validName && name.length>0 && <Text style={styles.warningText}>* Enter a valid name!</Text>}
+                        <TextInput autoCapitalize="words" onChangeText={(value) => setName(value)} style={styles.inputArea} placeholder={t('yourName')}/>
+                        {!validName && name.length>0 && <Text style={styles.warningText}>{t('validNameWarning')}</Text>}
                         <View style={{flexDirection:'row',alignItems:'center',gap:8}}>
                             <Ionicons name="person" size={15} color="#6b3fa0" />
-                            <Text style={styles.inputLabel}>Surname:</Text>
+                            <Text style={styles.inputLabel}>{t('surname')}</Text>
                         </View>
-                        <TextInput autoCapitalize="words" onChangeText={(value) => setSurname(value)} style={styles.inputArea} placeholder="Your surname"/>
-                        {!validSurname && surname.length>0 && <Text style={styles.warningText}>* Enter a valid surname!</Text>}
+                        <TextInput autoCapitalize="words" onChangeText={(value) => setSurname(value)} style={styles.inputArea} placeholder={t('yourSurname')}/>
+                        {!validSurname && surname.length>0 && <Text style={styles.warningText}>{t('validSurnameWarning')}</Text>}
                         <View style={{flexDirection:'row',alignItems:'center',gap:8}}>
                             <FontAwesome name="birthday-cake" size={18} color="#6b3fa0" />
-                            <Text style={styles.inputLabel}>Birth Date:</Text>
+                            <Text style={styles.inputLabel}>{t('birthDate')}</Text>
                         </View>
                         <TouchableOpacity style={styles.dateInput} onPress={()=>setShow(true)}>
                             <Text>{date.toLocaleDateString()}</Text>

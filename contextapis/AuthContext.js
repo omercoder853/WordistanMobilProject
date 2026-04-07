@@ -1,27 +1,34 @@
 import { createContext,useContext,useState,useEffect, useEffectEvent } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import i18n from '../src/i18n/i18n';
 
 
 export const AuthenticationContext = createContext() 
 
 export const AuthProvider = ({children}) => {
-    const [user,SetUser] = useState();
+    const [user,setUser] = useState();
     const [isLoading,setLoading] = useState(true);
     const [accToken,setAccToken] = useState();
     const [refToken,setRefToken] = useState();
     const [isLogin,setLogin] = useState(false);
     const [registerData,setRegisterData] = useState({});
     const [registerLoading,setRegisterLoading] = useState(false)
+    const [appLanguage,setAppLanguage] = useState(null);
     
     useEffect(()=>{
         const getTokens = async () => {
-            const tempAccToken = await getDataStorage("access-token")
-            const tempRefToken = await getDataStorage("refresh-token")
-            const tempUser = await getDataStorage("user")
+            const tempAccToken = await getDataStorage("access-token");
+            const tempRefToken = await getDataStorage("refresh-token");
+            const tempUser = await getDataStorage("user");
+            const tempLang = await getDataStorage("language");
+            
             setAccToken(tempAccToken);
             setRefToken(tempRefToken);
             if (tempUser) {
-                SetUser(JSON.parse(tempUser))
+                setUser(JSON.parse(tempUser));
+            }
+            if (tempLang) {
+                setAppLanguage(tempLang);
             }
             if (!tempAccToken && !tempRefToken) {
                 setLogin(false)
@@ -80,6 +87,12 @@ export const AuthProvider = ({children}) => {
         }
     }
 
+    const changeAppLanguage = async (val) => {
+        setAppLanguage(val);
+        await setDataStorage("language", val);
+        i18n.changeLanguage(val);
+    }
+
     const register = async(data)=>{
         setRegisterLoading(true)
         const res =await fetch('https://terribilita-milissa-unpermitted.ngrok-free.dev/api/register',{method:'POST',headers:{
@@ -94,13 +107,13 @@ export const AuthProvider = ({children}) => {
         await AsyncStorage.removeItem("@wordistan:user")
         setAccToken(null)
         setRefToken(null)
-        SetUser(null)
+        setUser(null)
         setLogin(false)
     }
 
     return (<AuthenticationContext.Provider value={{isLogin,isLoading,setLogin,setDataStorage,
-        setAccToken,getNewToken,setRefToken,SetUser,user,accToken,refToken,registerData,
-        setRegisterData,register,registerLoading,getDataStorage,logout}}>{children}</AuthenticationContext.Provider>)
+        setAccToken,getNewToken,setRefToken,setUser,user,accToken,refToken,registerData,
+        setRegisterData,register,registerLoading,getDataStorage,logout,appLanguage,changeAppLanguage}}>{children}</AuthenticationContext.Provider>)
 }
 
 export const useAuth = () => {

@@ -2,8 +2,10 @@ import {View,Text,Image,TouchableOpacity} from 'react-native'
 import styles from '../DictionariesStyles/dictStyles'
 import {Feather,AntDesign} from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
+import { useTranslation } from 'react-i18next';
 
 export default function Dictionary({title,length,id}){
+    const { t } = useTranslation();
     const navigation = useNavigation();
     return (
         <TouchableOpacity onPress={()=>navigation.navigate("DictDetails",{dictId : id})} style={styles.dictionaryButton}>
@@ -15,8 +17,8 @@ export default function Dictionary({title,length,id}){
                         <TouchableOpacity><Feather name="share-2" size={18} color="black" /></TouchableOpacity>
                         <TouchableOpacity style={{marginLeft:10}}><AntDesign name="cloud-download" size={20} color="black" /></TouchableOpacity>
                     </View>
-                    <Text>{length==0 ? 'Empty' : length + ' words'}</Text>
-                    <Text>Last Update: 10 sec ago</Text>
+                    <Text>{length==0 ? t('empty') : length + ' ' + t('words')}</Text>
+                    <Text>{t('lastUpdateStr')}</Text>
                 </View>
             </View>
         </TouchableOpacity>

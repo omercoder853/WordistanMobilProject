@@ -1,6 +1,6 @@
 import {View,Text,TouchableOpacity} from 'react-native';
 import { useAuth } from '../contextapis/AuthContext';
-import ProfileHeader from '../profileLayout/profileComponents/profileHeader';
+import HeaderTopRow from '../profileLayout/profileComponents/headerTopRow';
 import ProfileInfo from '../profileLayout/profileComponents/profileInfo';
 import ProfileStatsRow from '../profileLayout/profileComponents/profileStatsRow';
 import InviteFriend from '../profileLayout/profileComponents/inviteFriend';
@@ -9,8 +9,10 @@ import CustomAlert from '../commonComponents/customAlert/customAlert';
 import { useEffect } from "react";
 import ProfileConsole from '../profileLayout/profileComponents/profileConsole';
 import { useState } from 'react';
+import { useTranslation } from "react-i18next";
 
 const Profile = () => {
+    const { t } = useTranslation();
     const {user,getDataStorage,SetUser,logout} = useAuth();
     const [alertVisible,setAlertVisible] = useState(false)
 
@@ -30,7 +32,7 @@ const Profile = () => {
         <LinearGradient colors={['#e9d5ff', '#ffffff']} start={{x:0,y:0}} 
         end={{x:0,y:0.5}} style={{flex:1,alignItems:'center'}}>
             <View style={{width:'90%',alignItems:'center',paddingTop:35}}>
-                <ProfileHeader/>
+                <HeaderTopRow/>
                 <ProfileInfo user={user}/>
                 <ProfileStatsRow user={user}/>
                 <InviteFriend/>
@@ -39,10 +41,10 @@ const Profile = () => {
                 <ProfileConsole setAlertVisible={setAlertVisible}/>
             </View>
         </LinearGradient>
-        <CustomAlert visible={alertVisible} title={"Warning!"} message={"Are you sure you want to log out of your account ? "} 
+        <CustomAlert visible={alertVisible} title={t('warning')} message={t('logoutWarning')} 
         buttons={[
-            {text:"Cancel",style:"cancel",action:()=>setAlertVisible(false)},
-            {text:"Logout",style:"danger",action:logout}]} />
+            {text:t('cancel'),style:"cancel",action:()=>setAlertVisible(false)},
+            {text:t('exit'),style:"danger",action:logout}]} />
         </View>    
         
     )

@@ -3,15 +3,26 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import Collections from "./collections";
 import Personal from "./personalDictionaries";
 import styles from "../DictionariesStyles/dictStyles";
+import { useTranslation } from "react-i18next";
 const Tab = createMaterialTopTabNavigator();
 
-export default function TabBar() {
+export default function TabBar({ setCurrentTab }) {
+    const { t } = useTranslation();
     return (
         <Tab.Navigator initialRouteName="Personal" 
+        screenListeners={{
+            state: (e) => {
+                if(setCurrentTab) {
+                    const index = e.data.state.index;
+                    const routeName = e.data.state.routeNames[index];
+                    setCurrentTab(routeName);
+                }
+            }
+        }}
         screenOptions={{tabBarIndicatorStyle:{backgroundColor:'transparent'}, 
         tabBarStyle:styles.tabBarStyle}}>
-            <Tab.Screen name="Personal" component={Personal} options={{}}/>
-            <Tab.Screen name="Collections" component={Collections}/>
+            <Tab.Screen name="Personal" component={Personal} options={{tabBarLabel: t('personal')}}/>
+            <Tab.Screen name="Collections" component={Collections} options={{tabBarLabel: t('collections')}}/>
         </Tab.Navigator>
     )
 }

@@ -2,13 +2,16 @@ import { useState } from "react";
 import { View, TextInput, Text,TouchableOpacity } from "react-native";
 import styles from "../translateStyles/transStyles";
 import wordData from '../../assets/data/words.json'
+import { useTranslation } from "react-i18next";
+
 export default function InputArea({ setInput, setDisplay, input,suggestionDisplay,setSuggestionDisplay,from }) {
     const data = filterData(input) != null ? filterData(input,from) : null
     const [height,setHeight] = useState()
+    const {t} = useTranslation();
     return (
         <View style={{ alignItems: 'center' }}>
             <TextInput value={input} onChangeText={(text) => { setInput(text), text.length === 0 && setDisplay('none') , setSuggestionDisplay("flex") }}
-                placeholder="Enter a word to translate"
+                placeholder= {t("enterWordToTranslate")}
                 style={styles.wordInput}
                 onLayout={(event) => {const {height} = event.nativeEvent.layout;
                 setHeight(height)} } />

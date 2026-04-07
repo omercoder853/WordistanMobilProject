@@ -7,14 +7,13 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const ProfileRow = () => {
     const insets = useSafeAreaInsets();
-    const {user} = useAuth();
-
+    const {user,setUser,getDataStorage} = useAuth();
     useEffect(() => {
         if (!user) {
             const loadUser = async () => {
                 const userData = await getDataStorage("user");
-                if (userData) {
-                    SetUser(JSON.parse(userData));
+                if (userData && setUser) {
+                    setUser(JSON.parse(userData));
                 }
             };
             loadUser();
@@ -27,7 +26,7 @@ const ProfileRow = () => {
                 style={styles.logoImage}
                 source={require("../assets/logo.png")}/>
             <Text style={styles.textWelcome}>elcome, </Text>
-            <Text style={{fontSize:18}}>{user?.first_name}</Text>
+            <Text style={{fontSize:18}}>{user?.first_name.includes(" ") ? user?.first_name.split(" ")[0] : user?.first_name}</Text>
         </View>
         <View style={styles.profileContainer}>
             <Image

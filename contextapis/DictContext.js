@@ -107,7 +107,7 @@ export const DictionaryProvider = ({children}) => {
 
     
 
-    return (<DictContext.Provider value={{dicts,getWords,getDict,createDictionary,setDictReload,saveWord}}>{children}</DictContext.Provider>)
+    return (<DictContext.Provider value={{dicts,getWords,getDict,createDictionary,setDictReload,saveWord,dictReload}}>{children}</DictContext.Provider>)
 }
 
 export function useDictionary() {

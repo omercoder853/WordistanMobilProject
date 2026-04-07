@@ -19,7 +19,7 @@ export default function ConsoleButton({item,setAlertVisible}){
                 <View style={{backgroundColor:'white',padding:6,borderRadius:16,marginHorizontal:10}}>
                     <Ionicons name={item.icon} size={25} color={item.name === "Logout" ? "red" : "black"} />
                 </View>
-                <Text style={item.name === "Logout" && {color:'red'}}>{item.name}</Text>
+                <Text style={item.name === "Logout" && {color:'red'}}>{item.label || item.name}</Text>
                 <Entypo style={{marginLeft:'auto',marginRight:10}} name="chevron-small-right" size={30} color={item.name === "Logout" ? "red" : "black"} />
             </View>
         </TouchableOpacity>

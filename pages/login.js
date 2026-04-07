@@ -5,9 +5,11 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import LottieView from "lottie-react-native";
 import { useNavigation } from "@react-navigation/native";
 import { StyleSheet } from "react-native";
+import { useTranslation } from "react-i18next";
 
 
 export default function LoginPage(){
+    const { t } = useTranslation();
     const navigation = useNavigation();
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
     const emailRegex = /^\S+@\S+\.[a-z]{2,}$/;
@@ -20,12 +22,12 @@ export default function LoginPage(){
     const isValidPassword = passwordRegex.test(password)
 
     const login = async () => {
+        Keyboard.dismiss();
         if (isValidEmail && isValidPassword) {
             setLoading(true)
             const res = await fetch('https://terribilita-milissa-unpermitted.ngrok-free.dev/api/token',
             {body:JSON.stringify({email,password}),method:'POST',headers:{'Content-Type': 'application/json'}})
             if (res.status == 200) {
-                setLogin(true)
                 const data = await res.json();
                 await setDataStorage("access-token",data['access'])
                 setAccToken(data['access'])
@@ -33,9 +35,10 @@ export default function LoginPage(){
                 setRefToken(data['refresh'])
                 await setDataStorage("user",JSON.stringify(data['user']))
                 setUser(data['user'])
+                setLogin(true)
             }
             else {
-                alert("Giriş başarılı olmadı")
+                alert(t('loginFailed'))
             }
             setLoading(false)
         }
@@ -49,34 +52,33 @@ export default function LoginPage(){
                     <View style={styles.loginArea}>
                         <View style={styles.loginTitleRow}>
                             <Image source={require('../assets/logo.png')} style={{width:60,height:60}}/>
-                            <Text style={styles.loginTitle}>Wordistan</Text>
+                            <Text style={styles.loginTitle}>{t('wordistan')}</Text>
                         </View>
-                        <Text style={styles.loginTitleSmall}>Translate, add your dictionary and start to learn!</Text>
+                        <Text style={styles.loginTitleSmall}>{t('translateDesc')}</Text>
                         <View style={styles.inputLabelRow}>
                             <MaterialIcons name="email" size={18} color="#b565f5" />
-                            <Text style={styles.inputLabel}>Email: </Text>
+                            <Text style={styles.inputLabel}>{t('emailLabel')}</Text>
                         </View>
-                        <TextInput style={styles.textInput} autoCapitalize="none" placeholder="email@example.com" 
+                        <TextInput style={styles.textInput} autoCapitalize="none" placeholder={t('emailPlaceholder')} 
                         onChangeText={(value) => setEmail(value.trim().toLowerCase())}/>
-                        {!isValidEmail && email?.length>0 && <Text style={styles.warningText}>* Please enter a valid email address</Text>}
+                        {!isValidEmail && email?.length>0 && <Text style={styles.warningText}>{t('validEmailAddressWarning')}</Text>}
                         <View style={styles.inputLabelRow}>
                             <MaterialIcons name="vpn-key" size={18} color="#b565f5"/>
-                            <Text style={styles.inputLabel}>Password: </Text>
+                            <Text style={styles.inputLabel}>{t('loginPasswordLabel')}</Text>
                         </View>
-                        <TextInput style={styles.textInput} autoCapitalize="none" placeholder="Password" 
+                        <TextInput style={styles.textInput} autoCapitalize="none" placeholder={t('password')} 
                         onChangeText={(value)=>setPassword(value.trim())}/>
-                        {!isValidPassword && password?.length>0 && <Text style={styles.warningText}>* Password must be at least 8 characters long and include an uppercase letter, 
-                            a lowercase letter, and a number.</Text>}
+                        {!isValidPassword && password?.length>0 && <Text style={styles.warningText}>{t('passwordRule')}</Text>}
                         <TouchableOpacity onPress={login} style={styles.loginButton}>
                             {isLoading ?
                             (<LottieView source={require('../assets/animations/loadingAnimationDots.json')} 
                             style={{height:19,width:37,transform:[{scale:6}]}} loop autoPlay colorFilters={[{keypath:"*",color:"#FFFFFF"}]} />): 
-                            (<Text style={{color:'white',fontWeight:'900'}}>Login</Text>)}
+                            (<Text style={{color:'white',fontWeight:'900'}}>{t('login')}</Text>)}
                         </TouchableOpacity>
                         <View style={{flexDirection:'row',marginTop:20,gap:10}}>
-                            <Text style={{fontSize:12}}>Don't you have an account ?</Text>
+                            <Text style={{fontSize:12}}>{t('dontHaveAccount')}</Text>
                             <Text style={{textDecorationLine:'underline',color: '#e86ad0',fontWeight:'600'}} 
-                            onPress={()=>navigation.navigate("Register")}>Register</Text> 
+                            onPress={()=>navigation.navigate("Register")}>{t('register')}</Text> 
                         </View>
                     </View>
                 </View>

@@ -7,9 +7,10 @@ import { useNavigation } from "@react-navigation/native";
 import GameHeader from "../gamesLayout/gameComponents/gameHeader";
 import QuestionNavigation from "../gamesLayout/gameComponents/questionNavigations";
 import CustomAlert from "../commonComponents/customAlert/customAlert";
-
+import { useTranslation } from "react-i18next";
 
 export default function MatchingPairsPage(){
+    const { t } = useTranslation();
     const navigation = useNavigation();
     const {hints,questions,seconds,numberQuestion,perPage,randomIndexCreater,userAnswers,setUserAnswers} = useGame();
     const [remainTime,setRemainTime] = useState(seconds * numberQuestion)
@@ -190,15 +191,15 @@ export default function MatchingPairsPage(){
             setCurrentQuestion={setCurrentQuestionPage} setVisible={setExitVisible} setEmptyQuestion={setEmptyQuestion} 
             setSelectedQuestion = {setSelectedQuestion} totalTry={totalTry}/>
             
-            <CustomAlert visible={exitVisible} title="Warning!" buttons={[
-                {text:"Exit",style:"danger",action:()=>{setExitVisible(false),
+            <CustomAlert visible={exitVisible} title={t('warning')} buttons={[
+                {text:t('exit'),style:"danger",action:()=>{setExitVisible(false),
                     navigation.replace("MainTabs",{screen:"Games"})}},
-                {text:"Cancel",style:"cancel",action:()=>{setExitVisible(false),setPause(false)}}]} 
-            message="Do you really want to exit the game? Your process will not be saved."/>
+                {text:t('cancel'),style:"cancel",action:()=>{setExitVisible(false),setPause(false)}}]} 
+            message={t('exitGameWarning')}/>
 
-            <CustomAlert visible={emptyQuestion} title="Warning" message="Finish with unanswered questions?" 
-            buttons={[{text:"Cancel",style:"cancel",action:()=>{setEmptyQuestion(false),setPause(false)}},
-                {text:"Finish",action:()=>{setEmptyQuestion(false),navigation.replace("Finish Game",{remainTime,totalTry})}}
+            <CustomAlert visible={emptyQuestion} title={t('warningShort')} message={t('finishWithUnanswered')} 
+            buttons={[{text:t('cancel'),style:"cancel",action:()=>{setEmptyQuestion(false),setPause(false)}},
+                {text:t('finish'),action:()=>{setEmptyQuestion(false),navigation.replace("Finish Game",{remainTime,totalTry})}}
             ]}/>
         </SafeAreaView>
     )

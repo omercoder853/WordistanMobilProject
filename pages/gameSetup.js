@@ -1,5 +1,5 @@
 import { View,Text,TouchableOpacity,KeyboardAvoidingView,
-    TouchableWithoutFeedback,Keyboard,Platform,ScrollView } from "react-native";
+    TouchableWithoutFeedback,Keyboard,Platform,ScrollView,InteractionManager } from "react-native";
 import styles from "../gamesLayout/gameStyles/styles";
 import { useRoute,useNavigation } from "@react-navigation/native";
 import Feather from '@expo/vector-icons/Feather';
@@ -11,21 +11,31 @@ import NumericInput from "../gamesLayout/gameComponents/numericInput";
 import McqSettings from "../gamesLayout/gameComponents/mcqSettings";
 import MpSettings from "../gamesLayout/gameComponents/mpSettings";
 import { useGame } from "../contextapis/GamesContext";
+import { useTranslation } from "react-i18next";
 
 export default function GameSetupPage(){
+    const { t } = useTranslation();
     const navigation = useNavigation();
     const {dicts,setDictReload,getWords} = useDictionary();
     const {source,setSource,value,setValue,numberQuestion,setNumberQuestion,seconds,setSeconds,
-        hints,setHints,visibleFirstLetter,setVisibleFirstLetter,numberOptions,setnumberOptions,perPage,setPerPage,createQuestion,setGameType} = useGame();
+        hints,setHints,createQuestion,setGameType} = useGame();
     
     const router = useRoute();
     const {gameType} = router.params
+    const [isReady,setIsReady] = useState(false)
 
     useEffect(()=>{
-        if (dicts.length == 0){
-            setDictReload(true)
-        }
-        setGameType(gameType)
+        navigation.setOptions({title: t('gameSettings')})
+    },[t])
+
+    useEffect(()=>{
+        InteractionManager.runAfterInteractions(() => {
+            if (dicts.length == 0){
+                setDictReload(true)
+            }
+            setGameType(gameType)
+            setIsReady(true)
+        })
     },[])
 
     const [open,setOpen] = useState(false)
@@ -49,11 +59,14 @@ export default function GameSetupPage(){
         }
         createQuestion();
     }
+
+    if (!isReady) return <View style={{flex:1}} />
+
     return (
         <TouchableWithoutFeedback onPress={()=>Keyboard.dismiss()}>
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding":"height"} style={{flex:1,width:'90%',alignSelf:'center'}}>
             <ScrollView style={{flex:1}} showsVerticalScrollIndicator={false} nestedScrollEnabled={true}>
-            <Text style={styles.optionLabel}>Source Choice</Text>
+            <Text style={styles.optionLabel}>{t('sourceChoice')}</Text>
             <View style={{flexDirection:'row',gap:10}}>
                 <TouchableOpacity style={[styles.sourceButton,source=="personal" && styles.selectedSourceButton]} 
                 onPress={()=>{
@@ -67,7 +80,7 @@ export default function GameSetupPage(){
                 }}>
                     <Feather name={source == "personal" ? "check-circle":"circle"} 
                     size={15} color="black" style={{marginRight:8}} />
-                    <Text>Personal</Text>
+                    <Text>{t('personal')}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.sourceButton,source=="collection" && styles.selectedSourceButton]} onPress={()=>{
                     setValue(null)
@@ -77,12 +90,12 @@ export default function GameSetupPage(){
                 }}>
                     <Feather name={source=="collection" ? "check-circle":"circle"} size={15} 
                     color="black" style={{marginRight:8}} />
-                    <Text>Collections</Text>
+                    <Text>{t('collections')}</Text>
                 </TouchableOpacity>
             </View>
             {source &&
-            <DropDownPicker style={{marginTop:15}} placeholder={source=="personal" ? "Select a dictionary":"Select a collection"} 
-            open={open} setOpen={setOpen} value={value} setValue={(callback)=>{
+                <DropDownPicker style={{marginTop:15}} placeholder={source=="personal" ? t('selectDictionary'):t('selectCollection')} 
+                open={open} setOpen={setOpen} value={value} setValue={(callback)=>{
                 const nextValue = callback(value)
                 if (source=="personal") {
                     setMaxQuestion(getWords(nextValue).length)
@@ -111,18 +124,19 @@ export default function GameSetupPage(){
             dropDownContainerStyle={{position: 'relative',top: 0}} 
             items={items} zIndex={3000} listMode="SCROLLVIEW"/>}
             
-            <Text style={styles.optionLabel}>Number of Questions</Text>
-            <NumericInput value={numberQuestion} setValue={setNumberQuestion} maxValue={maxQuestion} minValue={5} quantity={"questions"}/>
-            <Text style={styles.optionLabel}>Number of Hints</Text>
-            <NumericInput value={hints} setValue={setHints} minValue={0} maxValue={5} quantity={"hints"}/>
-            <Text style={styles.optionLabel}>Seconds per Question</Text>
-            <NumericInput value={seconds} setValue={setSeconds} minValue={2} maxValue={15} quantity={"seconds"}/>
-            {gameType == "wc" ? 
-            <WcSettings visibleFirstLetter={visibleFirstLetter} setVisibleFirstLetter={setVisibleFirstLetter}/>:
-            gameType=="mcq" ? 
-            <McqSettings options={numberOptions} setOptions={setnumberOptions}/>:<MpSettings perPage={perPage} setPerPage={setPerPage}/>}
+            <Text style={styles.optionLabel}>{t('numberOfQuestions')}</Text>
+            <NumericInput value={numberQuestion} setValue={setNumberQuestion} maxValue={maxQuestion} minValue={5} quantity={t('qQuestions')}/>
+            <Text style={styles.optionLabel}>{t('numberOfHints')}</Text>
+            <NumericInput value={hints} setValue={setHints} minValue={0} maxValue={5} quantity={t('qHints')}/>
+            <Text style={styles.optionLabel}>{t('secondsPerQuestion')}</Text>
+            <NumericInput value={seconds} setValue={setSeconds} minValue={2} maxValue={15} quantity={t('qSeconds')}/>
+            
+            {gameType == "wc" && <WcSettings/>}
+            {gameType=="mcq" && <McqSettings/>}
+            {gameType == "mp" && <MpSettings/>}
+
             <TouchableOpacity style={[styles.startGameButton,!validGame&&{backgroundColor:'gray'}]} disabled={!validGame} onPress={startGame}>
-                <Text style={styles.startGameText}>Start Game</Text>
+                <Text style={styles.startGameText}>{t('startGame')}</Text>
             </TouchableOpacity>
             </ScrollView>
         </KeyboardAvoidingView>

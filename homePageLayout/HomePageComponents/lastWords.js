@@ -2,6 +2,7 @@ import {} from "react";
 import { View, Text } from "react-native";
 import styles from "../HomePageStyles/homeStyles";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { useTranslation } from "react-i18next";
 
 const RecentWord = ({ item }) => {
   return (
@@ -16,17 +17,18 @@ const RecentWord = ({ item }) => {
 };
 
 const RecentWords = ({recentWords}) => {
+  const { t } = useTranslation();
   return (
     <View style={styles.quickMenu}>
       <Text style={{ fontWeight: "900", marginBottom: 10, fontSize: 20 }}>
-        Recent Words
+        {t("recentWords")}
       </Text>
       <View
         style={{ borderColor: "#E8E4F2", borderWidth: 1, marginBottom: 10 }}
       ></View>
       <View>
         {recentWords && recentWords.length !== 0 ? (recentWords.map((word, ind) => <RecentWord key={ind} item={word} />)) : 
-        (<Text>You dont have any past word</Text>)}
+        (<Text>{t('dontHavePastWord')}</Text>)}
       </View>
     </View>
   );
