@@ -17,7 +17,7 @@ const languageDetector = {
   detect: async (callback) => {
     try {
       const savedLanguage = await AsyncStorage.getItem('@wordistan:language');
-      if (savedLanguage) {
+      if (savedLanguage && savedLanguage!="system") {
         return callback(savedLanguage);
       }
     } catch (error) {
@@ -32,13 +32,7 @@ const languageDetector = {
     return callback('en');
   },
   init: () => {},
-  cacheUserLanguage: async (language) => {
-    try {
-      await AsyncStorage.setItem('@wordistan:language', language);
-    } catch (error) {
-      console.log('Error saving language cache', error);
-    }
-  },
+  cacheUserLanguage: async (language) => {},
 };
 
 i18n

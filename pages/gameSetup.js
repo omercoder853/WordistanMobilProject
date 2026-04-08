@@ -1,5 +1,5 @@
 import { View,Text,TouchableOpacity,KeyboardAvoidingView,
-    TouchableWithoutFeedback,Keyboard,Platform,ScrollView,InteractionManager } from "react-native";
+    TouchableWithoutFeedback,Keyboard,Platform,ScrollView,InteractionManager,Switch } from "react-native";
 import styles from "../gamesLayout/gameStyles/styles";
 import { useRoute,useNavigation } from "@react-navigation/native";
 import Feather from '@expo/vector-icons/Feather';
@@ -12,14 +12,14 @@ import McqSettings from "../gamesLayout/gameComponents/mcqSettings";
 import MpSettings from "../gamesLayout/gameComponents/mpSettings";
 import { useGame } from "../contextapis/GamesContext";
 import { useTranslation } from "react-i18next";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function GameSetupPage(){
     const { t } = useTranslation();
     const navigation = useNavigation();
     const {dicts,setDictReload,getWords} = useDictionary();
     const {source,setSource,value,setValue,numberQuestion,setNumberQuestion,seconds,setSeconds,
-        hints,setHints,createQuestion,setGameType} = useGame();
-    
+        hints,setHints,createQuestion,setGameType,autoCont,setAutoCont} = useGame();
     const router = useRoute();
     const {gameType} = router.params
     const [isReady,setIsReady] = useState(false)
@@ -27,6 +27,14 @@ export default function GameSetupPage(){
     useEffect(()=>{
         navigation.setOptions({title: t('gameSettings')})
     },[t])
+
+    useEffect(()=>{
+        const loadSaved = async ()=>{
+            const savedAutoCont = await AsyncStorage.getItem("@wordistan:autoCont")
+            setAutoCont(savedAutoCont !== null ? JSON.parse(savedAutoCont):false)
+        }
+        loadSaved();
+    },[])
 
     useEffect(()=>{
         InteractionManager.runAfterInteractions(() => {
@@ -134,6 +142,13 @@ export default function GameSetupPage(){
             {gameType == "wc" && <WcSettings/>}
             {gameType=="mcq" && <McqSettings/>}
             {gameType == "mp" && <MpSettings/>}
+
+            <View style={{flexDirection:'row',alignItems:'center'}}>
+                <Text style={styles.optionLabel}>{t("autoCont")}</Text>
+                <Switch trackColor={{ false: "#e0e0e0", true: "#dc9f9f" }} thumbColor="#ffffff" 
+            style={{marginLeft:'auto',marginTop:15}} value={autoCont} onValueChange={setAutoCont} />
+            </View>
+            
 
             <TouchableOpacity style={[styles.startGameButton,!validGame&&{backgroundColor:'gray'}]} disabled={!validGame} onPress={startGame}>
                 <Text style={styles.startGameText}>{t('startGame')}</Text>

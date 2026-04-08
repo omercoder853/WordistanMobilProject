@@ -10,7 +10,7 @@ export default function WcSettings(){
         <View style={{flexDirection:'row',alignItems:'center'}}>
             <Text style={styles.optionLabel}>{t('visibleFirstLetter')}</Text>
             <Switch trackColor={{ false: "#e0e0e0", true: "#dc9f9f" }} thumbColor="#ffffff" 
-            style={{marginLeft:20,marginBottom:8,marginTop:15}} 
+            style={{marginLeft:'auto',marginTop:15}} 
             onValueChange={()=>setVisibleFirstLetter(!visibleFirstLetter)} 
             value={visibleFirstLetter}/>
         </View>

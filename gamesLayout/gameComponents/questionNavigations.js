@@ -3,27 +3,54 @@ import styles from '../gameStyles/styles'
 import { useGame } from '../../contextapis/GamesContext'
 import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from "react-i18next";
+import { useEffect, useState } from 'react';
 
 export default function QuestionNavigation({currentQuestion,setCurrentQuestion,
-    setVisible,setEmptyQuestion,setPause,remainTime,perPage,setSelectedQuestion,totalTry}){
+    setVisible,setEmptyQuestion,setPause,remainTime,setSelectedQuestion,totalTry}){
     const { t } = useTranslation();
-    const {numberQuestion,userAnswers,gameType} = useGame();
+    const {numberQuestion,userAnswers,gameType,autoCont,perPage} = useGame();
     const navigation = useNavigation()
     const isFirst = currentQuestion+1==1
     let isLast;
+    let isAnswered;
     if (gameType==="mp") {
+        console.log(userAnswers)
         isLast = currentQuestion+1==Math.ceil(numberQuestion/perPage)
+        if (isLast) {
+            isAnswered = userAnswers.filter((ans)=>ans.currentPage==currentQuestion).length == numberQuestion%perPage
+        }
+        else {
+            isAnswered = userAnswers.filter((ans)=>ans.currentPage==currentQuestion).length == perPage
+        }
     }
     else{
         isLast = currentQuestion+1==numberQuestion
+        isAnswered = userAnswers.some((answer)=>answer.question==currentQuestion)
     } 
     const nextQuestion = ()=>{
         if (gameType==="mp") {
             setSelectedQuestion(null)
         }
+        else{setContAllow(true)}
         setCurrentQuestion(currentQuestion+1)
     }
+    
+    const [contAllowed,setContAllow] = useState(autoCont)
+    useEffect(()=>{
+        if (!isAnswered) {
+            setContAllow(true)
+        }
+        else{setContAllow(false)}
+    },[currentQuestion])
+
+    useEffect(() => {
+    if (autoCont && isAnswered && !isLast && contAllowed) {
+        const timer = setTimeout(()=>nextQuestion(),700);
+        return ()=>clearTimeout(timer);
+    }}, [isAnswered, autoCont, isLast,contAllowed]);
+
     const pastQuestion = ()=>{
+        setContAllow(false)
         setCurrentQuestion(currentQuestion-1)
     }
     const finishGame = ()=>{
@@ -39,7 +66,6 @@ export default function QuestionNavigation({currentQuestion,setCurrentQuestion,
             else{
                 navigation.replace("Finish Game",{remainTime})
             }
-            
         }
     }
     return (

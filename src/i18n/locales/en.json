@@ -17,6 +17,9 @@
   "ooopsShort": "Ooops!",
   "home": "Home",
   "ok":"Got it!",
+  "english":"English",
+  "turkish":"Turkish",
+  "system":"System",
 
   "___HOME_PAGE___": "",
   "recentWords": "Recent Words",
@@ -135,6 +138,8 @@
   "wrong": "Wrong",
   "passed": "Passed",
   "newGame": "New Game",
+  "autoCont":"Auto Continue",
+  "vibration":"Vibration",
 
   "___PROFILE___": "",
   "statistics": "Statistics",
@@ -160,5 +165,7 @@
   "dateJoinedProfile":"Join Date",
   "passwordProfile":"Password",
   "changePassword":"Change Password",
-  "deleteAccount":"Delete Account"
+  "deleteAccount":"Delete Account",
+  "appLanguage":"App Language",
+  "initialPage":"Initial Page"
 }

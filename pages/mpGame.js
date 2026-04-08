@@ -187,7 +187,7 @@ export default function MatchingPairsPage(){
                     ))}
                 </View>
             </View>
-            <QuestionNavigation currentQuestion={currentQuestionPage} setPause={setPause} remainTime={remainTime} perPage={perPage}
+            <QuestionNavigation currentQuestion={currentQuestionPage} setPause={setPause} remainTime={remainTime}
             setCurrentQuestion={setCurrentQuestionPage} setVisible={setExitVisible} setEmptyQuestion={setEmptyQuestion} 
             setSelectedQuestion = {setSelectedQuestion} totalTry={totalTry}/>
             

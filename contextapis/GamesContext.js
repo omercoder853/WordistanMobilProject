@@ -21,6 +21,7 @@ export const GameProvider = ({children}) => {
     const [perPage,setPerPage] = useState(4)
     const [userAnswers,setUserAnswers] = useState([])
     const [gameType,setGameType] = useState()
+    const [autoCont,setAutoCont] = useState(false);
     let data;
     let tempQuestions=[];
 
@@ -101,7 +102,8 @@ export const GameProvider = ({children}) => {
     return (<GameContext.Provider value={{source,setSource,value,setValue,numberQuestion,
         setNumberQuestion,seconds,setSeconds,hints,setHints,visibleFirstLetter,setVisibleFirstLetter,
         numberOptions,setnumberOptions,perPage,setPerPage,createQuestion,
-        questions,userAnswers,setUserAnswers,setGameType,gameType,randomIndexCreater}}>{children}</GameContext.Provider>)
+        questions,userAnswers,setUserAnswers,setGameType,gameType,
+        randomIndexCreater,autoCont,setAutoCont}}>{children}</GameContext.Provider>)
 }
 
 export const useGame = ()=>{

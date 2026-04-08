@@ -1,18 +1,17 @@
 import { View,Text,TouchableOpacity } from "react-native";
 import styles from "../gameStyles/mcqStyles";
-import { useState } from "react";
 import { useGame } from "../../contextapis/GamesContext";
 
 export default function QuizOption({option,correctIndex,index,currentQuestion}){
     const {userAnswers,setUserAnswers} = useGame();
 
-    const isAnswered = userAnswers?.find(answer => answer.questionId == currentQuestion)
+    const isAnswered = userAnswers?.find(answer => answer.question == currentQuestion)
     const isCorrect = isAnswered?.userAnswer === isAnswered?.correctAnswer
     const isSelected = isAnswered?.userAnswer === index
 
     const clickOption = ()=>{
         setUserAnswers((prev)=>{
-            return [...prev,{"questionId":currentQuestion,"userAnswer":index,"correctAnswer":correctIndex}]
+            return [...prev,{"question":currentQuestion,"userAnswer":index,"correctAnswer":correctIndex}]
         })
     }
 

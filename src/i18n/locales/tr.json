@@ -17,6 +17,9 @@
   "ooopsShort": "Hata!",
   "home": "Ana Sayfa",
   "ok":"Tamam",
+  "english":"İngilizce",
+  "turkish":"Türkçe",
+  "system":"Sistem",
 
   "___HOME_PAGE___": "",
   "recentWords": "Son Kelimeler",
@@ -136,6 +139,8 @@
   "wrong": "Yanlış",
   "passed": "Pas",
   "newGame": "Yeni Oyun",
+  "autoCont":"Otomatik İlerleme",
+  "vibration":"Titreşim",
 
   "___PROFILE___": "",
   "statistics": "İstatistikler",
@@ -161,5 +166,7 @@
   "dateJoinedProfile":"Katılma Tarihi",
   "passwordProfile":"Şifre",
   "changePassword":"Şifreyi Değiştir",
-  "deleteAccount":"Hesabı Sil"
+  "deleteAccount":"Hesabı Sil",
+  "appLanguage":"Uygulama Dili",
+  "initialPage":"Açılış Ekranı"
 }

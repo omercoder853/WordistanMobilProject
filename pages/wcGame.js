@@ -45,6 +45,7 @@ export default function WordCompletionPage(){
         setUserAnswers((prev)=>{
             return [...prev,{question:currentQuestionIndex,answer,userAnswer:updated}]
         })
+        
     }
     setCurrentLetters(updated)
     }

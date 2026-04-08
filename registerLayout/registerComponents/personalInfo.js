@@ -25,7 +25,7 @@ export default function PersonalInfoPage(){
         setDate(currentDate);
     }};
     const nameRegex = /^[a-zA-ZğüşıöçĞÜŞİÖÇ]{3,}(\s[a-zA-ZğüşıöçĞÜŞİÖÇ]{2,})*$/;
-    const validName = nameRegex.test(name)
+    const validName = nameRegex.test(name.trim())
     const validSurname = nameRegex.test(surname)
     const isFormValid = validName && validSurname && date
 
