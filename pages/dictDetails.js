@@ -5,6 +5,7 @@ import Word from "../dictionariesLayout/DictionariesComponents/wordRow";
 import styles from "../dictionariesLayout/DictionariesStyles/dictStyles";
 import EmptyDictionary from "../dictionariesLayout/DictionariesComponents/emptyDictionary";
 import { useTranslation } from "react-i18next";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function DictDetails(){
     const {t} = useTranslation();
@@ -16,21 +17,30 @@ export default function DictDetails(){
 
     return (
         <View style={styles.wordsTable}>
-            <View style={styles.wordsTitle}>
+            <LinearGradient 
+                colors={['#c967e6', '#9c27b0']} 
+                start={{ x: 0, y: 0 }} 
+                end={{ x: 1, y: 1 }} 
+                style={styles.wordsTitle}>
+                
                 <Text style={styles.dictName}>{dict.name}</Text>
-                <View style={{flexDirection:'row',alignItems:'center',gap:10}}>
+                <View style={styles.dictDirectionContainer}>
                     <Text style={styles.dictDirection}>{dict.language}</Text>
                     <Text style={styles.dictDirection}>{dict.words.length == 0 ? t("empty") : dict.words.length + " " + t("words")}</Text>
                 </View>
-                <View style={{borderWidth:0.5,borderColor:'#efdffd',marginVertical:10}}></View>
-                <Text style={{color:'#555555',fontSize:14}}>{dict.description}</Text>
-            </View>            
+                <View style={{borderWidth:0.5, borderColor:'rgba(255, 255, 255, 0.4)', marginVertical:15}}></View>
+                <Text style={styles.dictDescription}>{dict.description}</Text>
+            </LinearGradient>            
+            
             <FlatList
                 style={styles.wordList}
                 data={words}
                 renderItem={({item,index}) => Word(item,index)}
-                key={item=>item.id}
-                ListEmptyComponent={(<EmptyDictionary/>)}/>
+                keyExtractor={item=>item.id.toString()}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{ paddingBottom: 20 }}
+                ListEmptyComponent={(<EmptyDictionary/>)}
+            />
         </View>
     )
 }

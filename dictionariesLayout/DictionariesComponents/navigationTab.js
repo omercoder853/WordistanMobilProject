@@ -1,6 +1,6 @@
 import { View } from "react-native";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import Collections from "./collections";
+import Collections from "./collectionsPage";
 import Personal from "./personalDictionaries";
 import styles from "../DictionariesStyles/dictStyles";
 import { useTranslation } from "react-i18next";

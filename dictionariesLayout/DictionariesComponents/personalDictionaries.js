@@ -7,6 +7,7 @@ import NoDictionary from "./noDictionary";
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import CreateDictionary from "./createDict";
 import { useTranslation } from "react-i18next";
+import LottieView from "lottie-react-native";
 
 export default function Personal(){
     const { t } = useTranslation();
@@ -22,7 +23,7 @@ export default function Personal(){
         <View style={{flex:1,paddingHorizontal:15}}>
             <Text style={{fontWeight:'700',fontSize:20,marginVertical:10}}>{t('personalDictionaries')}</Text>
             {dictReload 
-            ? <ActivityIndicator size="large" style={{alignSelf:'center',flex:1}}/>
+            ? <LottieView speed={3} autoPlay loop source={require("../../assets/animations/DictionaryLoadingAnimation.json")} style={{width:'50%',aspectRatio:1,alignSelf:'center',top:'15%'}}/>
             :<FlatList
                 style={{flex:1}}
                 showsVerticalScrollIndicator={false} 
