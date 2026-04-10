@@ -110,6 +110,7 @@
   "enterShortDescription": "Kısa bir açıklama girin",
   "youAreAllSet": "Her şey hazır!",
   "wordAddedSuccessfully":"Kelimeni sözlüğüne başarıyla ekledik!",
+  "dictDetails":"Sözlük Detayları",
   
 
   "___GAMES___": "",
@@ -169,5 +170,28 @@
   "deleteAccount":"Hesabı Sil",
   "appLanguage":"Uygulama Dili",
   "initialPage":"Açılış Ekranı",
-  "achievementSummary":"Başarım Özeti"
+  "achievementSummary":"Başarım Özeti",
+  "completed":"Tamamlandı",
+
+  "___ACHIEVEMENTS___":"",
+  "translator_1": "Çevirmen I",
+  "translator_2": "Çevirmen II",
+  "librarian_1": "Kütüphaneci I",
+  "archivist_1": "Arşivci I",
+  "archivist_2": "Arşivci II",
+  "curious_novice": "Meraklı Çömez",
+  "eager_learner": "Hevesli Öğrenci",
+  "word_hunter": "Kelime Avcısı",
+  "lexicon_scholar": "Sözlük Bilgini",
+  "word_master": "Kelime Ustası",
+  "translator_1_desc": "Kelimeleri çevirerek kazanılır. Her yeni çeviri becerilerini geliştirir.",
+  "translator_2_desc": "Çeviri sanatında ustalaşmak için daha fazla kelime çevir.",
+  "librarian_1_desc": "Bilginin düzenli koruyucusu. Zihnini bir kütüphane gibi düzenliyorsun.",
+  "archivist_1_desc": "Dijital sözlüğünü oluştur! Her kelime Wordistan'da bir iz bırakır.",
+  "archivist_2_desc": "Mirasını inşa etmek için sözlüğünü daha fazla kelimeyle genişlet.",
+  "curious_novice_desc": "Her yolculuk bir adımla başlar. Wordistan kapılarına hoş geldin!",
+  "eager_learner_desc": "Bir hafta devrildi! Yeni kelimeler şimdiden eski dostlar gibi hissettiriyor.",
+  "word_hunter_desc": "15 gündür iz sürüyorsun! Artık hiçbir gizli kelime elinden kaçamaz.",
+  "lexicon_scholar_desc": "Tam bir aylık özveri! Artık tüm sözlüğe hükmediyorsun.",
+  "word_master_desc": "60 günlük disiplin! Yeni kelimelere mutlak bir kolaylıkla komuta ediyorsun."
 }

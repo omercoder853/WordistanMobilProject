@@ -1,4 +1,4 @@
-import { View,Text,TouchableOpacity,Switch } from "react-native";
+import { View,Text,TouchableOpacity,Switch,TouchableWithoutFeedback } from "react-native";
 import { useTranslation } from "react-i18next";
 import DropDownPicker from "react-native-dropdown-picker";
 import { useState } from "react";
@@ -73,32 +73,33 @@ export default function Preferences(){
     },[vibration])
 
     return (
-        <View style={{flex:1,width:'90%',alignSelf:'center',marginTop:20}}>
-            <View style={styles.preferenceCategory}>
-                <View style={{flexDirection:'row',alignItems:'center',zIndex:2000,marginBottom:20}}>
-                    <Text>{t("appLanguage")}</Text>
-                    <DropDownPicker open={langOpen} setOpen={setLangOpen} value={langValue} setValue={setLangValue} 
-                    items={langItems} containerStyle={{width:150,marginLeft:'auto'}} 
-                    style={{borderColor:"#8e4a7c",paddingVertical:0,minHeight:35}}/>
+        <TouchableWithoutFeedback onPress={()=>{setPageOpen(false),setLangOpen(false)}}>
+            <View style={{flex:1,width:'90%',alignSelf:'center',marginTop:20}}>
+                <View style={[styles.preferenceCategory, { zIndex: 10 }]}>
+                    <View style={{flexDirection:'row',alignItems:'center',zIndex:2000,marginBottom:20}}>
+                        <Text>{t("appLanguage")}</Text>
+                        <DropDownPicker open={langOpen} setOpen={setLangOpen} value={langValue} setValue={setLangValue} 
+                        items={langItems} containerStyle={{width:150,marginLeft:'auto'}} 
+                        style={{borderColor:"#8e4a7c",paddingVertical:0,minHeight:35}} zIndex={3000} zIndexInverse={1000} />
+                    </View>
+                    <View style={{flexDirection:'row',alignItems:'center',zIndex:1000}}>
+                        <Text>{t("initialPage")}</Text>
+                        <DropDownPicker open={pageOpen} setOpen={setPageOpen} items={pageItems} 
+                        value={pageValue} setValue={setPageValue} containerStyle={{width:150,marginLeft:'auto'}} 
+                        style={{borderColor:"#8e4a7c",paddingVertical:0,minHeight:35}} zIndex={2000} zIndexInverse={2000} />
+                    </View>
                 </View>
-                <View style={{flexDirection:'row',alignItems:'center',zIndex:1000}}>
-                    <Text>{t("initialPage")}</Text>
-                    <DropDownPicker open={pageOpen} setOpen={setPageOpen} items={pageItems} 
-                    value={pageValue} setValue={setPageValue} containerStyle={{width:150,marginLeft:'auto'}} 
-                    style={{borderColor:"#8e4a7c",paddingVertical:0,minHeight:35}}/>
+                <View style={[styles.preferenceCategory, { zIndex: 1 }]}>
+                    <View style={{flexDirection:'row',alignItems:'center'}}>
+                        <Text>{t("autoCont")}</Text>
+                        <Switch value={autoCont ?? false} onValueChange={(val)=>setAutoCont(val)} style={{marginLeft:'auto'}}/>
+                    </View>
+                    <View style={{flexDirection:'row',alignItems:'center'}}>
+                        <Text>{t("vibration")}</Text>
+                        <Switch value={vibration ?? true} onValueChange={(val)=>setVibration(val)} style={{marginLeft:'auto'}}/>
+                    </View>
                 </View>
             </View>
-            <View style={styles.preferenceCategory}>
-                <View style={{flexDirection:'row',alignItems:'center'}}>
-                    <Text>{t("autoCont")}</Text>
-                    <Switch value={autoCont ?? false} onValueChange={(val)=>setAutoCont(val)} style={{marginLeft:'auto'}}/>
-                </View>
-                <View style={{flexDirection:'row',alignItems:'center'}}>
-                    <Text>{t("vibration")}</Text>
-                    <Switch value={vibration ?? true} onValueChange={(val)=>setVibration(val)} style={{marginLeft:'auto'}}/>
-                </View>
-            </View>
-            
-        </View>
+        </TouchableWithoutFeedback>
     )
 }

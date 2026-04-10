@@ -1,9 +1,10 @@
 import { View, Text, Image } from "react-native"
 import styles from "../profileStyle/achievementsStyle"
 import ProgressBar from "../../commonComponents/progressBar/progressBar";
-import { useAuth } from "../../contextapis/AuthContext"
+import { useTranslation } from "react-i18next";
 
-export default function Achievement({ach,isEarned }) {
+export default function Achievement({ach,isEarned}) {
+    const {t} = useTranslation();
     return (
         <View style={styles.achievementRow}>
             {!isEarned &&
@@ -12,9 +13,9 @@ export default function Achievement({ach,isEarned }) {
                 </View>}
             <Image style={styles.achievementImage} source={ach.image}/>
             <View style={{ marginLeft: 10, flex: 1, justifyContent: 'center', marginRight: 10 }}>
-                <Text style={styles.achievementTitle}>{ach.title}</Text>
-                <Text style={styles.achievementDec}>{ach.desc}</Text>
-                <ProgressBar progress={70} />
+                <Text style={styles.achievementTitle}>{t(ach.id)}</Text>
+                <Text style={styles.achievementDec}>{t(`${ach.id}_desc`)}</Text>
+                {isEarned ? <ProgressBar percantage={100}/>:<ProgressBar progress={6} totalProgress={12}/>}
             </View>
         </View>
     )

@@ -1,18 +1,15 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
-const ProgressBarWithText = ({ progress }) => {
+const ProgressBar = ({ progress,totalProgress,percantage }) => {
+  const {t} = useTranslation();
   return (
     <View style={styles.container}>
-      {/* Ana Bar Kapsayıcısı */}
       <View style={styles.backgroundBar}>
-        
-        {/* İlerleyen Renkli Kısım */}
-        <View style={[styles.progressBar, { width: `${progress}%` }]} />
-
-        {/* Üzerine Binen Metin */}
+        <View style={[styles.progressBar, { width: `${percantage ? percantage : (100*progress/totalProgress)}%` }]} />
         <View style={styles.textOverlay}>
-          <Text style={styles.progressText}>%{progress} Tamamlandı</Text>
+          <Text style={styles.progressText}>%{percantage ? percantage : (100*progress/totalProgress)} {t("completed")}</Text>
         </View>
 
       </View>
@@ -50,4 +47,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProgressBarWithText;
+export default ProgressBar;

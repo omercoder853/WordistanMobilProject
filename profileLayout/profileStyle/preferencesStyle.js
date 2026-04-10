@@ -9,7 +9,8 @@ const styles = StyleSheet.create({
         borderRadius:15,
         paddingHorizontal:8,
         marginBottom:10,
-        elevation:5
+        elevation:5,
+        zIndex:10
     }
 })
 

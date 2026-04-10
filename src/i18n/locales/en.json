@@ -110,6 +110,7 @@
   "enterShortDescription": "Enter a short description",
   "youAreAllSet": "You are all set!",
   "wordAddedSuccessfully":"We have just added the word into your dictionary successfully!",
+  "dictDetails":"Dictionary Details",
 
   "___GAMES___": "",
   "gameSettings": "Game Settings",
@@ -168,5 +169,29 @@
   "deleteAccount":"Delete Account",
   "appLanguage":"App Language",
   "initialPage":"Initial Page",
-  "achievementSummary":"Achievement Summary"
+  "achievementSummary":"Achievement Summary",
+  "completed":"Completed",
+  
+  "___ACHIEVEMENTS___":"",
+  "translator_1":"Translator I",
+  "translator_2":"Translator II",
+  "librarian_1":"Librarian I",
+  "archivist_1":"The Archivist I",
+  "archivist_2":"The Archivist II",
+  "curious_novice":"Curious Novice",
+  "eager_learner":"Eager Learner",
+  "word_hunter":"Word Hunter",
+  "lexicon_scholar":"Lexicon Scholar",
+  "word_master":"Word Master",
+  "translator_1_desc": "Earned by translating words. Each new translation boosts your skills.",
+  "translator_2_desc": "Translate even more words to master the art of translation.",
+  "librarian_1_desc": "The orderly guardian of knowledge. You organize your mind like a library.",
+  "archivist_1_desc": "Build your digital dictionary! Each word leaves a mark on Wordistan.",
+  "archivist_2_desc": "Expand your dictionary with even more words to build your legacy.",
+  "curious_novice_desc": "Every journey begins with a step. Welcome to the gates of Wordistan!",
+  "eager_learner_desc": "One week down! New words are already starting to feel like old friends.",
+  "word_hunter_desc": "On the prowl for 15 days! No hidden word can escape your grasp now.",
+  "lexicon_scholar_desc": "A full month of dedication! You are now mastering the entire dictionary.",
+  "word_master_desc": "60 days of discipline! You command new words with absolute ease."
+  
 }
