@@ -1,5 +1,5 @@
 import { View,Text,Image,TouchableOpacity } from "react-native";
-import styles from "../profileStyle/styles"
+import styles from "../profileStyle/profileDetailsStyle";
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useTranslation } from "react-i18next";
 import {useAuth} from "../../contextapis/AuthContext"
@@ -11,7 +11,7 @@ export default function PersonalDetails(){
         <View style={{flex:1,alignItems:'center'}}>
             <View style={{flexDirection:'row',marginTop:15}}>
                 <Image style={styles.profilePhoto} source={require("../../assets/avatarBoy.png")}/>
-                <TouchableOpacity style={styles.edipPhoto}>
+                <TouchableOpacity style={styles.editPhoto}>
                     <MaterialCommunityIcons name="image-edit-outline" size={20} color="white" />
                 </TouchableOpacity>
             </View>

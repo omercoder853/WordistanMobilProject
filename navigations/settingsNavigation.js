@@ -1,7 +1,7 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import PersonalDetails from "../profileLayout/profilPages/personalDetails";
 import Statistics from "../profileLayout/profilPages/statistics";
-import Achievements from "../profileLayout/profilPages/achievements";
+import Achievements from "../profileLayout/profilPages/achievementsPage";
 import Preferences from "../profileLayout/profilPages/preferences";
 import HelpSupport from "../profileLayout/profilPages/helpSupport";
 import About from "../profileLayout/profilPages/about";

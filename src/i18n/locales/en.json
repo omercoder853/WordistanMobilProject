@@ -167,5 +167,6 @@
   "changePassword":"Change Password",
   "deleteAccount":"Delete Account",
   "appLanguage":"App Language",
-  "initialPage":"Initial Page"
+  "initialPage":"Initial Page",
+  "achievementSummary":"Achievement Summary"
 }

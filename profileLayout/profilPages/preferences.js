@@ -5,7 +5,7 @@ import { useState } from "react";
 import * as Localization from 'expo-localization';
 import { useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import styles from "../profileStyle/styles"
+import styles from "../profileStyle/preferencesStyle";
 
 export default function Preferences(){
     const {t,i18n} = useTranslation();

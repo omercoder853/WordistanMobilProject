@@ -168,5 +168,6 @@
   "changePassword":"Şifreyi Değiştir",
   "deleteAccount":"Hesabı Sil",
   "appLanguage":"Uygulama Dili",
-  "initialPage":"Açılış Ekranı"
+  "initialPage":"Açılış Ekranı",
+  "achievementSummary":"Başarım Özeti"
 }
