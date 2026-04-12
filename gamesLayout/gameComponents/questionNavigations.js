@@ -14,7 +14,6 @@ export default function QuestionNavigation({currentQuestion,setCurrentQuestion,
     let isLast;
     let isAnswered;
     if (gameType==="mp") {
-        console.log(userAnswers)
         isLast = currentQuestion+1==Math.ceil(numberQuestion/perPage)
         if (isLast) {
             isAnswered = userAnswers.filter((ans)=>ans.currentPage==currentQuestion).length == numberQuestion%perPage

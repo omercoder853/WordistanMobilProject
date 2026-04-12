@@ -1,19 +1,37 @@
-import { View,Text,Image,TouchableOpacity } from "react-native";
-import styles from "../DictionariesStyles/dictStyles";
-import { useWindowDimensions } from "react-native";
+import { View, Text, Image, TouchableOpacity } from "react-native";
+import styles from "../DictionariesStyles/collectionStyle";
+import { useNavigation } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
 
-export default function Collection({title}){
-    const {width,height} = useWindowDimensions();
-    const usableWidth = width - 60
+export default function Collection({ title, data, desc }) {
+    const navigation = useNavigation();
+    const { t } = useTranslation();
+    const wordCount = data ? data.length : 0;
+
     return (
-        <TouchableOpacity>
-            <View style={[styles.collectionContainer,{width:usableWidth*0.5}]} >
-                <Image source={require('../../assets/dictionary-cover.jpg')} style={{height:usableWidth*0.4,aspectRatio:1,borderRadius:10}}/>
-                <Text style={styles.collectionTitle}>{title}</Text>
-                <View style={{flexDirection:'row',flexWrap:'wrap',gap:3}}>
-                    <Text style={styles.collectionTags}>30 words</Text>
-                    <Text style={styles.collectionTags}>A1-A2</Text>
-                    <Text style={styles.collectionTags}>TR - ENG</Text>
+        <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => navigation.navigate("CollectionDetails", { title, data, desc })}>
+            <View style={styles.tileContainer}>
+                <Image 
+                    source={require('../../assets/dictionary-cover.jpg')} 
+                    style={styles.tileImage} />
+                <View style={styles.tileContentWrapper}>
+                    <Text style={styles.tileTitle} numberOfLines={1}>
+                        {t(title)}
+                    </Text>
+                    
+                    <View style={styles.tileTagsRow}>
+                        <Text style={styles.tileTagBlue}>
+                            {wordCount} {t("words")}
+                        </Text>
+                        <Text style={styles.tileTagPurple}>
+                            A1-A2
+                        </Text>
+                        <Text style={styles.tileTagPink}>
+                            ENG - TR
+                        </Text>
+                    </View>
                 </View>
             </View>
         </TouchableOpacity>
