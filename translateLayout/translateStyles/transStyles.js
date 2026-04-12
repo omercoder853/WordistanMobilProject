@@ -1,84 +1,152 @@
-import {StyleSheet} from 'react-native'
+import { StyleSheet, Dimensions } from 'react-native';
+
+const { width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
-    wordInput:{
-        backgroundColor:'white',
-        borderWidth:1,
-        borderTopRightRadius:10,
-        borderTopLeftRadius:10,
-        paddingHorizontal:10,
-        borderColor:'gray',
-        elevation:10,
-        width:'100%',
-        position:'relative',
-        zIndex:1001
+    translateAreaContainer:{
+        flex: 1,
+        width: "90%",
+        alignSelf: "center",
+        gap: 7,
+        marginTop: 20
     },
-    directionItem:{
-        backgroundColor:'white',
-        elevation:5,
-        paddingHorizontal:10,
-        paddingVertical:5,
-        alignItems:'center',
-        justifyContent:'center',
-        borderRadius:15,
-        flex:1,
-        textAlign:'center',
-        fontWeight:'900'
+    translateTitle: {
+        fontSize: 32,
+        fontWeight: '900',
+        alignSelf: 'flex-start',
+        color: '#1F2937',
+        marginBottom: 10,
+        marginTop: 10,
     },
-    convertButton:{
-        backgroundColor:'#6D28D9',
+    wordInput: {
+        backgroundColor: '#FFFFFF',
+        borderTopRightRadius: 20,
+        borderTopLeftRadius: 20,
+        paddingHorizontal: 20,
+        paddingTop: 20,
+        paddingBottom: 20,
+        borderBottomWidth: 1,
+        borderColor: '#E5E7EB',
+        fontSize: 18,
+        fontWeight: '600',
+        color: '#4B5563',
+        minHeight: 60,
+        textAlignVertical: 'top',
+        elevation: 8,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.05,
+        shadowRadius: 10,
+        width: '100%',
+        position: 'relative',
+        zIndex: 1001,
+    },
+    directionItem: {
+        backgroundColor: '#F3F4F6',
+        paddingHorizontal: 15,
+        paddingVertical: 15,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 1,
+        textAlign: 'center',
+        fontWeight: '800',
+        color: '#6B7280',
+        fontSize: 16,
+    },
+    directionButton: {
+        backgroundColor: '#F3F4F6',
+        paddingHorizontal: 10,
         paddingVertical: 10,
-        paddingHorizontal:10,
-        borderRadius:25,
-        width:'100%',
-        elevation:15,
-        justifyContent:'center',
-        alignItems:'center',
-        marginTop:10
+        alignItems: 'center',
+        justifyContent: 'center',
     },
-    translateTitle:{
-        fontSize:30,
-        fontWeight:'900',
-        alignSelf:'center',
-        textAlign:'center',
-        marginBottom:20
+    directionRow: {
+        flexDirection: 'row',
+        backgroundColor: '#FFFFFF',
+        borderBottomLeftRadius: 20,
+        borderBottomRightRadius: 20,
+        overflow: 'hidden',
+        elevation: 8,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.05,
+        shadowRadius: 10,
     },
-    resultContainer:{
-        flex:1,
-        width:'90%',
-        alignSelf:'center',
-        gap:7,
-        marginTop:20,
-        backgroundColor:'#F3D6E4',
-        paddingVertical:20,
-        paddingHorizontal:20,
-        borderRadius:25
+    convertButton: {
+        paddingVertical: 16,
+        paddingHorizontal: 10,
+        borderRadius: 20,
+        width: '100%',
+        elevation: 10,
+        shadowColor: '#4F46E5',
+        shadowOffset: { width: 0, height: 6 },
+        shadowOpacity: 0.3,
+        shadowRadius: 12,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 20,
     },
-    addMyDictButton:{
-        backgroundColor:'#F3D6E4',
-        marginLeft:'auto',
-        paddingHorizontal:15,
-        paddingVertical:5,
-        borderRadius:25,
-        borderWidth:1,
-        borderColor:'#6D28D9',
-        elevation:5
+    convertButtonText: {
+        fontWeight: "900", 
+        color: "white", 
+        fontSize: 18, 
+        letterSpacing: 0.5 
     },
-    suggestionContainer:{
-        position:'absolute',
-        backgroundColor:'white',
-        width:'100%',
-        zIndex:1000,
-        borderBottomLeftRadius:15,
-        borderBottomRightRadius:15
+    resultContainer: {
+        flex: 1,
+        width: '90%',
+        alignSelf: 'center',
+        marginTop: 25,
+        backgroundColor: '#FFFFFF',
+        paddingVertical: 25,
+        paddingHorizontal: 20,
+        borderRadius: 24,
+        elevation: 8,
+        shadowColor: '#7C3AED',
+        shadowOffset: { width: 0, height: 6 },
+        shadowOpacity: 0.15,
+        shadowRadius: 12,
+        borderWidth: 1,
+        borderColor: '#F3E8FF'
     },
-    suggestion:{
-        paddingVertical:8,
-        borderTopWidth:0.5,
-        borderTopColor:'gray',
-        borderRadius:-15,
-        paddingHorizontal:10
+    addMyDictButton: {
+        backgroundColor: '#EEF2FF',
+        alignSelf: 'flex-start',
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        borderRadius: 20,
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 8,
+        marginTop: 15,
+    },
+    addMyDictButtonText: {
+        color: '#4F46E5',
+        fontWeight: '700',
+        fontSize: 14
+    },
+    suggestionContainer: {
+        position: 'absolute',
+        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+        width: '100%',
+        zIndex: 1000,
+        borderBottomLeftRadius: 20,
+        borderBottomRightRadius: 20,
+        elevation: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+    },
+    suggestion: {
+        paddingVertical: 15,
+        paddingHorizontal: 20,
+    },
+    suggestionText: {
+        fontSize: 16,
+        color: '#4B5563',
+        fontWeight: '500'
     }
-})
+});
 
-export default styles
+export default styles;

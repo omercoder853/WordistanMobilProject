@@ -9,10 +9,12 @@ export default function InputArea({ setInput, setDisplay, input,suggestionDispla
     const [height,setHeight] = useState()
     const {t} = useTranslation();
     return (
-        <View style={{ alignItems: 'center' }}>
+        <View style={{ alignItems: 'center', zIndex: 2000 }}>
             <TextInput value={input} onChangeText={(text) => { setInput(text), text.length === 0 && setDisplay('none') , setSuggestionDisplay("flex") }}
-                placeholder= {t("enterWordToTranslate")}
+                placeholder={t("enterWordToTranslate")}
+                placeholderTextColor="#9CA3AF"
                 style={styles.wordInput}
+                multiline={true}
                 onLayout={(event) => {const {height} = event.nativeEvent.layout;
                 setHeight(height)} } />
             <View style={[styles.suggestionContainer,{top:height,display:suggestionDisplay}]}>
@@ -24,7 +26,7 @@ export default function InputArea({ setInput, setDisplay, input,suggestionDispla
 function Suggestion({word,setInput,setSuggestionDisplay}){
     return(
         <TouchableOpacity style={styles.suggestion} onPress={() => {setInput(word),setSuggestionDisplay("none")}}>
-            <Text>{word}</Text>
+            <Text style={styles.suggestionText}>{word}</Text>
         </TouchableOpacity>
     )
 }

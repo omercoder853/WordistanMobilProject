@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, ScrollView, TouchableWithoutFeedback } from "react-native";
 import InputArea from "../translateLayout/translateComponents/wordInput";
 import Direction from "../translateLayout/translateComponents/translateDirection";
 import ConvertButton from "../translateLayout/translateComponents/convertButton";
@@ -19,33 +19,31 @@ const Translate = ({ recentWords, addWord }) => {
     const [visible,setVisible] = useState(false)
     return (
         <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-            <View
-                style={{
-                    flex: 1,
-                    width: "90%",
-                    alignSelf: "center",
-                    gap: 7,
-                    marginTop: 20,}}>
-                <Text style={styles.translateTitle}>{t('translate')}</Text>
-                <InputArea 
-                    setInput={setInput} 
-                    setDisplay={setDisplay} input={input} 
-                    suggestionDisplay={suggestionDisplay} 
-                    setSuggestionDisplay={setSuggestionDisplay} 
-                    from={from} />
-                <Direction setDisplay={setDisplay} from={from} setFrom={setFrom} />
-                <ConvertButton
-                    setDisplay={setDisplay}
-                    input={input}
-                    addWord={addWord} 
-                    setResult={setResult}
-                    result={result}
-                    setSuggestionDisplay={setSuggestionDisplay}
-                    from={from} />
-            </View>
-            <ResultArea display={display} result={result} setVisible={setVisible} />
-            <RecentWords recentWords={recentWords}/>
-            <AddDictPage visible={visible} input={input} result={result} setVisible={setVisible} from={from}/>
+            <TouchableWithoutFeedback style={{flex:1}} onPress={()=>setSuggestionDisplay("none")}>
+                <View style={{flex:1}}>
+                    <View style={styles.translateAreaContainer}>
+                        <Text style={styles.translateTitle}>{t('translate')}</Text>
+                        <InputArea 
+                            setInput={setInput} 
+                            setDisplay={setDisplay} input={input} 
+                            suggestionDisplay={suggestionDisplay} 
+                            setSuggestionDisplay={setSuggestionDisplay} 
+                            from={from} />
+                        <Direction setDisplay={setDisplay} from={from} setFrom={setFrom} />
+                        <ConvertButton
+                            setDisplay={setDisplay}
+                            input={input}
+                            addWord={addWord} 
+                            setResult={setResult}
+                            result={result}
+                            setSuggestionDisplay={setSuggestionDisplay}
+                            from={from} />
+                    </View>
+                    <ResultArea display={display} result={result} setVisible={setVisible} />
+                    <RecentWords recentWords={recentWords}/>
+                    <AddDictPage visible={visible} input={input} result={result} setVisible={setVisible} from={from}/>
+                </View>
+            </TouchableWithoutFeedback>
         </ScrollView>
     );
 };

@@ -1,4 +1,5 @@
 import { View, TouchableOpacity, Text } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import styles from "../translateStyles/transStyles";
 import wordData from '../../assets/data/words.json'
 import { useTranslation } from "react-i18next";
@@ -20,8 +21,14 @@ export default function ConvertButton({ setDisplay, input, addWord,setResult,set
     }
   };
   return (
-    <TouchableOpacity style={styles.convertButton} onPress={showResult}>
-      <Text style={{ fontWeight: "900", color: "white" }}>{t('convert')}</Text>
+    <TouchableOpacity onPress={showResult} activeOpacity={0.8}>
+        <LinearGradient
+            colors={['#4F46E5', '#7C3AED']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.convertButton}>
+            <Text style={styles.convertButtonText}>{t('convert')}</Text>
+        </LinearGradient>
     </TouchableOpacity>
   );
 }
