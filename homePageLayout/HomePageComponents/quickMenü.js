@@ -7,9 +7,19 @@ import { useTranslation } from 'react-i18next';
 const QuickMenuItems = () => {
     const { t } = useTranslation();
     const navigation = useNavigation();
+
     const goToPersonalDicts = () => {
         navigation.navigate('Dictionaries', {
-            screen: 'Collections'});};
+            screen: 'Collections'})};
+
+    const goToBadges = () => {
+        navigation.navigate('Settings Navigation',
+            {screen:'Achievements'})};
+
+    const goToStatistics = () => {
+        navigation.navigate('Settings Navigation',
+            {screen:'Statistics'})}
+    
     return (
         <ScrollView style={{ height: 'auto' }} horizontal showsHorizontalScrollIndicator={false}>
             <View style={styles.scrollView}>
@@ -19,7 +29,7 @@ const QuickMenuItems = () => {
                         <Text>{t('collections')}</Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity style={{ alignItems: 'center' }}>
+                <TouchableOpacity style={{ alignItems: 'center' }} onPress={goToBadges}>
                     <View style={styles.quickMenuColumn}>
                         <MaterialCommunityIcons name="medal" size={24} color="black" />
                         <Text>{t('badges')}</Text>
@@ -31,7 +41,7 @@ const QuickMenuItems = () => {
                         <Text>{t('favorites')}</Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity style={{ alignItems: 'center' }}>
+                <TouchableOpacity style={{ alignItems: 'center' }} onPress={goToStatistics}>
                     <View style={styles.quickMenuColumn}>
                         <FontAwesome name="line-chart" size={24} color="black" />
                         <Text>{t('statistics')}</Text>

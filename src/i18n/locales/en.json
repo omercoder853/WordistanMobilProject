@@ -20,6 +20,7 @@
   "english":"English",
   "turkish":"Turkish",
   "system":"System",
+  "level":"Seviye",
 
   "___HOME_PAGE___": "",
   "recentWords": "Recent Words",
@@ -68,6 +69,11 @@
   "takingYouToLogin": "We're taking you to the login page to get started.",
   "somethingWentWrong": "Something went wrong. Let's get you back in!",
   "allSet": "All Set!",
+  "gender":"Gender",
+  "female":"Female",
+  "male":"Male",
+  "other":"Other",
+  "selectGender":"Select Your Gender",
   
   "___TRANSLATE___": "",
   "translate": "Translate",
@@ -80,6 +86,12 @@
   "wordAdded": "Word Added",
   
   "___DICTIONARIES___": "",
+  "fruitsCollectionTitle": "Fruits and Vegetables",
+  "fruitsCollectionDesc": "A collection of everyday fruits and vegetables. Learn essential food vocabulary to use in daily life.",
+  "animalsCollectionTitle": "Most Known Animals",
+  "animalsCollectionDesc": "A handpicked list of the most well-known animals around the world. Expand your zoology vocabulary.",
+  "placesCollectionTitle": "Environment and Places",
+  "placesCollectionDesc": "Learn words related to nature, habitats, environments, and common geographical places.",
   "dictionaries": "Dictionaries",
   "personal": "Personal",
   "collections": "Collections",

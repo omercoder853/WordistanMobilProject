@@ -7,10 +7,11 @@ import {useAuth} from "../../contextapis/AuthContext"
 export default function PersonalDetails(){
     const {user} = useAuth();
     const {t} = useTranslation();
+    const imgSource = user.gender=="male" ? require("../../assets/avatarBoy.png") : require("../../assets/avatarGirl.png")
     return (
         <View style={{flex:1,alignItems:'center'}}>
             <View style={{flexDirection:'row',marginTop:15}}>
-                <Image style={styles.profilePhoto} source={require("../../assets/avatarBoy.png")}/>
+                <Image style={styles.profilePhoto} source={imgSource}/>
                 <TouchableOpacity style={styles.editPhoto}>
                     <MaterialCommunityIcons name="image-edit-outline" size={20} color="white" />
                 </TouchableOpacity>
@@ -38,7 +39,7 @@ export default function PersonalDetails(){
                 <View style={{borderColor:'#F1F5F9',borderWidth:1}}></View>
                 <View style={styles.profileDetailItem}>
                     <Text style={styles.profileLabel}>{t("genderProfile")}</Text>
-                    <Text style={styles.profileValue}>{user.nick_name}</Text>
+                    <Text style={styles.profileValue}>{t(user.gender)}</Text>
                 </View>
                 <View style={{borderColor:'#F1F5F9',borderWidth:1}}></View>
                 <View style={styles.profileDetailItem}>
@@ -64,3 +65,6 @@ export default function PersonalDetails(){
         </View>
     )
 }
+
+const capitalize = (str) => 
+  str ? str.charAt(0).toUpperCase() + str.slice(1).toLowerCase() : "";

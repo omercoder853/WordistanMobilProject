@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
         justifyContent:'flex-start',
     },
     profileImage:{
-        width:36,
+        width:50,
         borderRadius:25,
         aspectRatio:1,
         marginRight:5,

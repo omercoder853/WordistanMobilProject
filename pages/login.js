@@ -20,10 +20,10 @@ export default function LoginPage(){
 
     const isValidEmail = emailRegex.test(email)
     const isValidPassword = passwordRegex.test(password)
-
+    const anyError = !isValidEmail || !isValidPassword
     const login = async () => {
         Keyboard.dismiss();
-        if (isValidEmail && isValidPassword) {
+        if (!anyError) {
             setLoading(true)
             const res = await fetch('https://terribilita-milissa-unpermitted.ngrok-free.dev/api/token',
             {body:JSON.stringify({email,password}),method:'POST',headers:{'Content-Type': 'application/json'}})
@@ -38,6 +38,7 @@ export default function LoginPage(){
                 setLogin(true)
             }
             else {
+                console.log(res.status)
                 alert(t('loginFailed'))
             }
             setLoading(false)
@@ -69,7 +70,7 @@ export default function LoginPage(){
                         <TextInput style={styles.textInput} autoCapitalize="none" placeholder={t('password')} 
                         onChangeText={(value)=>setPassword(value.trim())}/>
                         {!isValidPassword && password?.length>0 && <Text style={styles.warningText}>{t('passwordRule')}</Text>}
-                        <TouchableOpacity onPress={login} style={styles.loginButton}>
+                        <TouchableOpacity onPress={login} style={[styles.loginButton,isLoading || anyError && {opacity:0.5}]} disabled={isLoading || anyError}>
                             {isLoading ?
                             (<LottieView source={require('../assets/animations/loadingAnimationDots.json')} 
                             style={{height:19,width:37,transform:[{scale:6}]}} loop autoPlay colorFilters={[{keypath:"*",color:"#FFFFFF"}]} />): 

@@ -20,15 +20,15 @@ export default function EntryInfoPage(){
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
     const emailRegex = /^\S+@\S+\.[a-z]{2,}$/;
 
-    const validEmail = emailRegex.test(email)
-    const validPassword = passwordRegex.test(password)
-    const validPasswordVerification = validPassword && password==passwordVerification
+    const validEmail = emailRegex.test(email.trim())
+    const validPassword = passwordRegex.test(password.trim())
+    const validPasswordVerification = validPassword && password.trim()==passwordVerification.trim()
     const isValidForm = validEmail && validPassword && validPasswordVerification
 
-    const data = isValidForm ? {
-        "email":email,
-        "password":password,
-        "password_confirm":passwordVerification
+    const data = isValidForm ? {  
+        "email":email.trim(),
+        "password":password.trim(),
+        "password_confirm":passwordVerification.trim()
     }:null;
 
     useEffect(()=>{

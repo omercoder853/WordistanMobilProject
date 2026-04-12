@@ -33,8 +33,8 @@ const Profile = () => {
         end={{x:0,y:0.5}} style={{flex:1,alignItems:'center'}}>
             <View style={{width:'90%',alignItems:'center',paddingTop:35}}>
                 <HeaderTopRow/>
-                <ProfileInfo user={user}/>
-                <ProfileStatsRow user={user}/>
+                <ProfileInfo/>
+                <ProfileStatsRow/>
                 <InviteFriend/>
             </View>
             <View style={{flex:1,width:'100%',alignItems:'center'}}>

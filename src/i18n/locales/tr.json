@@ -20,6 +20,7 @@
   "english":"İngilizce",
   "turkish":"Türkçe",
   "system":"Sistem",
+  "level":"Seviye",
 
   "___HOME_PAGE___": "",
   "recentWords": "Son Kelimeler",
@@ -68,6 +69,11 @@
   "takingYouToLogin": "Başlamak için sizi giriş sayfasına yönlendiriyoruz.",
   "somethingWentWrong": "Bir şeyler ters gitti. Seni geri alalım!",
   "allSet": "Her Şey Hazır!",
+  "gender":"Cinsiyet",
+  "female":"Kadın",
+  "male":"Erkek",
+  "other":"Diğer",
+  "selectGender":"Cinsiyetinizi Seçiniz",
   
   "___TRANSLATE___": "",
   "translate": "Çeviri",
@@ -80,6 +86,12 @@
   "wordAdded": "Kelime Eklendi",
   
   "___DICTIONARIES___": "",
+  "fruitsCollectionTitle": "Meyveler ve Sebzeler",
+  "fruitsCollectionDesc": "Günlük hayatta kullanılan meyve ve sebze isimlerinden oluşan bir koleksiyon. Temel gıda kelimelerini öğrenin.",
+  "animalsCollectionTitle": "En Çok Bilinen Hayvanlar",
+  "animalsCollectionDesc": "Dünya çapında en çok bilinen hayvanların özenle seçilmiş listesi. Zooloji kelime dağarcığınızı genişletin.",
+  "placesCollectionTitle": "Çevre ve Mekanlar",
+  "placesCollectionDesc": "Doğa, yaşam alanları, çevre ve yaygın coğrafi mekanlarla ilgili kelimeleri öğrenin.",
   "dictionaries": "Sözlükler",
   "personal": "Kişisel",
   "collections": "Koleksiyon",

@@ -4,10 +4,14 @@ import styles from "../homePageLayout/HomePageStyles/homeStyles";
 import { useAuth } from "../contextapis/AuthContext";
 import { useEffect } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useTranslation } from "react-i18next";
 
 const ProfileRow = () => {
     const insets = useSafeAreaInsets();
-    const {user,setUser,getDataStorage} = useAuth();
+    const {user,setUser,getDataStorage,userStats} = useAuth();
+    const {t} = useTranslation();
+    
+    const imgSource = user.gender=="male" ? require('../assets/avatarBoy.png') : require('../assets/avatarGirl.png')
     useEffect(() => {
         if (!user) {
             const loadUser = async () => {
@@ -31,8 +35,8 @@ const ProfileRow = () => {
         <View style={styles.profileContainer}>
             <Image
                 style={styles.profileImage}
-                source={require('../assets/avatarBoy.png')}/>
-            <Text style={{marginRight:9}}>Level 15</Text>
+                source={imgSource}/>
+            <Text style={{marginRight:9}}>{t("level")} {userStats?.level}</Text>
             <Ionicons  name="notifications" size={24} color="black" />
         </View>
     </View>

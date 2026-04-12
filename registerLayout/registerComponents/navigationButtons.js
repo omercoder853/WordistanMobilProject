@@ -15,7 +15,6 @@ export default function NavigationButtons({anyError,data,setSuccess}){
     const isFirst = currentPage === "Personal Info"
     const isLast = currentPage === "Entry Info"
     const currentData = {...registerData,...data}
-
     const nextPage = () => {
         if (!anyError && data!=null) {
             setRegisterData((prev)=>({
@@ -43,12 +42,16 @@ export default function NavigationButtons({anyError,data,setSuccess}){
     
     return(
         <View style={styles.buttonsArea}>
-            <TouchableOpacity onPress={backPage} style={styles.navigationButton}>
+            <TouchableOpacity onPress={backPage} style={[styles.navigationButton,registerLoading && {opacity:0.5}]} disabled={registerLoading}>
                 <Text style={{color:'white',fontWeight:'900'}}>{isFirst?t('loginPage'):t('back')}</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={isLast ? registerButton:nextPage} style={[styles.navigationButton,{marginLeft:'auto'}]}>
-                {registerLoading ? (<ActivityIndicator/>):(<Text style={{color:'white',fontWeight:'900',fontSize:15}}>{isLast ? t('createAccount'):t('next')}</Text>)}
+            <TouchableOpacity onPress={isLast ? registerButton:nextPage} disabled={registerLoading || anyError}
+            style={[styles.navigationButton,{marginLeft:'auto'},registerLoading || anyError && {opacity:0.5}]}>
+                {registerLoading ? (<ActivityIndicator/>):
+                (<Text style={{color:'white',fontWeight:'900',fontSize:15}}>
+                    {isLast ? t('createAccount'):t('next')}
+                </Text>)}
             </TouchableOpacity>
         </View>
     )

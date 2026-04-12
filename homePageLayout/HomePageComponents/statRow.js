@@ -2,9 +2,10 @@ import {View,Text,TouchableOpacity} from 'react-native'
 import styles from '../HomePageStyles/homeStyles'
 import {AntDesign,FontAwesome} from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
-
+import { useAuth } from '../../contextapis/AuthContext';
 const StatRow = () => {
     const { t } = useTranslation();
+    const {userStats} = useAuth();
     return(
         <View style={styles.statRow}>
             <TouchableOpacity style={styles.statItemButton}>
@@ -14,7 +15,7 @@ const StatRow = () => {
                         <Text style={{fontSize:12,color:'gray'}}>{t('streak')}</Text>
                     </View>
                     <View style={styles.statColumn}>
-                        <Text style={{fontWeight:'900',fontSize:20}}>7</Text>
+                        <Text style={{fontWeight:'900',fontSize:20}}>{userStats?.current_streak}</Text>
                         <Text>{t('days')}</Text>
                     </View>
                 </View>
@@ -25,7 +26,7 @@ const StatRow = () => {
                     <FontAwesome name="diamond" size={24} color="#4DA3FF" />
                 </View>
                 <View style={styles.statColumn}>
-                    <Text style={{fontWeight:'900',fontSize:20}}>3500</Text>
+                    <Text style={{fontWeight:'900',fontSize:20}}>{userStats?.total_xp}</Text>
                     <Text>{t('xp')}</Text>
                 </View>
             </View>

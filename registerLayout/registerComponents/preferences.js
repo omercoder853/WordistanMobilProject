@@ -9,8 +9,8 @@ import { useTranslation } from "react-i18next";
 
 export default function PreferencesPage(){
     const { t } = useTranslation();
-    const {appLanguage, changeAppLanguage} = useAuth();
-    const [username,setUsername] = useState("");
+    const {appLanguage, changeAppLanguage,registerData} = useAuth();
+    const [username,setUsername] = useState(registerData["nick_name"] || "");
     const [lang,setLang] = useState(appLanguage || "en");
     const [error,setError] = useState();
 
@@ -41,7 +41,8 @@ export default function PreferencesPage(){
                             <FontAwesome5 name="user-alt" size={15} color="#6b3fa0" />
                             <Text style={styles.inputLabel}>{t('username')}</Text>
                         </View>
-                        <TextInput autoCapitalize="none" onChangeText={(value)=>setUsername(value)} style={styles.inputArea} placeholder={t('howShouldICallYou')}/>
+                        <TextInput autoCapitalize="none" onChangeText={(value)=>setUsername(value)} 
+                        style={styles.inputArea} placeholder={t('howShouldICallYou')} value={username}/>
                         {!usernameValid && username?.length>0 && <Text style={styles.warningText}>{t('usernameWarning')}</Text>}
                         <View style={{flexDirection:'row',alignItems:'center',gap:8}}>
                             <FontAwesome name="language" size={15} color="#6b3fa0" />
