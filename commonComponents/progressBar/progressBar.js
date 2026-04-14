@@ -9,7 +9,7 @@ const ProgressBar = ({ progress,totalProgress,percantage }) => {
       <View style={styles.backgroundBar}>
         <View style={[styles.progressBar, { width: `${percantage ? percantage : (100*progress/totalProgress)}%` }]} />
         <View style={styles.textOverlay}>
-          <Text style={styles.progressText}>%{percantage ? percantage : (100*progress/totalProgress)} {t("completed")}</Text>
+          <Text style={styles.progressText}>{percantage ? `%${Math.ceil(percantage)}` : `${progress}/${totalProgress}`} {t("completed")}</Text>
         </View>
 
       </View>
@@ -23,27 +23,26 @@ const styles = StyleSheet.create({
     marginVertical: 7,
   },
   backgroundBar: {
-    height: 18, // Metin sığması için biraz kalınlaştırdık
+    height: 18, 
     width: '100%',
     backgroundColor: '#E0E0E0',
     borderRadius: 12,
     overflow: 'hidden',
-    position: 'relative', // İçindeki absolute elemanlar için referans
+    position: 'relative', 
   },
   progressBar: {
     height: '100%',
     backgroundColor: '#4CAF50',
   },
   textOverlay: {
-    // Metni barın tam üzerine, her köşeye sıfırlayarak yayıyoruz
     ...StyleSheet.absoluteFillObject, 
-    justifyContent: 'center', // Dikeyde ortala
-    alignItems: 'center',     // Yatayda ortala
+    justifyContent: 'center', 
+    alignItems: 'center',    
   },
   progressText: {
     fontSize: 10,
     fontWeight: 'bold',
-    color: '#333', // Yeşil barın üzerinde de, gri barın üzerinde de okunur bir renk
+    color: '#333', 
   },
 });
 

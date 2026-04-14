@@ -2,10 +2,10 @@ import {View,Text,TouchableOpacity} from 'react-native'
 import styles from '../HomePageStyles/homeStyles'
 import {AntDesign,FontAwesome} from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '../../contextapis/AuthContext';
+import { useUserStats } from '../../contextapis/UserStatsContext';
 const StatRow = () => {
     const { t } = useTranslation();
-    const {userStats} = useAuth();
+    const {userStats} = useUserStats();
     return(
         <View style={styles.statRow}>
             <TouchableOpacity style={styles.statItemButton}>

@@ -3,21 +3,24 @@ import styles from "../profileStyle/styles";
 import {FontAwesome,FontAwesome6,Feather} from '@expo/vector-icons';
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../../contextapis/AuthContext";
+import { useUserStats } from "../../contextapis/UserStatsContext";
 
 export default function ProfileStatsRow(){
     const { t } = useTranslation();
-    const {user,userStats} = useAuth();
+    const {user} = useAuth();
+
+    const {translated_words,saved_words} = useUserStats();
     return (
         <View style={{flexDirection:'row',justifyContent:'space-around',marginVertical:20}}>
             <View style={styles.statColumn}>
                 <Feather name="search" size={18} color="black" />
-                <Text style={{fontSize:15,fontWeight:'700'}}>{userStats?.translated_words}</Text>
+                <Text style={{fontSize:15,fontWeight:'700'}}>{translated_words}</Text>
                 <Text style={{fontSize:12,color:'#64748B',marginTop:-5}}>{t('lookups')}</Text>
             </View>
             <View style={{borderWidth:0.4,borderColor:'#94A3B8',marginHorizontal:5}}></View>
             <View style={styles.statColumn}>
                 <FontAwesome name="bookmark-o" size={18} color="black" />
-                <Text style={{fontSize:15,fontWeight:'700'}}>{userStats?.saved_words}</Text>
+                <Text style={{fontSize:15,fontWeight:'700'}}>{saved_words}</Text>
                 <Text style={{fontSize:12,color:'#64748B',marginTop:-5}}>{t('saved')}</Text>
             </View>
             <View style={{borderWidth:0.4,borderColor:'#94A3B8',marginHorizontal:5}}></View>

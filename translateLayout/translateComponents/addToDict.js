@@ -41,7 +41,7 @@ export default function AddDictPage({visible,input,result,setVisible,from}){
     }
 
     return (
-        <Modal visible={visible} animationType="fade" transparent>
+        <Modal visible={visible} statusBarTranslucent={true} animationType="fade" transparent>
             <TouchableWithoutFeedback onPress={()=>Keyboard.dismiss()}>
                 <View style={alertStyles.overlay}>
                     <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding":"height"}>

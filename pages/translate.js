@@ -8,6 +8,7 @@ import styles from "../translateLayout/translateStyles/transStyles";
 import AddDictPage from "../translateLayout/translateComponents/addToDict";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import NewAchievement from "../commonComponents/achievementEarningModal/newAchievementModal";
 
 const Translate = ({ recentWords, addWord }) => {
     const { t } = useTranslation();
@@ -42,6 +43,7 @@ const Translate = ({ recentWords, addWord }) => {
                     <ResultArea display={display} result={result} setVisible={setVisible} />
                     <RecentWords recentWords={recentWords}/>
                     <AddDictPage visible={visible} input={input} result={result} setVisible={setVisible} from={from}/>
+                    <NewAchievement/>
                 </View>
             </TouchableWithoutFeedback>
         </ScrollView>

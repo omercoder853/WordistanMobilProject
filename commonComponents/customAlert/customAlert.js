@@ -3,7 +3,7 @@ import styles from './customAlertStyle';
 export default function CustomAlert({ visible, title, message,buttons })
 {
 return (
-  <Modal visible={visible} transparent animationType="fade">
+  <Modal statusBarTranslucent={true} visible={visible} transparent animationType="fade">
     <View style={styles.overlay}>
       <View style={styles.alertBox}>
         <Text style={styles.title}>{title}</Text>

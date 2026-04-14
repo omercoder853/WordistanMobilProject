@@ -1,0 +1,100 @@
+import { StyleSheet, Dimensions } from "react-native";
+
+const { width, height } = Dimensions.get('window');
+
+const styles = StyleSheet.create({
+  overlay: {
+    flex: 1,
+    backgroundColor: 'rgba(10, 16, 30, 0.62)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  confettiAnimation: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    width: width,
+    height: height,
+    zIndex: 1,
+    pointerEvents: 'none',
+  },
+  alertBox: {
+    width: width * 0.88,
+    maxWidth: 380,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 28,
+    paddingHorizontal: 24,
+    paddingTop: 28,
+    paddingBottom: 22,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#EEF1F5',
+    shadowColor: '#0F172A',
+    shadowOffset: { width: 0, height: 12 },
+    shadowOpacity: 0.22,
+    shadowRadius: 20,
+    elevation: 12,
+    zIndex: 2,
+  },
+  achievementLogoFrame: {
+    width: 188,
+    height: 188,
+    overflow: 'hidden',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 12,
+  },
+  achievementLogo: {
+    width: 280,
+    height: 280,
+    resizeMode: 'contain',
+    marginTop: -18,
+  },
+  headingText: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#5B3FD3',
+    textTransform: 'uppercase',
+    letterSpacing: 1.1,
+    marginBottom: 8,
+  },
+  titleText: {
+    fontSize: 26,
+    fontWeight: '800',
+    color: '#111827',
+    marginBottom: 10,
+    textAlign: 'center',
+    letterSpacing: 0.3,
+  },
+  messageText: {
+    fontSize: 15,
+    color: '#4B5563',
+    textAlign: 'center',
+    lineHeight: 23,
+    marginBottom: 24,
+    paddingHorizontal: 2,
+  },
+  button: {
+    backgroundColor: '#4F46E5',
+    paddingVertical: 15,
+    paddingHorizontal: 32,
+    borderRadius: 14,
+    width: '100%',
+    alignItems: 'center',
+    shadowColor: '#4F46E5',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.28,
+    shadowRadius: 12,
+    elevation: 6,
+  },
+  buttonText: {
+    color: '#FFF',
+    fontSize: 16,
+    fontWeight: '800',
+    letterSpacing: 0.4,
+  }
+});
+
+export default styles;

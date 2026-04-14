@@ -5,10 +5,12 @@ import { useAuth } from "../contextapis/AuthContext";
 import { useEffect } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
+import { useUserStats } from "../contextapis/UserStatsContext";
 
 const ProfileRow = () => {
     const insets = useSafeAreaInsets();
-    const {user,setUser,getDataStorage,userStats} = useAuth();
+    const {userStats} = useUserStats();
+    const {user,setUser,getDataStorage} = useAuth();
     const {t} = useTranslation();
     
     const imgSource = user.gender=="male" ? require('../assets/avatarBoy.png') : require('../assets/avatarGirl.png')

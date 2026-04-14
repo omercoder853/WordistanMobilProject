@@ -3,7 +3,7 @@ import styles from "../profileStyle/achievementsStyle";
 import { useTranslation } from "react-i18next";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Achievement from "./achievement";
-import ACHIEVEMENTLIST from "./achievementList";
+import ACHIEVEMENTLIST from "../../assets/data/achievementList";
 import { useState } from "react";
 import { useAuth } from "../../contextapis/AuthContext";
 
@@ -14,7 +14,7 @@ export default function Achievements(){
     const {t} = useTranslation();
     const { width: screenWidth } = Dimensions.get('window');
     const counts = ACHIEVEMENTLIST.reduce((acc, ach) => {
-        const isEarned = earnedAchievements.some((ac) => ac.achivementId === ach.id);
+        const isEarned = earnedAchievements.some((ac) => ac.achievementId === ach.id);
         if (isEarned) {
             acc[ach.type] = (acc[ach.type] || 0) + 1;
         }
@@ -51,7 +51,7 @@ export default function Achievements(){
             contentContainerStyle={{ alignItems: 'center', paddingBottom: 20 }}
             showsVerticalScrollIndicator={false}>
                 {ACHIEVEMENTLIST.map((ach)=>{
-                    const isEarned = earnedAchievements.some((ac) => ac.achivementId === ach.id)
+                    const isEarned = earnedAchievements.some((ac) => ac.achievementId === ach.id)
                     return <Achievement key={ach.id} ach={ach} isEarned={isEarned}/>
                 })}
             </ScrollView>

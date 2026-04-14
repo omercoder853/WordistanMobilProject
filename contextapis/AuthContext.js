@@ -14,7 +14,6 @@ export const AuthProvider = ({children}) => {
     const [registerData,setRegisterData] = useState({});
     const [registerLoading,setRegisterLoading] = useState(false)
     const [appLanguage,setAppLanguage] = useState(null);
-    const [userStats,setUserStats] = useState(null)
     
     useEffect(()=>{
         const getTokens = async () => {
@@ -22,19 +21,11 @@ export const AuthProvider = ({children}) => {
             const tempRefToken = await getDataStorage("refresh-token");
             const tempUser = await getDataStorage("user");
             const tempLang = await getDataStorage("language");
-            const tempUserStats = await getDataStorage("userStats")
             
             setAccToken(tempAccToken);
             setRefToken(tempRefToken);
             setUser(JSON.parse(tempUser) || null)
             setAppLanguage(tempLang || null)
-
-            if (!tempUserStats) {
-                getUserStats(tempAccToken,tempRefToken);
-            }
-            else{
-                setUserStats(JSON.parse(tempUserStats))
-            }
 
             if (!tempAccToken && !tempRefToken) {
                 setLogin(false)
@@ -73,29 +64,6 @@ export const AuthProvider = ({children}) => {
         }
         else {
             await getNewToken(ReToken);
-        }
-    }
-
-    const getUserStats = async (Actoken,ReToken) => {
-        const res = await fetch('https://terribilita-milissa-unpermitted.ngrok-free.dev/api/profile/stats',
-            {method:'GET',headers:{'Content-Type': 'application/json','Authorization': `Bearer ${Actoken}`}})
-        console.log("Status",res.status)
-        if (res.ok) {
-            const userStats = await res.json();
-            await setDataStorage("userStats",JSON.stringify(userStats))
-            setUserStats(userStats)
-        }
-        else if (res.status === 401) {
-            const tempToken = await getNewToken(ReToken)
-            console.log("Temp token: ",tempToken)
-            if (tempToken) {
-                setAccToken(tempToken)
-                return await getUserStats(tempToken,ReToken)
-            }
-        }
-        else {
-            console.log("Something went wrong!")
-            setLogin(false)
         }
     }
 
@@ -145,7 +113,7 @@ export const AuthProvider = ({children}) => {
 
     return (<AuthenticationContext.Provider value={{isLogin,isLoading,setLogin,setDataStorage,
         setAccToken,getNewToken,setRefToken,setUser,user,accToken,refToken,registerData,
-        setRegisterData,register,registerLoading,getDataStorage,logout,appLanguage,changeAppLanguage,userStats}}>{children}</AuthenticationContext.Provider>)
+        setRegisterData,register,registerLoading,getDataStorage,logout,appLanguage,changeAppLanguage}}>{children}</AuthenticationContext.Provider>)
 }
 
 export const useAuth = () => {
