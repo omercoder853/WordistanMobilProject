@@ -1,4 +1,4 @@
-import { View,Text,TextInput,Keyboard,TouchableWithoutFeedback } from "react-native";
+import { View,Text,TextInput,Keyboard,TouchableWithoutFeedback, Vibration } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useGame } from "../contextapis/GamesContext";
 import { useNavigation } from "@react-navigation/native";
@@ -10,6 +10,13 @@ import QuestionNavigation from "../gamesLayout/gameComponents/questionNavigation
 import { useTranslation } from "react-i18next";
 
 export default function WordCompletionPage(){
+    const [isVibrate,setVibrate] = useState(true)
+    useEffect(() => {
+    const loadVibration = async () => {
+        const val = await getDataStorage("vibration");
+        setVibrate(val !== null ? JSON.parse(val) : true);
+    };
+    loadVibration();}, []);
     const { t } = useTranslation();
     const navigation = useNavigation();
     const {hints,questions,visibleFirstLetter,userAnswers,setUserAnswers,seconds,numberQuestion} = useGame();
@@ -35,6 +42,7 @@ export default function WordCompletionPage(){
     },[currentQuestionIndex])
 
     const handleTextChange = (text, index) => {
+    isVibrate && Vibration.vibrate(80)
     if (text.length > 0 && index < answer.length - 1) {
         inputs.current[index + 1].focus();
     }

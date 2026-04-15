@@ -1,15 +1,25 @@
-import { View,Text,TouchableOpacity } from "react-native";
+import { View,Text,TouchableOpacity,Vibration } from "react-native";
 import styles from "../gameStyles/mcqStyles";
 import { useGame } from "../../contextapis/GamesContext";
+import { useAuth } from "../../contextapis/AuthContext";
+import { useState,useEffect } from "react";
 
 export default function QuizOption({option,correctIndex,index,currentQuestion}){
     const {userAnswers,setUserAnswers} = useGame();
-
+    const {getDataStorage} = useAuth();
+    const [isVibrate,setVibrate] = useState(true)
+        useEffect(() => {
+        const loadVibration = async () => {
+            const val = await getDataStorage("vibration");
+            setVibrate(val !== null ? JSON.parse(val) : true);
+        };
+        loadVibration();}, []);
     const isAnswered = userAnswers?.find(answer => answer.question == currentQuestion)
     const isCorrect = isAnswered?.userAnswer === isAnswered?.correctAnswer
     const isSelected = isAnswered?.userAnswer === index
 
     const clickOption = ()=>{
+        isVibrate && Vibration.vibrate(80)
         setUserAnswers((prev)=>{
             return [...prev,{"question":currentQuestion,"userAnswer":index,"correctAnswer":correctIndex}]
         })

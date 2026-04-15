@@ -1,4 +1,4 @@
-import {View,Text,TouchableOpacity,Pressable } from "react-native";
+import {View,Text,Pressable,Vibration } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styles from "../gamesLayout/gameStyles/mpStyles";
 import { useGame } from "../contextapis/GamesContext";
@@ -8,11 +8,21 @@ import GameHeader from "../gamesLayout/gameComponents/gameHeader";
 import QuestionNavigation from "../gamesLayout/gameComponents/questionNavigations";
 import CustomAlert from "../commonComponents/customAlert/customAlert";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "../contextapis/AuthContext";
 
 export default function MatchingPairsPage(){
+    const {getDataStorage} = useAuth();
+    const [isVibrate,setVibrate] = useState(true)
+    useEffect(() => {
+    const loadVibration = async () => {
+        const val = await getDataStorage("vibration");
+        setVibrate(val !== null ? JSON.parse(val) : true);
+    };
+    loadVibration();}, []);
     const { t } = useTranslation();
     const navigation = useNavigation();
-    const {hints,questions,seconds,numberQuestion,perPage,randomIndexCreater,userAnswers,setUserAnswers} = useGame();
+    const {hints,questions,seconds,numberQuestion,perPage,randomIndexCreater,
+        userAnswers,setUserAnswers} = useGame();
     const [remainTime,setRemainTime] = useState(seconds * numberQuestion)
     const [currentQuestionPage,setCurrentQuestionPage] = useState(0)
     const [exitVisible,setExitVisible] = useState(false)
@@ -75,6 +85,12 @@ export default function MatchingPairsPage(){
         if (isPause) return;
 
         const timer = setTimeout(()=>{
+            if (remainTime<=5 && remainTime>1 && isVibrate) {
+                Vibration.vibrate(50)
+            }
+            else if (remainTime == 1 && isVibrate){
+                Vibration.vibrate(500)
+            }
             setRemainTime(remainTime-1)
         },1000)
 
@@ -125,6 +141,7 @@ export default function MatchingPairsPage(){
     }
 
     const selectQuestionHandler = (ind)=>{
+        isVibrate && Vibration.vibrate(80)
         setSelectedAnswer(null)
         if (selectedQuestion !== undefined && selectedQuestion !== null) {
             setSelectedQuestion(null)
@@ -134,7 +151,7 @@ export default function MatchingPairsPage(){
         }
     }
 
-    const selectAnswerHandler = (ind) =>{
+    const selectAnswerHandler = async (ind) =>{
         if (selectedAnswer == null && selectedAnswer == undefined) {
             setTotalTry((prev)=>prev+1)
             setSelectedAnswer(ind)
@@ -146,15 +163,19 @@ export default function MatchingPairsPage(){
                     setSelectedQuestion(null)
                     setSelectedAnswer(null)
                 },800)
+                isVibrate && Vibration.vibrate(80)
             }
             else {
+                if (isVibrate) {
+                    Vibration.vibrate(50)
+                    await new Promise(resolve => setTimeout(resolve, 120));
+                    Vibration.vibrate(50)
+                }
                 const timer = setTimeout(()=>{
                     setSelectedAnswer(null)
                 },800)
             }
-        }
-        else{setSelectedAnswer(null)}
-    }
+        }}
 
     const isAnswered = (ind,key)=>{
         return userAnswers.some((ans)=>ans.currentPage===currentQuestionPage && ans[key] === ind)
