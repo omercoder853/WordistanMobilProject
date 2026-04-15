@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
         backgroundColor:'green',
         width:'60%',
         alignSelf:'center',
-        marginTop:50,
+        marginTop:30,
         paddingVertical:10,
         borderRadius:10
     },
@@ -130,6 +130,38 @@ const styles = StyleSheet.create({
         paddingVertical:15,
         paddingHorizontal:25,
         borderRadius:15
+    },
+    setupCard: {
+        backgroundColor: '#ffffff',
+        padding: 15,
+        borderRadius: 20,
+        marginBottom: 15,
+        elevation: 3,
+        zIndex: 1
+    },
+    setupCardTop: {
+        zIndex: 3000
+    },
+    setupOptionLabel: {
+        fontSize: 16,
+        fontWeight: '700',
+        marginBottom: 8,
+        color: '#5B3FD3',
+    },
+    primarySourceButton: {
+        backgroundColor: "#5B3FD3",
+        borderColor: "#412a9e"
+    },
+    primaryStartButton: {
+        backgroundColor: "#5B3FD3",
+        elevation: 8,
+        shadowColor: "#5B3FD3",
+        shadowOffset: { height: 4, width: 0 },
+        shadowOpacity: 0.5,
+        shadowRadius: 10
+    },
+    primaryStartText: {
+        letterSpacing: 1
     }
 })
 

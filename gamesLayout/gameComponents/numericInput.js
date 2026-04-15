@@ -34,7 +34,7 @@ export default function NumericInput({minValue,maxValue,setValue,value,quantity}
         }
     }
     return (
-        <View>
+        <View style={{marginBottom:15}}>
             <View style={styles.inputRow}>
                 <TextInput style={styles.numericInput} value={value.toString()+ " " + quantity} keyboardType="numeric" 
                 onChangeText={(value)=>changeValue(value)} onBlur={checkValue} 

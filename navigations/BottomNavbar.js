@@ -3,6 +3,7 @@ import HomePage from '../pages/homePage';
 import Dictionaries from '../pages/dictionaries';
 import ProfileRow from './profileRow';
 import {MaterialIcons,Ionicons,Entypo} from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import Translate from '../pages/translate';
 import Games from '../pages/games';
 import Profile from '../pages/profile';
@@ -25,7 +26,9 @@ export default function BottomNavbar(){
         return null;
     }
     return(
+        <LinearGradient colors={['#F5EDFF', '#FFFFFF']} start={{x:0, y:0}} end={{x:0, y:1}} style={{flex: 1}}>
         <Bottom.Navigator initialRouteName={initialPage} 
+        sceneContainerStyle={{backgroundColor: 'transparent'}}
         screenOptions={{header:()=><ProfileRow/>, tabBarShowLabel:false}}>
             <Bottom.Screen name='Home' 
             options={{tabBarIcon:({focused})=>(<Ionicons name={focused?"home":"home-outline"} size={24} color={focused ? "#5B3FD3":"#A6A1B8"} />)}}>
@@ -42,5 +45,6 @@ export default function BottomNavbar(){
             <Bottom.Screen name='Profile' component={Profile} 
             options={{headerShown:false, tabBarIcon:({focused})=>(<MaterialIcons name="account-box" size={24} color={focused ? "#5B3FD3":"#A6A1B8"} />)}}></Bottom.Screen>
         </Bottom.Navigator>
+        </LinearGradient>
     )
 } 

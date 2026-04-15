@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native'
 import styles from '../HomePageStyles/homeStyles'
-import { MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
+import { MaterialCommunityIcons, FontAwesome, Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 
@@ -23,30 +23,30 @@ const QuickMenuItems = () => {
     return (
         <ScrollView style={{ height: 'auto' }} horizontal showsHorizontalScrollIndicator={false}>
             <View style={styles.scrollView}>
-                <TouchableOpacity style={{ alignItems: 'center' }} onPress={goToPersonalDicts}>
-                    <View style={styles.quickMenuColumn}>
-                        <MaterialCommunityIcons name="bookshelf" size={24} color="black" />
-                        <Text>{t('collections')}</Text>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity style={{ alignItems: 'center' }} onPress={goToBadges}>
-                    <View style={styles.quickMenuColumn}>
-                        <MaterialCommunityIcons name="medal" size={24} color="black" />
-                        <Text>{t('badges')}</Text>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity style={{ alignItems: 'center' }}>
-                    <View style={styles.quickMenuColumn}>
-                        <FontAwesome name="star" size={24} color="black" />
-                        <Text>{t('favorites')}</Text>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity style={{ alignItems: 'center' }} onPress={goToStatistics}>
-                    <View style={styles.quickMenuColumn}>
-                        <FontAwesome name="line-chart" size={24} color="black" />
-                        <Text>{t('statistics')}</Text>
-                    </View>
-                </TouchableOpacity>
+                <View style={styles.quickMenuColumn}>
+                    <TouchableOpacity style={{ flex: 1, width: '100%', alignItems: 'center', justifyContent: 'center' }} onPress={goToPersonalDicts}>
+                        <MaterialCommunityIcons name="bookshelf" size={28} color="#5B3FD3" style={{marginBottom: 8}} />
+                        <Text style={styles.quickMenuText}>{t('collections')}</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.quickMenuColumn}>
+                    <TouchableOpacity style={{ flex: 1, width: '100%', alignItems: 'center', justifyContent: 'center' }} onPress={goToBadges}>
+                        <MaterialCommunityIcons name="medal" size={28} color="#5B3FD3" style={{marginBottom: 8}} />
+                        <Text style={styles.quickMenuText}>{t('badges')}</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.quickMenuColumn}>
+                    <TouchableOpacity style={{ flex: 1, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+                        <FontAwesome name="star-o" size={28} color="#5B3FD3" style={{marginBottom: 8}} />
+                        <Text style={styles.quickMenuText}>{t('favorites')}</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.quickMenuColumn}>
+                    <TouchableOpacity style={{ flex: 1, width: '100%', alignItems: 'center', justifyContent: 'center' }} onPress={goToStatistics}>
+                        <Feather name="search" size={28} color="#5B3FD3" style={{marginBottom: 8}} />
+                        <Text style={styles.quickMenuText}>{t('statistics')}</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         </ScrollView>
     )
@@ -55,9 +55,8 @@ const QuickMenuItems = () => {
 const QuickMenu = () => {
     const { t } = useTranslation();
     return (
-        <View style={styles.quickMenu}>
-            <Text style={{ fontWeight: '900', marginBottom: 10, fontSize: 20 }}>{t('shortcuts')}</Text>
-            <View style={{ borderColor: '#E8E4F2', borderWidth: 1, marginBottom: 10 }}></View>
+        <View style={[styles.quickMenu, {paddingLeft: 10}]}>
+            <Text style={{ fontWeight: '900', marginBottom: 15, fontSize: 20, marginLeft: 10 }}>{t('shortcuts')}</Text>
             <QuickMenuItems />
         </View>
     )

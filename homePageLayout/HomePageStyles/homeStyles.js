@@ -9,10 +9,7 @@ const styles = StyleSheet.create({
         justifyContent:'space-between',
         paddingVertical:5,
         paddingRight:10,
-        borderBottomEndRadius:10,
-        borderBottomStartRadius:10,
-        elevation:10,
-        backgroundColor:'#E9E6F2'
+        backgroundColor: 'transparent'
     },
     textWelcome:{
         fontSize:18,
@@ -41,15 +38,15 @@ const styles = StyleSheet.create({
         borderRadius:25,
     },
     dailyWordContainer:{
-        backgroundColor:'#F3D6E4',
         padding:20,
         borderRadius:25,
-        borderWidth:1,
-        borderColor:'#eee',
-        elevation:10,
+        elevation:8,
+        shadowColor: '#8E4A7C',
+        shadowOffset: {width: 0, height: 4},
+        shadowOpacity: 0.3,
+        shadowRadius: 10,
         marginHorizontal:10,
         marginVertical:15
-
     },
     dailyWordRow:{
         flexDirection:'row',
@@ -105,17 +102,24 @@ const styles = StyleSheet.create({
     },
     quickMenuColumn:{
         alignItems:'center',
-        flex:1,
+        justifyContent: 'center',
         backgroundColor:'white',
-        marginRight:10,
+        marginRight:15,
         paddingHorizontal:10,
         paddingVertical:10,
-        width:100,
-        borderRadius:15,
-        borderColor:'#E8E4F2',
-        borderWidth:1,
-        backgroundColor:'#E9E6F2'
-        
+        width:90,
+        height:80,
+        borderRadius:10,
+        elevation: 1,
+        shadowColor: '#8E4A7C',
+        shadowOffset: {width: 0, height: 4},
+        shadowOpacity: 0.15,
+        shadowRadius: 10,
+    },
+    quickMenuText:{
+        fontSize: 12, 
+        fontWeight: '500', 
+        color: '#333'
     },
     scrollView:{
         display:'flex',

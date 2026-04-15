@@ -6,7 +6,8 @@ const styles = StyleSheet.create({
         justifyContent:'space-between',
         width:'100%',
         alignItems:'center',
-        marginBottom:20
+        marginBottom:20,
+        marginTop:15
     },
     headerRowButtons:{
         padding:5,

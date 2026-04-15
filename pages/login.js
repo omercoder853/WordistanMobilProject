@@ -6,6 +6,7 @@ import LottieView from "lottie-react-native";
 import { useNavigation } from "@react-navigation/native";
 import { StyleSheet } from "react-native";
 import { useTranslation } from "react-i18next";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 
 export default function LoginPage(){
@@ -47,6 +48,7 @@ export default function LoginPage(){
     }
 
     return (
+        <SafeAreaView style={{flex: 1, backgroundColor: '#EBE1FF'}}>
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{flex:1}}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={styles.mainContainer}>
@@ -85,6 +87,7 @@ export default function LoginPage(){
                 </View>
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
+        </SafeAreaView>
     )
 }
 

@@ -39,7 +39,7 @@ const ProfileRow = () => {
                 style={styles.profileImage}
                 source={imgSource}/>
             <Text style={{marginRight:9}}>{t("level")} {userStats?.level}</Text>
-            <Ionicons  name="notifications" size={24} color="black" />
+            <Ionicons  name="notifications" size={24} color="#5B3FD3" />
         </View>
     </View>
 )};
