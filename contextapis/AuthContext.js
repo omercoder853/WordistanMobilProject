@@ -1,7 +1,8 @@
 import { createContext,useContext,useState,useEffect} from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import i18n from '../src/i18n/i18n';
-
+import { BASE_URL,ENDPOINTS } from "../constants/ApiConfig";
+import { jwtDecode } from "jwt-decode";
 
 export const AuthenticationContext = createContext() 
 
@@ -14,6 +15,7 @@ export const AuthProvider = ({children}) => {
     const [registerData,setRegisterData] = useState({});
     const [registerLoading,setRegisterLoading] = useState(false)
     const [appLanguage,setAppLanguage] = useState(null);
+    const [vibrationPref,setVibrationPref] = useState(true)
     
     useEffect(()=>{
         const getTokens = async () => {
@@ -39,31 +41,36 @@ export const AuthProvider = ({children}) => {
         },[])
 
     const getNewToken = async (ReToken) => {
-        const res = await fetch('https://terribilita-milissa-unpermitted.ngrok-free.dev/api/token/refresh',
-            {body:JSON.stringify({refresh:ReToken}),method:'POST',headers:{'Content-Type': 'application/json'}})
+        const res = await fetch(BASE_URL + ENDPOINTS.refresh,
+            {body:JSON.stringify({refresh_token:ReToken}),method:'POST',headers:{'Content-Type': 'application/json'}})
         if (res.status===200) {
             const data = await res.json();
-            setAccToken(data['access'])
-            await setDataStorage("access-token",data['access'])
+            console.log("token refreshed successfully")
+            setAccToken(data['access_token'])
+            await setDataStorage("access-token",data['access_token'])
             if (!isLogin) {
                 setLogin(true)
             }
-            return(data['access'])
+            return(data['access_token'])
         }
         else{
             console.log("I cant reach the api")
+            console.log(res)
             return(false)
         }
     }
 
     const verifyToken = async (Actoken,ReToken) => {
-        const res = await fetch('https://terribilita-milissa-unpermitted.ngrok-free.dev/api/token/verify',
-            {body:JSON.stringify({token:Actoken}),method:'POST',headers:{'Content-Type': 'application/json'}})
-        if (res.status===200) {
-            setLogin(true)
+        console.log("token is verifying...")
+        const decoded = jwtDecode(Actoken)
+        const currentTime = Date.now() / 1000;
+        if (currentTime > decoded.exp) {
+            console.log("token is not valid!! \nrefreshing...")
+            await getNewToken(ReToken)
         }
         else {
-            await getNewToken(ReToken);
+            console.log("token is valid")
+            setLogin(true)
         }
     }
 
@@ -94,26 +101,16 @@ export const AuthProvider = ({children}) => {
 
     const register = async(data)=>{
         setRegisterLoading(true)
-        const res =await fetch('https://terribilita-milissa-unpermitted.ngrok-free.dev/api/register',
+        const res =await fetch(BASE_URL + ENDPOINTS.register,
             {method:'POST',headers:{
             'Content-Type': 'application/json'},body:JSON.stringify(data)})
         setRegisterLoading(false)
         return (res.status)  
     }
 
-    const logout = async () =>{
-        await AsyncStorage.removeItem("@wordistan:access-token")
-        await AsyncStorage.removeItem("@wordistan:refresh-token")
-        await AsyncStorage.removeItem("@wordistan:user")
-        setAccToken(null)
-        setRefToken(null)
-        setUser(null)
-        setLogin(false)
-    }
-
     return (<AuthenticationContext.Provider value={{isLogin,isLoading,setLogin,setDataStorage,
         setAccToken,getNewToken,setRefToken,setUser,user,accToken,refToken,registerData,
-        setRegisterData,register,registerLoading,getDataStorage,logout,appLanguage,changeAppLanguage}}>{children}</AuthenticationContext.Provider>)
+        setRegisterData,register,registerLoading,getDataStorage,appLanguage,changeAppLanguage}}>{children}</AuthenticationContext.Provider>)
 }
 
 export const useAuth = () => {
