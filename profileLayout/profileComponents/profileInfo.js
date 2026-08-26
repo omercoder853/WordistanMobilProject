@@ -5,7 +5,7 @@ import { useAuth } from "../../contextapis/AuthContext";
 
 export default function ProfileInfo(){
     const {user} = useAuth();
-    const imgSource = user.gender=="male" ? require("../../assets/avatarBoy.png") : require("../../assets/avatarGirl.png")
+    const imgSource = user?.gender=="male" ? require("../../assets/avatarBoy.png") : require("../../assets/avatarGirl.png")
     return (
         <View style={{alignItems:'center'}}>
             <Image style={styles.profilePhoto} source={imgSource}/>

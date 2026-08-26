@@ -5,7 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { useUserStats } from '../../contextapis/UserStatsContext';
 const StatRow = () => {
     const { t } = useTranslation();
-    const {userStats} = useUserStats();
+    const {userStats,pendingEarnedXP} = useUserStats();
+    console.log("pending earned xp : " , pendingEarnedXP)
     return(
         <View style={styles.statRow}>
             <TouchableOpacity style={styles.statItemButton}>
@@ -26,7 +27,7 @@ const StatRow = () => {
                     <FontAwesome name="diamond" size={24} color="#4DA3FF" />
                 </View>
                 <View style={styles.statColumn}>
-                    <Text style={{fontWeight:'900',fontSize:20}}>{userStats?.total_xp}</Text>
+                    <Text style={{fontWeight:'900',fontSize:20}}>{userStats?.total_xp + pendingEarnedXP}</Text>
                     <Text>{t('xp')}</Text>
                 </View>
             </View>

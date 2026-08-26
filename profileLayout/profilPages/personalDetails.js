@@ -49,7 +49,7 @@ export default function PersonalDetails(){
                 <View style={{borderColor:'#F1F5F9',borderWidth:1}}></View>
                 <View style={styles.profileDetailItem}>
                     <Text style={styles.profileLabel}>{t("dateJoinedProfile")}</Text>
-                    <Text style={styles.profileValue}>{user.date_joined.slice(0,10)}</Text>
+                    <Text style={styles.profileValue}>{user?.date_joined?.slice(0,10)}</Text>
                 </View>
                 <View style={{borderColor:'#F1F5F9',borderWidth:1}}></View>
                 <View style={styles.profileDetailItem}>

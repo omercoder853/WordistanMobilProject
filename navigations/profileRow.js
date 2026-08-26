@@ -13,7 +13,7 @@ const ProfileRow = () => {
     const {user,setUser,getDataStorage} = useAuth();
     const {t} = useTranslation();
     
-    const imgSource = user.gender=="male" ? require('../assets/avatarBoy.png') : require('../assets/avatarGirl.png')
+    const imgSource = user?.gender=="male" ? require('../assets/avatarBoy.png') : require('../assets/avatarGirl.png')
     useEffect(() => {
         if (!user) {
             const loadUser = async () => {
