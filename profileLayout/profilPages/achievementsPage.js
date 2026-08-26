@@ -1,4 +1,4 @@
-import { View,Text,ImageBackground,Dimensions,ScrollView } from "react-native";
+import { View,Text,ImageBackground,Dimensions,FlatList } from "react-native";
 import styles from "../profileStyle/achievementsStyle";
 import { useTranslation } from "react-i18next";
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -47,14 +47,20 @@ export default function Achievements(){
                 <Ionicons style={{marginLeft:'auto'}} name="filter-sharp" size={screenWidth*0.07} color="black" />
             </View>
             <View style={{borderWidth:1,borderColor:'#E0E0E0',width:'90%',marginVertical:10}}></View>
-            <ScrollView style={{ width: '100%' }} 
-            contentContainerStyle={{ alignItems: 'center', paddingBottom: 20 }}
-            showsVerticalScrollIndicator={false}>
-                {ACHIEVEMENTLIST.map((ach)=>{
-                    const isEarned = earnedAchievements.some((ac) => ac.achievementId === ach.id)
-                    return <Achievement key={ach.id} ach={ach} isEarned={isEarned}/>
-                })}
-            </ScrollView>
+            <FlatList 
+                data={ACHIEVEMENTLIST}
+                keyExtractor={(item) => item.id}
+                style={{ width: '100%' }}
+                contentContainerStyle={{ paddingBottom: 20, alignItems: 'center' }}
+                showsVerticalScrollIndicator={false}
+                initialNumToRender={5}
+                maxToRenderPerBatch={5}
+                windowSize={5}
+                renderItem={({item}) => {
+                    const isEarned = earnedAchievements.some((ac) => ac.achievementId === item.id)
+                    return <Achievement ach={item} isEarned={isEarned}/>
+                }}
+            />
             
             
         </View>

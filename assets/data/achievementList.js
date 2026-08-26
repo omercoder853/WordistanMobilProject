@@ -17,22 +17,22 @@ const ACHIEVEMENTLIST = [
     id: "librarian_1", 
     image: require("../../assets/achievement_images/librarian_1.png"),
     type: "bronze",
-    requirementField: "saved_words",
+    requirementField: "created",
     requirementValue: 10 
   },
   { 
     id: "archivist_1", 
     image: require("../../assets/achievement_images/archivist_1.png"),
     type: "bronze",
-    requirementField: "created",
-    requirementValue: 3 
+    requirementField: "saved_words",
+    requirementValue: 10 
   },
   { 
     id: "archivist_2", 
     image: require("../../assets/achievement_images/archivist_2.png"),
     type: "silver",
-    requirementField: "created",
-    requirementValue: 10
+    requirementField: "saved_words",
+    requirementValue: 25
   },
   { 
     id: "curious_novice", 
