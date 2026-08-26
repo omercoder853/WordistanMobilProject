@@ -1,0 +1,14 @@
+export const BASE_URL = 'https://wordistan-backend.onrender.com/api/v1'
+
+export const ENDPOINTS = {
+    login:"/auth/login",
+    register:"/auth/register",
+    refresh:"/auth/refresh",
+    stats:"/stats/",
+    dictionaries:"/dictionaries",
+    words:"/words",
+    newDictionary:"/dictionaries/new",
+    newWord:"/words/add",
+    register:"/auth/register",
+    incrementTranslation : "/stats/increment-translation"
+}
