@@ -6,13 +6,22 @@ import styles from "../dictionariesLayout/DictionariesStyles/dictStyles";
 import EmptyDictionary from "../dictionariesLayout/DictionariesComponents/emptyDictionary";
 import { useTranslation } from "react-i18next";
 import { LinearGradient } from "expo-linear-gradient";
+import { useEffect, useState } from "react";
 
 export default function DictDetails(){
     const {t} = useTranslation();
     const {getWords,getDict} = useDictionary();
     const route = useRoute();
     const {dictId} = route.params;
-    const words = getWords(dictId) || [];
+    const [words,setWords] = useState([])
+    useEffect(()=>{
+        async function fetchwords() {
+            const fetchedWords = await getWords(dictId) || [];
+            setWords(fetchedWords)
+        }
+        fetchwords()
+    },[])
+    
     const dict = getDict(dictId)
 
     return (

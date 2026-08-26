@@ -28,7 +28,8 @@ export default function AddDictPage({visible,input,result,setVisible,from}){
     }));
 
     const saveButton = async () => {
-        const status = await saveWord({word:input,meaning:result,dict_id:value});
+        console.log(value)
+        const status = await saveWord({dictionary_id:value,word:input,meaning:result});
         console.log("Status",status)
         if (status) {
             setSuccess(true)
