@@ -17,15 +17,17 @@ export const AchievementsProvider = ({ children }) => {
             if (response.ok) {
                 const data = await response.json();
                 console.log("Achievements fetched successfully");
-                return data;
+                return data || [];
             }
         }
         catch (error) {
             console.error("Error fetching achievements:", error);
         }
+        return [];
     }
 
     const getEarnedAchievements = async (tokenToUse = accToken) => {
+        if (!tokenToUse) return [];
         try {
             const response = await fetch(BASE_URL + ENDPOINTS.earnedAchievements, {
                 method: "GET",
@@ -37,7 +39,7 @@ export const AchievementsProvider = ({ children }) => {
             if (response.ok) {
                 const data = await response.json();
                 console.log("Earned Achievements fetched successfully");
-                return data;
+                return data || [];
             }
             else if (response.status === 401) {
                 const newToken = await getNewToken(refToken);
@@ -49,21 +51,28 @@ export const AchievementsProvider = ({ children }) => {
         } catch (error) {
             console.error("Error fetching earned achievements:", error);
         }
+        return [];
     };
 
     useEffect(() => {
+        if (!isLogin) {
+            setAchievements([]);
+            setEarnedAchievements([]);
+            return;
+        }
+
         const fetchAchievements = async () => {
-            const achievements = await getAchievements();
-            setAchievements(achievements);
-            const earnedAchievements = await getEarnedAchievements();
-            setEarnedAchievements(earnedAchievements);
+            const achievementsData = await getAchievements();
+            setAchievements(achievementsData || []);
+            const earnedData = await getEarnedAchievements();
+            setEarnedAchievements(earnedData || []);
         };
 
         fetchAchievements();
-    }, []);
+    }, [isLogin, accToken]);
 
     useEffect(() => {
-        if (!user?.sub) return;
+        if (!user?.sub || !isLogin) return;
         const channel = supabase
             .channel(`user-achievements-${user.sub}`)
             .on(
@@ -77,15 +86,21 @@ export const AchievementsProvider = ({ children }) => {
                 (payload) => {
                     console.log('Yeni satır:', payload.new);
 
-                    // 1. Gelen achievement_id'yi ana listede bul
-                    const fullDetail = achievements.find(
-                        (item) => String(item.id) === String(payload.new.achievement_id)
-                    );
-                    if (fullDetail) {
-                        setNewAchievement(fullDetail);
-                    } else {
-                        setNewAchievement(payload.new);
-                    }
+                    setAchievements((currentAchievements) => {
+                        const fullDetail = currentAchievements.find(
+                            (item) => String(item.id) === String(payload.new.achievement_id)
+                        );
+                        if (fullDetail) {
+                            setNewAchievement(fullDetail);
+                        } else {
+                            setNewAchievement(payload.new);
+                        }
+                        return currentAchievements;
+                    });
+
+                    getEarnedAchievements().then((updatedEarned) => {
+                        if (updatedEarned) setEarnedAchievements(updatedEarned);
+                    });
                 }
             )
             .subscribe((status) => {
@@ -95,7 +110,7 @@ export const AchievementsProvider = ({ children }) => {
         return () => {
             supabase.removeChannel(channel);
         };
-    }, [user?.sub, achievements, isLogin]);
+    }, [user?.sub, isLogin]);
 
     return (
         <AchievementsContext.Provider value={{ earnedAchievementsList, setEarnedAchievements, achievements, newAchievement, setNewAchievement }}>

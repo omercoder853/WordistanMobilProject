@@ -3,18 +3,16 @@ import styles from "../profileStyle/achievementsStyle";
 import { useTranslation } from "react-i18next";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Achievement from "./achievement";
-import { useState } from "react";
-import { useAuth } from "../../contextapis/AuthContext";
 import { useAchievements } from "../../contextapis/AchievementsContext";
 
 export default function Achievements(){
-    const { user } = useAuth();
     const {earnedAchievementsList,achievements} = useAchievements();
-    const earnedAchievements = user?.achievements || []
     const {t} = useTranslation();
     const { width: screenWidth } = Dimensions.get('window');
-    const counts = achievements.reduce((acc, ach) => {
-        const isEarned = earnedAchievementsList.some((ac) => ac.ImageBackground === ach.id);
+    const safeEarnedList = earnedAchievementsList || [];
+
+    const counts = (achievements || []).reduce((acc, ach) => {
+        const isEarned = safeEarnedList.some((ac) => ac.achievement_detail?.id === ach.id);
         if (isEarned) {
             acc[ach.type] = (acc[ach.type] || 0) + 1;
         }
@@ -57,7 +55,7 @@ export default function Achievements(){
                 maxToRenderPerBatch={5}
                 windowSize={5}
                 renderItem={({item}) => {
-                    const isEarned = earnedAchievementsList.some((ac) => ac.achievement_detail.id === item.id);
+                    const isEarned = safeEarnedList.some((ac) => ac.achievement_detail?.id === item.id);
                     return <Achievement ach={item} isEarned={isEarned}/>
                 }}
             />

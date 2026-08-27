@@ -11,14 +11,10 @@ import { useEffect } from "react";
 import ProfileConsole from '../profileLayout/profileComponents/profileConsole';
 import { useState } from 'react';
 import { useTranslation } from "react-i18next";
-import { useUserStats } from '../contextapis/UserStatsContext';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { supabase } from '../services/supabase';
 
 const Profile = () => {
-    const {setUserStats} = useUserStats();
     const { t } = useTranslation();
-    const {user,getDataStorage,setUser,accToken,setAccToken,setRefToken,setLogin} = useAuth();
+    const {user,getDataStorage,setUser,logout} = useAuth();
     const [alertVisible,setAlertVisible] = useState(false)
 
     useEffect(() => {
@@ -31,53 +27,6 @@ const Profile = () => {
         };
         loadUser();
     }}, [user]);
-
-    async function loadData() {
-    const rawTranslated = await getDataStorage("pendingTranslated");
-    const rawSavedWords = await getDataStorage("pendingSavedWords");
-    const rawXP = await getDataStorage("pendingEarnedXP");
-
-    const pendingTranslated = JSON.parse(rawTranslated || "0");
-    const pendingSavedWords = JSON.parse(rawSavedWords || "0");
-    const pendingEarnedXP = JSON.parse(rawXP || "0");
-
-    return { pendingTranslated, pendingSavedWords, pendingEarnedXP };
-    }
-
-    async function logout() {
-        await supabase.auth.signOut();
-        await AsyncStorage.removeItem("@wordistan:access-token")
-        await AsyncStorage.removeItem("@wordistan:refresh-token")
-        await AsyncStorage.removeItem("@wordistan:user")
-        await AsyncStorage.removeItem("@wordistan:userStats")
-        await AsyncStorage.removeItem("@wordistan:pendingTranslated")
-        await AsyncStorage.removeItem("@wordistan:pendingSavedWords")
-        setAccToken(null)
-        setRefToken(null)
-        setUser(null)
-        setUserStats(null)
-        setLogin(false)
-    }
-
-    const logoutHandler = async (tokenToUse=accToken)=>{
-        try{
-            const { pendingTranslated, pendingSavedWords, pendingEarnedXP } = await loadData();
-            if (pendingTranslated > 0 || pendingSavedWords > 0 || pendingEarnedXP > 0) {
-                console.log("Önce bekleyen veriler gönderiliyor...");
-                const pendingValues = {
-                    saved: pendingSavedWords,
-                    translated: pendingTranslated,
-                    xp: pendingEarnedXP
-                };
-                const savedUserStats = await getDataStorage("userStats");
-            }
-            console.log("pending veri yok logout ediliyor")
-            logout();
-        }
-        catch (error) {
-            console.log("something went wrong: ",error)
-        }
-    }
 
     return (
         <>
@@ -98,7 +47,7 @@ const Profile = () => {
         <CustomAlert visible={alertVisible} title={t('warning')} message={t('logoutWarning')} 
         buttons={[
             {text:t('cancel'),style:"cancel",action:()=>setAlertVisible(false)},
-            {text:t('exit'),style:"danger",action:logoutHandler}]} />
+            {text:t('exit'),style:"danger",action:logout}]} />
         </>  
     )
 }

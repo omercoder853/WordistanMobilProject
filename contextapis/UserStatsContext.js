@@ -6,7 +6,7 @@ export const UserStatsContext = createContext();
 export const UserStatsProvider = ({ children }) => {
     const { setDataStorage, getDataStorage, accToken,
         setAccToken, refToken, isLogin, setLogin, getNewToken, user, setUser } = useAuth();
-    
+
 
     const [userStats, setUserStats] = useState(null);
     const [pendingTranslated, setPendingTranslated] = useState(0);
@@ -46,7 +46,7 @@ export const UserStatsProvider = ({ children }) => {
         }
     }, [accToken, refToken, getNewToken, setAccToken, setLogin, setDataStorage]);
 
-    const clearPendingData = async ()=>{
+    const clearPendingData = async () => {
         setPendingEarnedXP(0);
         setPendingSavedWords(0);
         setPendingTranslated(0);
@@ -56,11 +56,15 @@ export const UserStatsProvider = ({ children }) => {
     }
 
     useEffect(() => {
-        if (!isLogin) return;
-        const getData = async () => {
-            await getUserStats()
-        };
-        getData();
+        if (!isLogin) {
+            setUserStats(null)
+        }
+        else {
+            const getData = async () => {
+                await getUserStats()
+            };
+            getData();
+        }
     }, [isLogin]);
 
     const incTranslated = async (tokenToUse = accToken, isRetry = false) => {
@@ -105,8 +109,8 @@ export const UserStatsProvider = ({ children }) => {
     }
 
     const incXP = async (amount) => {
-        await setDataStorage("pendingXP", JSON.stringify(pendingEarnedXP+amount))
-        setPendingEarnedXP((prev)=>{
+        await setDataStorage("pendingXP", JSON.stringify(pendingEarnedXP + amount))
+        setPendingEarnedXP((prev) => {
             const newValue = prev + amount;
             return newValue;
         });

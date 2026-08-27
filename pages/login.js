@@ -27,12 +27,10 @@ export default function LoginPage(){
         Keyboard.dismiss();
         if (!anyError) {
             setLoading(true)
-            console.log(BASE_URL + ENDPOINTS.login)
             const res = await fetch(BASE_URL + ENDPOINTS.login,
             {body:JSON.stringify({email,password}),method:'POST',headers:{'Content-Type': 'application/json'}})
             if (res.status == 200) {
                 const data = await res.json();
-                console.log(data)
                 await setDataStorage("access-token",data['access_token'])
                 setAccToken(data['access_token'])
                 await setDataStorage("refresh-token",data['refresh_token'])

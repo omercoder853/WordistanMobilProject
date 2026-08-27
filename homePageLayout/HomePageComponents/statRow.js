@@ -16,7 +16,7 @@ const StatRow = () => {
                         <Text style={{fontSize:12,color:'gray'}}>{t('streak')}</Text>
                     </View>
                     <View style={styles.statColumn}>
-                        <Text style={{fontWeight:'900',fontSize:20}}>{userStats?.current_streak}</Text>
+                        <Text style={{fontWeight:'900',fontSize:20}}>{userStats?.current_streak || 0}</Text>
                         <Text>{t('days')}</Text>
                     </View>
                 </View>
@@ -27,7 +27,7 @@ const StatRow = () => {
                     <FontAwesome name="diamond" size={24} color="#4DA3FF" />
                 </View>
                 <View style={styles.statColumn}>
-                    <Text style={{fontWeight:'900',fontSize:20}}>{userStats?.total_xp + pendingEarnedXP}</Text>
+                    <Text style={{fontWeight:'900',fontSize:20}}>{(userStats?.total_xp || 0) + (pendingEarnedXP || 0)}</Text>
                     <Text>{t('xp')}</Text>
                 </View>
             </View>

@@ -2,12 +2,10 @@ import { View,Text,TouchableOpacity } from "react-native";
 import {Ionicons,Entypo} from '@expo/vector-icons';
 import styles from "../profileStyle/styles";
 import { useNavigation } from "@react-navigation/native";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useAuth } from "../../contextapis/AuthContext";
+
 
 export default function ConsoleButton({item,setAlertVisible}){
     const navigation = useNavigation();
-    const {} = useAuth();
 
     function handleLogout() {
         setAlertVisible(true)
