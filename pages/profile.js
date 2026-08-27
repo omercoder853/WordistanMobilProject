@@ -13,6 +13,7 @@ import { useState } from 'react';
 import { useTranslation } from "react-i18next";
 import { useUserStats } from '../contextapis/UserStatsContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { supabase } from '../services/supabase';
 
 const Profile = () => {
     const {setUserStats} = useUserStats();
@@ -44,6 +45,7 @@ const Profile = () => {
     }
 
     async function logout() {
+        await supabase.auth.signOut();
         await AsyncStorage.removeItem("@wordistan:access-token")
         await AsyncStorage.removeItem("@wordistan:refresh-token")
         await AsyncStorage.removeItem("@wordistan:user")

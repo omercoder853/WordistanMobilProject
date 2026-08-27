@@ -4,33 +4,22 @@ import styles from './newAchievementModalStyle';
 import { useUserStats } from '../../contextapis/UserStatsContext';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
+import {useAchievements} from "../../contextapis/AchievementsContext";
 
 export default function NewAchievement() {
-    const { t } = useTranslation();
-    const { activeAchievement,updateAchievements,setActiveAchievement } = useUserStats();
+    const { t,i18n } = useTranslation();
+    const {newAchievement,setNewAchievement} = useAchievements();
     const [isLoading,setIsLoading] = useState(false)
-    let achText;
-    switch (activeAchievement?.requirementField) {
-        case "translated_words":
-            achText = t('translatingwordsachievement', {count: activeAchievement.requirementValue})
-            break;
-        case "saved_words":
-            achText = t('savingwordsachievement',{count: activeAchievement.requirementValue})
-        default:
-            break;
-    }
+    const lang = i18n.language;
 
     const handlePress = async()=>{
-        console.log(activeAchievement)
         setIsLoading(true);
-        setActiveAchievement(null)
-        await updateAchievements();
+        setNewAchievement(null)
         setIsLoading(false);
     }
 
     return (
-        <Modal statusBarTranslucent={true} visible={activeAchievement} transparent animationType="fade">
-            {activeAchievement && (
+        <Modal statusBarTranslucent={true} visible={newAchievement !== null} transparent animationType="fade">
                 <View style={styles.overlay}>
                     <LottieView
                         source={require('../../assets/animations/ConfettiAnimation.json')}
@@ -40,17 +29,17 @@ export default function NewAchievement() {
                         resizeMode="cover"/>
 
                     <View style={styles.alertBox}>
-                        {activeAchievement?.image && (
+                        {newAchievement?.icon_url && (
                             <View style={styles.achievementLogoFrame}>
-                                <Image source={activeAchievement.image} style={styles.achievementLogo} />
+                                <Image source={{uri : newAchievement.icon_url}} style={styles.achievementLogo} />
                             </View>
                         )}
 
                         <Text style={styles.headingText}>{t('congratulations')}</Text>
-                        <Text style={styles.titleText}>{t(activeAchievement.id)}</Text>
+                        <Text style={styles.titleText}>{newAchievement?.["title_" + lang]}</Text>
                         
                         <Text style={styles.messageText}>
-                            {achText}
+                            {newAchievement?.["description_" + lang]}
                         </Text>
 
                         <TouchableOpacity 
@@ -61,7 +50,6 @@ export default function NewAchievement() {
                         </TouchableOpacity>
                     </View>
                 </View>
-            )}
         </Modal>
     );
 }

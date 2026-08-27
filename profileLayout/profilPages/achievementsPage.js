@@ -3,18 +3,18 @@ import styles from "../profileStyle/achievementsStyle";
 import { useTranslation } from "react-i18next";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Achievement from "./achievement";
-import ACHIEVEMENTLIST from "../../assets/data/achievementList";
 import { useState } from "react";
 import { useAuth } from "../../contextapis/AuthContext";
-
+import { useAchievements } from "../../contextapis/AchievementsContext";
 
 export default function Achievements(){
     const { user } = useAuth();
+    const {earnedAchievementsList,achievements} = useAchievements();
     const earnedAchievements = user?.achievements || []
     const {t} = useTranslation();
     const { width: screenWidth } = Dimensions.get('window');
-    const counts = ACHIEVEMENTLIST.reduce((acc, ach) => {
-        const isEarned = earnedAchievements.some((ac) => ac.achievementId === ach.id);
+    const counts = achievements.reduce((acc, ach) => {
+        const isEarned = earnedAchievementsList.some((ac) => ac.ImageBackground === ach.id);
         if (isEarned) {
             acc[ach.type] = (acc[ach.type] || 0) + 1;
         }
@@ -48,7 +48,7 @@ export default function Achievements(){
             </View>
             <View style={{borderWidth:1,borderColor:'#E0E0E0',width:'90%',marginVertical:10}}></View>
             <FlatList 
-                data={ACHIEVEMENTLIST}
+                data={achievements}
                 keyExtractor={(item) => item.id}
                 style={{ width: '100%' }}
                 contentContainerStyle={{ paddingBottom: 20, alignItems: 'center' }}
@@ -57,7 +57,7 @@ export default function Achievements(){
                 maxToRenderPerBatch={5}
                 windowSize={5}
                 renderItem={({item}) => {
-                    const isEarned = earnedAchievements.some((ac) => ac.achievementId === item.id)
+                    const isEarned = earnedAchievementsList.some((ac) => ac.achievement_detail.id === item.id);
                     return <Achievement ach={item} isEarned={isEarned}/>
                 }}
             />

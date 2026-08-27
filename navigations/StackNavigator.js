@@ -7,6 +7,8 @@ import GamesNavigation from "./gamesNavigation";
 import SettingsNavigation from "./settingsNavigation";
 import { useTranslation } from "react-i18next";
 import { UserStatsProvider } from "../contextapis/UserStatsContext";
+import {AchievementsProvider} from "../contextapis/AchievementsContext";
+import NewAchievement from "../commonComponents/achievementEarningModal/newAchievementModal";
 
 const Stack = createStackNavigator();
 
@@ -15,13 +17,16 @@ export default function AppNavigation(){
     return (
         <UserStatsProvider>
             <DictionaryProvider>
-                <Stack.Navigator>
-                    <Stack.Screen name="MainTabs" component={BottomNavbar} options={{headerShown:false}}/>
-                    <Stack.Screen name="DictDetails" component={DictDetails} options={{title:t("dictDetails")}} />
-                    <Stack.Screen name="CollectionDetails" component={CollectionDetails} options={({ route }) => ({ title: route.params?.title || t("collectionDetails") })} />
-                    <Stack.Screen name="Settings Navigation" component={SettingsNavigation} options={{headerShown:false}}/>
-                    <Stack.Screen name="Game Navigation" component={GamesNavigation} options={{headerShown:false}}/>
-                </Stack.Navigator>
+                <AchievementsProvider>
+                    <Stack.Navigator>
+                        <Stack.Screen name="MainTabs" component={BottomNavbar} options={{headerShown:false}}/>
+                        <Stack.Screen name="DictDetails" component={DictDetails} options={{title:t("dictDetails")}} />
+                        <Stack.Screen name="CollectionDetails" component={CollectionDetails} options={({ route }) => ({ title: route.params?.title || t("collectionDetails") })} />
+                        <Stack.Screen name="Settings Navigation" component={SettingsNavigation} options={{headerShown:false}}/>
+                        <Stack.Screen name="Game Navigation" component={GamesNavigation} options={{headerShown:false}}/>
+                    </Stack.Navigator>
+                    <NewAchievement/>
+                </AchievementsProvider>
             </DictionaryProvider>
         </UserStatsProvider>
     )

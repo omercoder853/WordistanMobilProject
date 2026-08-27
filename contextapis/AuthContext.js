@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import i18n from '../src/i18n/i18n';
 import { BASE_URL,ENDPOINTS } from "../constants/ApiConfig";
 import { jwtDecode } from "jwt-decode";
+import { supabase } from "../services/supabase";
 
 export const AuthenticationContext = createContext() 
 
@@ -46,6 +47,7 @@ export const AuthProvider = ({children}) => {
         if (res.status===200) {
             const data = await res.json();
             console.log("token refreshed successfully")
+            supabase.auth.setSession({access_token: data['access_token'], refresh_token: ReToken})
             setAccToken(data['access_token'])
             await setDataStorage("access-token",data['access_token'])
             if (!isLogin) {
@@ -70,6 +72,7 @@ export const AuthProvider = ({children}) => {
         }
         else {
             console.log("token is valid")
+            supabase.auth.setSession({access_token: Actoken, refresh_token: ReToken})
             setLogin(true)
         }
     }

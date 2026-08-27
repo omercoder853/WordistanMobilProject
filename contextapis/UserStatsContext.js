@@ -1,24 +1,20 @@
 import { createContext, useContext, useState, useEffect, useCallback } from "react";
 import { useAuth } from "./AuthContext";
-import ACHIEVEMENTLIST from "../assets/data/achievementList";
 import { BASE_URL, ENDPOINTS } from "../constants/ApiConfig";
 export const UserStatsContext = createContext();
 
 export const UserStatsProvider = ({ children }) => {
     const { setDataStorage, getDataStorage, accToken,
         setAccToken, refToken, isLogin, setLogin, getNewToken, user, setUser } = useAuth();
+    
 
     const [userStats, setUserStats] = useState(null);
     const [pendingTranslated, setPendingTranslated] = useState(0);
     const [pendingEarnedXP, setPendingEarnedXP] = useState(0);
     const [pendingSavedWords, setPendingSavedWords] = useState(0);
-    const [activeAchievement, setActiveAchievement] = useState(null)
-    const earnedAchievements = user?.achievements?.map(ach => ach.achievementId)
-    const unearnedAchievements = ACHIEVEMENTLIST.filter(ach => !earnedAchievements?.includes(ach.id))
     const translated_words = pendingTranslated + (userStats?.translated_words || 0)
     const saved_words = pendingSavedWords + (userStats?.saved_words || 0)
     console.log("pending saved words : ", pendingSavedWords)
-    console.log(userStats)
 
     const getUserStats = useCallback(async (tokenToUse = accToken) => {
         try {
@@ -116,65 +112,11 @@ export const UserStatsProvider = ({ children }) => {
         });
     }
 
-    useEffect(() => {
-        if (activeAchievement !== null) return;
-        unearnedAchievements.forEach((ach) => {
-            const requirement = ach.requirementField
-            switch (requirement) {
-                case "translated_words":
-                    if (translated_words >= ach.requirementValue) {
-                        setActiveAchievement(ach);
-                    }
-                    break;
-                case 'saved_words':
-                    if (saved_words >= ach.requirementValue) {
-                        setActiveAchievement(ach);
-                    }
-                    break;
-                default:
-                    break;
-            }
-        })
-    }, [translated_words, saved_words, activeAchievement])
-
-    const updateAchievements = async (tokenToUse = accToken) => {
-        try {
-            const res = await fetch('https://terribilita-milissa-unpermitted.ngrok-free.dev/api/achievements/new', {
-                method: 'POST',
-                body: JSON.stringify({ achievementId: activeAchievement.id }),
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${tokenToUse}`
-                }
-            })
-            if (res.ok) {
-                const data = await res.json();
-                const updatedUser = { ...user, achievements: data["updated_achievements"] };
-                setUser(updatedUser);
-                await setDataStorage('user', JSON.stringify(updatedUser));
-                setActiveAchievement(null)
-            }
-            else if (res.status === 401) {
-                const tempToken = await getNewToken(refToken);
-                if (tempToken) {
-                    setAccToken(tempToken);
-                    return await updateAchievements(tempToken);
-                } else {
-                    setActiveAchievement(null);
-                }
-            } else {
-                setActiveAchievement(null);
-            }
-        } catch (error) {
-            console.error("Achievement update error:", error);
-            setActiveAchievement(null);
-        }
-    }
 
     return (
         <UserStatsContext.Provider value={{
-            userStats, translated_words, activeAchievement, setActiveAchievement,
-            saved_words, pendingEarnedXP, incSaved, incTranslated, incXP, updateAchievements, setUserStats
+            userStats, translated_words,
+            saved_words, pendingEarnedXP, incSaved, incTranslated, incXP, setUserStats
         }}>
             {children}
         </UserStatsContext.Provider>

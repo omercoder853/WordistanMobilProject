@@ -10,5 +10,7 @@ export const ENDPOINTS = {
     newDictionary:"/dictionaries/new",
     newWord:"/words/add",
     register:"/auth/register",
-    incrementTranslation : "/stats/increment-translation"
+    incrementTranslation : "/stats/increment-translation",
+    achievements : "/achievements/all",
+    earnedAchievements : "/achievements/earned",
 }

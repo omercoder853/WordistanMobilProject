@@ -5,20 +5,21 @@ import { useTranslation } from "react-i18next";
 import { useUserStats } from "../../contextapis/UserStatsContext";
 
 export default function Achievement({ach,isEarned}) {
-    const {t} = useTranslation();
+    const {t,i18n} = useTranslation();
     const {saved_words,translated_words} = useUserStats();
     const progressList = {translated_words,saved_words}
+    const lang = i18n.language;
     return (
         <View style={styles.achievementRow}>
             {!isEarned &&
                 <View style={styles.lockOverlay}>
                     <Text style={{ fontSize: 25 }}>🔒</Text>
                 </View>}
-            <Image style={styles.achievementImage} source={ach.image}/>
+            <Image style={styles.achievementImage} source={{ uri: ach.icon_url }} />
             <View style={{ marginLeft: 10, flex: 1, justifyContent: 'center', marginRight: 10 }}>
-                <Text style={styles.achievementTitle}>{t(ach.id)}</Text>
-                <Text style={styles.achievementDec}>{t(`${ach.id}_desc`)}</Text>
-                {isEarned ? <ProgressBar percantage={100}/>:<ProgressBar progress={progressList[ach.requirementField] || 0} totalProgress={ach.requirementValue}/>}
+                <Text style={styles.achievementTitle}>{ach["title_" + lang]}</Text>
+                <Text style={styles.achievementDec}>{ach["description_" + lang]}</Text>
+                {isEarned ? <ProgressBar percantage={100}/>:<ProgressBar progress={progressList[ach.target_field] || 0} totalProgress={ach.target_value}/>}
             </View>
         </View>
     )
