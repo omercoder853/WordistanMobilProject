@@ -220,6 +220,75 @@ const styles = StyleSheet.create({
     flex:1,
     borderWidth:1,
     borderColor:"#c967e6"
+    },
+    overlay: {
+        flex: 1,
+        backgroundColor: 'rgba(15, 23, 42, 0.45)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 20,
+    },
+    modalContainer: {
+        backgroundColor: '#FFFFFF',
+        borderRadius: 24,
+        width: '85%',
+        maxWidth: 340,
+        paddingVertical: 18,
+        paddingHorizontal: 16,
+        elevation: 10,
+        shadowColor: '#0F172A',
+        shadowOffset: { width: 0, height: 10 },
+        shadowOpacity: 0.2,
+        shadowRadius: 20,
+    },
+    modalHeader: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 8,
+        paddingBottom: 14,
+        borderBottomWidth: 1,
+        borderBottomColor: '#F1F5F9',
+    },
+    modalTitle: {
+        fontSize: 16,
+        fontWeight: '700',
+        color: '#1E293B',
+    },
+    modalOptionsList: {
+        paddingTop: 8,
+    },
+    modalOptionItem: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingVertical: 12,
+        paddingHorizontal: 12,
+        borderRadius: 14,
+        gap: 14,
+    },
+    modalOptionIconWrapper: {
+        width: 38,
+        height: 38,
+        borderRadius: 12,
+        backgroundColor: '#F3E8FF',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    modalDangerIconWrapper: {
+        backgroundColor: '#FEE2E2',
+    },
+    modalOptionText: {
+        fontSize: 15,
+        fontWeight: '600',
+        color: '#334155',
+    },
+    modalDangerText: {
+        color: '#EF4444',
+    },
+    divider: {
+        height: 1,
+        backgroundColor: '#F1F5F9',
+        marginVertical: 4,
     }
 })
 

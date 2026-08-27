@@ -4,13 +4,17 @@ export const ENDPOINTS = {
     login:"/auth/login",
     register:"/auth/register",
     refresh:"/auth/refresh",
+    changePassword:"/auth/change-password",
+    deleteAccount:"/auth/delete-user",
     stats:"/stats/",
     dictionaries:"/dictionaries",
     words:"/words",
     newDictionary:"/dictionaries/new",
+    deleteDictionary:"/dictionaries/delete",
     newWord:"/words/add",
     register:"/auth/register",
     incrementTranslation : "/stats/increment-translation",
     achievements : "/achievements/all",
     earnedAchievements : "/achievements/earned",
+    
 }
