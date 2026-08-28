@@ -1,18 +1,22 @@
-import { View,Text,Switch } from "react-native";
+import { View, Text, Switch } from "react-native";
 import styles from "../gameStyles/styles";
 import { useGame } from "../../contextapis/GamesContext";
 import { useTranslation } from "react-i18next";
 
-export default function WcSettings(){
+export default function WcSettings() {
     const { t } = useTranslation();
-    const {visibleFirstLetter,setVisibleFirstLetter} = useGame();
+    const { visibleFirstLetter, setVisibleFirstLetter } = useGame();
     return (
-        <View style={{flexDirection:'row',alignItems:'center'}}>
-            <Text style={styles.optionLabel}>{t('visibleFirstLetter')}</Text>
-            <Switch trackColor={{ false: "#e0e0e0", true: "#dc9f9f" }} thumbColor="#ffffff" 
-            style={{marginLeft:'auto',marginTop:15}} 
-            onValueChange={()=>setVisibleFirstLetter(!visibleFirstLetter)} 
-            value={visibleFirstLetter}/>
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 6 }}>
+            <Text style={[styles.setupOptionLabel, { flex: 1, marginBottom: 0, marginTop: 0 }]}>
+                {t('visibleFirstLetter')}
+            </Text>
+            <Switch
+                trackColor={{ false: "#E2E8F0", true: "#5B3FD3" }}
+                thumbColor="#FFFFFF"
+                onValueChange={() => setVisibleFirstLetter(!visibleFirstLetter)}
+                value={visibleFirstLetter}
+            />
         </View>
-    )
-}
+    );
+}
