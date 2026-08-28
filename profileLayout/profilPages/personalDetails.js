@@ -1,13 +1,25 @@
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
 import { useState } from "react";
 import styles from "../profileStyle/profileDetailsStyle";
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../../contextapis/AuthContext";
 import { useNavigation } from "@react-navigation/native";
 import ChangePasswordModal from "../profileComponents/ChangePasswordModal";
 import DeleteAccountModal from "../profileComponents/DeleteAccountModal";
 import CustomAlert from "../../commonComponents/customAlert/customAlert";
+
+// ─── Detail field config (icon + color per row) ───
+const detailFields = [
+    { key: "nameProfile", userField: "first_name", icon: "person-outline", color: "#5B3FD3", bg: "rgba(91, 63, 211, 0.1)" },
+    { key: "surnameProfile", userField: "last_name", icon: "people-outline", color: "#8B5CF6", bg: "rgba(139, 92, 246, 0.1)" },
+    { key: "emailProfile", userField: "email", icon: "mail-outline", color: "#3B82F6", bg: "rgba(59, 130, 246, 0.1)" },
+    { key: "usernameProfile", userField: "nick_name", icon: "at-outline", color: "#EC4899", bg: "rgba(236, 72, 153, 0.1)" },
+    { key: "genderProfile", userField: "gender", isTranslated: true, icon: "male-female-outline", color: "#10B981", bg: "rgba(16, 185, 129, 0.1)" },
+    { key: "birthDateProfile", userField: "birth_date", icon: "calendar-outline", color: "#F59E0B", bg: "rgba(245, 158, 11, 0.1)" },
+    { key: "dateJoinedProfile", userField: "created_at", slice: true, icon: "time-outline", color: "#6366F1", bg: "rgba(99, 102, 241, 0.1)" },
+];
 
 export default function PersonalDetails() {
     const { user } = useAuth();
@@ -71,60 +83,76 @@ export default function PersonalDetails() {
         return alertConfig.success ? "defaultButton" : "danger";
     };
 
+    const getFieldValue = (field) => {
+        const val = user?.[field.userField];
+        if (field.slice) return val?.slice(0, 10) ?? "";
+        if (field.isTranslated) return t(val);
+        return val ?? "";
+    };
+
     return (
-        <View style={{ flex: 1, alignItems: 'center' }}>
-            <View style={{ flexDirection: 'row', marginTop: 15 }}>
-                <Image style={styles.profilePhoto} source={imgSource} />
-                <TouchableOpacity style={styles.editPhoto}>
-                    <MaterialCommunityIcons name="image-edit-outline" size={20} color="white" />
+        <View style={styles.container}>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.scrollContent}
+            >
+                {/* ─── Avatar Header ─── */}
+                <View style={styles.avatarSection}>
+                    <View style={styles.avatarWrapper}>
+                        <Image style={styles.profilePhoto} source={imgSource} />
+                        <TouchableOpacity style={styles.editPhoto}>
+                            <MaterialCommunityIcons name="image-edit-outline" size={16} color="white" />
+                        </TouchableOpacity>
+                    </View>
+                    <Text style={styles.avatarName}>
+                        {user?.first_name} {user?.last_name}
+                    </Text>
+                    <Text style={styles.avatarEmail}>{user?.email}</Text>
+                </View>
+
+                {/* ─── Personal Info Card ─── */}
+                <View style={styles.detailsCard}>
+                    <Text style={styles.sectionTitle}>{t("personalDetails")}</Text>
+                    {detailFields.map((field, index) => (
+                        <View key={field.key}>
+                            <View style={styles.profileDetailItem}>
+                                <View style={[styles.detailIconBox, { backgroundColor: field.bg }]}>
+                                    <Ionicons name={field.icon} size={18} color={field.color} />
+                                </View>
+                                <Text style={styles.profileLabel}>{t(field.key)}</Text>
+                                <Text style={styles.profileValue}>{getFieldValue(field)}</Text>
+                            </View>
+                            {index < detailFields.length - 1 && <View style={styles.separator} />}
+                        </View>
+                    ))}
+                </View>
+
+                {/* ─── Security Card ─── */}
+                <View style={styles.detailsCard}>
+                    <Text style={styles.sectionTitle}>{t("passwordProfile")}</Text>
+                    <View style={styles.profileDetailItem}>
+                        <View style={[styles.detailIconBox, { backgroundColor: "rgba(239, 68, 68, 0.1)" }]}>
+                            <Ionicons name="lock-closed-outline" size={18} color="#EF4444" />
+                        </View>
+                        <Text style={styles.profileLabel}>{t("changePassword")}</Text>
+                        <TouchableOpacity
+                            style={styles.changePasswordButton}
+                            onPress={() => setPasswordModalVisible(true)}
+                        >
+                            <Text style={styles.changePasswordText}>{t("changePassword")}</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+
+                {/* ─── Delete Account ─── */}
+                <TouchableOpacity
+                    style={styles.deleteAccountButton}
+                    onPress={() => setDeleteModalVisible(true)}
+                >
+                    <Ionicons name="trash-outline" size={18} color="#EF4444" />
+                    <Text style={styles.deleteAccountText}>{t("deleteAccount")}</Text>
                 </TouchableOpacity>
-            </View>
-            <View style={styles.profileDetailContainer}>
-                <View style={styles.profileDetailItem}>
-                    <Text style={styles.profileLabel}>{t("nameProfile")}</Text>
-                    <Text style={styles.profileValue}>{user.first_name}</Text>
-                </View>
-                <View style={{ borderColor: '#F1F5F9', borderWidth: 1 }}></View>
-                <View style={styles.profileDetailItem}>
-                    <Text style={styles.profileLabel}>{t("surnameProfile")}</Text>
-                    <Text style={styles.profileValue}>{user.last_name}</Text>
-                </View>
-                <View style={{ borderColor: '#F1F5F9', borderWidth: 1 }}></View>
-                <View style={styles.profileDetailItem}>
-                    <Text style={styles.profileLabel}>{t("emailProfile")}</Text>
-                    <Text style={styles.profileValue}>{user.email}</Text>
-                </View>
-                <View style={{ borderColor: '#F1F5F9', borderWidth: 1 }}></View>
-                <View style={styles.profileDetailItem}>
-                    <Text style={styles.profileLabel}>{t("usernameProfile")}</Text>
-                    <Text style={styles.profileValue}>{user.nick_name}</Text>
-                </View>
-                <View style={{ borderColor: '#F1F5F9', borderWidth: 1 }}></View>
-                <View style={styles.profileDetailItem}>
-                    <Text style={styles.profileLabel}>{t("genderProfile")}</Text>
-                    <Text style={styles.profileValue}>{t(user.gender)}</Text>
-                </View>
-                <View style={{ borderColor: '#F1F5F9', borderWidth: 1 }}></View>
-                <View style={styles.profileDetailItem}>
-                    <Text style={styles.profileLabel}>{t("birthDateProfile")}</Text>
-                    <Text style={styles.profileValue}>{user.birth_date}</Text>
-                </View>
-                <View style={{ borderColor: '#F1F5F9', borderWidth: 1 }}></View>
-                <View style={styles.profileDetailItem}>
-                    <Text style={styles.profileLabel}>{t("dateJoinedProfile")}</Text>
-                    <Text style={styles.profileValue}>{user?.date_joined?.slice(0, 10)}</Text>
-                </View>
-                <View style={{ borderColor: '#F1F5F9', borderWidth: 1 }}></View>
-                <View style={styles.profileDetailItem}>
-                    <Text style={styles.profileLabel}>{t("passwordProfile")}</Text>
-                    <TouchableOpacity style={styles.changePasswordButton} onPress={() => setPasswordModalVisible(true)}>
-                        <Text style={{ color: 'white' }}>{t("changePassword")}</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-            <TouchableOpacity style={styles.deleteAccountButton} onPress={() => setDeleteModalVisible(true)}>
-                <Text style={{ textAlign: 'center', color: '#64748B' }}>{t("deleteAccount")}</Text>
-            </TouchableOpacity>
+            </ScrollView>
 
             <ChangePasswordModal
                 visible={passwordModalVisible}
