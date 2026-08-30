@@ -19,7 +19,7 @@ export default function ConvertButton({ setDisplay, input, addWord,setResult,set
       if (foundResult) {
         setLoading(true)
         setResult(foundResult)
-        addWord(input, foundResult);
+        addWord(input, foundResult, from);
         setLoading(false)
       }
       else{

@@ -7,23 +7,31 @@ import { useDictionary } from "../../contextapis/DictContext";
 import CustomAlert from "../../commonComponents/customAlert/customAlert"
 import { useTranslation } from "react-i18next";
 
+import { useUserStats } from "../../contextapis/UserStatsContext";
+
 export default function CreateDictionary({visible,setVisible}){
     const { t } = useTranslation();
     const [dictName,setDictName] = useState("");
     const [dictDesc,setDictDesc] = useState("");
     const [dictLang,setDictLang] = useState("TR to ENG")
     const {createDictionary} = useDictionary();
+    const {incDictCreated} = useUserStats();
     const [success,setSuccess] = useState(false)
     const [fail,setFail] = useState(false)
 
     const createButton = async () => {
         if (dictName!="" && dictDesc!="") {
-            const status = await createDictionary({name:dictName,description:dictDesc,language:dictLang});
-            if (status===201) {
+            const res = await createDictionary({name:dictName,description:dictDesc,language:dictLang});
+            if (res.status===201) {
                 setSuccess(true)
                 setFail(false)
+                if (incDictCreated) {
+                    incDictCreated();
+                }
             }
             else{
+                const message = await res.json();
+                console.log("Error while creating dictionary  " , message , res.status)
                 setFail(true)
                 setSuccess(false)
             }

@@ -28,7 +28,7 @@ export default function Personal(){
                 style={{flex:1}}
                 showsVerticalScrollIndicator={false} 
                 data={dicts} 
-                renderItem={({item}) => (<Dictionary title={item.name} length={JSON.stringify(item.words[0]["count"])} id={item.id}/>)} 
+                renderItem={({item}) => (<Dictionary title={item.name} length={JSON.stringify(item.words[0]["count"])} id={item.id} language={item.language}/>)} 
                 keyExtractor={item => item.id} 
                 ListEmptyComponent={(<NoDictionary/>)} refreshing={dictReload} onRefresh={()=>setDictReload(true)} />}
             <TouchableOpacity style={styles.addDictButton} onPress={()=>setVisible(true)}>

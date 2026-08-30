@@ -3,14 +3,39 @@ import { useContext, useState, useEffect } from "react";
 import { useAuth } from "./AuthContext";
 import { useUserStats } from "./UserStatsContext";
 import { BASE_URL, ENDPOINTS } from "../constants/ApiConfig";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const DictContext = createContext();
 
 export const DictionaryProvider = ({ children }) => {
-    const { incSaved } = useUserStats();
+    const { incSaved,incXP } = useUserStats();
     const [dicts, setDicts] = useState([]);
-    const { accToken, refToken, getNewToken, setLogin, isLogin, setAccToken } = useAuth();
+    const { accToken, refToken, getNewToken, setLogin, isLogin, setAccToken, setDataStorage, getDataStorage } = useAuth();
     const [dictReload, setDictReload] = useState(false)
+    const [dailyWord, setDailyWord] = useState(null)
+
+    useEffect(() => {
+        const loadDailyWord = async () => {
+            const rawStored = await AsyncStorage.getItem("@wordistan:dailyWord")
+            const stored = JSON.parse(rawStored)
+            if (stored) {
+                const timestamp = Date.now()
+                const today = new Date(timestamp).toISOString().split('T')[0]
+                if (stored.target_date === today) {
+                    setDailyWord(stored);
+                }
+                else {
+                    console.log("There is no stored data for daily word")
+                    await getDailyWord();
+                }
+            }
+            else {
+                console.log("There is no stored data for daily word")
+                await getDailyWord();
+            }
+        }
+        loadDailyWord()
+    }, [])
 
     useEffect(() => {
         if (!accToken || !isLogin || !dictReload) return;
@@ -33,8 +58,8 @@ export const DictionaryProvider = ({ children }) => {
         else if (res.status === 401) {
             const tempToken = await getNewToken(refToken)
             if (tempToken) {
-                setAccToken(tempToken)
-                return await fetchDicts(tempToken)
+                setAccToken(tempToken);
+                return await fetchDicts(tempToken);
             }
         }
         else {
@@ -52,7 +77,7 @@ export const DictionaryProvider = ({ children }) => {
             }
         })
         if (res.status === 200) {
-            const data = await res.json()
+            const data = await res.json();
             return data
         }
         else {
@@ -90,10 +115,10 @@ export const DictionaryProvider = ({ children }) => {
         else if (res.status === 201) {
             setDictReload(true)
         }
-        return res.status
+        return res
     }
 
-    async function saveWord({ dictionary_id, word, meaning }, manualToken = null) {
+    async function saveWord({ dictionary_id, word, meaning }, manualToken = null, isDaily = false) {
         const currentToken = manualToken || accToken
         const res = await fetch(BASE_URL + ENDPOINTS.newWord,
             {
@@ -108,17 +133,57 @@ export const DictionaryProvider = ({ children }) => {
             const tempToken = await getNewToken(refToken)
             if (tempToken) {
                 setAccToken(tempToken)
-                return await saveWord({ dictionary_id, word, meaning }, tempToken);
+                return await saveWord({ dictionary_id, word, meaning }, tempToken, isDaily);
             }
             else {
                 setLogin(false)
             }
         }
         else if (res.ok) {
+            const word = await res.json();
             incSaved();
-            setDictReload(true)
+            setDictReload(true);
+            if (isDaily) {
+                await saveDailyWord(word[0].id)
+            }
         }
         return res.ok
+    }
+
+    async function deleteWord(saved_id, tokenToUse = accToken) {
+        try {
+            const isDaily = dailyWord?.saved_id === saved_id
+            const res = await fetch(BASE_URL + ENDPOINTS.wordDelete + String(saved_id), {
+                method: "DELETE",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${tokenToUse}`
+                },
+                body: JSON.stringify(saved_id)
+            })
+            if (res.ok) {
+                if (isDaily) {
+                    await removeDailyWord();
+                    setDictReload(true)
+                }
+                return { success: true }
+            }
+            else if (res.status === 401) {
+                const newToken = await getNewToken(refToken);
+                if (newToken) {
+                    return await deleteWord(saved_id, newToken)
+                }
+            }
+            else {
+                const message = await res.json()
+                console.log("Error while deleting word ", message, res.status)
+                return { success: false }
+            }
+        }
+        catch (error) {
+            console.error(String(error))
+            return { success: false }
+        }
     }
 
     async function deleteDictionary(dict_id, currentToken = accToken) {
@@ -156,9 +221,63 @@ export const DictionaryProvider = ({ children }) => {
         }
     }
 
+    async function getDailyWord(tokenToUse = accToken) {
+        try {
+            console.log("Requesting for daily word...")
+            const res = await fetch(BASE_URL + ENDPOINTS.dailyWord, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${tokenToUse}`
+                }
+            })
+            if (res.ok) {
+                const data = await res.json();
+                setDailyWord(data)
+                await setDataStorage("dailyWord", JSON.stringify(data))
+            }
+            else if (res.status === 401) {
+                const newToken = await getNewToken(refToken);
+                if (newToken) {
+                    return await getDailyWord(newToken)
+                }
+            }
+            else {
+                const message = await res.json()
+                console.log("Error while fetching daily word! ", message, res.status)
+                return null
+            }
+
+        }
+        catch (error) {
+            console.error("Daily word couldn't be fetched!", error)
+            return null
+        }
+    }
+
+    async function saveDailyWord(saved_id) {
+        const updatedDailyWord = {
+            ...dailyWord,
+            saved_id: saved_id,
+            is_saved: true
+        }
+        setDailyWord(updatedDailyWord)
+        await setDataStorage("dailyWord", JSON.stringify(updatedDailyWord))
+    }
+
+    async function removeDailyWord() {
+        const updatedDailyWord = {
+            ...dailyWord,
+            saved_id: null,
+            is_saved: false
+        }
+        setDailyWord(updatedDailyWord)
+        await setDataStorage("dailyWord", JSON.stringify(updatedDailyWord))
+    }
+
     return (<DictContext.Provider value={{
-        dicts, getWords, getDict, createDictionary, setDictReload,
-        saveWord, dictReload, deleteDictionary
+        dicts, getWords, getDict, createDictionary, setDictReload, deleteWord,
+        saveWord, dictReload, deleteDictionary, dailyWord, setDailyWord, removeDailyWord
     }}>{children}</DictContext.Provider>)
 }
 

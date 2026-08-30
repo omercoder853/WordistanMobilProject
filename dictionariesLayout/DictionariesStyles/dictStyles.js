@@ -1,63 +1,12 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-    title:{
-        fontWeight:'900',
-        fontSize:25,
-        paddingHorizontal:25,
-        marginTop:20
-    },
-    searchBarRow:{
-        flexDirection:'row',
-        alignItems:'center',
-        paddingHorizontal:25,
-        marginTop:20,
-        justifyContent:'center',
-    },
-    searchBarInput:{
-        borderWidth:1,
-        borderColor:'#D1D5DB',
-        borderTopLeftRadius:15,
-        borderBottomLeftRadius:15,
-        paddingHorizontal:15,
-        paddingVertical:10,
-        flex:10
-    },
-    searchButton:{
-        padding:10,
-        backgroundColor:'#F462B6',
-        borderTopRightRadius:15,
-        borderBottomRightRadius:15,
-        flex:1,
-        justifyContent:'center',
-        alignItems:'center'
-    },
     tabBarStyle:{
         marginTop:20,
         backgroundColor:'transparent',
         elevation:0,
         borderBottomWidth:0.2,
         borderColor:'gray'
-    },
-    dictionaryButton:{
-        borderRadius:20,
-        marginBottom:15,
-        elevation:5,
-        backgroundColor:'lightblue'
-    },
-    dictionaryRow:{
-        flexDirection:'row',
-        width:'100%',
-        padding:15,
-        alignItems:'center',
-        borderRadius:20,
-        
-
-    },
-    dictionaryCover:{
-        width:60,
-        height:60,
-        borderRadius:25
     },
     addDictButton:{
         backgroundColor:'green',
@@ -70,80 +19,9 @@ const styles = StyleSheet.create({
         right:15,
         bottom:20
     },
-    collectionContainer:{
-        backgroundColor:'#A78BFA',
-        padding:10,
-        marginRight:15,
-        marginBottom:10,
-        borderRadius:10,
-        alignItems:'center'
-    },
-    collectionTitle:{
-        color:'white',
-        fontSize:15,
-        fontWeight:'700',
-        marginVertical:5
-    },
-    collectionTags:{
-        borderRadius:15,
-        backgroundColor:'#7C3AED',
-        borderWidth:1,
-        borderColor:'pink',
-        color:'white',
-        textAlign:'center',
-        paddingHorizontal:5,
-        paddingVertical:3,
-        fontSize:10
-    },
-    wordRow: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: 12,
-        backgroundColor: '#FFFFFF',
-        borderRadius: 16,
-        padding: 12,
-        shadowColor: '#c566e9',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.1,
-        shadowRadius: 6,
-        elevation: 3,
-        borderWidth: 1,
-        borderColor: '#f5e4fb',
-    },
-    wordTarget: {
-        fontWeight: '800',
-        fontSize: 16,
-        color: '#4B2A63',
-        marginBottom: 4,
-    },
-    wordMeaning: {
-        fontWeight: '500',
-        fontSize: 14,
-        color: '#8e4a7c',
-    },
     wordList: {
         paddingVertical: 5,
         paddingHorizontal: 15,
-    },
-    wordId: {
-        minWidth: 32,
-        height: 32,
-        borderRadius: 10,
-        backgroundColor: '#F7EEFF',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginRight: 12,
-        paddingHorizontal: 5,
-    },
-    wordIdText: {
-        color: '#A020F0',
-        fontWeight: 'bold',
-        fontSize: 15,
-        textAlign: 'center',
-    },
-    wordContentWrapper: {
-        flex: 1,
-        justifyContent: 'center',
     },
     wordsTable:{
         backgroundColor:'#FAFAFD',
@@ -228,68 +106,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 20,
     },
-    modalContainer: {
-        backgroundColor: '#FFFFFF',
-        borderRadius: 24,
-        width: '85%',
-        maxWidth: 340,
-        paddingVertical: 18,
-        paddingHorizontal: 16,
-        elevation: 10,
-        shadowColor: '#0F172A',
-        shadowOffset: { width: 0, height: 10 },
-        shadowOpacity: 0.2,
-        shadowRadius: 20,
-    },
-    modalHeader: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingHorizontal: 8,
-        paddingBottom: 14,
-        borderBottomWidth: 1,
-        borderBottomColor: '#F1F5F9',
-    },
-    modalTitle: {
-        fontSize: 16,
-        fontWeight: '700',
-        color: '#1E293B',
-    },
-    modalOptionsList: {
-        paddingTop: 8,
-    },
-    modalOptionItem: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingVertical: 12,
-        paddingHorizontal: 12,
-        borderRadius: 14,
-        gap: 14,
-    },
-    modalOptionIconWrapper: {
-        width: 38,
-        height: 38,
-        borderRadius: 12,
-        backgroundColor: '#F3E8FF',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    modalDangerIconWrapper: {
-        backgroundColor: '#FEE2E2',
-    },
-    modalOptionText: {
-        fontSize: 15,
-        fontWeight: '600',
-        color: '#334155',
-    },
-    modalDangerText: {
-        color: '#EF4444',
-    },
-    divider: {
-        height: 1,
-        backgroundColor: '#F1F5F9',
-        marginVertical: 4,
-    }
 })
 
 export default styles;

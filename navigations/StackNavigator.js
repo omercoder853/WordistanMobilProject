@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 import { UserStatsProvider } from "../contextapis/UserStatsContext";
 import {AchievementsProvider} from "../contextapis/AchievementsContext";
 import NewAchievement from "../commonComponents/achievementEarningModal/newAchievementModal";
+import LevelUpModal from "../commonComponents/levelUpModal/levelUpModal";
 
 const Stack = createStackNavigator();
 
@@ -26,6 +27,7 @@ export default function AppNavigation(){
                         <Stack.Screen name="Game Navigation" component={GamesNavigation} options={{headerShown:false}}/>
                     </Stack.Navigator>
                     <NewAchievement/>
+                    <LevelUpModal/>
                 </AchievementsProvider>
             </DictionaryProvider>
         </UserStatsProvider>

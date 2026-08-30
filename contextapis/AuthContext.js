@@ -25,8 +25,6 @@ export const AuthProvider = ({ children }) => {
             const tempUser = await getDataStorage("user");
             const tempLang = await getDataStorage("language");
 
-            setAccToken(tempAccToken);
-            setRefToken(tempRefToken);
             setUser(JSON.parse(tempUser) || null)
             setAppLanguage(tempLang || null)
 
@@ -67,11 +65,17 @@ export const AuthProvider = ({ children }) => {
         const currentTime = Date.now() / 1000;
         if (currentTime > decoded.exp) {
             console.log("token is not valid!! \nrefreshing...")
-            await getNewToken(ReToken)
+            const newToken = await getNewToken(ReToken)
+            if (newToken) {
+                setAccToken(newToken);
+                setRefToken(ReToken);
+            }
         }
         else {
             console.log("token is valid")
             supabase.auth.setSession({ access_token: Actoken, refresh_token: ReToken })
+            setAccToken(Actoken);
+            setRefToken(ReToken);
             setLogin(true)
         }
     }
@@ -124,6 +128,8 @@ export const AuthProvider = ({ children }) => {
         await AsyncStorage.removeItem("@wordistan:pendingTranslated")
         await AsyncStorage.removeItem("@wordistan:pendingSavedWords")
         await AsyncStorage.removeItem("@wordistan:pendingXP")
+        await AsyncStorage.removeItem("@wordistan:dailyWord")
+        await AsyncStorage.removeItem("@wordistan:recentWords")
         setAccToken(null)
         setRefToken(null)
         setUser(null)
