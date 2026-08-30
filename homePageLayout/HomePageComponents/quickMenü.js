@@ -1,5 +1,4 @@
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native'
-import styles from '../HomePageStyles/homeStyles'
+import { View, Text, ScrollView, TouchableOpacity,StyleSheet } from 'react-native'
 import { MaterialCommunityIcons, FontAwesome, Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
@@ -63,3 +62,34 @@ const QuickMenu = () => {
 }
 
 export default QuickMenu;
+
+const styles = StyleSheet.create({
+    scrollView:{
+        display:'flex',
+        flexDirection:'row'
+    },
+    quickMenu:{
+        padding:20
+    },
+    quickMenuColumn:{
+        alignItems:'center',
+        justifyContent: 'center',
+        backgroundColor:'white',
+        marginRight:15,
+        paddingHorizontal:10,
+        paddingVertical:10,
+        width:90,
+        height:80,
+        borderRadius:10,
+        elevation: 1,
+        shadowColor: '#8E4A7C',
+        shadowOffset: {width: 0, height: 4},
+        shadowOpacity: 0.15,
+        shadowRadius: 10,
+    },
+    quickMenuText:{
+        fontSize: 12, 
+        fontWeight: '500', 
+        color: '#333'
+    },
+})
