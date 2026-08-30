@@ -12,9 +12,52 @@ export const UserStatsProvider = ({ children }) => {
     const [pendingTranslated, setPendingTranslated] = useState(0);
     const [pendingEarnedXP, setPendingEarnedXP] = useState(0);
     const [pendingSavedWords, setPendingSavedWords] = useState(0);
-    const translated_words = pendingTranslated + (userStats?.translated_words || 0)
-    const saved_words = pendingSavedWords + (userStats?.saved_words || 0)
-    console.log("pending saved words : ", pendingSavedWords)
+    const [pendingDictCreated, setPendingDictCreated] = useState(0);
+    const [levelUpInfo, setLevelUpInfo] = useState(null);
+
+    const translated_words = pendingTranslated + (userStats?.translated_words || 0);
+    const saved_words = pendingSavedWords + (userStats?.saved_words || 0);
+    const dict_created = pendingDictCreated + (userStats?.dict_created || userStats?.created_dicts || 0);
+
+    // Load initial pending data from storage
+    useEffect(() => {
+        const loadPendingData = async () => {
+            try {
+                const pXP = await getDataStorage("pendingXP");
+                const pSaved = await getDataStorage("pendingSavedWords");
+                const pTrans = await getDataStorage("pendingTranslated");
+                const pDict = await getDataStorage("pendingDictCreated");
+                if (pXP) setPendingEarnedXP(JSON.parse(pXP));
+                if (pSaved) setPendingSavedWords(JSON.parse(pSaved));
+                if (pTrans) setPendingTranslated(JSON.parse(pTrans));
+                if (pDict) setPendingDictCreated(JSON.parse(pDict));
+            } catch (e) {
+                console.log("Error loading pending stats data", e);
+            }
+        };
+        loadPendingData();
+    }, [getDataStorage]);
+
+    // Check for level up when pending XP increases
+    useEffect(() => {
+        if (userStats && userStats.xp_for_next) {
+            const xpForNext = userStats.xp_for_next;
+            if (pendingEarnedXP > 0 && pendingEarnedXP >= xpForNext && !levelUpInfo) {
+                const oldLvl = userStats.level || 1;
+                const newLvl = oldLvl + 1;
+                setLevelUpInfo({
+                    oldLevel: oldLvl,
+                    newLevel: newLvl,
+                });
+            }
+        }
+    }, [pendingEarnedXP, userStats, levelUpInfo]);
+
+    const dismissLevelUp = useCallback(async () => {
+        await clearPendingData();
+        setLevelUpInfo(null);
+        await getUserStats();
+    }, [getUserStats]);
 
     const getUserStats = useCallback(async (tokenToUse = accToken) => {
         try {
@@ -50,22 +93,25 @@ export const UserStatsProvider = ({ children }) => {
         setPendingEarnedXP(0);
         setPendingSavedWords(0);
         setPendingTranslated(0);
+        setPendingDictCreated(0);
         await setDataStorage("pendingXP", "0");
         await setDataStorage("pendingSavedWords", "0");
         await setDataStorage("pendingTranslated", "0");
+        await setDataStorage("pendingDictCreated", "0");
     }
 
     useEffect(() => {
         if (!isLogin) {
             setUserStats(null)
         }
-        else {
+        else if(accToken) {
+            console.log("Login is scuccessfull. User stats are fetching")
             const getData = async () => {
                 await getUserStats()
             };
             getData();
         }
-    }, [isLogin]);
+    }, [isLogin,accToken]);
 
     const incTranslated = async (tokenToUse = accToken, isRetry = false) => {
         if (!isRetry) {
@@ -108,6 +154,13 @@ export const UserStatsProvider = ({ children }) => {
         incXP(3)
     }
 
+    const incDictCreated = async () => {
+        const newValue = pendingDictCreated + 1;
+        setPendingDictCreated(newValue);
+        await setDataStorage("pendingDictCreated", JSON.stringify(newValue));
+        incXP(10);
+    }
+
     const incXP = async (amount) => {
         await setDataStorage("pendingXP", JSON.stringify(pendingEarnedXP + amount))
         setPendingEarnedXP((prev) => {
@@ -120,7 +173,9 @@ export const UserStatsProvider = ({ children }) => {
     return (
         <UserStatsContext.Provider value={{
             userStats, translated_words,
-            saved_words, pendingEarnedXP, incSaved, incTranslated, incXP, setUserStats
+            saved_words, dict_created, pendingEarnedXP, pendingSavedWords, pendingTranslated, pendingDictCreated,
+            incSaved, incTranslated, incDictCreated, incXP, setUserStats,
+            levelUpInfo, dismissLevelUp
         }}>
             {children}
         </UserStatsContext.Provider>

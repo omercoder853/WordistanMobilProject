@@ -4,10 +4,12 @@ import {FontAwesome,FontAwesome6,Feather} from '@expo/vector-icons';
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../../contextapis/AuthContext";
 import { useUserStats } from "../../contextapis/UserStatsContext";
+import { useAchievements } from "../../contextapis/AchievementsContext";
 
 export default function ProfileStatsRow(){
     const { t } = useTranslation();
     const {user} = useAuth();
+    const {earnedAchievementsList} = useAchievements();
 
     const {translated_words,saved_words} = useUserStats();
     return (
@@ -26,7 +28,7 @@ export default function ProfileStatsRow(){
             <View style={{borderWidth:0.4,borderColor:'#94A3B8',marginHorizontal:5}}></View>
             <View style={styles.statColumn}>
                 <FontAwesome6 name="award" size={18} color="black" />
-                <Text style={{fontSize:15,fontWeight:'700'}}>{user?.achievements?.length || 0}</Text>
+                <Text style={{fontSize:15,fontWeight:'700'}}>{earnedAchievementsList?.length || 0}</Text>
                 <Text style={{fontSize:12,color:'#64748B',marginTop:-5}}>{t('badges')}</Text>
             </View>
         </View>

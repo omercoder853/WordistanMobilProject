@@ -1,12 +1,10 @@
-import {View,Text,TouchableOpacity} from 'react-native'
-import styles from '../HomePageStyles/homeStyles'
+import {View,Text,TouchableOpacity,StyleSheet} from 'react-native'
 import {AntDesign,FontAwesome} from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { useUserStats } from '../../contextapis/UserStatsContext';
 const StatRow = () => {
     const { t } = useTranslation();
     const {userStats,pendingEarnedXP} = useUserStats();
-    console.log("pending earned xp : " , pendingEarnedXP)
     return(
         <View style={styles.statRow}>
             <TouchableOpacity style={styles.statItemButton}>
@@ -37,3 +35,32 @@ const StatRow = () => {
 }
 
 export default StatRow;
+
+const styles = StyleSheet.create({
+    statRow:{
+        flexDirection:'row',
+        justifyContent:'space-around',
+        alignItems:'center',
+        paddingHorizontal:15,
+        gap:10,
+        marginTop:5
+    },
+    statItemButton:{
+        borderRadius:25,
+        borderWidth:1,
+        borderColor:'#E6E1F0',
+        paddingVertical:10,
+        paddingHorizontal:20,
+        backgroundColor:'white',
+        flex:1,
+        height:70,
+        elevation:5
+    },
+    statItemRow:{
+        flexDirection:'row',
+        alignItems:'center'
+    },
+    statColumn:{
+        alignItems:'center'
+    },
+})

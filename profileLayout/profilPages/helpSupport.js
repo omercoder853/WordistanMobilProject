@@ -5,17 +5,21 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
+  Linking,
+  Alert
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../../contextapis/AuthContext";
 import aboutStyles from "../profileStyle/aboutStyle";
+import { useCallback } from "react";
 
 // ─── Social channels data ───
 const socialChannels = [
   {
     id: "twitter",
     labelKey: "contactTwitter",
+    url:"",
     handle: "@wordistan",
     icon: "logo-twitter",
     iconColor: "#1DA1F2",
@@ -24,7 +28,8 @@ const socialChannels = [
   {
     id: "linkedin",
     labelKey: "contactLinkedin",
-    handle: "linkedin.com/company/wordistan",
+    url:"https://www.linkedin.com/in/omrfrkgulsen",
+    handle: "@omrfrkgulsen",
     icon: "logo-linkedin",
     iconColor: "#0A66C2",
     bgColor: "rgba(10, 102, 194, 0.1)",
@@ -32,7 +37,8 @@ const socialChannels = [
   {
     id: "website",
     labelKey: "contactWebsite",
-    handle: "www.wordistan.com",
+    url:"https://wordistan-backend.onrender.com/",
+    handle: "wordistan.com",
     icon: "globe-outline",
     iconColor: "#8B5CF6",
     bgColor: "rgba(139, 92, 246, 0.1)",
@@ -40,7 +46,8 @@ const socialChannels = [
   {
     id: "github",
     labelKey: "contactGithub",
-    handle: "github.com/omercoder853",
+    url:"https://github.com/omercoder853",
+    handle: "@omercoder853",
     icon: "logo-github",
     iconColor: "#24292F",
     bgColor: "rgba(36, 41, 47, 0.08)",
@@ -53,6 +60,16 @@ export default function HelpSupport() {
 
   // Default email from user context
   const userEmail = user?.email || "";
+
+  const OpenUrl = async(url) => {
+    const supported = await Linking.canOpenURL(url)
+    if (supported) {
+      await Linking.openURL(url);
+    }
+    else {
+      Alert.alert("This link can not be opened")
+    }
+  }
 
   return (
     <View style={aboutStyles.container}>
@@ -137,7 +154,7 @@ export default function HelpSupport() {
             <View key={channel.id}>
               <TouchableOpacity
                 activeOpacity={0.7}
-                onPress={() => {}}
+                onPress={() => OpenUrl(channel.url)}
                 style={aboutStyles.socialRow}
               >
                 <View

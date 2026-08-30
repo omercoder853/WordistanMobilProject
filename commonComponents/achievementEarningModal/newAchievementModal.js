@@ -1,7 +1,6 @@
 import { View, Modal, Text, TouchableOpacity, Image , ActivityIndicator} from 'react-native';
 import LottieView from 'lottie-react-native';
 import styles from './newAchievementModalStyle';
-import { useUserStats } from '../../contextapis/UserStatsContext';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import {useAchievements} from "../../contextapis/AchievementsContext";
