@@ -5,6 +5,7 @@ import Achievements from "../profileLayout/profilPages/achievementsPage";
 import Preferences from "../profileLayout/profilPages/preferences";
 import HelpSupport from "../profileLayout/profilPages/helpSupport";
 import About from "../profileLayout/profilPages/about";
+import GameSessions from "../profileLayout/profilPages/gameSessions";
 import { useTranslation } from "react-i18next";
 
 
@@ -16,10 +17,11 @@ export default function SettingsNavigation(){
         <Stack.Navigator>
             <Stack.Screen name="Personal Details" component={PersonalDetails} options={{title:t("personalDetails")}}/>
             <Stack.Screen name="Statistics" component={Statistics} options={{title:t("statistics")}}/>
+            <Stack.Screen name="Game Sessions" component={GameSessions} options={{title:t("gameSessions")}}/>
             <Stack.Screen name="Achievements" component={Achievements} options={{title:t("achievements")}}/>
             <Stack.Screen name="Preferences" component={Preferences} options={{title:t("preferences")}}/>
             <Stack.Screen name="Help & Support" component={HelpSupport} options={{title:t("helpSupport")}}/>
             <Stack.Screen name="About Wordistan" component={About} options={{title:t("about")}}/>
         </Stack.Navigator>
     )
-}
+}

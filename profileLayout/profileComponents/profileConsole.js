@@ -7,6 +7,7 @@ export default function ProfileConsole({setAlertVisible}){
     const consoleItems = [
       { name: "Personal Details", label: t('personalDetails'), icon: "person-outline" },
       { name: "Statistics", label: t('statistics'), icon: "stats-chart-outline" },
+      { name: "Game Sessions", label: t('gameSessions'), icon: "game-controller-outline" },
       { name: "Achievements", label: t('achievements'), icon: "trophy-outline" },
       { name: "Preferences", label: t('preferences'), icon: "options-outline" },
       { name: "Help & Support", label: t('helpSupport'), icon: "help-circle-outline" },
