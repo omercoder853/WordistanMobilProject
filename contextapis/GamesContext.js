@@ -1,13 +1,17 @@
 import { createContext,useContext } from "react";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import Fruits from "../assets/data/collections/fruits.json"
 import Animals from "../assets/data/collections/animals.json"
 import Places from "../assets/data/collections/places.json"
 import {useDictionary} from "./DictContext"
+import {BASE_URL,ENDPOINTS} from "../constants/ApiConfig"
+import { useAuth } from "./AuthContext";
 
 const GameContext = createContext();
 
 export const GameProvider = ({children}) => {
+    const {accToken,refToken,getNewToken,isLogin} = useAuth();
+
     const collections = {fruits:Fruits,animals:Animals,places:Places}
     const {getWords} = useDictionary();
     const [questions,setQuestions] = useState([])
@@ -22,8 +26,22 @@ export const GameProvider = ({children}) => {
     const [userAnswers,setUserAnswers] = useState([])
     const [gameType,setGameType] = useState()
     const [autoCont,setAutoCont] = useState(false);
+    const [gameSessions,setGameSessions] = useState([])
     let data;
     let tempQuestions=[];
+
+    useEffect(()=>{
+        if(isLogin && accToken && refToken){
+            const fetchGameSessions = async () => {
+            try {
+                const sessions = await getGameSessions();
+                setGameSessions(sessions);
+            } catch (error) {
+                console.error('Error fetching game sessions:', error);
+            }}
+            fetchGameSessions();
+        }
+    },[isLogin,accToken])
 
     const randomIndexCreater = ({target_words = null, length = null}) => {
         if (length != null) {
@@ -99,11 +117,37 @@ export const GameProvider = ({children}) => {
         setQuestions(tempQuestions)
     }
 
+    const getGameSessions = async (tokenToUse=accToken) => {
+        try {
+            console.log("Game sessions are being fetched")
+            const response = await fetch(`${BASE_URL}${ENDPOINTS.gameSessions}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${tokenToUse}`
+                }
+            });
+            if (response.ok) {
+                const data = await response.json();
+                console.log("Game sessions fetched successfully:", data);
+                setGameSessions(data);
+                return data;
+            }
+            else if (response.status === 401) {
+                const newToken = await getNewToken(refToken);
+                return await getGameSessions(newToken);
+            }
+        } catch (error) {
+            console.error('Error fetching game sessions:', error);
+            throw error;
+        }
+    }
+
     return (<GameContext.Provider value={{source,setSource,value,setValue,numberQuestion,
         setNumberQuestion,seconds,setSeconds,hints,setHints,visibleFirstLetter,setVisibleFirstLetter,
         numberOptions,setnumberOptions,perPage,setPerPage,createQuestion,
         questions,userAnswers,setUserAnswers,setGameType,gameType,
-        randomIndexCreater,autoCont,setAutoCont}}>{children}</GameContext.Provider>)
+        randomIndexCreater,autoCont,setAutoCont,gameSessions,setGameSessions}}>{children}</GameContext.Provider>)
 }
 
 export const useGame = ()=>{

@@ -17,5 +17,6 @@ export const ENDPOINTS = {
     incrementTranslation : "/stats/increment-translation",
     achievements : "/achievements/all",
     earnedAchievements : "/achievements/earned",
+    gameSessions: "/games/sessions",
     
 }

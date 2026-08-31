@@ -1,14 +1,39 @@
 import { useEffect, useRef, useState } from "react";
-import { View, Text, StyleSheet, Animated, Easing } from "react-native";
+import { View, Text, ScrollView, Animated, Easing, TouchableOpacity } from "react-native";
 import { useUserStats } from "../../contextapis/UserStatsContext";
+import { useGame } from "../../contextapis/GamesContext";
 import { useTranslation } from "react-i18next";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
+import LineChart from "../profileComponents/LineChart";
+import PieChart from "../profileComponents/PieChart";
+import BarChart from "../profileComponents/BarChart";
+import InfoTooltip from "../profileComponents/InfoTooltip";
+import styles from "../profileStyle/statisticsStyle";
+
+const FILTER_OPTIONS = [
+    { key: 5, labelKey: "last5" },
+    { key: 10, labelKey: "last10" },
+    { key: 20, labelKey: "last20" },
+    { key: 0, labelKey: "allGames" },
+];
+
+const METRIC_OPTIONS = [
+    { key: "score", labelKey: "scoreMetric", color: "#6366F1" },
+    { key: "performance_score", labelKey: "perfScoreMetric", color: "#EC4899" },
+    { key: "correct_count", labelKey: "correctMetric", color: "#10B981" },
+    { key: "duration_secs", labelKey: "durationMetric", color: "#F59E0B" },
+];
 
 export default function Statistics() {
     const { userStats, pendingEarnedXP } = useUserStats();
+    const { gameSessions } = useGame();
     const { t } = useTranslation();
 
+    const [filterCount, setFilterCount] = useState(5);
+    const [selectedMetric, setSelectedMetric] = useState("score");
+
+    // ─── Level progress calculations ───
     const required_xp_for_level = userStats?.required_xp_for_level || 1;
     const xp_for_next = userStats?.xp_for_next || 0;
     const earnedInLevel = Math.max(0, required_xp_for_level - xp_for_next + (pendingEarnedXP || 0));
@@ -38,145 +63,184 @@ export default function Statistics() {
 
     const animatedWidth = animatedProgress.interpolate({
         inputRange: [0, 1],
-        outputRange: ['0%', '100%']
+        outputRange: ["0%", "100%"],
     });
 
+    // ─── Game sessions data ───
+    const sessions = gameSessions?.sessions || [];
+    const totals = gameSessions?.totals || {};
+    const avgScore = gameSessions?.average_score;
+    const avgPerfScore = gameSessions?.average_performance_score;
+    const gameModeCounts = gameSessions?.game_mode_counts || {};
+    const hasSessions = sessions.length > 0;
+
+    // ─── Filtered data for LineChart ───
+    const filteredSessions = filterCount === 0
+        ? [...sessions].reverse()
+        : [...sessions.slice(0, Math.min(filterCount, sessions.length))].reverse();
+
+    const metricConfig = METRIC_OPTIONS.find((m) => m.key === selectedMetric);
+    const chartData = filteredSessions.map((s) => s[selectedMetric] || 0);
+    const chartLabels = filteredSessions.map((s) => {
+        const d = new Date(s.played_at);
+        return `${d.getDate().toString().padStart(2, "0")}/${(d.getMonth() + 1).toString().padStart(2, "0")}`;
+    });
+
+    // ─── PieChart data ───
+    const pieData = [gameModeCounts.mp || 0, gameModeCounts.wc || 0, gameModeCounts.mcq || 0];
+    const pieColors = ["#6366F1", "#EC4899", "#F59E0B"];
+    const pieLabels = [t("matchingPairs"), t("wordCompletion"), t("multipleChoice")];
+
+    // ─── BarChart data ───
+    const barData = [totals.total || 0, totals.correct || 0, totals.wrong || 0, totals.passed || 0];
+    const barColors = ["#6366F1", "#10B981", "#EF4444", "#F59E0B"];
+    const barLabels = [t("totalQuestions"), t("correctAnswers"), t("wrongAnswers"), t("passedAnswers")];
+
     return (
-        <View style={statStyles.container}>
-            {/* Level Progress Card */}
-            <View style={statStyles.card}>
-                {/* Level header row */}
-                <View style={statStyles.levelHeader}>
-                    <View style={statStyles.levelBadge}>
+        <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+            {/* ─── Level Progress Card ─── */}
+            <View style={styles.card}>
+                <View style={styles.levelHeader}>
+                    <View style={styles.levelBadge}>
                         <Ionicons name="star" size={14} color="#FFFFFF" />
                     </View>
-                    <Text style={statStyles.levelTitle}>{t("level")} {level}</Text>
-                    <Text style={statStyles.levelSubtitle}>
-                        {displayPercent}%
-                    </Text>
+                    <Text style={styles.levelTitle}>{t("level")} {level}</Text>
+                    <Text style={styles.levelSubtitle}>{displayPercent}%</Text>
                 </View>
 
-                {/* Progress bar */}
-                <View style={statStyles.progressTrack}>
-                    <Animated.View
-                        style={[
-                            statStyles.progressFillContainer,
-                            { width: animatedWidth }
-                        ]}
-                    >
+                <View style={styles.progressTrack}>
+                    <Animated.View style={[styles.progressFillContainer, { width: animatedWidth }]}>
                         <LinearGradient
-                            colors={['#6366F1', '#EC4899']}
+                            colors={["#6366F1", "#EC4899"]}
                             start={{ x: 0, y: 0 }}
                             end={{ x: 1, y: 0 }}
-                            style={statStyles.progressFill}
+                            style={styles.progressFill}
                         />
                     </Animated.View>
                 </View>
 
-                {/* XP info row */}
-                <View style={statStyles.xpRow}>
-                    <Text style={statStyles.xpCurrent}>
-                        {earnedInLevel} / {required_xp_for_level} XP
-                    </Text>
-                    <Text style={statStyles.xpTarget}>
-                        {remainingXP} XP {t("xpRemaining")}
-                    </Text>
+                <View style={styles.xpRow}>
+                    <Text style={styles.xpCurrent}>{earnedInLevel} / {required_xp_for_level} XP</Text>
+                    <Text style={styles.xpTarget}>{remainingXP} XP {t("xpRemaining")}</Text>
                 </View>
 
-                {/* Remaining XP hint */}
-                <Text style={statStyles.xpHint}>
+                <Text style={styles.xpHint}>
                     {t("level")} {level + 1} {t("xpFor")} {remainingXP} XP {t("xpRemaining")}
                 </Text>
             </View>
-        </View>
+
+            {/* ─── Average Score Badges ─── */}
+            {hasSessions && (
+                <View style={styles.avgRow}>
+                    <View style={styles.avgBadge}>
+                        <View style={styles.avgBadgeHeader}>
+                            <Text style={styles.avgBadgeLabel}>{t("avgScore")}</Text>
+                            <InfoTooltip text={t("scoreExplanation")} size={14} />
+                        </View>
+                        <Text style={styles.avgBadgeValue}>
+                            {avgScore != null ? avgScore.toFixed(1) : "—"}
+                        </Text>
+                        <Text style={styles.avgBadgeSuffix}>/100</Text>
+                    </View>
+                    <View style={styles.avgBadge}>
+                        <View style={styles.avgBadgeHeader}>
+                            <Text style={styles.avgBadgeLabel}>{t("avgPerformance")}</Text>
+                            <InfoTooltip text={t("performanceExplanation")} size={14} />
+                        </View>
+                        <Text style={[styles.avgBadgeValue, { color: "#EC4899" }]}>
+                            {avgPerfScore != null ? avgPerfScore.toFixed(1) : "—"}
+                        </Text>
+                        <Text style={styles.avgBadgeSuffix}>/100</Text>
+                    </View>
+                </View>
+            )}
+
+            {/* ─── Empty state for charts ─── */}
+            {!hasSessions && (
+                <View style={styles.emptyContainer}>
+                    <Ionicons name="bar-chart-outline" size={48} color="#D1D5DB" style={styles.emptyIcon} />
+                    <Text style={styles.emptyTitle}>{t("noStatsYet")}</Text>
+                    <Text style={styles.emptyDesc}>{t("noStatsYetDesc")}</Text>
+                </View>
+            )}
+
+            {/* ─── LineChart: Score Progress ─── */}
+            {hasSessions && (
+                <View style={styles.chartCard}>
+                    <View style={styles.chartHeader}>
+                        <Text style={styles.chartTitle}>{t("scoreProgress")}</Text>
+                        <Text style={{ fontSize: 11, color: "#94A3B8" }}>
+                            {filteredSessions.length} {t("games")}
+                        </Text>
+                    </View>
+
+                    {/* Filter pills */}
+                    <View style={styles.filterRow}>
+                        {FILTER_OPTIONS.map((opt) => (
+                            <TouchableOpacity
+                                key={opt.key}
+                                style={[styles.filterPill, filterCount === opt.key && styles.filterPillActive]}
+                                onPress={() => setFilterCount(opt.key)}
+                            >
+                                <Text
+                                    style={[
+                                        styles.filterPillText,
+                                        filterCount === opt.key && styles.filterPillTextActive,
+                                    ]}
+                                >
+                                    {t(opt.labelKey)}
+                                </Text>
+                            </TouchableOpacity>
+                        ))}
+                    </View>
+
+                    {/* Metric tabs */}
+                    <View style={styles.metricRow}>
+                        {METRIC_OPTIONS.map((opt) => (
+                            <TouchableOpacity
+                                key={opt.key}
+                                style={[styles.metricTab, selectedMetric === opt.key && styles.metricTabActive]}
+                                onPress={() => setSelectedMetric(opt.key)}
+                            >
+                                <Text
+                                    style={[
+                                        styles.metricTabText,
+                                        selectedMetric === opt.key && styles.metricTabTextActive,
+                                    ]}
+                                >
+                                    {t(opt.labelKey)}
+                                </Text>
+                            </TouchableOpacity>
+                        ))}
+                    </View>
+
+                    <LineChart
+                        data={chartData}
+                        labels={chartLabels}
+                        color={metricConfig?.color || "#6366F1"}
+                    />
+                </View>
+            )}
+
+            {/* ─── PieChart: Game Distribution ─── */}
+            {hasSessions && (
+                <View style={styles.chartCard}>
+                    <View style={styles.chartHeader}>
+                        <Text style={styles.chartTitle}>{t("gameDistribution")}</Text>
+                    </View>
+                    <PieChart data={pieData} colors={pieColors} labels={pieLabels} />
+                </View>
+            )}
+
+            {/* ─── BarChart: Question Stats ─── */}
+            {hasSessions && (
+                <View style={styles.chartCard}>
+                    <View style={styles.chartHeader}>
+                        <Text style={styles.chartTitle}>{t("questionStats")}</Text>
+                    </View>
+                    <BarChart data={barData} labels={barLabels} colors={barColors} />
+                </View>
+            )}
+        </ScrollView>
     );
 }
-
-const statStyles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        paddingTop: 16,
-        paddingHorizontal: 12,
-        backgroundColor: '#FAFAFA',
-    },
-    card: {
-        width: '95%',
-        backgroundColor: 'rgba(248, 247, 255, 0.92)',
-        borderRadius: 20,
-        paddingVertical: 18,
-        paddingHorizontal: 20,
-        borderWidth: 1,
-        borderColor: '#EDE9FE',
-        // Shadow
-        shadowColor: '#8B5CF6',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.08,
-        shadowRadius: 12,
-        elevation: 4,
-    },
-    levelHeader: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: 14,
-    },
-    levelBadge: {
-        backgroundColor: '#8B5CF6',
-        width: 28,
-        height: 28,
-        borderRadius: 14,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginRight: 10,
-    },
-    levelTitle: {
-        fontSize: 20,
-        fontWeight: '700',
-        color: '#1E1B4B',
-        flex: 1,
-    },
-    levelSubtitle: {
-        fontSize: 14,
-        fontWeight: '600',
-        color: '#8B5CF6',
-    },
-    progressTrack: {
-        height: 10,
-        backgroundColor: '#EDE9FE',
-        borderRadius: 5,
-        overflow: 'hidden',
-        marginBottom: 10,
-    },
-    progressFillContainer: {
-        height: '100%',
-        borderRadius: 5,
-        overflow: 'hidden',
-    },
-    progressFill: {
-        flex: 1,
-        width: '100%',
-        height: '100%',
-    },
-    xpRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 4,
-    },
-    xpCurrent: {
-        fontSize: 13,
-        fontWeight: '600',
-        color: '#6366F1',
-    },
-    xpTarget: {
-        fontSize: 13,
-        fontWeight: '600',
-        color: '#94A3B8',
-    },
-    xpHint: {
-        fontSize: 12,
-        color: '#64748B',
-        textAlign: 'center',
-        marginTop: 6,
-        fontStyle: 'italic',
-    },
-});
