@@ -20,7 +20,7 @@ export default function WordCompletionPage(){
     const { t } = useTranslation();
     const navigation = useNavigation();
     const {hints,questions,visibleFirstLetter,userAnswers,setUserAnswers,seconds,numberQuestion} = useGame();
-    const [remainTime,setremainTime] = useState(numberQuestion * seconds)
+    const [remainTime,setRemainTime] = useState(numberQuestion * seconds)
     const [currentQuestionIndex,setCurrentQuestionIndex] = useState(0)
     const [exitVisible,setExitVisible] = useState(false)
     const [emptyQuestion,setEmptyQuestion]  = useState(false)
@@ -82,7 +82,7 @@ export default function WordCompletionPage(){
             }
         }
     }, 500); 
-    return () => clearTimeout(timer)}, [currentQuestionIndex]); 
+    return () => clearTimeout(timer)}, [currentQuestionIndex]);
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('beforeRemove', (e) => {
@@ -92,22 +92,34 @@ export default function WordCompletionPage(){
             setExitVisible(true)
         } });
         return unsubscribe;}, [navigation,remainTime]);
+    
+    /* ---------- TIMER ---------- */
+    
+    const totalMs = seconds * numberQuestion * 1000
+    const targetEndTimeRef = useRef(Date.now() + totalMs)
+    const remainingMsRef = useRef(totalMs)
         
     useEffect(()=>{
-        if (remainTime==0) {
-            Keyboard.dismiss()
-            navigation.replace("Finish Game",{remainTime})
+        if (isPause) {
+            remainingMsRef.current = Math.max(0,targetEndTimeRef.current - Date.now());
             return
         }
+        targetEndTimeRef.current = Date.now() + remainingMsRef.current;
 
-        if (isPause) return;
+        const interval = setInterval(() => {
+            const diff = targetEndTimeRef.current - Date.now();
+            const currentRemainSec = Math.max(0,Math.ceil(diff / 1000));
+            setRemainTime(currentRemainSec);
+            
+            if (diff <= 0 ) {
+                Keyboard.dismiss();
+                clearInterval(interval);
+                navigation.replace("Finish Game",{remainTime:0})
+            }
 
-        const timer = setTimeout(()=>{
-            setremainTime(remainTime-1)
-        },1000)
-
-        return () => clearTimeout(timer);
-    })
+        },500);
+        return () => clearInterval(interval);
+    },[isPause]);
 
     return (
         <TouchableWithoutFeedback onPress={()=>Keyboard.dismiss()}>

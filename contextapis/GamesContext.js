@@ -129,7 +129,7 @@ export const GameProvider = ({children}) => {
             });
             if (response.ok) {
                 const data = await response.json();
-                console.log("Game sessions fetched successfully:", data);
+                console.log("Game sessions fetched successfully");
                 setGameSessions(data);
                 return data;
             }
@@ -143,10 +143,42 @@ export const GameProvider = ({children}) => {
         }
     }
 
+    const saveGameSession = async (sessionData, tokenToUse=accToken) => {
+        try {
+            const res = await fetch (BASE_URL + ENDPOINTS.saveGameSession, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${tokenToUse}`
+                },
+                body: JSON.stringify(sessionData)
+            })
+            if (res.ok) {
+                const data = await res.json();
+                console.log("New game session created successfully:", data);
+                await getGameSessions(tokenToUse);
+                return data;
+            }
+            else if (res.status === 401) {
+                const newToken = await getNewToken(refToken);
+                return await saveGameSession(sessionData, newToken);
+            }
+            else {
+                const message = await res.text();
+                console.error(`Failed to create new game session. Status: ${res.status}, Message: ${message}`);
+                return null;
+            }
+        }
+        catch (error) {
+            console.error('Error creating new game session:', error);
+            return null;
+        }
+    }
+
     return (<GameContext.Provider value={{source,setSource,value,setValue,numberQuestion,
         setNumberQuestion,seconds,setSeconds,hints,setHints,visibleFirstLetter,setVisibleFirstLetter,
         numberOptions,setnumberOptions,perPage,setPerPage,createQuestion,
-        questions,userAnswers,setUserAnswers,setGameType,gameType,
+        questions,userAnswers,setUserAnswers,setGameType,gameType,saveGameSession,
         randomIndexCreater,autoCont,setAutoCont,gameSessions,setGameSessions}}>{children}</GameContext.Provider>)
 }
 

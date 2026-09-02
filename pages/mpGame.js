@@ -34,6 +34,7 @@ export default function MatchingPairsPage(){
     const [selectedQuestion,setSelectedQuestion] = useState();
     const [selectedAnswer,setSelectedAnswer] = useState([])
     const [totalTry,setTotalTry] = useState(0)
+
     useEffect(()=>{
         const isExist = currentQuestions.some((questionList)=>questionList.id == currentQuestionPage)
         if (!isExist) {
@@ -75,27 +76,33 @@ export default function MatchingPairsPage(){
         setExitVisible(true)
     } });
     return unsubscribe;}, [navigation,remainTime]);
+
+    /* ---------- TIMER ---------- */
+
+    const totalMs = seconds * numberQuestion * 1000
+    const targetEndTimeRef = useRef(Date.now() + totalMs)
+    const remainingMsRef = useRef(totalMs)
     
     useEffect(()=>{
-        if (remainTime==0) {
-            navigation.replace("Finish Game",{remainTime,totalTry})
+        if (isPause) {
+            remainingMsRef.current = Math.max(0,targetEndTimeRef.current - Date.now());
             return
         }
+        targetEndTimeRef.current = Date.now() + remainingMsRef.current;
 
-        if (isPause) return;
-
-        const timer = setTimeout(()=>{
-            if (remainTime<=5 && remainTime>1 && isVibrate) {
-                Vibration.vibrate(50)
+        const interval = setInterval(() => {
+            const diff = targetEndTimeRef.current - Date.now();
+            const currentRemainSec = Math.max(0,Math.ceil(diff / 1000));
+            setRemainTime(currentRemainSec);
+            
+            if (diff <= 0 ) {
+                clearInterval(interval);
+                navigation.replace("Finish Game",{remainTime:0})
             }
-            else if (remainTime == 1 && isVibrate){
-                Vibration.vibrate(500)
-            }
-            setRemainTime(remainTime-1)
-        },1000)
 
-        return () => clearTimeout(timer);
-    })
+        },500);
+        return () => clearInterval(interval);
+    },[isPause]);
 
     const getDynamicQuestionStyle = (ind)=>{
         if (selectedQuestion !== null && selectedQuestion!==undefined) {

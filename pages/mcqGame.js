@@ -5,7 +5,7 @@ import QuizOption from "../gamesLayout/gameComponents/mcqOptions";
 import QuestionNavigation from "../gamesLayout/gameComponents/questionNavigations";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useGame } from "../contextapis/GamesContext";
-import { useState,useEffect } from "react";
+import { useState,useEffect,useRef } from "react";
 import CustomAlert from "../commonComponents/customAlert/customAlert"
 import { useNavigation } from "@react-navigation/native";
 import GameHeader from "../gamesLayout/gameComponents/gameHeader";
@@ -15,7 +15,7 @@ export default function MultipleChoiceGamePage(){
     const { t } = useTranslation();
     const navigation = useNavigation();
     const {hints,questions,seconds,numberQuestion} = useGame();
-    const [remainTime,setRemainTime] = useState(seconds * numberQuestion)
+    const [remainTime,setRemainTime] = useState(numberQuestion * seconds)
     const [currentQuestion,setCurrentQuestion] = useState(0)
     const [exitVisible,setExitVisible] = useState(false)
     const [emptyQuestion,setEmptyQuestion]  = useState(false)
@@ -32,21 +32,34 @@ export default function MultipleChoiceGamePage(){
         setExitVisible(true)
     } });
     return unsubscribe;}, [navigation,remainTime]);
-    
+
+    /* ---------- TIMER ---------- */
+
+    const totalMs = seconds * numberQuestion * 1000
+    const targetEndTimeRef = useRef(Date.now() + totalMs)
+    const remainingMsRef = useRef(totalMs)
+
     useEffect(()=>{
-        if (remainTime==0) {
-            navigation.replace("Finish Game",{remainTime})
+        if (isPause) {
+            remainingMsRef.current = Math.max(0,targetEndTimeRef.current - Date.now());
             return
         }
+        targetEndTimeRef.current = Date.now() + remainingMsRef.current;
 
-        if (isPause) return;
+        const interval = setInterval(() => {
+            const diff = targetEndTimeRef.current - Date.now();
+            const currentRemainSec = Math.max(0,Math.ceil(diff / 1000));
+            setRemainTime(currentRemainSec);
+            
+            if (diff <= 0 ) {
+                clearInterval(interval);
+                navigation.replace("Finish Game",{remainTime:0})
+            }
 
-        const timer = setTimeout(()=>{
-            setRemainTime(remainTime-1)
-        },1000)
+        },500);
+        return () => clearInterval(interval);
+    },[isPause]);
 
-        return () => clearTimeout(timer);
-    })
 
     return (
         <SafeAreaView style={styles.mainContainer}>

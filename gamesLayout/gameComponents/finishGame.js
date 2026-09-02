@@ -1,17 +1,20 @@
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView,Modal,ActivityIndicator } from "react-native";
 import { useGame } from "../../contextapis/GamesContext";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { TabRouter, useNavigation, useRoute } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import {useState} from "react";
 
 export default function FinishGame() {
     const { t } = useTranslation();
     const router = useRoute();
     const { remainTime, totalTry } = router.params || {};
     const navigation = useNavigation();
-    const { numberQuestion, userAnswers, gameType } = useGame();
+    const { numberQuestion, userAnswers, gameType , saveGameSession, seconds } = useGame();
+
+    const [loading,setLoading] = useState(false);
     
     let true_count = 0;
     let empty_count = 0;
@@ -89,11 +92,38 @@ export default function FinishGame() {
         },
     ];
 
+    const saveResults = async(target) => {
+        setLoading(true)
+        const sessionData = {
+            game_mode : String(gameType),
+            score : success,
+            correct_count : true_count,
+            wrong_count : wrong_count,
+            total_count : numberQuestion,
+            passed_count : empty_count,
+            duration_secs : seconds * numberQuestion - remainTime
+        }
+        try {
+            const res = await saveGameSession(sessionData);
+            if(res) {
+                console.log("Game results saved successfully:", res);
+            }
+            else {
+                console.log("Failed to save game results.");
+            }
+        }
+        catch (error) {
+            console.log("Error while saving game results : " , error)
+        }
+        setLoading(false)
+        navigation.replace("MainTabs",{screen:target})
+    }
+
     return (
+        <>
         <LinearGradient
             colors={['#FFF8F8', '#FDF2F2', '#FAF0F0']}
-            style={{ flex: 1 }}
-        >
+            style={{ flex: 1 }}>
             <SafeAreaView style={finishStyles.safeArea}>
                 <ScrollView
                     contentContainerStyle={finishStyles.scrollContent}
@@ -128,7 +158,7 @@ export default function FinishGame() {
                         <TouchableOpacity
                             activeOpacity={0.85}
                             style={[finishStyles.actionButton, finishStyles.homeButton]}
-                            onPress={() => navigation.replace("MainTabs", { screen: "Home" })}
+                            onPress={() => saveResults("Home")}
                         >
                             <Ionicons name="home-outline" size={20} color="#FFFFFF" style={{ marginRight: 8 }} />
                             <Text style={finishStyles.buttonText}>{t('home') || "Ana Sayfa"}</Text>
@@ -137,7 +167,7 @@ export default function FinishGame() {
                         <TouchableOpacity
                             activeOpacity={0.85}
                             style={[finishStyles.actionButton, finishStyles.newGameButton]}
-                            onPress={() => navigation.replace("MainTabs", { screen: "Games" })}
+                            onPress={() => saveResults("Games")}
                         >
                             <Ionicons name="game-controller-outline" size={20} color="#FFFFFF" style={{ marginRight: 8 }} />
                             <Text style={finishStyles.buttonText}>{t('newGame') || "Yeni Oyun"}</Text>
@@ -146,6 +176,15 @@ export default function FinishGame() {
                 </ScrollView>
             </SafeAreaView>
         </LinearGradient>
+
+        <Modal visible={loading} transparent animationType="fade">
+            <View style={{flex:1,backgroundColor:'rgba(0,0,0,0.3)',justifyContent:'center',alignItems:'center'}}>
+                <View style={{width:100,height:100,backgroundColor:'white',borderRadius:20,justifyContent:'center',alignItems:'center'}}>
+                    <ActivityIndicator size="large" color="#0000ff" />
+                </View>
+            </View>
+        </Modal>
+        </>
     );
 }
 

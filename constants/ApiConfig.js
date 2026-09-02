@@ -18,5 +18,5 @@ export const ENDPOINTS = {
     achievements : "/achievements/all",
     earnedAchievements : "/achievements/earned",
     gameSessions: "/games/sessions",
-    
+    saveGameSession: "/games/new",
 }
