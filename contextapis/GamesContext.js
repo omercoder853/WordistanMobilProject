@@ -6,6 +6,7 @@ import Places from "../assets/data/collections/places.json"
 import {useDictionary} from "./DictContext"
 import {BASE_URL,ENDPOINTS} from "../constants/ApiConfig"
 import { useAuth } from "./AuthContext";
+import { useUserStats } from "./UserStatsContext";
 
 const GameContext = createContext();
 
@@ -29,6 +30,8 @@ export const GameProvider = ({children}) => {
     const [gameSessions,setGameSessions] = useState([])
     let data;
     let tempQuestions=[];
+
+    const {incXP} = useUserStats();
 
     useEffect(()=>{
         if(isLogin && accToken && refToken){
@@ -156,7 +159,8 @@ export const GameProvider = ({children}) => {
             if (res.ok) {
                 const data = await res.json();
                 console.log("New game session created successfully:", data);
-                await getGameSessions(tokenToUse);
+                incXP(sessionData.total_count);
+                await getGameSessions(tokenToUse); 
                 return data;
             }
             else if (res.status === 401) {

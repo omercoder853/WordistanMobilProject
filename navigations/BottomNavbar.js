@@ -11,6 +11,8 @@ import useRecentWords from '../hooks/recentWordsHook';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect,useState } from 'react';
 
+import NotificationPanel from '../homePageLayout/HomePageComponents/notificationPanel';
+
 const Bottom = createBottomTabNavigator();
 export default function BottomNavbar(){
     const {recentWords,addWord} = useRecentWords()
@@ -45,6 +47,7 @@ export default function BottomNavbar(){
             <Bottom.Screen name='Profile' component={Profile} 
             options={{headerShown:false, tabBarIcon:({focused})=>(<MaterialIcons name="account-box" size={24} color={focused ? "#5B3FD3":"#A6A1B8"} />)}}></Bottom.Screen>
         </Bottom.Navigator>
+        <NotificationPanel />
         </LinearGradient>
     )
 } 

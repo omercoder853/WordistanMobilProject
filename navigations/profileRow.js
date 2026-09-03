@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useUserStats } from "../contextapis/UserStatsContext";
 import { useNavigation } from "@react-navigation/native";
 import Svg, { Circle } from "react-native-svg";
+import { useNotification } from "../contextapis/NotificationContext";
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
@@ -21,6 +22,8 @@ const ProfileRow = () => {
     const {user,setUser,getDataStorage} = useAuth();
     const {t} = useTranslation();
     const navigation = useNavigation();
+    const {notifications, setNotificationPanel} = useNotification();
+    const unreadCount = (notifications || []).filter(n => !n.is_read).length;
     
     const imgSource = user?.gender=="male" ? require('../assets/avatarBoy.png') : require('../assets/avatarGirl.png')
     useEffect(() => {
@@ -108,7 +111,24 @@ const ProfileRow = () => {
                     <Text style={styles.levelBadgeText}>{userStats?.level || 1}</Text>
                 </View>
             </TouchableOpacity>
-            <Ionicons name="notifications" size={24} color="#5B3FD3" style={{marginLeft: 8}}/>
+            <TouchableOpacity
+                onPress={() => setNotificationPanel(true)}
+                activeOpacity={0.7}
+                style={styles.notificationButton}
+            >
+                <Ionicons
+                    name={unreadCount > 0 ? "notifications" : "notifications-outline"}
+                    size={24}
+                    color="#5B3FD3"
+                />
+                {unreadCount > 0 && (
+                    <View style={styles.notificationBadge}>
+                        <Text style={styles.notificationBadgeText}>
+                            {unreadCount > 99 ? '99+' : unreadCount}
+                        </Text>
+                    </View>
+                )}
+            </TouchableOpacity>
         </View>
     </View>
 )};
@@ -176,5 +196,32 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
         fontSize: 10,
         fontWeight: '800',
+    },
+    notificationButton: {
+        marginLeft: 8,
+        position: 'relative',
+        padding: 4,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    notificationBadge: {
+        position: 'absolute',
+        top: -2,
+        right: -4,
+        backgroundColor: '#EF4444',
+        borderRadius: 9,
+        minWidth: 18,
+        height: 18,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: 4,
+        borderWidth: 1.5,
+        borderColor: '#FFFFFF',
+    },
+    notificationBadgeText: {
+        color: '#FFFFFF',
+        fontSize: 9,
+        fontWeight: '800',
+        textAlign: 'center',
     }
 })
