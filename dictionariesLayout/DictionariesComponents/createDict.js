@@ -4,10 +4,7 @@ import alertStyle from "../../commonComponents/customAlert/customAlertStyle";
 import { useState } from "react";
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import { useDictionary } from "../../contextapis/DictContext";
-import CustomAlert from "../../commonComponents/customAlert/customAlert"
 import { useTranslation } from "react-i18next";
-
-import { useUserStats } from "../../contextapis/UserStatsContext";
 
 export default function CreateDictionary({visible,setVisible}){
     const { t } = useTranslation();
@@ -15,26 +12,11 @@ export default function CreateDictionary({visible,setVisible}){
     const [dictDesc,setDictDesc] = useState("");
     const [dictLang,setDictLang] = useState("TR to ENG")
     const {createDictionary} = useDictionary();
-    const {incDictCreated} = useUserStats();
-    const [success,setSuccess] = useState(false)
-    const [fail,setFail] = useState(false)
 
     const createButton = async () => {
         if (dictName!="" && dictDesc!="") {
-            const res = await createDictionary({name:dictName,description:dictDesc,language:dictLang});
-            if (res.status===201) {
-                setSuccess(true)
-                setFail(false)
-                if (incDictCreated) {
-                    incDictCreated();
-                }
-            }
-            else{
-                const message = await res.json();
-                console.log("Error while creating dictionary  " , message , res.status)
-                setFail(true)
-                setSuccess(false)
-            }
+            await createDictionary({name:dictName,description:dictDesc,language:dictLang});
+            setVisible(false);
         }
     }
 
@@ -82,13 +64,6 @@ export default function CreateDictionary({visible,setVisible}){
                             </View>
                         </View>
                     </KeyboardAvoidingView>
-                    <CustomAlert visible={success} 
-                    title={t('dictionaryCreated')} 
-                    message={t("dictionaryCreatedSuccessfully")} 
-                    buttons={[{text:t("ok") ,style:"success",action:()=>{setSuccess(false),setVisible(false)}}]}/>
-                    <CustomAlert visible={fail} title={t('ooops')} 
-                    message="Something went wrong. Sorry about that" 
-                    buttons={[{text:t('cancel'),style:"danger",action:()=>setFail(false)}]}/>
                 </View>
             </TouchableWithoutFeedback>
         </Modal>

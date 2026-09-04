@@ -30,8 +30,8 @@ export default function Word({ word, index,setReload}) {
                     <Text style={styles.wordIdText}>{index + 1}</Text>
                 </View>
                 <View style={styles.wordContentWrapper}>
-                    <Text style={styles.wordTarget}>{capitalize(word.word)}</Text>
-                    <Text style={styles.wordMeaning}>{capitalize(word.meaning)}</Text>
+                    <Text style={styles.wordTarget}>{word.word}</Text>
+                    <Text style={styles.wordMeaning}>{word.meaning}</Text>
                 </View>
                 <View style={styles.deleteButtonContainer}>
                     <TouchableOpacity style={styles.deleteButton} onPress={()=>setAlertVisible(true)}>

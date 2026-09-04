@@ -3,7 +3,6 @@ import { View, Text, TouchableOpacity, Modal, ScrollView, ActivityIndicator, Sty
 import { FontAwesome, MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { useDictionary } from "../../contextapis/DictContext";
-import CustomAlert from "../../commonComponents/customAlert/customAlert";
 import modalStyles from "../HomePageStyles/modalStyles";
 
 const { width } = Dimensions.get('window');
@@ -35,8 +34,6 @@ const RecentWords = ({ recentWords }) => {
   const [selectedWord, setSelectedWord] = useState(null);
   const [selectedDictId, setSelectedDictId] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [fail, setFail] = useState(false);
 
   const handleOpenModal = (wordItem) => {
     setDictReload(true);
@@ -62,16 +59,11 @@ const RecentWords = ({ recentWords }) => {
         null,
         false
       );
-      if (result) {
-        setSuccess(true);
-        setModalVisible(false);
-      } else {
-        setFail(true);
-      }
     } catch (e) {
-      setFail(true);
+      console.log("Error saving word:", e);
     } finally {
       setLoading(false);
+      setModalVisible(false);
     }
   };
 
@@ -239,20 +231,6 @@ const RecentWords = ({ recentWords }) => {
           </TouchableOpacity>
         </TouchableOpacity>
       </Modal>
-
-      {/* Başarı & Hata Alertleri */}
-      <CustomAlert
-        visible={success}
-        title={t('wordAdded')}
-        message={t('wordAddedSuccessfully')}
-        buttons={[{ text: t('ok'), style: 'success', action: () => setSuccess(false) }]}
-      />
-      <CustomAlert
-        visible={fail}
-        title={t('ooops')}
-        message={t('somethingWentWrong')}
-        buttons={[{ text: t('cancel'), style: 'danger', action: () => setFail(false) }]}
-      />
     </>
   );
 };

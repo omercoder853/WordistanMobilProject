@@ -2,11 +2,9 @@ import { View,TouchableOpacity,TouchableWithoutFeedback,Keyboard,
     Platform,TextInput,Text,KeyboardAvoidingView,Modal } from "react-native";
 import alertStyles from "../../commonComponents/customAlert/customAlertStyle";
 import dictStyles from "../../dictionariesLayout/DictionariesStyles/dictStyles"
-import styles from "../translateStyles/transStyles";
 import DropDownPicker from "react-native-dropdown-picker";
 import { useState,useEffect } from "react";
 import {useDictionary} from "../../contextapis/DictContext"
-import CustomAlert from "../../commonComponents/customAlert/customAlert"
 import { useTranslation } from "react-i18next";
 
 export default function AddDictPage({visible,input,result,setVisible,from}){
@@ -14,8 +12,6 @@ export default function AddDictPage({visible,input,result,setVisible,from}){
     const [open,setOpen] = useState(false)
     const [value,setValue] = useState(null)
     const {dicts,setDictReload,saveWord} = useDictionary();
-    const [success,setSuccess] = useState(false)
-    const [fail,setFail] = useState(false)
 
     useEffect(()=>{
         setDictReload(true)
@@ -28,17 +24,8 @@ export default function AddDictPage({visible,input,result,setVisible,from}){
     }));
 
     const saveButton = async () => {
-        console.log(value)
         const status = await saveWord({dictionary_id:value,word:input,meaning:result});
-        console.log("Status",status)
-        if (status) {
-            setSuccess(true)
-            setFail(false)
-        }
-        else{
-            setFail(true)
-            setSuccess(false)
-        }
+        setVisible(false)
     }
 
     return (
@@ -71,13 +58,6 @@ export default function AddDictPage({visible,input,result,setVisible,from}){
                             </View>
                         </View>
                     </KeyboardAvoidingView>
-                    <CustomAlert visible={success} 
-                    title={t('wordAdded')} 
-                    message={t("wordAddedSuccessfully")} 
-                    buttons={[{text:t("ok") ,style:"success",action:()=>{setSuccess(false),setVisible(false)}}]}/>
-                    <CustomAlert visible={fail} title={t('ooops')} 
-                    message={t("somethingWentWrong")} 
-                    buttons={[{text:t('cancel'),style:"danger",action:()=>setFail(false)}]}/>
                 </View>
             </TouchableWithoutFeedback>
         </Modal>
