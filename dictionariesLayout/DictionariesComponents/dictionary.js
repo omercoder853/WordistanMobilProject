@@ -11,8 +11,6 @@ export default function Dictionary({ title, length, id, language }) {
     const navigation = useNavigation();
     const [visible, setVisible] = useState(false);
     const [warnVisible,setWarnVisible] = useState(false)
-    const [successVisible,setSuccessVisible] = useState(false)
-    const [errVisible,setErrVisible] = useState(false)
     const [loading,setLoading] = useState(false)
     const {deleteDictionary,setDictReload} = useDictionary();
 
@@ -26,20 +24,17 @@ export default function Dictionary({ title, length, id, language }) {
         setVisible(false);
     };
 
-    const handleOptionPress = (optionType) => {
+    const handleOptionPress = () => {
         setVisible(false);
     };
 
     const handleDeleteDict = async(dict_id) => {
-        const res = await deleteDictionary(dict_id)
-        if (res.success){
-            setWarnVisible(false)
-            setSuccessVisible(true)
+        const res = await deleteDictionary(dict_id);
+        if (res) {
+            setDictReload(true);
         }
-        else {
-            setWarnVisible(false)
-            setErrVisible(true)
-        }
+        setWarnVisible(false);
+        setVisible(false);
     }
 
     const formattedLang = language === "TR to ENG" ? "TR → ENG" : language === "ENG to TR" ? "ENG → TR" : (language || "TR → ENG");
@@ -125,14 +120,6 @@ export default function Dictionary({ title, length, id, language }) {
             message={t("deleteDictConfirmQuestion",{name:title,count:length})}
             buttons={[{text:t("cancel"),style:"cancel",action:()=>setWarnVisible(false)},
                         {text:t("delete"),style:"danger",action:()=>handleDeleteDict(id)}]}/>
-            <CustomAlert visible={successVisible}
-            title={t("operationSuccessful")}
-            message={t("dictDeletingSuccessfull")}
-            buttons={[{text:t("cancel"),action:()=>{setVisible(false),setWarnVisible(false),setDictReload(true)}}]}/>
-            <CustomAlert visible={errVisible}
-            title={t("ooops")}
-            message={t("dictDeletingError")}
-            buttons={[{text:t("cancel"),action:()=>{setVisible(false),setWarnVisible(false),setDictReload(true)}}]}/>
         </>
     )
 }

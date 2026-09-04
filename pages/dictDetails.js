@@ -5,7 +5,6 @@ import Word from "../dictionariesLayout/DictionariesComponents/wordRow";
 import styles from "../dictionariesLayout/DictionariesStyles/dictStyles";
 import alertStyles from "../commonComponents/customAlert/customAlertStyle";
 import EmptyDictionary from "../dictionariesLayout/DictionariesComponents/emptyDictionary";
-import CustomAlert from "../commonComponents/customAlert/customAlert";
 import { useTranslation } from "react-i18next";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useState } from "react";
@@ -24,8 +23,6 @@ export default function DictDetails() {
     const [wordInput, setWordInput] = useState("");
     const [meaningInput, setMeaningInput] = useState("");
     const [loading, setLoading] = useState(false);
-    const [success, setSuccess] = useState(false);
-    const [fail, setFail] = useState(false);
 
     useEffect(() => {
         let isMounted = true;
@@ -64,18 +61,19 @@ export default function DictDetails() {
                 meaning:meaningInput.trim()
             });
             if (status) {
-                setSuccess(true);
-                setModalVisible(false);
                 setWordInput("");
                 setMeaningInput("");
+                setModalVisible(false);
                 setReload(true);
                 setDictReload(true);
-            } else {
-                setFail(true);
+            }
+            else{
+                setWordInput("");
+                setMeaningInput("");
+                setModalVisible(false);
             }
         } catch (error) {
             console.log("Error saving word:", error);
-            setFail(true);
         } finally {
             setLoading(false);
         }
@@ -182,19 +180,6 @@ export default function DictDetails() {
                                 </View>
                             </View>
                         </KeyboardAvoidingView>
-
-                        <CustomAlert
-                            visible={success}
-                            title={t('wordAdded')}
-                            message={t("wordAddedSuccessfully")}
-                            buttons={[{ text: t("ok"), style: "success", action: () => setSuccess(false) }]}
-                        />
-                        <CustomAlert
-                            visible={fail}
-                            title={t('ooops')}
-                            message={t("somethingWentWrong")}
-                            buttons={[{ text: t('cancel'), style: "danger", action: () => setFail(false) }]}
-                        />
                     </View>
                 </TouchableWithoutFeedback>
             </Modal>

@@ -158,6 +158,7 @@
   "wordDeleteWarning":" '{{word}}' kelimesini sözlüğünüzden silmek üzeresiniz.",
   "wordDeletedSuccessfully":"Kelime başarıyla sözlüğünüzden kaldırıldı",
   "wordDeletingError":"Kelimen silinemedi. Daha sonra tekra dene!",
+  "wordAlreadyExists":"Kelime zaten sözlüğünde mevcut.",
 
   "___GAMES___": "",
   "gameSettings": "Oyun Ayarları",

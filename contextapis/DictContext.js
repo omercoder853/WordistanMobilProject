@@ -3,20 +3,24 @@ import { useContext, useState, useEffect } from "react";
 import { useAuth } from "./AuthContext";
 import { useUserStats } from "./UserStatsContext";
 import { BASE_URL, ENDPOINTS } from "../constants/ApiConfig";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import {useFeedback} from "./FeedbackContext";
+import { useTranslation } from "react-i18next";
 
 const DictContext = createContext();
 
 export const DictionaryProvider = ({ children }) => {
-    const { incSaved,incXP } = useUserStats();
+    const { incSaved } = useUserStats();
     const [dicts, setDicts] = useState([]);
     const { accToken, refToken, getNewToken, setLogin, isLogin, setAccToken, setDataStorage, getDataStorage } = useAuth();
     const [dictReload, setDictReload] = useState(false)
     const [dailyWord, setDailyWord] = useState(null)
 
+    const { t } = useTranslation();
+    const {showToast} = useFeedback();
+
     useEffect(() => {
         const loadDailyWord = async () => {
-            const rawStored = await AsyncStorage.getItem("@wordistan:dailyWord")
+            const rawStored = await getDataStorage("dailyWord")
             const stored = JSON.parse(rawStored)
             if (stored) {
                 const timestamp = Date.now()
@@ -129,6 +133,7 @@ export const DictionaryProvider = ({ children }) => {
                 },
                 body: JSON.stringify({ dictionary_id, word, meaning })
             })
+            
         if (res.status === 401) {
             const tempToken = await getNewToken(refToken)
             if (tempToken) {
@@ -139,15 +144,27 @@ export const DictionaryProvider = ({ children }) => {
                 setLogin(false)
             }
         }
+
+        else if (res.status === 409) {
+            console.log("Word already exists in the dictionary.")
+            showToast(t("warning"), t("wordAlreadyExists"), "warning");
+            return false
+        }
+
         else if (res.ok) {
             const word = await res.json();
             incSaved();
             setDictReload(true);
             if (isDaily) {
-                await saveDailyWord(word[0].id)
+                console.log("Word : " , word)
+                await saveDailyWord(word.id)
+                showToast(t("dailyWordSaved"), t("dailyWordSavedMsg"), "success");
+                return true
             }
+            showToast(t("wordAdded"), t("wordAddedSuccessfully"), "success");
+            return true
         }
-        return res.ok
+        
     }
 
     async function deleteWord(saved_id, tokenToUse = accToken) {
@@ -200,23 +217,27 @@ export const DictionaryProvider = ({ children }) => {
 
             if (res.status === 204 || res.ok) {
                 console.log("Dictionary deleted successfully!");
-                return { success: true };
+                showToast(t('operationSuccessful') , t('dictDeletingSuccessfull') , "success");
+                return true;
             }
 
-            if (res.status === 401) {
+            else if (res.status === 401) {
                 const newToken = await getNewToken(refToken);
                 if (newToken) {
                     return await deleteDictionary(dict_id, newToken);
                 }
-                return { success: false, error: "Oturum süresi doldu, lütfen tekrar giriş yapın." };
+                showToast(t('ooops'),t('dictDeletingError'),"danger")
+                return false;
             }
 
             const errData = await res.json().catch(() => ({}));
             console.log("Error while deleting dictionary:", errData, res.status);
+            showToast(t('ooops'),t('dictDeletingError'),"danger")
             return { success: false, error: errData.detail || "Sözlük silinemedi." };
 
         } catch (error) {
             console.error("Delete dictionary network error:", error);
+            showToast(t('ooops'),t('dictDeletingError'),"danger")
             return { success: false, error: "Ağ bağlantısı kurulamadı." };
         }
     }
@@ -233,6 +254,7 @@ export const DictionaryProvider = ({ children }) => {
             })
             if (res.ok) {
                 const data = await res.json();
+                console.log("Daily word fetched successfully: ", data)
                 setDailyWord(data)
                 await setDataStorage("dailyWord", JSON.stringify(data))
             }

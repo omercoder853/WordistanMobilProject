@@ -158,6 +158,7 @@
   "wordDeleteWarning":"You are about to delete the word '{{word}}' from your dictionary.",
   "wordDeletedSuccessfully":"Word has been successfully removed from your dictionary",
   "wordDeletingError":"Your word couldn't be deleted. Please try again later!",
+  "wordAlreadyExists":"The word already exists in your dictionary.",
 
   "___GAMES___": "",
   "gameSettings": "Game Settings",

@@ -4,17 +4,14 @@ import { useState } from "react";
 import { useTranslation } from 'react-i18next';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useDictionary } from '../../contextapis/DictContext';
-import CustomAlert from '../../commonComponents/customAlert/customAlert';
 import modalStyles from '../HomePageStyles/modalStyles';
 
 const DailyWord = () => {
     const { t, i18n } = useTranslation();
     const [modalVisible, setModalVisible] = useState(false)
-    const { saveWord, dailyWord, setDailyWord, dicts, setDictReload, deleteWord } = useDictionary();
+    const { saveWord, dailyWord, dicts, setDictReload, deleteWord } = useDictionary();
     const [selectedDictId, setSelectedDictId] = useState(null)
     const [loading, setLoading] = useState(false)
-    const [success, setSuccess] = useState(false)
-    const [fail, setFail] = useState(false)
     const lang = i18n.language
 
     const heartToggle = async () => {
@@ -37,16 +34,12 @@ const DailyWord = () => {
                 null,
                 true
             )
-            if (result) {
-                setSuccess(true);
-                setModalVisible(false);
-            } else {
-                setFail(true)
-            }
+
         } catch (e) {
-            setFail(true)
+            console.log("Error saving daily word:", e);
         } finally {
             setLoading(false)
+            setModalVisible(false)
         }
     }
 
@@ -215,20 +208,6 @@ const DailyWord = () => {
                     </TouchableOpacity>
                 </TouchableOpacity>
             </Modal>
-
-            {/* Başarı & Hata Alertleri */}
-            <CustomAlert
-                visible={success}
-                title={t('dailyWordSaved')}
-                message={t('dailyWordSavedMsg')}
-                buttons={[{ text: t('ok'), style: 'success', action: () => setSuccess(false) }]}
-            />
-            <CustomAlert
-                visible={fail}
-                title={t('ooops')}
-                message={t('dailyWordSaveError')}
-                buttons={[{ text: t('cancel'), style: 'danger', action: () => setFail(false) }]}
-            />
         </>
     )
 }
