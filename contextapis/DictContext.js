@@ -3,20 +3,25 @@ import { useContext, useState, useEffect } from "react";
 import { useAuth } from "./AuthContext";
 import { useUserStats } from "./UserStatsContext";
 import { BASE_URL, ENDPOINTS } from "../constants/ApiConfig";
-import {useFeedback} from "./FeedbackContext";
+import { useFeedback } from "./FeedbackContext";
 import { useTranslation } from "react-i18next";
+import useExports from "../hooks/exportHooks";
 
 const DictContext = createContext();
 
 export const DictionaryProvider = ({ children }) => {
-    const { incSaved,incDictCreated } = useUserStats();
+    const { incSaved, incDictCreated } = useUserStats();
     const [dicts, setDicts] = useState([]);
     const { accToken, refToken, getNewToken, setLogin, isLogin, setAccToken, setDataStorage, getDataStorage } = useAuth();
     const [dictReload, setDictReload] = useState(false)
     const [dailyWord, setDailyWord] = useState(null)
 
+    const { 
+        shareAsJson, shareAsTxt, shareAsCsv, shareAsPdf 
+    } = useExports();
+
     const { t } = useTranslation();
-    const {showToast} = useFeedback();
+    const { showToast } = useFeedback();
 
     useEffect(() => {
         const loadDailyWord = async () => {
@@ -74,6 +79,10 @@ export const DictionaryProvider = ({ children }) => {
     }
 
     async function getWords(dictId) {
+        if (!dictId) {
+            console.log("dictId eksik bu şekilde api isteği atılamaz")
+            return false;
+        }
         const res = await fetch(BASE_URL + ENDPOINTS.words + "/" + dictId, {
             headers: {
                 'Content-Type': 'application/json',
@@ -119,12 +128,12 @@ export const DictionaryProvider = ({ children }) => {
         }
         else if (res.status === 201) {
             incDictCreated();
-            showToast(t('dictionaryCreated') , t('dictionaryCreatedSuccessfully'),"success");
+            showToast(t('dictionaryCreated'), t('dictionaryCreatedSuccessfully'), "success");
             setDictReload(true)
             return true
         }
         else {
-            showToast(t('ooops') , t('tryAgainLater'),"danger")
+            showToast(t('ooops'), t('tryAgainLater'), "danger")
             return false
         }
     }
@@ -140,7 +149,7 @@ export const DictionaryProvider = ({ children }) => {
                 },
                 body: JSON.stringify({ dictionary_id, word, meaning })
             })
-            
+
         if (res.status === 401) {
             const tempToken = await getNewToken(refToken)
             if (tempToken) {
@@ -163,7 +172,7 @@ export const DictionaryProvider = ({ children }) => {
             incSaved();
             setDictReload(true);
             if (isDaily) {
-                console.log("Word : " , word)
+                console.log("Word : ", word)
                 await saveDailyWord(word.id)
                 showToast(t("dailyWordSaved"), t("dailyWordSavedMsg"), "success");
                 return true
@@ -171,7 +180,7 @@ export const DictionaryProvider = ({ children }) => {
             showToast(t("wordAdded"), t("wordAddedSuccessfully"), "success");
             return true
         }
-        
+
     }
 
     async function deleteWord(saved_id, tokenToUse = accToken) {
@@ -224,7 +233,7 @@ export const DictionaryProvider = ({ children }) => {
 
             if (res.status === 204 || res.ok) {
                 console.log("Dictionary deleted successfully!");
-                showToast(t('operationSuccessful') , t('dictDeletingSuccessfull') , "success");
+                showToast(t('operationSuccessful'), t('dictDeletingSuccessfull'), "success");
                 return true;
             }
 
@@ -233,18 +242,18 @@ export const DictionaryProvider = ({ children }) => {
                 if (newToken) {
                     return await deleteDictionary(dict_id, newToken);
                 }
-                showToast(t('ooops'),t('dictDeletingError'),"danger")
+                showToast(t('ooops'), t('dictDeletingError'), "danger")
                 return false;
             }
 
             const errData = await res.json().catch(() => ({}));
             console.log("Error while deleting dictionary:", errData, res.status);
-            showToast(t('ooops'),t('dictDeletingError'),"danger")
+            showToast(t('ooops'), t('dictDeletingError'), "danger")
             return { success: false, error: errData.detail || "Sözlük silinemedi." };
 
         } catch (error) {
             console.error("Delete dictionary network error:", error);
-            showToast(t('ooops'),t('dictDeletingError'),"danger")
+            showToast(t('ooops'), t('dictDeletingError'), "danger")
             return { success: false, error: "Ağ bağlantısı kurulamadı." };
         }
     }
@@ -304,8 +313,33 @@ export const DictionaryProvider = ({ children }) => {
         await setDataStorage("dailyWord", JSON.stringify(updatedDailyWord))
     }
 
+    async function ShareDictionary({ fileType, dictID }) {
+        const dict = getDict(dictID)
+        const words = await getWords(dictID);
+        if (!words || words == [] || !dict) {
+            console.log("kelimeler çekilemedi")
+            return false
+        };
+        switch (fileType) {
+            case ".json":
+                await shareAsJson({dict,words});
+                break;
+            case ".txt":
+                await shareAsTxt({dict,words});
+                break;
+            case ".csv":
+                await shareAsCsv({dict,words});
+                break;
+            case ".pdf":
+                await shareAsPdf({dict,words});
+                break;
+            default:
+                break;
+        }
+    }
+
     return (<DictContext.Provider value={{
-        dicts, getWords, getDict, createDictionary, setDictReload, deleteWord,
+        dicts, getWords, getDict, createDictionary, setDictReload, deleteWord, ShareDictionary,
         saveWord, dictReload, deleteDictionary, dailyWord, setDailyWord, removeDailyWord
     }}>{children}</DictContext.Provider>)
 }
