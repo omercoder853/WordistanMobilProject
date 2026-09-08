@@ -5,8 +5,10 @@ import { useTranslation } from 'react-i18next';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useDictionary } from '../../contextapis/DictContext';
 import modalStyles from '../HomePageStyles/modalStyles';
+import useSpeech from '../../hooks/useSpeech';
 
 const DailyWord = () => {
+    const {speak,stop,isSpeaking} = useSpeech();
     const { t, i18n } = useTranslation();
     const [modalVisible, setModalVisible] = useState(false)
     const { saveWord, dailyWord, dicts, setDictReload, deleteWord } = useDictionary();
@@ -50,6 +52,15 @@ const DailyWord = () => {
         }
     }
 
+    const handleSpeak = ()=>{
+        if (!isSpeaking) {
+            speak(dailyWord?.word);
+        }
+        else {
+            stop();
+        }
+    }
+
     const filteredDicts = (dicts || []).filter(dict =>
         (lang === 'tr' && dict.language === 'ENG to TR') ||
         (lang === 'en' && dict.language === 'TR to ENG')
@@ -61,7 +72,8 @@ const DailyWord = () => {
                 <View style={styles.dailyWordRow}>
                     <Text style={[styles.dailyWordTitle, { color: 'white' }]}>{t('wordOfTheDay')}</Text>
                     <View style={styles.dailyWordButtons}>
-                        <TouchableOpacity style={{ backgroundColor: 'rgba(255,255,255,0.2)', padding: 8, borderRadius: 20, marginRight: 8 }}>
+                        <TouchableOpacity onPress={handleSpeak}
+                        style={{ backgroundColor: 'rgba(255,255,255,0.2)', padding: 8, borderRadius: 20, marginRight: 8 }}>
                             <Feather name="volume-2" size={20} color="white" />
                         </TouchableOpacity>
                         <TouchableOpacity onPress={heartToggle} style={{ backgroundColor: 'rgba(255,255,255,0.2)', padding: 8, borderRadius: 20 }}>

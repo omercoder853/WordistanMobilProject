@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, TouchableOpacity,StyleSheet } from 'react-native'
-import { MaterialCommunityIcons, FontAwesome, Feather } from '@expo/vector-icons';
+import { MaterialCommunityIcons, FontAwesome, Feather,Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 
@@ -18,6 +18,11 @@ const QuickMenuItems = () => {
     const goToStatistics = () => {
         navigation.navigate('Settings Navigation',
             {screen:'Statistics'})}
+
+    const goToGames = () => {
+        navigation.navigate('Settings Navigation' , {
+            screen:'Game Sessions'
+        })}
     
     return (
         <ScrollView style={{ height: 'auto' }} horizontal showsHorizontalScrollIndicator={false}>
@@ -35,15 +40,15 @@ const QuickMenuItems = () => {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.quickMenuColumn}>
-                    <TouchableOpacity style={{ flex: 1, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
-                        <FontAwesome name="star-o" size={28} color="#5B3FD3" style={{marginBottom: 8}} />
-                        <Text style={styles.quickMenuText}>{t('favorites')}</Text>
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.quickMenuColumn}>
                     <TouchableOpacity style={{ flex: 1, width: '100%', alignItems: 'center', justifyContent: 'center' }} onPress={goToStatistics}>
                         <Feather name="search" size={28} color="#5B3FD3" style={{marginBottom: 8}} />
                         <Text style={styles.quickMenuText}>{t('statistics')}</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.quickMenuColumn}>
+                    <TouchableOpacity style={{ flex: 1, width: '100%', alignItems: 'center', justifyContent: 'center' }} onPress={goToGames}>
+                        <Ionicons name="game-controller-outline" size={28} color="#5B3FD3" style={{marginBottom: 8}} />
+                        <Text style={styles.quickMenuText}>{t('myGames')}</Text>
                     </TouchableOpacity>
                 </View>
             </View>

@@ -138,7 +138,7 @@ export const UserStatsProvider = ({ children }) => {
                 const tempToken = await getNewToken(refToken);
                 if (tempToken) {
                     setAccToken(tempToken);
-                    await setDataStorage("accessToken", tempToken);
+                    await setDataStorage("access-token", tempToken);
                     return await incTranslated(tempToken, true);
                 }
             }
