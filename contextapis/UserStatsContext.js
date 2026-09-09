@@ -1,12 +1,13 @@
 import { createContext, useContext, useState, useEffect, useCallback } from "react";
 import { useAuth } from "./AuthContext";
-import { BASE_URL, ENDPOINTS } from "../constants/ApiConfig";
+import { ENDPOINTS } from "../src/constants/ApiConfig";
+import { apiClient } from "../src/services/ApiClient";
+import { storage } from "../src/storage/storage";
+import { STORAGE_KEYS } from "../src/constants/StorageKeys";
 export const UserStatsContext = createContext();
 
 export const UserStatsProvider = ({ children }) => {
-    const { setDataStorage, getDataStorage, accToken,
-        setAccToken, refToken, isLogin, setLogin, getNewToken, user, setUser } = useAuth();
-
+    const { isLogin } = useAuth();
 
     const [userStats, setUserStats] = useState(null);
     const [pendingTranslated, setPendingTranslated] = useState(0);
@@ -23,22 +24,21 @@ export const UserStatsProvider = ({ children }) => {
     useEffect(() => {
         const loadPendingData = async () => {
             try {
-                const pXP = await getDataStorage("pendingXP");
-                const pSaved = await getDataStorage("pendingSavedWords");
-                const pTrans = await getDataStorage("pendingTranslated");
-                const pDict = await getDataStorage("pendingDictCreated");
-                if (pXP) setPendingEarnedXP(JSON.parse(pXP));
-                if (pSaved) setPendingSavedWords(JSON.parse(pSaved));
-                if (pTrans) setPendingTranslated(JSON.parse(pTrans));
-                if (pDict) setPendingDictCreated(JSON.parse(pDict));
+                const pXP = await storage.get(STORAGE_KEYS.SESSION.PENDING_XP);
+                const pSaved = await storage.get(STORAGE_KEYS.SESSION.PENDING_SAVED_WORDS);
+                const pTrans = await storage.get(STORAGE_KEYS.SESSION.PENDING_TRANSLATED);
+                const pDict = await storage.get(STORAGE_KEYS.SESSION.PENDING_DICT_CREATED);
+                if (pXP) setPendingEarnedXP(pXP);
+                if (pSaved) setPendingSavedWords(pSaved);
+                if (pTrans) setPendingTranslated(pTrans);
+                if (pDict) setPendingDictCreated(pDict);
             } catch (e) {
                 console.log("Error loading pending stats data", e);
             }
         };
         loadPendingData();
-    }, [getDataStorage]);
+    }, []);
 
-    // Check for level up when pending XP increases
     useEffect(() => {
         if (userStats && userStats.xp_for_next) {
             const xpForNext = userStats.xp_for_next;
@@ -59,114 +59,74 @@ export const UserStatsProvider = ({ children }) => {
         await getUserStats();
     }, [getUserStats]);
 
-    const getUserStats = useCallback(async (tokenToUse = accToken) => {
-        try {
-            const res = await fetch(BASE_URL + ENDPOINTS.stats, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${tokenToUse}`
-                }
-            });
-
-            if (res.ok) {
-                const data = await res.json();
-                console.log("Sync user stats : ", data)
-                await setDataStorage("userStats", JSON.stringify(data));
-                setUserStats(data);
-                await clearPendingData()
-            } else if (res.status === 401) {
-                const tempToken = await getNewToken(refToken);
-                if (tempToken) {
-                    setAccToken(tempToken);
-                    return await getUserStats(tempToken);
-                } else {
-                    setLogin(false);
-                }
-            }
-        } catch (err) {
-            console.error("Stats alınırken hata oluştu", err);
+    const getUserStats = useCallback(async () => {
+        const { ok, status, data } = await apiClient.get(ENDPOINTS.stats, true)
+        if (ok) {
+            console.log("Sync user stats : ", data);
+            await storage.set(STORAGE_KEYS.SESSION.USER_STATS, data);
+            setUserStats(data);
+            await clearPendingData();
         }
-    }, [accToken, refToken, getNewToken, setAccToken, setLogin, setDataStorage]);
+        else {
+            console.log("Error while fetching user stats!", status, data)
+        }
+    }, [clearPendingData]);
 
-    const clearPendingData = async () => {
+    const clearPendingData = useCallback(async () => {
         setPendingEarnedXP(0);
         setPendingSavedWords(0);
         setPendingTranslated(0);
         setPendingDictCreated(0);
-        await setDataStorage("pendingXP", "0");
-        await setDataStorage("pendingSavedWords", "0");
-        await setDataStorage("pendingTranslated", "0");
-        await setDataStorage("pendingDictCreated", "0");
-    }
+        await storage.set(STORAGE_KEYS.SESSION.PENDING_XP, 0);
+        await storage.set(STORAGE_KEYS.SESSION.PENDING_SAVED_WORDS, 0);
+        await storage.set(STORAGE_KEYS.SESSION.PENDING_TRANSLATED, 0);
+        await storage.set(STORAGE_KEYS.SESSION.PENDING_DICT_CREATED, 0);
+    }, []);
 
     useEffect(() => {
         if (!isLogin) {
             setUserStats(null)
         }
-        else if(accToken) {
+        else if (isLogin) {
             console.log("Login is scuccessfull. User stats are fetching")
             const getData = async () => {
                 await getUserStats()
             };
             getData();
         }
-    }, [isLogin,accToken]);
+    }, [isLogin]);
 
-    const incTranslated = async (tokenToUse = accToken, isRetry = false) => {
+    const incTranslated = async (isRetry = false) => {
         if (!isRetry) {
-            await setDataStorage("pendingTranslated", JSON.stringify(pendingTranslated + 1));
-            setPendingTranslated((prev) => {
-                const newValue = prev + 1;
-                return newValue;
-            });
+            await storage.set(STORAGE_KEYS.SESSION.PENDING_TRANSLATED, pendingTranslated + 1);
+            setPendingTranslated(prev => prev + 1);
             incXP(2)
         }
+        const { ok, status, data } = await apiClient.post(ENDPOINTS.incrementTranslation);
 
-        try {
-            const res = await fetch(BASE_URL + ENDPOINTS.incrementTranslation, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${tokenToUse}`,
-                },
-            });
-
-            if (res.status === 204 || res.status === 200) {
-                console.log("backend translated güncellendi");
-            } else if (res.status === 401 && !isRetry) {
-                const tempToken = await getNewToken(refToken);
-                if (tempToken) {
-                    setAccToken(tempToken);
-                    await setDataStorage("access-token", tempToken);
-                    return await incTranslated(tempToken, true);
-                }
-            }
-        } catch (error) {
-            console.log("Backend translated güncellenemedi:", error);
+        if (ok) {
+            console.log("Backend translated has just updated.");
+        }
+        else {
+            console.log("Error while updating backend translated. ", status, data)
         }
     };
 
     const incSaved = async () => {
-        const newValue = pendingSavedWords + 1;
-        setPendingSavedWords(newValue)
-        await setDataStorage("pendingSavedWords", JSON.stringify(newValue));
+        setPendingSavedWords(prev => prev + 1);
+        await storage.set(STORAGE_KEYS.SESSION.PENDING_SAVED_WORDS, pendingSavedWords + 1)
         incXP(3)
     }
 
     const incDictCreated = async () => {
-        const newValue = pendingDictCreated + 1;
-        setPendingDictCreated(newValue);
-        await setDataStorage("pendingDictCreated", JSON.stringify(newValue));
+        setPendingDictCreated(prev => prev + 1);
+        await storage.set(STORAGE_KEYS.SESSION.PENDING_DICT_CREATED, pendingDictCreated + 1);
         incXP(10);
     }
 
     const incXP = async (amount) => {
-        await setDataStorage("pendingXP", JSON.stringify(pendingEarnedXP + amount))
-        setPendingEarnedXP((prev) => {
-            const newValue = prev + amount;
-            return newValue;
-        });
+        await storage.set(STORAGE_KEYS.SESSION.PENDING_XP, pendingEarnedXP + amount);
+        setPendingEarnedXP(prev => prev + amount);
     }
 
 

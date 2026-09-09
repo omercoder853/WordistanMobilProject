@@ -1,13 +1,14 @@
-import { View, Text, Image, TouchableOpacity, Animated, Easing,StyleSheet } from "react-native";
+import { View, Text, Image, TouchableOpacity, Animated, Easing, StyleSheet } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useAuth } from "../contextapis/AuthContext";
 import { useEffect, useRef } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useTranslation } from "react-i18next";
 import { useUserStats } from "../contextapis/UserStatsContext";
 import { useNavigation } from "@react-navigation/native";
 import Svg, { Circle } from "react-native-svg";
 import { useNotification } from "../contextapis/NotificationContext";
+import { storage } from "../src/storage/storage";
+import { STORAGE_KEYS } from "../src/constants/StorageKeys";
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
@@ -18,24 +19,24 @@ const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
 const ProfileRow = () => {
     const insets = useSafeAreaInsets();
-    const {userStats, pendingEarnedXP} = useUserStats();
-    const {user,setUser,getDataStorage} = useAuth();
-    const {t} = useTranslation();
+    const { userStats, pendingEarnedXP } = useUserStats();
+    const { user, setUser } = useAuth();
     const navigation = useNavigation();
-    const {notifications, setNotificationPanel} = useNotification();
+    const { notifications, setNotificationPanel } = useNotification();
     const unreadCount = (notifications || []).filter(n => !n.is_read).length;
-    
-    const imgSource = user?.gender=="male" ? require('../assets/avatarBoy.png') : require('../assets/avatarGirl.png')
+
+    const imgSource = user?.gender == "male" ? require('../assets/avatarBoy.png') : require('../assets/avatarGirl.png')
     useEffect(() => {
         if (!user) {
             const loadUser = async () => {
-                const userData = await getDataStorage("user");
+                const userData = await storage.get(STORAGE_KEYS.SESSION.USER);
                 if (userData && setUser) {
-                    setUser(JSON.parse(userData));
+                    setUser(userData);
                 }
             };
             loadUser();
-        }}, [user]);
+        }
+    }, [user]);
 
     // XP progress calculation
     const required_xp_for_level = userStats?.required_xp_for_level || 1;
@@ -61,116 +62,117 @@ const ProfileRow = () => {
 
     const svgSize = AVATAR_SIZE + STROKE_WIDTH * 2 + 4;
 
-    return(
-    <View style={[styles.profileRowContainer,{marginTop:insets.top}]}>
-        <View style={styles.greeting}>
-            <Image
-                style={styles.logoImage}
-                source={require("../assets/logo.png")}/>
-            <Text style={styles.textWelcome}>elcome, </Text>
-            <Text style={{fontSize:18}}>{user?.first_name.includes(" ") ? user?.first_name.split(" ")[0] : user?.first_name}</Text>
-        </View>
-        <View style={styles.profileContainer}>
-            <TouchableOpacity 
-                onPress={() => navigation.navigate("Settings Navigation", {screen: "Statistics"})}
-                activeOpacity={0.7}
-                style={styles.avatarWithProgress}>
-                {/* Circular progress ring */}
-                <Svg
-                    width={svgSize}
-                    height={svgSize}
-                    style={{ position: 'absolute', top: -2, left: -2 }}>
-                    {/* Track (background circle) */}
-                    <Circle
-                        cx={svgSize / 2}
-                        cy={svgSize / 2}
-                        r={RADIUS}
-                        stroke="#EDE9FE"
-                        strokeWidth={STROKE_WIDTH}
-                        fill="none"/>
-                    {/* Progress arc */}
-                    <AnimatedCircle
-                        cx={svgSize / 2}
-                        cy={svgSize / 2}
-                        r={RADIUS}
-                        stroke="#8B5CF6"
-                        strokeWidth={STROKE_WIDTH}
-                        fill="none"
-                        strokeDasharray={CIRCUMFERENCE}
-                        strokeDashoffset={animatedStrokeDashoffset}
-                        strokeLinecap="round"
-                        rotation="-90"
-                        origin={`${svgSize / 2}, ${svgSize / 2}`}/>
-                </Svg>
-                {/* Profile image */}
+    return (
+        <View style={[styles.profileRowContainer, { marginTop: insets.top }]}>
+            <View style={styles.greeting}>
                 <Image
-                    style={styles.profileImage}
-                    source={imgSource}/>
-                {/* Level badge */}
-                <View style={styles.levelBadge}>
-                    <Text style={styles.levelBadgeText}>{userStats?.level || 1}</Text>
-                </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-                onPress={() => setNotificationPanel(true)}
-                activeOpacity={0.7}
-                style={styles.notificationButton}
-            >
-                <Ionicons
-                    name={unreadCount > 0 ? "notifications" : "notifications-outline"}
-                    size={24}
-                    color="#5B3FD3"
-                />
-                {unreadCount > 0 && (
-                    <View style={styles.notificationBadge}>
-                        <Text style={styles.notificationBadgeText}>
-                            {unreadCount > 99 ? '99+' : unreadCount}
-                        </Text>
+                    style={styles.logoImage}
+                    source={require("../assets/logo.png")} />
+                <Text style={styles.textWelcome}>elcome, </Text>
+                <Text style={{ fontSize: 18 }}>{user?.first_name.includes(" ") ? user?.first_name.split(" ")[0] : user?.first_name}</Text>
+            </View>
+            <View style={styles.profileContainer}>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate("Settings Navigation", { screen: "Statistics" })}
+                    activeOpacity={0.7}
+                    style={styles.avatarWithProgress}>
+                    {/* Circular progress ring */}
+                    <Svg
+                        width={svgSize}
+                        height={svgSize}
+                        style={{ position: 'absolute', top: -2, left: -2 }}>
+                        {/* Track (background circle) */}
+                        <Circle
+                            cx={svgSize / 2}
+                            cy={svgSize / 2}
+                            r={RADIUS}
+                            stroke="#EDE9FE"
+                            strokeWidth={STROKE_WIDTH}
+                            fill="none" />
+                        {/* Progress arc */}
+                        <AnimatedCircle
+                            cx={svgSize / 2}
+                            cy={svgSize / 2}
+                            r={RADIUS}
+                            stroke="#8B5CF6"
+                            strokeWidth={STROKE_WIDTH}
+                            fill="none"
+                            strokeDasharray={CIRCUMFERENCE}
+                            strokeDashoffset={animatedStrokeDashoffset}
+                            strokeLinecap="round"
+                            rotation="-90"
+                            origin={`${svgSize / 2}, ${svgSize / 2}`} />
+                    </Svg>
+                    {/* Profile image */}
+                    <Image
+                        style={styles.profileImage}
+                        source={imgSource} />
+                    {/* Level badge */}
+                    <View style={styles.levelBadge}>
+                        <Text style={styles.levelBadgeText}>{userStats?.level || 1}</Text>
                     </View>
-                )}
-            </TouchableOpacity>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => setNotificationPanel(true)}
+                    activeOpacity={0.7}
+                    style={styles.notificationButton}
+                >
+                    <Ionicons
+                        name={unreadCount > 0 ? "notifications" : "notifications-outline"}
+                        size={24}
+                        color="#5B3FD3"
+                    />
+                    {unreadCount > 0 && (
+                        <View style={styles.notificationBadge}>
+                            <Text style={styles.notificationBadgeText}>
+                                {unreadCount > 99 ? '99+' : unreadCount}
+                            </Text>
+                        </View>
+                    )}
+                </TouchableOpacity>
+            </View>
         </View>
-    </View>
-)};
+    )
+};
 
 export default ProfileRow;
 
 const styles = StyleSheet.create({
-    logoImage : {
-        width:72,
-        aspectRatio:1,
-        borderRadius:25,
+    logoImage: {
+        width: 72,
+        aspectRatio: 1,
+        borderRadius: 25,
     },
-    profileRowContainer:{
-        display:'flex',
-        flexDirection:'row',
-        alignItems:'center',
-        width:'100%',
-        justifyContent:'space-between',
-        paddingVertical:5,
-        paddingRight:10,
+    profileRowContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: '100%',
+        justifyContent: 'space-between',
+        paddingVertical: 5,
+        paddingRight: 10,
         backgroundColor: 'transparent'
     },
-    textWelcome:{
-        fontSize:18,
-        marginLeft:-12
+    textWelcome: {
+        fontSize: 18,
+        marginLeft: -12
     },
-    profileContainer:{
-        flexDirection:'row',
-        alignItems:'center',
-        justifyContent:'flex-end',
+    profileContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
     },
-    greeting:{
-        flexDirection:'row',
-        alignItems:'center',
-        justifyContent:'flex-start',
+    greeting: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
     },
-    profileImage:{
-        width:46,
-        height:46,
-        borderRadius:23,
+    profileImage: {
+        width: 46,
+        height: 46,
+        borderRadius: 23,
     },
-    avatarWithProgress:{
+    avatarWithProgress: {
         width: 52,
         height: 52,
         justifyContent: 'center',
@@ -178,7 +180,7 @@ const styles = StyleSheet.create({
         position: 'relative',
         overflow: 'visible',
     },
-    levelBadge:{
+    levelBadge: {
         position: 'absolute',
         bottom: -2,
         right: -2,
@@ -192,7 +194,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: '#FFFFFF',
     },
-    levelBadgeText:{
+    levelBadgeText: {
         color: '#FFFFFF',
         fontSize: 10,
         fontWeight: '800',

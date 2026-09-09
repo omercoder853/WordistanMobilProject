@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useUserStats } from "../contextapis/UserStatsContext";
-
-const RECENT_WORDS_KEY = "@wordistan:recentWords";
+import { storage } from "../src/storage/storage";
+import { STORAGE_KEYS } from "../src/constants/StorageKeys";
 
 export default function useRecentWords() {
     const { incTranslated } = useUserStats();
@@ -11,9 +10,9 @@ export default function useRecentWords() {
     useEffect(() => {
         const loadRecentWords = async () => {
             try {
-                const stored = await AsyncStorage.getItem(RECENT_WORDS_KEY);
+                const stored = await storage.get(STORAGE_KEYS.SESSION.RECENT_WORDS);
                 if (stored) {
-                    setRecentWords(JSON.parse(stored));
+                    setRecentWords(stored);
                 }
             } catch (e) {
                 console.log("Error loading recent words:", e);
@@ -37,7 +36,7 @@ export default function useRecentWords() {
                 }
                 const newWord = { word: wordTrimmed, meaning: meaningTrimmed, from: from || "TR" };
                 const updatedList = [newWord, ...prev].slice(0, 5);
-                AsyncStorage.setItem(RECENT_WORDS_KEY, JSON.stringify(updatedList)).catch(err => console.log("Error saving recent words:", err));
+                storage.set(STORAGE_KEYS.SESSION.RECENT_WORDS,updatedList);
                 return updatedList;
             });
         }

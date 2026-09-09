@@ -8,7 +8,7 @@ import modalStyles from '../HomePageStyles/modalStyles';
 import useSpeech from '../../hooks/useSpeech';
 
 const DailyWord = () => {
-    const {speak,stop,isSpeaking} = useSpeech();
+    const { speak, stop, isSpeaking } = useSpeech();
     const { t, i18n } = useTranslation();
     const [modalVisible, setModalVisible] = useState(false)
     const { saveWord, dailyWord, dicts, setDictReload, deleteWord } = useDictionary();
@@ -33,7 +33,6 @@ const DailyWord = () => {
         try {
             const result = await saveWord(
                 { dictionary_id: selectedDictId, word: dailyWord.word, meaning: dailyWord.meaning },
-                null,
                 true
             )
 
@@ -52,9 +51,9 @@ const DailyWord = () => {
         }
     }
 
-    const handleSpeak = ()=>{
+    const handleSpeak = () => {
         if (!isSpeaking) {
-            speak(dailyWord?.word);
+            speak(lang == 'tr' ? dailyWord?.word : dailyWord?.meaning);
         }
         else {
             stop();
@@ -73,7 +72,7 @@ const DailyWord = () => {
                     <Text style={[styles.dailyWordTitle, { color: 'white' }]}>{t('wordOfTheDay')}</Text>
                     <View style={styles.dailyWordButtons}>
                         <TouchableOpacity onPress={handleSpeak}
-                        style={{ backgroundColor: 'rgba(255,255,255,0.2)', padding: 8, borderRadius: 20, marginRight: 8 }}>
+                            style={{ backgroundColor: 'rgba(255,255,255,0.2)', padding: 8, borderRadius: 20, marginRight: 8 }}>
                             <Feather name="volume-2" size={20} color="white" />
                         </TouchableOpacity>
                         <TouchableOpacity onPress={heartToggle} style={{ backgroundColor: 'rgba(255,255,255,0.2)', padding: 8, borderRadius: 20 }}>
@@ -227,38 +226,38 @@ const DailyWord = () => {
 export default DailyWord;
 
 const styles = StyleSheet.create({
-    dailyWordContainer:{
-        padding:20,
-        borderRadius:25,
-        elevation:8,
+    dailyWordContainer: {
+        padding: 20,
+        borderRadius: 25,
+        elevation: 8,
         shadowColor: '#8E4A7C',
-        shadowOffset: {width: 0, height: 4},
+        shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.3,
         shadowRadius: 10,
-        marginHorizontal:10,
-        marginVertical:15
+        marginHorizontal: 10,
+        marginVertical: 15
     },
-    dailyWordRow:{
-        flexDirection:'row',
-        alignItems:'center'
+    dailyWordRow: {
+        flexDirection: 'row',
+        alignItems: 'center'
     },
-    dailyWordButtons:{
-        flexDirection:'row',
-        marginLeft:'auto'
+    dailyWordButtons: {
+        flexDirection: 'row',
+        marginLeft: 'auto'
     },
-    dailyWordTitle:{
-        color:'#8E4A7C',
-        fontSize:23,
-        fontWeight:'900'
+    dailyWordTitle: {
+        color: '#8E4A7C',
+        fontSize: 23,
+        fontWeight: '900'
     },
-    dailyWordLabel:{
-        fontSize:12,
-        fontStyle:'italic',
-        color:'gray',
-        marginTop:10
+    dailyWordLabel: {
+        fontSize: 12,
+        fontStyle: 'italic',
+        color: 'gray',
+        marginTop: 10
     },
-    dailyWordContent:{
-        fontSize:15,
-        fontWeight:'700'
+    dailyWordContent: {
+        fontSize: 15,
+        fontWeight: '700'
     },
 })

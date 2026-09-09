@@ -1,10 +1,11 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import * as Localization from 'expo-localization';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import en from './locales/en.json';
 import tr from './locales/tr.json';
+import { storage } from '../storage/storage';
+import { STORAGE_KEYS } from '../constants/StorageKeys';
 
 const resources = {
   en: { translation: en },
@@ -16,7 +17,7 @@ const languageDetector = {
   async: true, // indicates that the detect function is asynchronous
   detect: async (callback) => {
     try {
-      const savedLanguage = await AsyncStorage.getItem('@wordistan:language');
+      const savedLanguage = await storage.get(STORAGE_KEYS.PREFERENCES.LANGUAGE);
       if (savedLanguage && savedLanguage!="system") {
         return callback(savedLanguage);
       }

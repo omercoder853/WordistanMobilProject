@@ -2,31 +2,31 @@ import { createContext } from "react";
 import { useContext, useState, useEffect } from "react";
 import { useAuth } from "./AuthContext";
 import { useUserStats } from "./UserStatsContext";
-import { BASE_URL, ENDPOINTS } from "../constants/ApiConfig";
 import { useFeedback } from "./FeedbackContext";
 import { useTranslation } from "react-i18next";
 import useExports from "../hooks/exportHooks";
+import { ENDPOINTS } from "../src/constants/ApiConfig";
+import { STORAGE_KEYS } from "../src/constants/StorageKeys";
+import { storage } from "../src/storage/storage";
+import { apiClient } from "../src/services/ApiClient";
 
 const DictContext = createContext();
 
 export const DictionaryProvider = ({ children }) => {
     const { incSaved, incDictCreated } = useUserStats();
     const [dicts, setDicts] = useState([]);
-    const { accToken, refToken, getNewToken, setLogin, isLogin, setAccToken, setDataStorage, getDataStorage } = useAuth();
+    const {isLogin} = useAuth();
     const [dictReload, setDictReload] = useState(false)
     const [dailyWord, setDailyWord] = useState(null)
 
-    const { 
-        shareAsJson, shareAsTxt, shareAsCsv, shareAsPdf 
-    } = useExports();
+    const {shareAsJson, shareAsTxt, shareAsCsv, shareAsPdf} = useExports();
 
     const { t } = useTranslation();
     const { showToast } = useFeedback();
 
     useEffect(() => {
         const loadDailyWord = async () => {
-            const rawStored = await getDataStorage("dailyWord")
-            const stored = JSON.parse(rawStored)
+            const stored = await storage.get(STORAGE_KEYS.SESSION.DAILY_WORD)
             if (stored) {
                 const timestamp = Date.now()
                 const today = new Date(timestamp).toISOString().split('T')[0]
@@ -47,33 +47,17 @@ export const DictionaryProvider = ({ children }) => {
     }, [])
 
     useEffect(() => {
-        if (!accToken || !isLogin || !dictReload) return;
+        if (!isLogin || !dictReload) return;
         fetchDicts()
-    }, [dictReload, accToken, refToken])
+    }, [dictReload, isLogin])
 
-    async function fetchDicts(manualToken = null) {
-        const currentToken = manualToken || accToken
-        const res = await fetch(BASE_URL + ENDPOINTS.dictionaries,
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${currentToken}`
-                }
-            })
-        if (res.status === 200) {
-            const data = await res.json();
-            setDicts(data)
-        }
-        else if (res.status === 401) {
-            const tempToken = await getNewToken(refToken)
-            if (tempToken) {
-                setAccToken(tempToken);
-                return await fetchDicts(tempToken);
-            }
+    async function fetchDicts() {
+        const { ok, status, data } = await apiClient.get(ENDPOINTS.dictionaries);
+        if (ok) {
+            setDicts(data);
         }
         else {
-            console.log("Something went wrong!")
-            setLogin(false)
+            console.log("Something went wrong while fetching dictionaries!", status, data);
         }
         setDictReload(false)
     }
@@ -83,19 +67,12 @@ export const DictionaryProvider = ({ children }) => {
             console.log("dictId eksik bu şekilde api isteği atılamaz")
             return false;
         }
-        const res = await fetch(BASE_URL + ENDPOINTS.words + "/" + dictId, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${accToken}`
-            }
-        })
-        if (res.status === 200) {
-            const data = await res.json();
+        const { ok, status, data } = await apiClient.get(ENDPOINTS.words + "/" + dictId);
+        if (ok) {
             return data
         }
         else {
-            console.log("words cant fethed")
-            console.log(res.status)
+            console.log("Error while fetching words!", status, data);
         }
     }
 
@@ -104,192 +81,87 @@ export const DictionaryProvider = ({ children }) => {
         return targetDict
     }
 
-    async function createDictionary({ name, description, language }, manualToken = null) {
-        const currentToken = manualToken || accToken
-        const res = await fetch(BASE_URL + ENDPOINTS.newDictionary,
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${currentToken}`
-                },
-                body: JSON.stringify({ name, description, language })
-            })
-        if (res.status === 401) {
-            const tempToken = await getNewToken(refToken)
-            if (tempToken) {
-                setAccToken(tempToken)
-                return await createDictionary({ name, description, language }, tempToken);
-            }
-            else {
-                setLogin(false)
-                // buraya show alert ekleyelim üzgünüz işleminizi şu an gerçekleştiremiyoruz diye
-            }
-        }
-        else if (res.status === 201) {
+    async function createDictionary({ name, description, language }) {
+        const { ok, status, data } = await apiClient.post(ENDPOINTS.newDictionary, { name, description, language })
+        if (ok) {
             incDictCreated();
             showToast(t('dictionaryCreated'), t('dictionaryCreatedSuccessfully'), "success");
             setDictReload(true)
             return true
         }
         else {
+            const message = await data.json();
+            console.log("Error while creating a new dict!", status, message)
             showToast(t('ooops'), t('tryAgainLater'), "danger")
             return false
         }
     }
 
-    async function saveWord({ dictionary_id, word, meaning }, manualToken = null, isDaily = false) {
-        const currentToken = manualToken || accToken
-        const res = await fetch(BASE_URL + ENDPOINTS.newWord,
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${currentToken}`
-                },
-                body: JSON.stringify({ dictionary_id, word, meaning })
-            })
-
-        if (res.status === 401) {
-            const tempToken = await getNewToken(refToken)
-            if (tempToken) {
-                setAccToken(tempToken)
-                return await saveWord({ dictionary_id, word, meaning }, tempToken, isDaily);
-            }
-            else {
-                setLogin(false)
-            }
-        }
-
-        else if (res.status === 409) {
+    async function saveWord({ dictionary_id, word, meaning }, isDaily = false) {
+        const { ok, status, data } = await apiClient.post(ENDPOINTS.newWord, { dictionary_id, word, meaning })
+        if (status === 409) {
             console.log("Word already exists in the dictionary.")
             showToast(t("warning"), t("wordAlreadyExists"), "warning");
             return false
         }
-
-        else if (res.ok) {
-            const word = await res.json();
+        else if (ok) {
             incSaved();
             setDictReload(true);
             if (isDaily) {
-                console.log("Word : ", word)
-                await saveDailyWord(word.id)
+                console.log("Word : ", data)
+                await saveDailyWord(data.id)
                 showToast(t("dailyWordSaved"), t("dailyWordSavedMsg"), "success");
-                return true
+                return true;
             }
             showToast(t("wordAdded"), t("wordAddedSuccessfully"), "success");
-            return true
+            return true;
+        } else {
+            console.log("Error while saving word. ", status, data);
+            return false;
         }
-
     }
 
-    async function deleteWord(saved_id, tokenToUse = accToken) {
-        try {
-            const isDaily = dailyWord?.saved_id === saved_id
-            const res = await fetch(BASE_URL + ENDPOINTS.wordDelete + String(saved_id), {
-                method: "DELETE",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${tokenToUse}`
-                },
-                body: JSON.stringify(saved_id)
-            })
-            if (res.ok) {
-                if (isDaily) {
-                    await removeDailyWord();
-                    setDictReload(true)
-                }
-                return { success: true }
+    async function deleteWord(saved_id) {
+        const isDaily = dailyWord?.saved_id === saved_id
+        const { ok, status, data } = await apiClient.delete(ENDPOINTS.wordDelete + String(saved_id))
+        if (ok) {
+            if (isDaily) {
+                await removeDailyWord();
+                setDictReload(true);
             }
-            else if (res.status === 401) {
-                const newToken = await getNewToken(refToken);
-                if (newToken) {
-                    return await deleteWord(saved_id, newToken)
-                }
-            }
-            else {
-                const message = await res.json()
-                console.log("Error while deleting word ", message, res.status)
-                return { success: false }
-            }
+            return { success: true }
         }
-        catch (error) {
-            console.error(String(error))
+        else {
+            console.log("Error while deleting word ", status, data);
             return { success: false }
         }
     }
 
-    async function deleteDictionary(dict_id, currentToken = accToken) {
-        try {
-            const url = `${BASE_URL}${ENDPOINTS.deleteDictionary}/${dict_id}`;
-
-            const res = await fetch(url, {
-                method: "DELETE",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${currentToken}`
-                }
-            });
-
-            if (res.status === 204 || res.ok) {
-                console.log("Dictionary deleted successfully!");
-                showToast(t('operationSuccessful'), t('dictDeletingSuccessfull'), "success");
-                return true;
-            }
-
-            else if (res.status === 401) {
-                const newToken = await getNewToken(refToken);
-                if (newToken) {
-                    return await deleteDictionary(dict_id, newToken);
-                }
-                showToast(t('ooops'), t('dictDeletingError'), "danger")
-                return false;
-            }
-
-            const errData = await res.json().catch(() => ({}));
-            console.log("Error while deleting dictionary:", errData, res.status);
-            showToast(t('ooops'), t('dictDeletingError'), "danger")
-            return { success: false, error: errData.detail || "Sözlük silinemedi." };
-
-        } catch (error) {
-            console.error("Delete dictionary network error:", error);
-            showToast(t('ooops'), t('dictDeletingError'), "danger")
-            return { success: false, error: "Ağ bağlantısı kurulamadı." };
+    async function deleteDictionary(dict_id) {
+        const { ok, status, data } = await apiClient.delete(ENDPOINTS.deleteDictionary + dict_id);
+        if (ok) {
+            console.log("Dictionary deleted successfully!");
+            showToast(t('operationSuccessful'), t('dictDeletingSuccessfull'), "success");
+            return true;
+        } else {
+            console.log("Error while deleting dictionary:", status, data);
+            showToast(t('ooops'), t('dictDeletingError'), "danger");
+            return false;
         }
     }
 
-    async function getDailyWord(tokenToUse = accToken) {
-        try {
-            console.log("Requesting for daily word...")
-            const res = await fetch(BASE_URL + ENDPOINTS.dailyWord, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${tokenToUse}`
-                }
-            })
-            if (res.ok) {
-                const data = await res.json();
-                console.log("Daily word fetched successfully: ", data)
-                setDailyWord(data)
-                await setDataStorage("dailyWord", JSON.stringify(data))
-            }
-            else if (res.status === 401) {
-                const newToken = await getNewToken(refToken);
-                if (newToken) {
-                    return await getDailyWord(newToken)
-                }
-            }
-            else {
-                const message = await res.json()
-                console.log("Error while fetching daily word! ", message, res.status)
-                return null
-            }
-
+    async function getDailyWord() {
+        console.log("Requesting for daily word...");
+        const { ok, status, data } = await apiClient.get(ENDPOINTS.dailyWord)
+        if (ok) {
+            console.log("Daily word fetched successfully: ", data);
+            setDailyWord(data);
+            await storage.set(STORAGE_KEYS.SESSION.DAILY_WORD, data);
+            return true;
         }
-        catch (error) {
-            console.error("Daily word couldn't be fetched!", error)
-            return null
+        else {
+            console.log("Error while fetching daily word! ", status, data)
+            return null;
         }
     }
 
@@ -299,8 +171,9 @@ export const DictionaryProvider = ({ children }) => {
             saved_id: saved_id,
             is_saved: true
         }
+        console.log(updatedDailyWord)
         setDailyWord(updatedDailyWord)
-        await setDataStorage("dailyWord", JSON.stringify(updatedDailyWord))
+        await storage.set(STORAGE_KEYS.SESSION.DAILY_WORD,updatedDailyWord);
     }
 
     async function removeDailyWord() {
@@ -309,29 +182,30 @@ export const DictionaryProvider = ({ children }) => {
             saved_id: null,
             is_saved: false
         }
+        console.log(updatedDailyWord)
         setDailyWord(updatedDailyWord)
-        await setDataStorage("dailyWord", JSON.stringify(updatedDailyWord))
+        await storage.set(STORAGE_KEYS.SESSION.DAILY_WORD,updatedDailyWord);
     }
 
     async function ShareDictionary({ fileType, dictID }) {
         const dict = getDict(dictID)
         const words = await getWords(dictID);
-        if (!words || words == [] || !dict) {
+        if (!words || words.length == 0 || !dict) {
             console.log("kelimeler çekilemedi")
             return false
         };
         switch (fileType) {
             case ".json":
-                await shareAsJson({dict,words});
+                await shareAsJson({ dict, words });
                 break;
             case ".txt":
-                await shareAsTxt({dict,words});
+                await shareAsTxt({ dict, words });
                 break;
             case ".csv":
-                await shareAsCsv({dict,words});
+                await shareAsCsv({ dict, words });
                 break;
             case ".pdf":
-                await shareAsPdf({dict,words});
+                await shareAsPdf({ dict, words });
                 break;
             default:
                 break;

@@ -1,13 +1,16 @@
 import { createContext, useContext, useState, useEffect, useCallback } from "react";
 import { useAuth } from "./AuthContext";
-import { BASE_URL, ENDPOINTS } from "../constants/ApiConfig";
+import { BASE_URL, ENDPOINTS } from "../src/constants/ApiConfig";
 import { useUserStats } from "./UserStatsContext";
+import { STORAGE_KEYS } from "../src/constants/StorageKeys";
+import { storage } from "../src/storage/storage";
+import { apiClient } from "../src/services/ApiClient";
 
 export const AchievementsContext = createContext();
 
 export const AchievementsProvider = ({ children }) => {
-    const { accToken, refToken, setAccToken, getNewToken, isLogin, getDataStorage, setDataStorage } = useAuth();
-    const { userStats, pendingSavedWords, pendingTranslated, pendingDictCreated,incXP } = useUserStats();
+    const { isLogin } = useAuth();
+    const { userStats, pendingSavedWords, pendingTranslated, pendingDictCreated, incXP } = useUserStats();
     const [achievements, setAchievements] = useState([]);
     const [earnedAchievementsList, setEarnedAchievements] = useState([]);
     const [newAchievement, setNewAchievement] = useState(null);
@@ -18,58 +21,37 @@ export const AchievementsProvider = ({ children }) => {
     useEffect(() => {
         const loadShownAchievements = async () => {
             try {
-                const data = await getDataStorage("shownAchievements");
+                const data = await storage.get(STORAGE_KEYS.SESSION.SHOWN_ACHIEVEMENTS);
                 if (data) {
-                    setShownAchievements(JSON.parse(data));
+                    setShownAchievements(data);
                 }
             } catch (e) {
                 console.log("Error loading shownAchievements:", e);
             }
         };
         loadShownAchievements();
-    }, [getDataStorage]);
+    }, []);
 
     const getAchievements = async () => {
-        try {
-            const response = await fetch(BASE_URL + ENDPOINTS.achievements)
-            if (response.ok) {
-                const data = await response.json();
-                console.log("Achievements fetched successfully");
-                return data || [];
-            }
+        const { ok, status, data } = await apiClient.get(ENDPOINTS.achievements, false);
+        if (ok) {
+            console.log("Achievements fetched successfully");
+            return data;
         }
-        catch (error) {
-            console.error("Error fetching achievements:", error);
+        else {
+            console.log("Error while fetching achievements. ", status, data);
+            return false;
         }
-        return [];
     }
 
-    const getEarnedAchievements = async (tokenToUse = accToken) => {
-        if (!tokenToUse) return [];
-        try {
-            const response = await fetch(BASE_URL + ENDPOINTS.earnedAchievements, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${tokenToUse}`
-                },
-            });
-            if (response.ok) {
-                const data = await response.json();
-                console.log("Earned Achievements fetched successfully");
-                return data || [];
-            }
-            else if (response.status === 401) {
-                const newToken = await getNewToken(refToken);
-                if (newToken) {
-                    setAccToken(newToken);
-                    return await getEarnedAchievements(newToken);
-                }
-            }
-        } catch (error) {
-            console.error("Error fetching earned achievements:", error);
+    const getEarnedAchievements = async () => {
+        const { ok, status, data } = await apiClient.get(ENDPOINTS.earnedAchievements);
+        if (ok) {
+            console.log("Earned Achievements fetched successfully");
+            return data;
+        } else {
+            console.log("Error while fetching earned achievements. ", status, data);
         }
-        return [];
     };
 
     useEffect(() => {
@@ -89,7 +71,7 @@ export const AchievementsProvider = ({ children }) => {
         };
 
         fetchAchievements();
-    }, [isLogin, accToken]);
+    }, [isLogin]);
 
     const isAlreadyEarned = useCallback((achId) => {
         if (!achId) return false;
@@ -109,13 +91,13 @@ export const AchievementsProvider = ({ children }) => {
             setShownAchievements(prev => {
                 if (prev.includes(idStr)) return prev;
                 const updated = [...prev, idStr];
-                setDataStorage("shownAchievements", JSON.stringify(updated));
+                storage.set(STORAGE_KEYS.SESSION.SHOWN_ACHIEVEMENTS , updated);
                 return updated;
             });
         }
         setNewAchievement(null);
         await getEarnedAchievements();
-    }, [newAchievement, getEarnedAchievements, setDataStorage]);
+    }, [newAchievement, getEarnedAchievements]);
 
     // Target value check whenever pending data or userStats update (only AFTER initial fetch is done!)
     useEffect(() => {
@@ -139,7 +121,7 @@ export const AchievementsProvider = ({ children }) => {
                     console.log("🏆 Yeni Başarım Kazanıldı:", ach);
                     setNewAchievement(ach);
                     incXP(ach.xp_reward)
-                    
+
                     break;
                 }
             }

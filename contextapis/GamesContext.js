@@ -1,52 +1,55 @@
-import { createContext,useContext } from "react";
-import { useState,useEffect } from "react";
+import { createContext, useContext } from "react";
+import { useState, useEffect } from "react";
 import Fruits from "../assets/data/collections/fruits.json"
 import Animals from "../assets/data/collections/animals.json"
 import Places from "../assets/data/collections/places.json"
-import {useDictionary} from "./DictContext"
-import {BASE_URL,ENDPOINTS} from "../constants/ApiConfig"
+import { useDictionary } from "./DictContext"
+import { ENDPOINTS } from "../src/constants/ApiConfig";
 import { useAuth } from "./AuthContext";
 import { useUserStats } from "./UserStatsContext";
+import { apiClient } from "../src/services/ApiClient";
+
 
 const GameContext = createContext();
 
-export const GameProvider = ({children}) => {
-    const {accToken,refToken,getNewToken,isLogin} = useAuth();
+export const GameProvider = ({ children }) => {
+    const { isLogin } = useAuth();
 
-    const collections = {fruits:Fruits,animals:Animals,places:Places}
-    const {getWords} = useDictionary();
-    const [questions,setQuestions] = useState([])
-    const [source,setSource] = useState(null)
-    const [value,setValue] = useState(null)
-    const [numberQuestion,setNumberQuestion] = useState(5)
-    const [seconds,setSeconds] = useState(5)
-    const [hints,setHints] = useState(0)
-    const [visibleFirstLetter,setVisibleFirstLetter] = useState()
-    const [numberOptions,setnumberOptions] = useState(4)
-    const [perPage,setPerPage] = useState(4)
-    const [userAnswers,setUserAnswers] = useState([])
-    const [gameType,setGameType] = useState()
-    const [autoCont,setAutoCont] = useState(false);
-    const [gameSessions,setGameSessions] = useState([])
+    const collections = { fruits: Fruits, animals: Animals, places: Places }
+    const { getWords } = useDictionary();
+    const [questions, setQuestions] = useState([])
+    const [source, setSource] = useState(null)
+    const [value, setValue] = useState(null)
+    const [numberQuestion, setNumberQuestion] = useState(5)
+    const [seconds, setSeconds] = useState(5)
+    const [hints, setHints] = useState(0)
+    const [visibleFirstLetter, setVisibleFirstLetter] = useState()
+    const [numberOptions, setnumberOptions] = useState(4)
+    const [perPage, setPerPage] = useState(4)
+    const [userAnswers, setUserAnswers] = useState([])
+    const [gameType, setGameType] = useState()
+    const [autoCont, setAutoCont] = useState(false);
+    const [gameSessions, setGameSessions] = useState([])
     let data;
-    let tempQuestions=[];
+    let tempQuestions = [];
 
-    const {incXP} = useUserStats();
+    const { incXP } = useUserStats();
 
-    useEffect(()=>{
-        if(isLogin && accToken && refToken){
+    useEffect(() => {
+        if (isLogin) {
             const fetchGameSessions = async () => {
-            try {
-                const sessions = await getGameSessions();
-                setGameSessions(sessions);
-            } catch (error) {
-                console.error('Error fetching game sessions:', error);
-            }}
+                try {
+                    const sessions = await getGameSessions();
+                    setGameSessions(sessions);
+                } catch (error) {
+                    console.error('Error fetching game sessions:', error);
+                }
+            }
             fetchGameSessions();
         }
-    },[isLogin,accToken])
+    }, [isLogin])
 
-    const randomIndexCreater = ({target_words = null, length = null}) => {
+    const randomIndexCreater = ({ target_words = null, length = null }) => {
         if (length != null) {
             const random_index = Math.floor(Math.random() * length)
             return random_index
@@ -57,46 +60,46 @@ export const GameProvider = ({children}) => {
         }
     }
 
-    const optionCreater = ({words, answer_index}) => {
+    const optionCreater = ({ words, answer_index }) => {
         let options = []
         let used_indexes = new Set()
         let used_option_index = new Set()
         used_indexes.add(answer_index)
-        const correctAnswerIndex = randomIndexCreater({target_words:null,length:numberOptions})
+        const correctAnswerIndex = randomIndexCreater({ target_words: null, length: numberOptions })
         options[correctAnswerIndex] = words[answer_index].tr || words[answer_index].meaning
         used_option_index.add(correctAnswerIndex)
-        for (let i = 1; i <= numberOptions-1 ; i++) {
+        for (let i = 1; i <= numberOptions - 1; i++) {
             let random_index;
             let random_option_index;
             do {
-                random_index = randomIndexCreater({target_words:words,length:null})
+                random_index = randomIndexCreater({ target_words: words, length: null })
             } while (used_indexes.has(random_index));
 
             used_indexes.add(random_index)
 
             do {
-                random_option_index = randomIndexCreater({target_words:null,length:numberOptions})
+                random_option_index = randomIndexCreater({ target_words: null, length: numberOptions })
             } while (used_option_index.has(random_option_index));
 
             used_option_index.add(random_option_index)
 
             options[random_option_index] = words[random_index].tr || words[random_index].meaning
         }
-        return {options,correctAnswerIndex}
+        return { options, correctAnswerIndex }
     }
 
-    const createQuestion = () =>{
-        if (source=="collection") {
+    const createQuestion = () => {
+        if (source == "collection") {
             data = collections[value]
         }
-        else if (source=="personal"){
+        else if (source == "personal") {
             data = getWords(value)
         }
         let usedIndex = new Set();
         for (let i = 1; i <= numberQuestion; i++) {
             let random_index;
             do {
-                random_index = randomIndexCreater({target_words:data,length:null})
+                random_index = randomIndexCreater({ target_words: data, length: null })
             } while (usedIndex.has(random_index));
             usedIndex.add(random_index)
 
@@ -104,14 +107,14 @@ export const GameProvider = ({children}) => {
             const answer = data[random_index].tr || data[random_index].meaning
             switch (gameType) {
                 case "mcq":
-                    const {options,correctAnswerIndex} = optionCreater({words:data,answer_index:random_index})
-                    tempQuestions.push({id:i,question,answer,options,correctAnswerIndex})
+                    const { options, correctAnswerIndex } = optionCreater({ words: data, answer_index: random_index })
+                    tempQuestions.push({ id: i, question, answer, options, correctAnswerIndex })
                     break;
                 case "wc":
-                    tempQuestions.push({id:i,question,answer})
+                    tempQuestions.push({ id: i, question, answer })
                     break;
                 case "mp":
-                    tempQuestions.push({id:i,question,answer})
+                    tempQuestions.push({ id: i, question, answer })
                     break;
                 default:
                     break;
@@ -120,73 +123,43 @@ export const GameProvider = ({children}) => {
         setQuestions(tempQuestions)
     }
 
-    const getGameSessions = async (tokenToUse=accToken) => {
-        try {
-            console.log("Game sessions are being fetched")
-            const response = await fetch(`${BASE_URL}${ENDPOINTS.gameSessions}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${tokenToUse}`
-                }
-            });
-            if (response.ok) {
-                const data = await response.json();
-                console.log("Game sessions fetched successfully");
-                setGameSessions(data);
-                return data;
-            }
-            else if (response.status === 401) {
-                const newToken = await getNewToken(refToken);
-                return await getGameSessions(newToken);
-            }
-        } catch (error) {
-            console.error('Error fetching game sessions:', error);
-            throw error;
+    const getGameSessions = async () => {
+        const { ok, status, data } = await apiClient.get(ENDPOINTS.gameSessions);
+        if (ok) {
+            console.log("Game sessions fetched successfully");
+            setGameSessions(data);
+            return data;
+        }
+        else {
+            console.log("Error while fetching game sessions.", status, data);
+            return false;
         }
     }
 
-    const saveGameSession = async (sessionData, tokenToUse=accToken) => {
-        try {
-            const res = await fetch (BASE_URL + ENDPOINTS.saveGameSession, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${tokenToUse}`
-                },
-                body: JSON.stringify(sessionData)
-            })
-            if (res.ok) {
-                const data = await res.json();
-                console.log("New game session created successfully:", data);
-                incXP(sessionData.total_count);
-                await getGameSessions(tokenToUse); 
-                return data;
-            }
-            else if (res.status === 401) {
-                const newToken = await getNewToken(refToken);
-                return await saveGameSession(sessionData, newToken);
-            }
-            else {
-                const message = await res.text();
-                console.error(`Failed to create new game session. Status: ${res.status}, Message: ${message}`);
-                return null;
-            }
+    const saveGameSession = async (sessionData) => {
+        const { ok, status, data } = await apiClient.post(ENDPOINTS.saveGameSession, sessionData)
+        if (ok) {
+            console.log("New game session created successfully:", data);
+            incXP(sessionData.total_count);
+            await getGameSessions();
+            return data;
         }
-        catch (error) {
-            console.error('Error creating new game session:', error);
+        else {
+            console.error(`Failed to create new game session. Status: ${status}, Message: ${data}`);
             return null;
         }
     }
 
-    return (<GameContext.Provider value={{source,setSource,value,setValue,numberQuestion,
-        setNumberQuestion,seconds,setSeconds,hints,setHints,visibleFirstLetter,setVisibleFirstLetter,
-        numberOptions,setnumberOptions,perPage,setPerPage,createQuestion,
-        questions,userAnswers,setUserAnswers,setGameType,gameType,saveGameSession,
-        randomIndexCreater,autoCont,setAutoCont,gameSessions,setGameSessions}}>{children}</GameContext.Provider>)
+    return (<GameContext.Provider value={{
+        source, setSource, value, setValue, numberQuestion,
+        setNumberQuestion, seconds, setSeconds, hints, setHints, visibleFirstLetter, setVisibleFirstLetter,
+        numberOptions, setnumberOptions, perPage, setPerPage, createQuestion,
+        questions, userAnswers, setUserAnswers, setGameType, gameType, saveGameSession,
+        randomIndexCreater, autoCont, setAutoCont, gameSessions, setGameSessions
+    }}>{children}</GameContext.Provider>)
 }
 
-export const useGame = ()=>{
+export const useGame = () => {
     const context = useContext(GameContext)
     return context
 }

@@ -7,7 +7,10 @@ import { useNavigation } from "@react-navigation/native";
 import { StyleSheet } from "react-native";
 import { useTranslation } from "react-i18next";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { BASE_URL,ENDPOINTS } from "../constants/ApiConfig";
+import { storage } from "../src/storage/storage";
+import { ENDPOINTS } from "../src/constants/ApiConfig";
+import { STORAGE_KEYS } from "../src/constants/StorageKeys";
+import { apiClient } from "../src/services/ApiClient";
 
 
 export default function LoginPage(){
@@ -17,7 +20,7 @@ export default function LoginPage(){
     const emailRegex = /^\S+@\S+\.[a-z]{2,}$/;
     const [email,setEmail] = useState();
     const [password,setPassword] = useState();
-    const {setLogin,setDataStorage,setAccToken,setRefToken,setUser} = useAuth();
+    const {setLogin,setUser} = useAuth();
     const [isLoading,setLoading] = useState(false)
 
     const isValidEmail = emailRegex.test(email)
@@ -27,20 +30,19 @@ export default function LoginPage(){
         Keyboard.dismiss();
         if (!anyError) {
             setLoading(true)
-            const res = await fetch(BASE_URL + ENDPOINTS.login,
-            {body:JSON.stringify({email,password}),method:'POST',headers:{'Content-Type': 'application/json'}})
-            if (res.status == 200) {
-                const data = await res.json();
-                await setDataStorage("access-token",data['access_token'])
-                setAccToken(data['access_token'])
-                await setDataStorage("refresh-token",data['refresh_token'])
-                setRefToken(data['refresh_token'])
-                await setDataStorage("user",JSON.stringify(data['metadata']))
+            console.log({email,password})
+            const {ok , status , data} = await apiClient.post(ENDPOINTS.login,{email,password},false);
+            if (ok) {
+                await storage.setSecure(STORAGE_KEYS.SECURE.ACCESS_TOKEN,data['access_token'])
+                await storage.setSecure(STORAGE_KEYS.SECURE.REFRESH_TOKEN,data['refresh_token'])
+                await storage.set(STORAGE_KEYS.SESSION.USER , data['metadata']);
                 setUser(data['metadata'])
                 setLogin(true)
             }
             else {
-                console.log(res.status)
+                // eğer giriş bilgileri yanlışsa 400 hatası ve detail olarak da Invalid login credentials geliyor.
+                const message = data.json();
+                console.log("Error while sign in! Status : " , status,message)
                 alert(t('loginFailed'))
             }
             setLoading(false)

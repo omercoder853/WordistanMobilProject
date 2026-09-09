@@ -8,15 +8,18 @@ import { useState,useEffect,useRef } from "react";
 import styles from "../gamesLayout/gameStyles/wcStyles";
 import QuestionNavigation from "../gamesLayout/gameComponents/questionNavigations";
 import { useTranslation } from "react-i18next";
+import { storage } from "../src/storage/storage";
+import { STORAGE_KEYS } from "../src/constants/StorageKeys";
 
 export default function WordCompletionPage(){
     const [isVibrate,setVibrate] = useState(true)
     useEffect(() => {
     const loadVibration = async () => {
-        const val = await getDataStorage("vibration");
-        setVibrate(val !== null ? JSON.parse(val) : true);
+        const val = await storage.get(STORAGE_KEYS.PREFERENCES.VIBRATION_PREF);
+        setVibrate(val !== null ? val : true);
     };
     loadVibration();}, []);
+    
     const { t } = useTranslation();
     const navigation = useNavigation();
     const {hints,questions,visibleFirstLetter,userAnswers,setUserAnswers,seconds,numberQuestion} = useGame();
@@ -133,7 +136,7 @@ export default function WordCompletionPage(){
                         <View key={index} style={styles.letterInputContainer}>
                             <TextInput onChangeText={(value)=>handleTextChange(value,index)} 
                             ref={(el)=>inputs.current[index] = el} 
-                            style={[styles.letterInput,!isAnswered ? {} : isAnswered.userAnswer[index].toLocaleLowerCase('tr-TR')==answer[index].toLocaleLowerCase('tr-TR') 
+                            style={[styles.letterInput,!isAnswered ? {} : isAnswered?.userAnswer[index]?.toLocaleLowerCase('tr-TR')==answer[index]?.toLocaleLowerCase('tr-TR') 
                             ? {backgroundColor:'green',color:'white'}
                             :{backgroundColor:'red',color:'white'}]}
                             autoCapitalize="characters" autoCorrect={false} spellCheck={false

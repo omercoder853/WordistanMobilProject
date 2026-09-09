@@ -8,10 +8,11 @@ import Translate from '../pages/translate';
 import Games from '../pages/games';
 import Profile from '../pages/profile';
 import useRecentWords from '../hooks/recentWordsHook';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect,useState } from 'react';
 
 import NotificationPanel from '../homePageLayout/HomePageComponents/notificationPanel';
+import { storage } from '../src/storage/storage';
+import { STORAGE_KEYS } from '../src/constants/StorageKeys';
 
 const Bottom = createBottomTabNavigator();
 export default function BottomNavbar(){
@@ -19,7 +20,7 @@ export default function BottomNavbar(){
     const [initialPage,setInitialPage] = useState(null)
     useEffect(()=>{
         const loadInitialPage = async () =>{
-            const saved = await AsyncStorage.getItem("@wordistan:initialPage")
+            const saved = await storage.get(STORAGE_KEYS.PREFERENCES.INITIAL_PAGE);
             setInitialPage(saved || "Home")
         }
         loadInitialPage();

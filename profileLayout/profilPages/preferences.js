@@ -4,12 +4,11 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { useState } from "react";
 import * as Localization from 'expo-localization';
 import { useEffect } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import styles from "../profileStyle/preferencesStyle";
-import { useAuth } from "../../contextapis/AuthContext";
+import { storage } from "../../src/storage/storage";
+import { STORAGE_KEYS } from "../../src/constants/StorageKeys";
 
 export default function Preferences() {
-    const {getDataStorage,setDataStorage} = useAuth();
     const { t, i18n } = useTranslation();
     const [langOpen, setLangOpen] = useState(false);
     const [langValue, setLangValue] = useState(null);
@@ -27,14 +26,14 @@ export default function Preferences() {
 
     useEffect(() => {
         const loadSavedDefault = async () => {
-            const savedLang = await getDataStorage("language")
+            const savedLang = await storage.get(STORAGE_KEYS.PREFERENCES.LANGUAGE);
             setLangValue(savedLang || "system");
-            const savedPage = await getDataStorage("initialPage")
+            const savedPage = await storage.get(STORAGE_KEYS.PREFERENCES.INITIAL_PAGE);
             setPageValue(savedPage || "Home")
-            const savedAutoCont = await getDataStorage("autoCont")
-            setAutoCont(savedAutoCont !== null ? JSON.parse(savedAutoCont) : false)
-            const savedVibration = await getDataStorage("vibration")
-            setVibration(savedVibration !== null ? JSON.parse(savedVibration) : true)
+            const savedAutoCont = await storage.get(STORAGE_KEYS.PREFERENCES.AUTO_CONT);
+            setAutoCont(savedAutoCont !== null ? savedAutoCont : false)
+            const savedVibration = await storage.get(STORAGE_KEYS.PREFERENCES.VIBRATION_PREF);
+            setVibration(savedVibration !== null ? savedVibration : true)
         };
         loadSavedDefault();
     }, []);
@@ -42,7 +41,7 @@ export default function Preferences() {
     useEffect(() => {
         if (!langValue) return;
         const updateLanguage = async () => {
-            await setDataStorage("language",langValue)
+            await storage.set(STORAGE_KEYS.PREFERENCES.LANGUAGE , langValue);
             if (langValue === "system") {
                 i18n.changeLanguage(deviceLang);
             } else {
@@ -55,7 +54,7 @@ export default function Preferences() {
     useEffect(() => {
         if (!pageValue) return;
         const updateInitialPage = async () => {
-            await setDataStorage("initialPage",pageValue)
+            await storage.set(STORAGE_KEYS.PREFERENCES.INITIAL_PAGE,pageValue);
         }
         updateInitialPage();
     }, [pageValue])
@@ -63,7 +62,7 @@ export default function Preferences() {
     useEffect(() => {
         if (autoCont == null) return;
         const updateAutoCont = async () => {
-            await setDataStorage("autoCont",JSON.stringify(autoCont))
+            await storage.set(STORAGE_KEYS.PREFERENCES.AUTO_CONT , autoCont);
         }
         updateAutoCont();
     }, [autoCont])
@@ -71,7 +70,7 @@ export default function Preferences() {
     useEffect(() => {
         if (vibration == null) return;
         const updateVibration = async () => {
-            await setDataStorage("vibration",JSON.stringify(vibration))
+            await storage.set(STORAGE_KEYS.PREFERENCES.VIBRATION_PREF, vibration);
         }
         updateVibration();
     }, [vibration])

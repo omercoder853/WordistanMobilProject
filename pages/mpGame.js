@@ -2,21 +2,21 @@ import {View,Text,Pressable,Vibration } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styles from "../gamesLayout/gameStyles/mpStyles";
 import { useGame } from "../contextapis/GamesContext";
-import { useState,useEffect } from "react";
+import { useState,useEffect,useRef } from "react";
 import { useNavigation } from "@react-navigation/native";
 import GameHeader from "../gamesLayout/gameComponents/gameHeader";
 import QuestionNavigation from "../gamesLayout/gameComponents/questionNavigations";
 import CustomAlert from "../commonComponents/customAlert/customAlert";
 import { useTranslation } from "react-i18next";
-import { useAuth } from "../contextapis/AuthContext";
+import { storage } from "../src/storage/storage";
+import { STORAGE_KEYS } from "../src/constants/StorageKeys";
 
 export default function MatchingPairsPage(){
-    const {getDataStorage} = useAuth();
     const [isVibrate,setVibrate] = useState(true)
     useEffect(() => {
     const loadVibration = async () => {
-        const val = await getDataStorage("vibration");
-        setVibrate(val !== null ? JSON.parse(val) : true);
+        const val = await storage.get(STORAGE_KEYS.PREFERENCES.VIBRATION_PREF);
+        setVibrate(val !== null ? val : true);
     };
     loadVibration();}, []);
     const { t } = useTranslation();

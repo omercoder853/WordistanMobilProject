@@ -13,8 +13,9 @@ import McqSettings from "../gamesLayout/gameComponents/mcqSettings";
 import MpSettings from "../gamesLayout/gameComponents/mpSettings";
 import { useGame } from "../contextapis/GamesContext";
 import { useTranslation } from "react-i18next";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from 'expo-linear-gradient';
+import { storage } from "../src/storage/storage";
+import { STORAGE_KEYS } from "../src/constants/StorageKeys";
 
 export default function GameSetupPage() {
     const { t } = useTranslation();
@@ -35,8 +36,8 @@ export default function GameSetupPage() {
 
     useEffect(() => {
         const loadSaved = async () => {
-            const savedAutoCont = await AsyncStorage.getItem("@wordistan:autoCont");
-            setAutoCont(savedAutoCont !== null ? JSON.parse(savedAutoCont) : false);
+            const savedAutoCont = await storage.get(STORAGE_KEYS.PREFERENCES.AUTO_CONT);
+            setAutoCont(savedAutoCont !== null ? savedAutoCont : false);
         };
         loadSaved();
     }, []);

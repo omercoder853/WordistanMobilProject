@@ -1,143 +1,87 @@
-import { createContext,useContext } from "react";
-import { BASE_URL,ENDPOINTS } from "../constants/ApiConfig";
-import {useState,useEffect} from "react";
+import { createContext, useContext } from "react";
+import { BASE_URL, ENDPOINTS } from "../src/constants/ApiConfig";
+import { useState, useEffect } from "react";
 import { useAuth } from "./AuthContext";
+import { apiClient } from "../src/services/ApiClient";
 
 const NotificationContext = createContext();
 
-export const NotificationProvider = ({children}) => {
-    const {accToken,refToken,getNewToken,isLogin} = useAuth();
+export const NotificationProvider = ({ children }) => {
+    const { isLogin } = useAuth();
     const [notifications, setNotifications] = useState([]);
-    const [notificationPanel,setNotificationPanel] = useState(false);
+    const [notificationPanel, setNotificationPanel] = useState(false);
 
-    useEffect(()=>{
-        if(isLogin && accToken && refToken){
-            const fetchNotifications = async ()=>{
+    useEffect(() => {
+        if (isLogin) {
+            const fetchNotifications = async () => {
                 await getNotifications();
             };
             fetchNotifications();
-        }  
-    },[isLogin,accToken,refToken]);
+        }
+    }, [isLogin]);
 
-    const getNotifications = async (tokenToUse=accToken) => {
-        try {
-            console.log("Fetching notifications...");
-            const response = await fetch(`${BASE_URL}${ENDPOINTS.getNotifications}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${tokenToUse}`
-                }
-            });
-            if (response.ok) {
-                const data = await response.json();
-                setNotifications(data);
-                console.log("Notifications fetched successfully");
-                return data;
-            }
-            else if (response.status === 401) {
-                const newToken = await getNewToken(refToken);
-                return await getNotifications(newToken);
-            }
-        } catch (error) {
-            console.error('Error fetching notifications:', error);
-            throw error;
+    const getNotifications = async () => {
+        console.log("Fetching notifications...");
+        const { ok, status, data } = await apiClient.get(ENDPOINTS.getNotifications)
+        if (ok) {
+            setNotifications(data);
+            console.log("Notifications fetched successfully");
+            return data;
+        }
+        else {
+            console.log("Error while fetching notifications. ", status, data)
         }
     };
 
-    const readAllNotifications = async (tokenToUse=accToken) => {
-        try {
-            const response = await fetch(`${BASE_URL}${ENDPOINTS.readAllNotifications}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${tokenToUse}`
-                }
-            });
-            if (response.ok) {
-                try {
-                    const data = await response.json();
-                    if (Array.isArray(data)) {
-                        setNotifications(data);
-                    } else if (data && Array.isArray(data.notifications)) {
-                        setNotifications(data.notifications);
-                    } else {
-                        setNotifications(prev => prev.map(n => ({ ...n, is_read: true })));
-                    }
-                } catch {
+    const readAllNotifications = async () => {
+        const { ok, status, data } = await apiClient.patch(ENDPOINTS.readAllNotifications);
+        if (ok) {
+            try {
+                if (Array.isArray(data)) {
+                    setNotifications(data);
+                } else if (data && Array.isArray(data.notifications)) {
+                    setNotifications(data.notifications);
+                } else {
                     setNotifications(prev => prev.map(n => ({ ...n, is_read: true })));
                 }
-                console.log("All notifications read successfully");
-                return true;
+            } catch {
+                setNotifications(prev => prev.map(n => ({ ...n, is_read: true })));
             }
-            else if (response.status === 401) {
-                const newToken = await getNewToken(refToken);
-                return await readAllNotifications(newToken);
-            }
-        } catch (error) {
-            console.error('Error reading all notifications:', error);
-            throw error;
+            console.log("All notifications read successfully");
+            return true;
+        } else {
+            console.log("Error while reading all notifications. ", status, data);
         }
     };
 
-    const readNotification = async (notification_id, tokenToUse=accToken) => {
-        try {
-            // Optimistic update: mark as read locally immediately
-            setNotifications(prev => prev.map(item =>
-                item.id === notification_id ? { ...item, is_read: true } : item
-            ));
+    const readNotification = async (notification_id) => {
+        setNotifications(prev => prev.map(item =>
+            item.id === notification_id ? { ...item, is_read: true } : item
+        ));
 
-            const response = await fetch(`${BASE_URL}${ENDPOINTS.readNotification(notification_id)}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${tokenToUse}`
-                }
-            });
-            if (response.ok) {
-                console.log("Notification read successfully");
+        const { ok, status, data } = await apiClient.patch(ENDPOINTS.readNotification(notification_id));
+        if (ok) {
+            console.log("Notification read successfully");
+            return true;
+        }
+        else {
+            console.log("Error while reading notification", status, data);
+        }
+    };
+
+    const newNotification = async (notificationData) => {
+        const {ok,status,data} = await apiClient.post(ENDPOINTS.newNotification , notificationData);
+            if (ok) {
+                await getNotifications();
                 return true;
-            }
-            else if (response.status === 401) {
-                const newToken = await getNewToken(refToken);
-                return await readNotification(notification_id, newToken);
             }
             else{
-                const message = await response.text();
-                console.log("Error while reading notification" , message , response.status);
+                console.log("Error while creating a new notification. ", status,data);
             }
-        } catch (error) {
-            console.error('Error reading notification:', error);
-            throw error;
-        }
-    };
-
-    const newNotification = async (notificationData, tokenToUse=accToken) => {
-        try {
-            const response = await fetch(`${BASE_URL}${ENDPOINTS.newNotification}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${tokenToUse}`
-                },
-                body: JSON.stringify(notificationData)
-            });
-            if (response.ok) {
-                await getNotifications(tokenToUse);
-                return true;
-            }
-            else if (response.status === 401) {
-                const newToken = await getNewToken(refToken);
-                return await newNotification(notificationData, newToken);
-            }
-        } catch (error) {
-            console.error('Error creating notification:', error);
-            throw error;
-        }
     };
 
     return (
-        <NotificationContext.Provider value={{notifications, setNotifications, getNotifications, readAllNotifications, readNotification, notificationPanel, setNotificationPanel}}>
+        <NotificationContext.Provider value={{ notifications, setNotifications, getNotifications, readAllNotifications, readNotification, notificationPanel, setNotificationPanel }}>
             {children}
         </NotificationContext.Provider>
     );
