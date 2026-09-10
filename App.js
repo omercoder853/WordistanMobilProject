@@ -4,22 +4,22 @@ import RootNavigation from './navigations/rootNavigation'
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { AuthProvider } from "./contextapis/AuthContext";
 import { NavigationContainer } from "@react-navigation/native";
-import './src/i18n/i18n'; 
+import './src/i18n/i18n';
 import { FeedbackProvider } from "./contextapis/FeedbackContext";
 import CustomToast from "./commonComponents/customToast/CustomToast";
 import CustomAlert from "./commonComponents/customAlert/customAlert";
 
-export default function App() { 
+export default function App() {
   return (
     <SafeAreaProvider>
       <FeedbackProvider>
-        <AuthProvider>
-          <NavigationContainer>
-            <RootNavigation/>
-          </NavigationContainer>
-        </AuthProvider>
-        <CustomToast />
-        <CustomAlert />
+        <NavigationContainer>
+          <AuthProvider>
+            <RootNavigation />
+          </AuthProvider>
+          <CustomToast />
+          <CustomAlert />
+        </NavigationContainer>
       </FeedbackProvider>
     </SafeAreaProvider>
   );

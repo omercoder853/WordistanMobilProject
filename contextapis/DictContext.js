@@ -55,11 +55,14 @@ export const DictionaryProvider = ({ children }) => {
         const { ok, status, data } = await apiClient.get(ENDPOINTS.dictionaries);
         if (ok) {
             setDicts(data);
+            return true;
         }
         else {
+            showToast(t('error') , t('errorFetchingDicts') , "danger")
             console.log("Something went wrong while fetching dictionaries!", status, data);
         }
-        setDictReload(false)
+        setDictReload(false);
+        return false;
     }
 
     async function getWords(dictId) {
@@ -72,7 +75,9 @@ export const DictionaryProvider = ({ children }) => {
             return data
         }
         else {
+            showToast(t("error") , t('errorFetchingWords') , "danger");
             console.log("Error while fetching words!", status, data);
+            return false;
         }
     }
 
@@ -90,8 +95,7 @@ export const DictionaryProvider = ({ children }) => {
             return true
         }
         else {
-            const message = await data.json();
-            console.log("Error while creating a new dict!", status, message)
+            console.log("Error while creating a new dict!", status, data)
             showToast(t('ooops'), t('tryAgainLater'), "danger")
             return false
         }
@@ -116,6 +120,7 @@ export const DictionaryProvider = ({ children }) => {
             showToast(t("wordAdded"), t("wordAddedSuccessfully"), "success");
             return true;
         } else {
+            showToast(t('error') , t('wordSavingError'),"danger");
             console.log("Error while saving word. ", status, data);
             return false;
         }
@@ -193,6 +198,7 @@ export const DictionaryProvider = ({ children }) => {
         const dict = getDict(dictID)
         const words = await getWords(dictID);
         if (!words || words.length == 0 || !dict) {
+            showToast(t('error') , t('noWordsOrLoadFailed') , "danger");
             console.log("kelimeler çekilemedi")
             return false
         };

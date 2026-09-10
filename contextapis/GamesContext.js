@@ -88,12 +88,12 @@ export const GameProvider = ({ children }) => {
         return { options, correctAnswerIndex }
     }
 
-    const createQuestion = () => {
+    const createQuestion = async () => {
         if (source == "collection") {
             data = collections[value]
         }
         else if (source == "personal") {
-            data = getWords(value)
+            data = await getWords(value);
         }
         let usedIndex = new Set();
         for (let i = 1; i <= numberQuestion; i++) {

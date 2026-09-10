@@ -11,6 +11,7 @@ import { storage } from "../src/storage/storage";
 import { ENDPOINTS } from "../src/constants/ApiConfig";
 import { STORAGE_KEYS } from "../src/constants/StorageKeys";
 import { apiClient } from "../src/services/ApiClient";
+import { useFeedback } from "../contextapis/FeedbackContext";
 
 
 export default function LoginPage(){
@@ -21,7 +22,8 @@ export default function LoginPage(){
     const [email,setEmail] = useState();
     const [password,setPassword] = useState();
     const {setLogin,setUser} = useAuth();
-    const [isLoading,setLoading] = useState(false)
+    const [isLoading,setLoading] = useState(false);
+    const { setAlertTitle, setAlertMessage, addAlertButton, setAlertVisible, hideAlert } = useFeedback();
 
     const isValidEmail = emailRegex.test(email)
     const isValidPassword = passwordRegex.test(password)
@@ -30,7 +32,6 @@ export default function LoginPage(){
         Keyboard.dismiss();
         if (!anyError) {
             setLoading(true)
-            console.log({email,password})
             const {ok , status , data} = await apiClient.post(ENDPOINTS.login,{email,password},false);
             if (ok) {
                 await storage.setSecure(STORAGE_KEYS.SECURE.ACCESS_TOKEN,data['access_token'])
@@ -41,9 +42,11 @@ export default function LoginPage(){
             }
             else {
                 // eğer giriş bilgileri yanlışsa 400 hatası ve detail olarak da Invalid login credentials geliyor.
-                const message = data.json();
-                console.log("Error while sign in! Status : " , status,message)
-                alert(t('loginFailed'))
+                console.log("Error while sign in! Status : " , status,data);
+                setAlertTitle(t('loginFailed'));
+                setAlertMessage(t('checkYourLoginDetails'));
+                addAlertButton({text:t('cancel') , style:"danger" , action:hideAlert});
+                setAlertVisible(true);
             }
             setLoading(false)
         }

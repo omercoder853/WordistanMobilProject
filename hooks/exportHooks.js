@@ -1,12 +1,15 @@
 import { useState } from "react";
-import { Alert } from "react-native";
 import { File, Paths } from "expo-file-system";
 import * as Sharing from "expo-sharing";
 import * as Print from "expo-print";
 import { WORDISTAN_LOGO_BASE64 } from "../assets/logoBase64";
+import { useFeedback } from "../contextapis/FeedbackContext";
+import { useTranslation } from "react-i18next";
 
 export default function useExports() {
     const [isExporting, setIsExporting] = useState(false);
+    const { setAlertTitle, setAlertMessage, addAlertButton, setAlertVisible, hideAlert } = useFeedback();
+    const {t} = useTranslation();
 
     // İsim çakışmasını önleyen yardımcı fonksiyon
     const getUniqueFile = (baseName, extension) => {
@@ -297,7 +300,10 @@ export default function useExports() {
 
             const isAvailable = await Sharing.isAvailableAsync();
             if (!isAvailable) {
-                Alert.alert("Hata", "Cihazınızda dosya paylaşımı desteklenmiyor.");
+                setAlertTitle(t('error'));
+                setAlertMessage(t('fileSharingNotSupported'));
+                addAlertButton({text:t('cancel') , style:'danger' , action:hideAlert});
+                setAlertVisible(true);
                 return;
             }
 
@@ -314,7 +320,10 @@ export default function useExports() {
             });
         } catch (error) {
             console.error(`${extension.toUpperCase()} paylaşım hatası:`, error);
-            Alert.alert("Hata", "Dosya paylaşılırken bir sorun oluştu.");
+            setAlertTitle(t('error'));
+            setAlertMessage(t('fileShareFailed'));
+            addAlertButton({text:t('cancel') , style:'danger' , action:hideAlert});
+            setAlertVisible(true);
         } finally {
             if (file && file.exists) {
                 console.log("File removed from cache");
@@ -391,7 +400,10 @@ export default function useExports() {
 
             const isAvailable = await Sharing.isAvailableAsync();
             if (!isAvailable) {
-                Alert.alert("Hata", "Cihazınızda dosya paylaşımı desteklenmiyor.");
+                setAlertTitle(t('error'));
+                setAlertMessage(t('fileSharingNotSupported'));
+                addAlertButton({text:t('cancel') , style:'danger' , action:hideAlert});
+                setAlertVisible(true);
                 return;
             }
 
@@ -412,7 +424,10 @@ export default function useExports() {
             });
         } catch (error) {
             console.error("PDF paylaşım hatası:", error);
-            Alert.alert("Hata", "PDF dosyası oluşturulurken veya paylaşılırken bir sorun oluştu.");
+            setAlertTitle(t('error'));
+            setAlertMessage(t('fileShareFailed'));
+            addAlertButton({text:t('cancel') , style:'danger' , action:hideAlert});
+            setAlertVisible(true);
         } finally {
             if (tempPrintFile && tempPrintFile.exists) {
                 tempPrintFile.delete();

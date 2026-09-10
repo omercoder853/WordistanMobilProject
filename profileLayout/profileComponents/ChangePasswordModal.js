@@ -3,10 +3,12 @@ import { Modal, View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions,
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../../contextapis/AuthContext";
+import { useFeedback } from "../../contextapis/FeedbackContext";
+import { useNavigation } from "@react-navigation/native";
 
 const { width } = Dimensions.get('window');
 
-export default function ChangePasswordModal({ visible, onClose, onResult }) {
+export default function ChangePasswordModal({ visible, onClose }) {
     const { t } = useTranslation();
     const { changePassword } = useAuth();
 
@@ -15,6 +17,8 @@ export default function ChangePasswordModal({ visible, onClose, onResult }) {
     const [newPasswordRepeat, setNewPasswordRepeat] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [loading, setLoading] = useState(false);
+    const navigation = useNavigation();
+    const { setAlertTitle, setAlertMessage, addAlertButton, setAlertVisible, hideAlert } = useFeedback();
 
     const resetFields = () => {
         setCurrentPassword("");
@@ -48,10 +52,16 @@ export default function ChangePasswordModal({ visible, onClose, onResult }) {
         }
 
         setLoading(true);
-        const result = await changePassword(currentPassword, newPassword);
+        const ok = await changePassword(currentPassword, newPassword);
         setLoading(false);
         resetFields();
-        onResult(result);
+        const alert_title = ok ? t("passwordChangedSuccess") : t("passwordChangeFailed");
+        const alert_message = ok ? t("passwordChangedSuccessMsg") : t("passwordChangeFailedMsg");
+        const style = ok ? "success" : "danger";
+        setAlertTitle(alert_title);
+        setAlertMessage(alert_message);
+        addAlertButton({text: t("close"),style: style,action: ()=> {hideAlert() , ok && navigation.reset({ index: 0, routes: [{ name: 'MainTabs' }] })}})
+        setAlertVisible(true);
     };
 
     return (
@@ -70,24 +80,21 @@ export default function ChangePasswordModal({ visible, onClose, onResult }) {
                         placeholderTextColor="#94A3B8"
                         secureTextEntry
                         value={currentPassword}
-                        onChangeText={setCurrentPassword}
-                    />
+                        onChangeText={setCurrentPassword}/>
                     <TextInput
                         style={modalStyles.input}
                         placeholder={t("newPassword")}
                         placeholderTextColor="#94A3B8"
                         secureTextEntry
                         value={newPassword}
-                        onChangeText={setNewPassword}
-                    />
+                        onChangeText={setNewPassword}/>
                     <TextInput
                         style={modalStyles.input}
                         placeholder={t("newPasswordRepeat")}
                         placeholderTextColor="#94A3B8"
                         secureTextEntry
                         value={newPasswordRepeat}
-                        onChangeText={setNewPasswordRepeat}
-                    />
+                        onChangeText={setNewPasswordRepeat}/>
 
                     {errorMessage ? <Text style={modalStyles.errorText}>{errorMessage}</Text> : null}
 

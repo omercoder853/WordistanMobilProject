@@ -3,11 +3,8 @@ import { LinearGradient } from "expo-linear-gradient";
 import styles from "../translateStyles/transStyles";
 import wordData from '../../assets/data/words.json'
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
-import { ActivityIndicator } from "react-native";
 
 export default function ConvertButton({ setDisplay, input, addWord,setResult,setSuggestionDisplay,from }) {
-  const [loading,setLoading] = useState(false)
   const { t } = useTranslation();
 
 
@@ -17,10 +14,8 @@ export default function ConvertButton({ setDisplay, input, addWord,setResult,set
       setDisplay("flex");
       const foundResult = findWord(input,from)
       if (foundResult) {
-        setLoading(true)
         setResult(foundResult)
         addWord(input, foundResult, from);
-        setLoading(false)
       }
       else{
         setResult("Result not Found")
@@ -34,7 +29,7 @@ export default function ConvertButton({ setDisplay, input, addWord,setResult,set
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={styles.convertButton}>
-              {loading ? (<ActivityIndicator size={"small"}/>) : <Text style={styles.convertButtonText}>{t('convert')}</Text>}
+               <Text style={styles.convertButtonText}>{t('convert')}</Text>
         </LinearGradient>
     </TouchableOpacity>
   );

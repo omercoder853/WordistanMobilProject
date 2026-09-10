@@ -5,10 +5,8 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../../contextapis/AuthContext";
-import { useNavigation } from "@react-navigation/native";
 import ChangePasswordModal from "../profileComponents/ChangePasswordModal";
 import DeleteAccountModal from "../profileComponents/DeleteAccountModal";
-import CustomAlert from "../../commonComponents/customAlert/customAlert";
 
 // ─── Detail field config (icon + color per row) ───
 const detailFields = [
@@ -24,64 +22,10 @@ const detailFields = [
 export default function PersonalDetails() {
     const { user } = useAuth();
     const { t } = useTranslation();
-    const navigation = useNavigation();
     const imgSource = user.gender == "male" ? require("../../assets/avatarBoy.png") : require("../../assets/avatarGirl.png")
 
     const [passwordModalVisible, setPasswordModalVisible] = useState(false);
     const [deleteModalVisible, setDeleteModalVisible] = useState(false);
-    const [alertConfig, setAlertConfig] = useState({ visible: false, success: false, type: null });
-
-    const handlePasswordResult = (result) => {
-        setPasswordModalVisible(false);
-        setAlertConfig({
-            visible: true,
-            success: result?.success === true,
-            type: 'password',
-        });
-    };
-
-    const handleDeleteResult = (result) => {
-        setDeleteModalVisible(false);
-        setAlertConfig({
-            visible: true,
-            success: result?.success === true,
-            type: 'delete',
-        });
-    };
-
-    const handleAlertClose = () => {
-        const type = alertConfig.type;
-        const success = alertConfig.success;
-        setAlertConfig({ visible: false, success: false, type: null });
-
-        if (type === 'password') {
-            navigation.reset({ index: 0, routes: [{ name: 'MainTabs' }] });
-        } else if (type === 'delete' && !success) {
-            // Başarısız silme — kullanıcı Personal Details'te kalır, sadece alert kapanır
-        }
-        // Başarılı silme durumunda logout() zaten çağrıldı, isLogin:false olunca auth stack devreye girer
-    };
-
-    const getAlertTitle = () => {
-        if (alertConfig.type === 'password') {
-            return alertConfig.success ? t("passwordChangedSuccess") : t("passwordChangeFailed");
-        }
-        return alertConfig.success ? t("deleteAccountSuccess") : t("deleteAccountFailed");
-    };
-
-    const getAlertMessage = () => {
-        if (alertConfig.type === 'password') {
-            return alertConfig.success ? t("passwordChangedSuccessMsg") : t("passwordChangeFailedMsg");
-        }
-        return alertConfig.success ? t("deleteAccountSuccessMsg") : t("deleteAccountFailedMsg");
-    };
-
-    const getAlertButtonStyle = () => {
-        if (alertConfig.type === 'password') {
-            return alertConfig.success ? "success" : "danger";
-        }
-        return alertConfig.success ? "defaultButton" : "danger";
-    };
 
     const getFieldValue = (field) => {
         const val = user?.[field.userField];
@@ -137,8 +81,7 @@ export default function PersonalDetails() {
                         <Text style={styles.profileLabel}>{t("changePassword")}</Text>
                         <TouchableOpacity
                             style={styles.changePasswordButton}
-                            onPress={() => setPasswordModalVisible(true)}
-                        >
+                            onPress={() => setPasswordModalVisible(true)}>
                             <Text style={styles.changePasswordText}>{t("changePassword")}</Text>
                         </TouchableOpacity>
                     </View>
@@ -156,29 +99,11 @@ export default function PersonalDetails() {
 
             <ChangePasswordModal
                 visible={passwordModalVisible}
-                onClose={() => setPasswordModalVisible(false)}
-                onResult={handlePasswordResult}
-            />
+                onClose={() => setPasswordModalVisible(false)}/>
 
             <DeleteAccountModal
                 visible={deleteModalVisible}
-                onClose={() => setDeleteModalVisible(false)}
-                onResult={handleDeleteResult}
-            />
-
-            <CustomAlert
-                visible={alertConfig.visible}
-                title={getAlertTitle()}
-                message={getAlertMessage()}
-                buttons={[{
-                    text: t("close"),
-                    style: getAlertButtonStyle(),
-                    action: handleAlertClose
-                }]}
-            />
+                onClose={() => setDeleteModalVisible(false)}/>
         </View>
     )
 }
-
-const capitalize = (str) =>
-    str ? str.charAt(0).toUpperCase() + str.slice(1).toLowerCase() : "";

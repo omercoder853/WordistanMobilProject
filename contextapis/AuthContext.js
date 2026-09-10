@@ -9,6 +9,7 @@ import { STORAGE_KEYS } from "../src/constants/StorageKeys";
 import { apiClient } from "../src/services/ApiClient";
 import { useFeedback } from "./FeedbackContext";
 import { useNavigation } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
 
 export const AuthenticationContext = createContext()
 
@@ -22,7 +23,8 @@ export const AuthProvider = ({ children }) => {
     const [appLanguage, setAppLanguage] = useState(null);
     const [vibrationPref, setVibrationPref] = useState(true);
     const navigation = useNavigation();
-    const { setAlertTitle, setAlertMessage, addAlertButton, setAlertVisible, hideAlert } = useFeedback();
+    const {t} = useTranslation();
+    const { setAlertTitle, setAlertMessage, addAlertButton, setAlertVisible, hideAlert,showToast } = useFeedback();
 
     useEffect(() => {
         const getTokens = async () => {
@@ -98,16 +100,20 @@ export const AuthProvider = ({ children }) => {
         await supabase.auth.signOut();
         const res = await storage.clearSession();
         if (res) {
-            setAccToken(null)
-            setRefToken(null)
-            setUser(null)
-            setLogin(false)
-            console.log("Logout ediliyor...")
+            setAccToken(null);
+            setRefToken(null);
+            setUser(null);
+            setLogin(false);
+            console.log("Logout ediliyor...");
+        }
+        else {
+            showToast(t('error') , t('logoutError') , "danger");
         }
     }
 
     const changePassword = async (currentPassword, newPassword) => {
-        const { ok, status, data } = await apiClient.post(ENDPOINTS.changePassword, { current_password: currentPassword, new_password: newPassword });
+        const { ok, status, data } = await apiClient.post(ENDPOINTS.changePassword, 
+            { current_password: currentPassword, new_password: newPassword });
         if (ok) {
             console.log("Password changed successfully");
             return true;
@@ -125,6 +131,10 @@ export const AuthProvider = ({ children }) => {
             await logout();
             return true;
         } else {
+            setAlertTitle(t("deleteAccountFailed"));
+            setAlertMessage(t("deleteAccountFailedMsg"));
+            addAlertButton({text: t("close"),style: "danger",action: hideAlert});
+            setAlertVisible(true);
             console.log("Deleting account is not successful:", status, data);
             return false;
         }

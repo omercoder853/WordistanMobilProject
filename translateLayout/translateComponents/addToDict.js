@@ -1,5 +1,5 @@
 import { View,TouchableOpacity,TouchableWithoutFeedback,Keyboard,
-    Platform,TextInput,Text,KeyboardAvoidingView,Modal } from "react-native";
+    Platform,TextInput,Text,KeyboardAvoidingView,Modal,ActivityIndicator } from "react-native";
 import alertStyles from "../../commonComponents/customAlert/customAlertStyle";
 import dictStyles from "../../dictionariesLayout/DictionariesStyles/dictStyles"
 import DropDownPicker from "react-native-dropdown-picker";
@@ -12,6 +12,7 @@ export default function AddDictPage({visible,input,result,setVisible,from}){
     const [open,setOpen] = useState(false)
     const [value,setValue] = useState(null)
     const {dicts,setDictReload,saveWord} = useDictionary();
+    const [loading,setLoading] = useState(false);
 
     useEffect(()=>{
         setDictReload(true)
@@ -24,8 +25,10 @@ export default function AddDictPage({visible,input,result,setVisible,from}){
     }));
 
     const saveButton = async () => {
+        setLoading(true);
         const status = await saveWord({dictionary_id:value,word:input,meaning:result});
-        setVisible(false)
+        setLoading(false);
+        setVisible(false);
     }
 
     return (
@@ -49,11 +52,12 @@ export default function AddDictPage({visible,input,result,setVisible,from}){
                             setValue={setValue}
                             placeholder={t('selectDictionary')} />
                             <View style={alertStyles.buttonContainer}>
-                                <TouchableOpacity style={alertStyles.cancel} onPress={()=>setVisible(false)}>
+                                <TouchableOpacity style={[alertStyles.cancel , loading && alertStyles.cancelDisabled]} disabled={loading} onPress={()=>setVisible(false)}>
                                     <Text style={{color:'white',fontWeight:'600'}}>{t('cancel')}</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={alertStyles.success} onPress={saveButton}>
-                                    <Text style={{color:'white',fontWeight:'900'}}>{t('add')}</Text>
+                                <TouchableOpacity style={[alertStyles.success , loading && alertStyles.successDisabled]} disabled={loading} onPress={saveButton}>
+                                    {loading ? (<ActivityIndicator size="small"/>) :  
+                                    (<Text style={{color:'white',fontWeight:'900'}}>{t('add')}</Text>)}
                                 </TouchableOpacity>
                             </View>
                         </View>

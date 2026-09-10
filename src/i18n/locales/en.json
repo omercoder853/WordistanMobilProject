@@ -33,6 +33,7 @@
   "xpFor":"for",
   "xpRemaining":"remaining",
   "tryAgainLater":"Something went wrong. Please try again later.",
+  "error":"Error",
 
   "___HOME_PAGE___": "",
   "recentWords": "Recent Words",
@@ -88,6 +89,7 @@
   "register": "Register",
   "passwordRule": "* Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, and a number.",
   "loginFailed": "Login was not successful",
+  "checkYourLoginDetails":"Please check your login details.",
   "takingYouToLogin": "We're taking you to the login page to get started.",
   "somethingWentWrong": "Something went wrong. Let's get you back in!",
   "allSet": "All Set!",
@@ -147,6 +149,9 @@
   "enterShortDescription": "Enter a short description",
   "youAreAllSet": "You are all set!",
   "wordAddedSuccessfully":"We have just added the word into your dictionary successfully!",
+  "wordSavingError":"Failed to save word. Please try again later.",
+  "errorFetchingWords":"Couldn't fetch words. Check your connection.",
+  "errorFetchingDicts": "Couldn't fetch dicts. Check your connection.",
   "dictDetails":"Dictionary Details",
   "dictOptions":"Dictionary Options",
   "editDictionary":"Edit Dictionary",
@@ -168,6 +173,9 @@
   "shareDictionaryModalTitle": "Export Dictionary",
   "shareDocumentAs": "Export document as",
   "share": "Export",
+  "fileSharingNotSupported":"File sharing is not supported on this device.",
+  "fileShareFailed":"An error occurred while sharing the file.",
+  "noWordsOrLoadFailed":"No words found or failed to load.",
 
   "___GAMES___": "",
   "gameSettings": "Game Settings",
@@ -261,6 +269,7 @@
   "deleteAccountSuccessMsg":"Your account has been successfully deleted. Redirecting you to the login screen.",
   "deleteAccountFailed":"Account Could Not Be Deleted",
   "deleteAccountFailedMsg":"An error occurred, please try again later.",
+  "logoutError":"Failed to log out. Please try again.",
 
   "___ABOUT_PAGE___": "",
   "aboutSlogan": "Translate, add to your dictionary, learn by having fun",
