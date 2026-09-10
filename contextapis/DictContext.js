@@ -67,7 +67,7 @@ export const DictionaryProvider = ({ children }) => {
             console.log("dictId eksik bu şekilde api isteği atılamaz")
             return false;
         }
-        const { ok, status, data } = await apiClient.get(ENDPOINTS.words + "/" + dictId);
+        const { ok, status, data } = await apiClient.get(ENDPOINTS.words + "/" + dictId );
         if (ok) {
             return data
         }
@@ -129,11 +129,13 @@ export const DictionaryProvider = ({ children }) => {
                 await removeDailyWord();
                 setDictReload(true);
             }
-            return { success: true }
+            showToast(t('operationSuccessful'), t('wordDeletedSuccessfully'), "success");
+            return true
         }
         else {
             console.log("Error while deleting word ", status, data);
-            return { success: false }
+            showToast(t('ooops'), t('wordDeletingError'), "danger");
+            return false
         }
     }
 

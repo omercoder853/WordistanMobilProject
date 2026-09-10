@@ -4,12 +4,13 @@ import { useGame } from '../../contextapis/GamesContext'
 import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from 'react';
+import { useFeedback } from '../../contextapis/FeedbackContext';
 
-export default function QuestionNavigation({currentQuestion,setCurrentQuestion,
-    setVisible,setEmptyQuestion,setPause,remainTime,setSelectedQuestion,totalTry}){
+export default function QuestionNavigation({currentQuestion,setCurrentQuestion,timer,remainTime,setSelectedQuestion,totalTry}){
     const { t } = useTranslation();
     const {numberQuestion,userAnswers,gameType,autoCont,perPage} = useGame();
     const navigation = useNavigation()
+    const {alertLoading , setAlertTitle, setAlertMessage, addAlertButton, setAlertVisible,setAlertLoading,hideAlert} = useFeedback();
     const isFirst = currentQuestion+1==1
     let isLast;
     let isAnswered;
@@ -54,11 +55,15 @@ export default function QuestionNavigation({currentQuestion,setCurrentQuestion,
     }
     const finishGame = ()=>{
         if (userAnswers.length < numberQuestion) {
-            setPause(true)
-            setEmptyQuestion(true)
+            timer.pause();
+            setAlertTitle(t('warningShort'));
+            setAlertMessage(t('finishWithUnanswered'));
+            addAlertButton({text:t('cancel'),style:"cancel",action:()=>{hideAlert(),timer.start()}});
+            addAlertButton({text:t('finish'),action:()=>{hideAlert(),navigation.replace("Finish Game",{remainTime})}});
+            setAlertVisible(true);
         }
         else{
-            setPause(true)
+            timer.pause();
             if (gameType=="mp") {
                 navigation.replace("Finish Game",{remainTime,totalTry})
             }
@@ -67,9 +72,19 @@ export default function QuestionNavigation({currentQuestion,setCurrentQuestion,
             }
         }
     }
+
+    const handleFirstQuestion = ()=>{
+        timer.pause();
+        setAlertTitle(t('warning'));
+        setAlertMessage(t('exitGameWarning'));
+        addAlertButton({text:t('cancel'),style:"cancel",action:()=>{hideAlert(),timer.start()}});
+        addAlertButton({text:t('exit'),style:"danger",action:()=>{hideAlert(),navigation.replace("MainTabs",{screen:"Games"})}});
+        setAlertVisible(true);
+    }
+
     return (
         <View style={styles.questionNavArea}>
-            <TouchableOpacity style={[styles.questionNavButton,{backgroundColor:'#E5989B'}]} onPress={isFirst ? ()=>{setVisible(true),setPause(true)}:pastQuestion}>
+            <TouchableOpacity style={[styles.questionNavButton,{backgroundColor:'#E5989B'}]} onPress={isFirst ? handleFirstQuestion:pastQuestion}>
                 <Text>{isFirst ? t('exit'):t('back')}</Text>
             </TouchableOpacity>
             <Text style={{color:'white'}}>{currentQuestion+1}/{gameType=="mp" ? Math.ceil(numberQuestion/perPage) : numberQuestion}</Text>

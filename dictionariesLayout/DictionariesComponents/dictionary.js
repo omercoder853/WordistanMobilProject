@@ -5,18 +5,18 @@ import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { useDictionary } from '../../contextapis/DictContext';
-import CustomAlert from '../../commonComponents/customAlert/customAlert';
+import {useFeedback} from '../../contextapis/FeedbackContext';
 
 export default function Dictionary({ title, length, id, language }) {
     const { t } = useTranslation();
     const navigation = useNavigation();
     const [visible, setVisible] = useState(false);
-    const [warnVisible, setWarnVisible] = useState(false);
-    const [loading, setLoading] = useState(false);
     const [shareVisible, setShareVisible] = useState(false);
     const [selectedFileType, setSelectedFileType] = useState('.pdf');
     const [fileTypeOpen, setFileTypeOpen] = useState(false);
     const { deleteDictionary, setDictReload, ShareDictionary } = useDictionary();
+
+    const { setAlertTitle, setAlertMessage, addAlertButton, setAlertVisible,setAlertLoading,hideAlert } = useFeedback();
 
     const formatColors = {
         '.pdf': { color: '#EF4444', bg: '#FEE2E2', name: 'PDF' },
@@ -97,13 +97,24 @@ export default function Dictionary({ title, length, id, language }) {
         setFileTypeOpen(false);
     };
 
+    const handleDeleteButton = () => {
+        setVisible(false);
+        setAlertTitle(t("warning"));
+        setAlertMessage(t("deleteDictConfirmQuestion",{name:title,count:length}));
+        addAlertButton({text:t("cancel"),style:"cancel",action:()=>{hideAlert() , setVisible(true)}});
+        addAlertButton({text:t("delete"),style:"danger",action:()=>handleDeleteDict(id) , needLoading:true});
+        setAlertVisible(true);
+    }
+
     const handleDeleteDict = async (dict_id) => {
+        setAlertLoading(true);
         const res = await deleteDictionary(dict_id);
         if (res) {
             setDictReload(true);
         }
-        setWarnVisible(false);
+        hideAlert();
         setVisible(false);
+        setAlertLoading(false);
     };
 
     const formattedLang = language === "TR to ENG" ? "TR → ENG" : language === "ENG to TR" ? "ENG → TR" : (language || "TR → ENG");
@@ -167,7 +178,7 @@ export default function Dictionary({ title, length, id, language }) {
 
                             <View style={styles.divider} />
 
-                            <TouchableOpacity style={styles.modalOptionItem} activeOpacity={0.7} onPress={() => setWarnVisible(true)}>
+                            <TouchableOpacity style={styles.modalOptionItem} activeOpacity={0.7} onPress={() => handleDeleteButton()}>
                                 <View style={[styles.modalOptionIconWrapper, styles.modalDangerIconWrapper]}>
                                     <Ionicons name="trash-outline" size={20} color="#EF4444" />
                                 </View>
@@ -257,12 +268,6 @@ export default function Dictionary({ title, length, id, language }) {
                     </Pressable>
                 </Pressable>
             </Modal>
-
-            <CustomAlert visible={warnVisible} 
-            title={t("warning")} 
-            message={t("deleteDictConfirmQuestion",{name:title,count:length})}
-            buttons={[{text:t("cancel"),style:"cancel",action:()=>setWarnVisible(false)},
-                        {text:t("delete"),style:"danger",action:()=>handleDeleteDict(id)}]}/>
         </>
     )
 }

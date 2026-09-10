@@ -1,141 +1,128 @@
-import {View,Text,Pressable,Vibration } from "react-native";
+import { View, Text, Pressable, Vibration } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styles from "../gamesLayout/gameStyles/mpStyles";
 import { useGame } from "../contextapis/GamesContext";
-import { useState,useEffect,useRef } from "react";
+import { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import GameHeader from "../gamesLayout/gameComponents/gameHeader";
 import QuestionNavigation from "../gamesLayout/gameComponents/questionNavigations";
-import CustomAlert from "../commonComponents/customAlert/customAlert";
 import { useTranslation } from "react-i18next";
 import { storage } from "../src/storage/storage";
 import { STORAGE_KEYS } from "../src/constants/StorageKeys";
+import useTimer from "../hooks/useTimer";
+import { useFeedback } from "../contextapis/FeedbackContext";
 
-export default function MatchingPairsPage(){
-    const [isVibrate,setVibrate] = useState(true)
+export default function MatchingPairsPage() {
+    const [isVibrate, setVibrate] = useState(true)
     useEffect(() => {
-    const loadVibration = async () => {
-        const val = await storage.get(STORAGE_KEYS.PREFERENCES.VIBRATION_PREF);
-        setVibrate(val !== null ? val : true);
-    };
-    loadVibration();}, []);
+        const loadVibration = async () => {
+            const val = await storage.get(STORAGE_KEYS.PREFERENCES.VIBRATION_PREF);
+            setVibrate(val !== null ? val : true);
+        };
+        loadVibration();
+    }, []);
     const { t } = useTranslation();
     const navigation = useNavigation();
-    const {hints,questions,seconds,numberQuestion,perPage,randomIndexCreater,
-        userAnswers,setUserAnswers} = useGame();
-    const [remainTime,setRemainTime] = useState(seconds * numberQuestion)
-    const [currentQuestionPage,setCurrentQuestionPage] = useState(0)
-    const [exitVisible,setExitVisible] = useState(false)
-    const [emptyQuestion,setEmptyQuestion]  = useState(false)
-    const [isPause,setPause] = useState(false)
-    const [currentQuestions,setCurrentQuestions] = useState([])
-    const [currentAnswers,setCurrentAnswers] = useState([])
-    const [questionCounter,setQuestionCounter] = useState(0)
-    const [selectedQuestion,setSelectedQuestion] = useState();
-    const [selectedAnswer,setSelectedAnswer] = useState([])
-    const [totalTry,setTotalTry] = useState(0)
+    const { hints, questions, seconds, numberQuestion, perPage, randomIndexCreater,
+        userAnswers, setUserAnswers } = useGame();
+    const [currentQuestionPage, setCurrentQuestionPage] = useState(0)
+    const [currentQuestions, setCurrentQuestions] = useState([])
+    const [currentAnswers, setCurrentAnswers] = useState([])
+    const [questionCounter, setQuestionCounter] = useState(0)
+    const [selectedQuestion, setSelectedQuestion] = useState();
+    const [selectedAnswer, setSelectedAnswer] = useState([])
+    const [totalTry, setTotalTry] = useState(0);
+    const { setAlertTitle, setAlertMessage, addAlertButton, setAlertVisible, hideAlert } = useFeedback();
+    const { timer, timeLeft } = useTimer(() => navigation.replace("Finish Game", { remainTime: 0 }));
 
-    useEffect(()=>{
-        const isExist = currentQuestions.some((questionList)=>questionList.id == currentQuestionPage)
+
+    useEffect(() => {
+        const isExist = currentQuestions.some((questionList) => questionList.id == currentQuestionPage)
         if (!isExist) {
             let tempAnswers = [];
             let tempQuestions = [];
             let usedIndexes = new Set();
-            for (let i = currentQuestionPage*perPage; i < (currentQuestionPage+1)*perPage ; i++) {
+            for (let i = currentQuestionPage * perPage; i < (currentQuestionPage + 1) * perPage; i++) {
                 if (questions[i]) {
                     tempQuestions.push(questions[i].question)
                     tempAnswers.push(questions[i].answer)
-                    setQuestionCounter(questionCounter+1)
+                    setQuestionCounter(questionCounter + 1)
                 }
             }
-            setCurrentQuestions((prev)=>{
-                return [...prev,{id:currentQuestionPage,questions:tempQuestions}]
+            setCurrentQuestions((prev) => {
+                return [...prev, { id: currentQuestionPage, questions: tempQuestions }]
             })
             let randomAnswers = []
             let correctIndexes = []
             for (let i = 0; i < tempAnswers.length; i++) {
                 let randomIndex;
                 do {
-                    randomIndex = randomIndexCreater({target_words:tempAnswers,length:null})
+                    randomIndex = randomIndexCreater({ target_words: tempAnswers, length: null })
                 } while (usedIndexes.has(randomIndex));
                 randomAnswers[randomIndex] = tempAnswers[i]
                 correctIndexes.push(randomIndex)
                 usedIndexes.add(randomIndex)
             }
-            setCurrentAnswers((prev)=>{
-                return [...prev,{id:currentQuestionPage,answers:randomAnswers,correctIndexes}]
+            setCurrentAnswers((prev) => {
+                return [...prev, { id: currentQuestionPage, answers: randomAnswers, correctIndexes }]
             })
         }
-    },[currentQuestionPage])
+    }, [currentQuestionPage])
 
     useEffect(() => {
-    const unsubscribe = navigation.addListener('beforeRemove', (e) => {
-    if (remainTime>0 && e.data.action.type === "GO_BACK") {
-        e.preventDefault();
-        setPause(true);
-        setExitVisible(true)
-    } });
-    return unsubscribe;}, [navigation,remainTime]);
+        const unsubscribe = navigation.addListener('beforeRemove', (e) => {
+            if (timeLeft > 0 && e.data.action.type === "GO_BACK") {
+                e.preventDefault();
+                timer.pause();
+                setAlertTitle(t('warning'));
+                setAlertMessage(t('exitGameWarning'));
+                addAlertButton({ text: t('cancel'), style: "cancel", action: () => { hideAlert(), timer.start() } });
+                addAlertButton({ text: t('exit'), style: "danger", action: () => { hideAlert(), navigation.replace("MainTabs", { screen: "Games" }) } });
+                setAlertVisible(true);
+            }
+        });
+        return unsubscribe;
+    }, [navigation, timeLeft]);
 
     /* ---------- TIMER ---------- */
 
-    const totalMs = seconds * numberQuestion * 1000
-    const targetEndTimeRef = useRef(Date.now() + totalMs)
-    const remainingMsRef = useRef(totalMs)
-    
-    useEffect(()=>{
-        if (isPause) {
-            remainingMsRef.current = Math.max(0,targetEndTimeRef.current - Date.now());
-            return
-        }
-        targetEndTimeRef.current = Date.now() + remainingMsRef.current;
+    useEffect(() => {
+        timer.set(seconds * numberQuestion);
+        timer.start();
+    }, []);
 
-        const interval = setInterval(() => {
-            const diff = targetEndTimeRef.current - Date.now();
-            const currentRemainSec = Math.max(0,Math.ceil(diff / 1000));
-            setRemainTime(currentRemainSec);
-            
-            if (diff <= 0 ) {
-                clearInterval(interval);
-                navigation.replace("Finish Game",{remainTime:0})
-            }
-
-        },500);
-        return () => clearInterval(interval);
-    },[isPause]);
-
-    const getDynamicQuestionStyle = (ind)=>{
-        if (selectedQuestion !== null && selectedQuestion!==undefined) {
+    const getDynamicQuestionStyle = (ind) => {
+        if (selectedQuestion !== null && selectedQuestion !== undefined) {
             if (ind === selectedQuestion) {
-                return {backgroundColor:'#4A3B5D',borderColor:"#A38CB8"}
+                return { backgroundColor: '#4A3B5D', borderColor: "#A38CB8" }
             }
             else {
-                return {backgroundColor:'#322B3D',borderColor:"#453D52"}
+                return { backgroundColor: '#322B3D', borderColor: "#453D52" }
             }
         }
     }
-    
-    const getDynamicAnswerStyle = (ind)=>{
-        if (selectedQuestion !== null && selectedQuestion!==undefined) {
+
+    const getDynamicAnswerStyle = (ind) => {
+        if (selectedQuestion !== null && selectedQuestion !== undefined) {
             if (selectedAnswer !== undefined && selectedAnswer != null) {
                 if (selectedAnswer === ind) {
                     if (checkList[selectedQuestion] === ind) {
-                        return {backgroundColor:"green"}
+                        return { backgroundColor: "green" }
                     }
                     else {
-                        return {backgroundColor:"red"}
+                        return { backgroundColor: "red" }
                     }
                 }
                 else {
                     return {}
                 }
             }
-            return {backgroundColor:'#2D2438',borderColor:'#5A4E6B'}
+            return { backgroundColor: '#2D2438', borderColor: '#5A4E6B' }
         }
     }
 
-    const dynamicDisabledMaker = (ind,trigger,key)=>{
-        if (isAnswered(ind,key)) {
+    const dynamicDisabledMaker = (ind, trigger, key) => {
+        if (isAnswered(ind, key)) {
             return true
         }
         if (trigger !== undefined && trigger !== null) {
@@ -147,7 +134,7 @@ export default function MatchingPairsPage(){
         return false
     }
 
-    const selectQuestionHandler = (ind)=>{
+    const selectQuestionHandler = (ind) => {
         isVibrate && Vibration.vibrate(80)
         setSelectedAnswer(null)
         if (selectedQuestion !== undefined && selectedQuestion !== null) {
@@ -158,18 +145,18 @@ export default function MatchingPairsPage(){
         }
     }
 
-    const selectAnswerHandler = async (ind) =>{
+    const selectAnswerHandler = async (ind) => {
         if (selectedAnswer == null && selectedAnswer == undefined) {
-            setTotalTry((prev)=>prev+1)
+            setTotalTry((prev) => prev + 1)
             setSelectedAnswer(ind)
             if (checkList[selectedQuestion] === ind) {
-                setUserAnswers((prev)=>{
-                    return [...prev,{currentPage:currentQuestionPage,question:selectedQuestion,answer:ind}]
+                setUserAnswers((prev) => {
+                    return [...prev, { currentPage: currentQuestionPage, question: selectedQuestion, answer: ind }]
                 })
-                const timer = setTimeout(()=>{
+                const interval = setTimeout(() => {
                     setSelectedQuestion(null)
                     setSelectedAnswer(null)
-                },800)
+                }, 800)
                 isVibrate && Vibration.vibrate(80)
             }
             else {
@@ -178,57 +165,46 @@ export default function MatchingPairsPage(){
                     await new Promise(resolve => setTimeout(resolve, 120));
                     Vibration.vibrate(50)
                 }
-                const timer = setTimeout(()=>{
+                const interval = setTimeout(() => {
                     setSelectedAnswer(null)
-                },800)
+                }, 800)
             }
-        }}
-
-    const isAnswered = (ind,key)=>{
-        return userAnswers.some((ans)=>ans.currentPage===currentQuestionPage && ans[key] === ind)
+        }
     }
 
-    const questionList = currentQuestions.find((q)=>q.id==currentQuestionPage)?.questions
-    const answerList = currentAnswers.find((a)=>a.id === currentQuestionPage)?.answers
-    const checkList = currentAnswers.find((a)=>a.id === currentQuestionPage)?.correctIndexes
+    const isAnswered = (ind, key) => {
+        return userAnswers.some((ans) => ans.currentPage === currentQuestionPage && ans[key] === ind)
+    }
+
+    const questionList = currentQuestions.find((q) => q.id == currentQuestionPage)?.questions
+    const answerList = currentAnswers.find((a) => a.id === currentQuestionPage)?.answers
+    const checkList = currentAnswers.find((a) => a.id === currentQuestionPage)?.correctIndexes
     return (
         <SafeAreaView style={styles.mainContainer}>
-            <GameHeader hints={hints} remainTime={remainTime}/>
+            <GameHeader hints={hints} remainTime={timeLeft} />
             <View style={styles.gameContainer}>
                 <View style={styles.questionArea}>
-                    {questionList?.map((question,ind)=>(
-                        <Pressable disabled={dynamicDisabledMaker(ind,selectedQuestion,"question")} 
-                        onPress={()=>selectQuestionHandler(ind)} 
-                        style={[styles.question,getDynamicQuestionStyle(ind),isAnswered(ind,"question") && {backgroundColor:'green'}]} key={ind}>
-                            <Text style={{textAlign:'center',color:'white'}}>{question}</Text>
+                    {questionList?.map((question, ind) => (
+                        <Pressable disabled={dynamicDisabledMaker(ind, selectedQuestion, "question")}
+                            onPress={() => selectQuestionHandler(ind)}
+                            style={[styles.question, getDynamicQuestionStyle(ind), isAnswered(ind, "question") && { backgroundColor: 'green' }]} key={ind}>
+                            <Text style={{ textAlign: 'center', color: 'white' }}>{question}</Text>
                         </Pressable>
                     ))}
                 </View>
 
                 <View style={styles.answerArea}>
-                    {answerList?.map((answer,ind)=>(
-                        <Pressable key={ind} style={[styles.answer,getDynamicAnswerStyle(ind),isAnswered(ind,"answer") && {backgroundColor:'green'}]} 
-                         onPress={()=>selectAnswerHandler(ind)} 
-                         disabled={dynamicDisabledMaker(ind,selectedAnswer,"answer")} >
-                            <Text style={{textAlign:'center',color:'white'}}>{answer}</Text>
+                    {answerList?.map((answer, ind) => (
+                        <Pressable key={ind} style={[styles.answer, getDynamicAnswerStyle(ind), isAnswered(ind, "answer") && { backgroundColor: 'green' }]}
+                            onPress={() => selectAnswerHandler(ind)}
+                            disabled={dynamicDisabledMaker(ind, selectedAnswer, "answer")} >
+                            <Text style={{ textAlign: 'center', color: 'white' }}>{answer}</Text>
                         </Pressable>
                     ))}
                 </View>
             </View>
-            <QuestionNavigation currentQuestion={currentQuestionPage} setPause={setPause} remainTime={remainTime}
-            setCurrentQuestion={setCurrentQuestionPage} setVisible={setExitVisible} setEmptyQuestion={setEmptyQuestion} 
-            setSelectedQuestion = {setSelectedQuestion} totalTry={totalTry}/>
-            
-            <CustomAlert visible={exitVisible} title={t('warning')} buttons={[
-                {text:t('exit'),style:"danger",action:()=>{setExitVisible(false),
-                    navigation.replace("MainTabs",{screen:"Games"})}},
-                {text:t('cancel'),style:"cancel",action:()=>{setExitVisible(false),setPause(false)}}]} 
-            message={t('exitGameWarning')}/>
-
-            <CustomAlert visible={emptyQuestion} title={t('warningShort')} message={t('finishWithUnanswered')} 
-            buttons={[{text:t('cancel'),style:"cancel",action:()=>{setEmptyQuestion(false),setPause(false)}},
-                {text:t('finish'),action:()=>{setEmptyQuestion(false),navigation.replace("Finish Game",{remainTime,totalTry})}}
-            ]}/>
+            <QuestionNavigation currentQuestion={currentQuestionPage} timer={timer} remainTime={timeLeft}
+                setCurrentQuestion={setCurrentQuestionPage} setSelectedQuestion={setSelectedQuestion} totalTry={totalTry} />
         </SafeAreaView>
     )
 }

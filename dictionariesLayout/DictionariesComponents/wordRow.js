@@ -1,30 +1,32 @@
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import Feather from '@expo/vector-icons/Feather';
 import { useDictionary } from "../../contextapis/DictContext";
-import CustomAlert from "../../commonComponents/customAlert/customAlert";
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useFeedback } from "../../contextapis/FeedbackContext";
 
 export default function Word({ word, index,setReload}) {
     const { t } = useTranslation();
-    const [alertVisible, setAlertVisible] = useState(false)
-    const [successVisible,setSuccessVisible] = useState(false)
-    const [errVisible , setErrVisible] = useState(false)
     const { deleteWord,setDictReload } = useDictionary();
 
+    const { setAlertTitle, setAlertMessage, addAlertButton, setAlertVisible,setAlertLoading,hideAlert } = useFeedback();
+
+    const handleTrashPress = () => {
+        setAlertTitle(t("warning"));
+        setAlertMessage(t("wordDeleteWarning" , {word:word.word}));
+        addAlertButton({text:t("cancel"),style:"cancel",action:()=>{hideAlert()}});
+        addAlertButton({text:t("delete"),style:"danger",action:()=>handleDelete() , needLoading:true});
+        setAlertVisible(true);
+    }
+
+
     const handleDelete = async () => {
-        const res = await deleteWord(word.id)
-        if (res.success) {
-            setAlertVisible(false)
-            setSuccessVisible(true)
-        }
-        else {
-            setAlertVisible(false)
-            setErrVisible(true)
-        }
+        setAlertLoading(true);
+        const ok = await deleteWord(word.id);
+        if (ok) {setDictReload(true),setReload(true)};
+        setAlertLoading(false);
+        hideAlert();
     }
     return (
-        <>
             <View style={styles.wordRow}>
                 <View style={styles.wordId}>
                     <Text style={styles.wordIdText}>{index + 1}</Text>
@@ -34,26 +36,11 @@ export default function Word({ word, index,setReload}) {
                     <Text style={styles.wordMeaning}>{word.meaning}</Text>
                 </View>
                 <View style={styles.deleteButtonContainer}>
-                    <TouchableOpacity style={styles.deleteButton} onPress={()=>setAlertVisible(true)}>
+                    <TouchableOpacity style={styles.deleteButton} onPress={handleTrashPress}>
                         <Feather name="trash-2" size={20} color="#EF4444" />
                     </TouchableOpacity>
                 </View>
             </View>
-            <CustomAlert visible={alertVisible}
-                title={t('warning')}
-                message={t('wordDeleteWarning' , {word:word.word})}
-                buttons={[{ text: t('cancel'), style: "cancel", action: () => setAlertVisible(false) },
-                { text: t('delete'), style: "danger", action: () => handleDelete() }]} />
-            <CustomAlert visible={successVisible}
-            title={t('operationSuccessful')} 
-            message={t('wordDeletedSuccessfully')}
-            buttons={[{text:t('cancel') , style:"success" , action:()=>{setSuccessVisible(false),setReload(true),setDictReload(true)}}]}/>
-            <CustomAlert visible={errVisible}
-            title={t('ooops')}
-            message={t('wordDeletingError')}
-            buttons={[{text:t('cancel') , style:"cancel" , action:()=>setErrVisible(false)}]}/>
-        </>
-
     )
 }
 

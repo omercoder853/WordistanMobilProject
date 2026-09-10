@@ -27,12 +27,10 @@ export const FeedbackProvider = ({children}) => {
     const [alertTitle,setAlertTitle] = useState("");
     const [alertMessage,setAlertMessage] = useState("");
     const [alertButtons,setAlertButtons] = useState([]);
+    const [alertLoading , setAlertLoading] = useState(false);
 
-    const showAlert = (title, message, buttons) => {
-        setAlertTitle(title);
-        setAlertMessage(message);
-        setAlertButtons(buttons);
-        setAlertVisible(true);
+    const addAlertButton = (button) => {
+        setAlertButtons(prevButtons => [...prevButtons, button]);
     }
 
     const hideAlert = () => {
@@ -40,11 +38,13 @@ export const FeedbackProvider = ({children}) => {
         setAlertTitle("");
         setAlertMessage("");
         setAlertButtons([]);
+        setAlertLoading(false);
     }
 
     return (
         <FeedbackContext.Provider value={{ toastVisible, toastTitle, toastMessage, toastType, showToast, hideToast, 
-        alertVisible, alertTitle, alertMessage, alertButtons, showAlert,hideAlert }}>
+        alertVisible, alertTitle, alertMessage, alertButtons, 
+        alertLoading , setAlertTitle, setAlertMessage, addAlertButton, setAlertVisible,setAlertLoading,hideAlert }}>
             {children}
         </FeedbackContext.Provider>
     )

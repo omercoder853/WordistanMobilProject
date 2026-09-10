@@ -6,18 +6,13 @@ import ProfileInfo from '../profileLayout/profileComponents/profileInfo';
 import ProfileStatsRow from '../profileLayout/profileComponents/profileStatsRow';
 import InviteFriend from '../profileLayout/profileComponents/inviteFriend';
 import { LinearGradient } from 'expo-linear-gradient';
-import CustomAlert from '../commonComponents/customAlert/customAlert';
 import { useEffect } from "react";
 import ProfileConsole from '../profileLayout/profileComponents/profileConsole';
-import { useState } from 'react';
-import { useTranslation } from "react-i18next";
 import { storage } from '../src/storage/storage';
 import { STORAGE_KEYS } from '../src/constants/StorageKeys';
 
 const Profile = () => {
-    const { t } = useTranslation();
-    const { user, setUser, logout } = useAuth();
-    const [alertVisible, setAlertVisible] = useState(false)
+    const { user, setUser } = useAuth();
 
     useEffect(() => {
         if (!user) {
@@ -32,7 +27,6 @@ const Profile = () => {
     }, [user]);
 
     return (
-        <>
             <LinearGradient colors={['#e9d5ff', '#ffffff']} start={{ x: 0, y: 0 }}
                 end={{ x: 0, y: 0.5 }} style={{ flex: 1, alignItems: 'center' }}>
                 <SafeAreaView style={{ flex: 1 }} edges={['top', 'left', 'right']}>
@@ -43,15 +37,10 @@ const Profile = () => {
                         <InviteFriend />
                     </View>
                     <View style={{ flex: 1, width: '100%', alignItems: 'center' }}>
-                        <ProfileConsole setAlertVisible={setAlertVisible} />
+                        <ProfileConsole/>
                     </View>
                 </SafeAreaView>
             </LinearGradient>
-            <CustomAlert visible={alertVisible} title={t('warning')} message={t('logoutWarning')}
-                buttons={[
-                    { text: t('cancel'), style: "cancel", action: () => setAlertVisible(false) },
-                    { text: t('exit'), style: "danger", action: logout }]} />
-        </>
     )
 }
 

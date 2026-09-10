@@ -2,7 +2,7 @@ import { ScrollView } from "react-native";
 import ConsoleButton from "./profileConsoleButton";
 import { useTranslation } from "react-i18next";
 
-export default function ProfileConsole({setAlertVisible}){
+export default function ProfileConsole(){
     const { t } = useTranslation();
     const consoleItems = [
       { name: "Personal Details", label: t('personalDetails'), icon: "person-outline" },
@@ -18,7 +18,7 @@ export default function ProfileConsole({setAlertVisible}){
     return (
         <ScrollView style={{flex:1,width:'90%'}} showsVerticalScrollIndicator={false} 
         contentContainerStyle={{paddingBottom:20}}>
-            {consoleItems.map((item,index) => (<ConsoleButton key={index} item={item} setAlertVisible={setAlertVisible}/>))}
+            {consoleItems.map((item,index) => (<ConsoleButton key={index} item={item}/>))}
         </ScrollView>
     )
 }

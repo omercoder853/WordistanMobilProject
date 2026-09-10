@@ -7,6 +7,8 @@ import { getNewToken } from "../src/services/AuthService";
 import { storage } from "../src/storage/storage";
 import { STORAGE_KEYS } from "../src/constants/StorageKeys";
 import { apiClient } from "../src/services/ApiClient";
+import { useFeedback } from "./FeedbackContext";
+import { useNavigation } from "@react-navigation/native";
 
 export const AuthenticationContext = createContext()
 
@@ -17,9 +19,10 @@ export const AuthProvider = ({ children }) => {
     const [refToken, setRefToken] = useState();
     const [isLogin, setLogin] = useState(false);
     const [registerData, setRegisterData] = useState({});
-    const [registerLoading, setRegisterLoading] = useState(false)
     const [appLanguage, setAppLanguage] = useState(null);
-    const [vibrationPref, setVibrationPref] = useState(true)
+    const [vibrationPref, setVibrationPref] = useState(true);
+    const navigation = useNavigation();
+    const { setAlertTitle, setAlertMessage, addAlertButton, setAlertVisible, hideAlert } = useFeedback();
 
     useEffect(() => {
         const getTokens = async () => {
@@ -74,10 +77,20 @@ export const AuthProvider = ({ children }) => {
     }
 
     const register = async (registerData) => {
-        setRegisterLoading(true);
         const { ok, status, data } = await apiClient.post(ENDPOINTS.register, registerData,false);
-        setRegisterLoading(false);
-        return (status);
+        if (ok) {
+            setAlertTitle(t('allSet'));
+            setAlertMessage(t('takingYouToLogin'));
+            addAlertButton({text:t('login') , style:"success" , action:()=>{navigation.navigate("Login"),hideAlert()}});
+            setAlertVisible(true);
+        }
+        else {
+            setAlertTitle(t('ooopsShort'));
+            setAlertMessage(t('somethingWentWrong'));
+            addAlertButton({text:t('cancel') ,style:"danger" , action:()=>hideAlert()});
+            setAlertVisible(true);
+        }
+        return ok;
     }
 
     async function logout() {
@@ -120,7 +133,7 @@ export const AuthProvider = ({ children }) => {
     return (<AuthenticationContext.Provider value={{
         isLogin, isLoading, setLogin, logout,
         setAccToken, getNewToken, setRefToken, setUser, user, accToken, refToken, registerData,
-        setRegisterData, register, registerLoading, appLanguage, changeAppLanguage, changePassword, deleteAccount
+        setRegisterData, register, appLanguage, changeAppLanguage, changePassword, deleteAccount
     }}>{children}</AuthenticationContext.Provider>)
 }
 

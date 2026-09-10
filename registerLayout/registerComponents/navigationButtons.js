@@ -3,10 +3,12 @@ import styles from "../registerStyles/styles";
 import { useRoute,useNavigation } from "@react-navigation/native";
 import { useAuth } from "../../contextapis/AuthContext";
 import { useTranslation } from "react-i18next";
+import { useState } from "react";
 
 export default function NavigationButtons({anyError,data,setSuccess}){
     const { t } = useTranslation()
-    const {registerData,setRegisterData,register,registerLoading} = useAuth();
+    const {registerData,setRegisterData,register} = useAuth();
+    const [loading , setLoading] = useState(false);
     const pages = ["Login","Personal Info","Preferences","Entry Info"]
     const route = useRoute();
     const navigation = useNavigation();
@@ -27,13 +29,9 @@ export default function NavigationButtons({anyError,data,setSuccess}){
     }
 
     const registerButton = async () => {
-        const status = await register(currentData)
-        if (status == 201) {
-            setSuccess(true)
-        }
-        else{
-            setSuccess(false)
-        }
+        setLoading(true);
+        await register(currentData)
+        setLoading(false);
     }
     const backPage = () => {
         const backScreen = pages[currentIndex-1]
@@ -42,13 +40,13 @@ export default function NavigationButtons({anyError,data,setSuccess}){
     
     return(
         <View style={styles.buttonsArea}>
-            <TouchableOpacity onPress={backPage} style={[styles.navigationButton,registerLoading && {opacity:0.5}]} disabled={registerLoading}>
+            <TouchableOpacity onPress={backPage} style={[styles.navigationButton,loading && {opacity:0.5}]} disabled={loading}>
                 <Text style={{color:'white',fontWeight:'900'}}>{isFirst?t('loginPage'):t('back')}</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={isLast ? registerButton:nextPage} disabled={registerLoading || anyError}
-            style={[styles.navigationButton,{marginLeft:'auto'},registerLoading || anyError && {opacity:0.5}]}>
-                {registerLoading ? (<ActivityIndicator/>):
+            <TouchableOpacity onPress={isLast ? registerButton:nextPage} disabled={loading || anyError}
+            style={[styles.navigationButton,{marginLeft:'auto'},loading || anyError && {opacity:0.5}]}>
+                {loading ? (<ActivityIndicator/>):
                 (<Text style={{color:'white',fontWeight:'900',fontSize:15}}>
                     {isLast ? t('createAccount'):t('next')}
                 </Text>)}

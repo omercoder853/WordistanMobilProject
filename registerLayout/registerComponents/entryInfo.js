@@ -4,18 +4,14 @@ import LogoArea from "./logoArea";
 import NavigationButtons from "./navigationButtons";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useState,useEffect } from "react";
-import CustomAlert from "../../commonComponents/customAlert/customAlert";
-import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from 'react-i18next';
 
 export default function EntryInfoPage(){
     const { t } = useTranslation();
-    const navigation = useNavigation();
     const [email,setEmail] = useState("");
     const [password,setPassword] = useState("");
     const [passwordVerification,setPasswordVerification] = useState("");
     const [error,setError] = useState();
-    const [isSuccess,setSuccess] = useState(null);
 
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
     const emailRegex = /^\S+@\S+\.[a-z]{2,}$/;
@@ -66,17 +62,8 @@ export default function EntryInfoPage(){
                         {!validPasswordVerification && passwordVerification.length>0 && <Text style={styles.warningText}>{t('passwordsNotSameWarning')}</Text>}
                     </View>
 
-                    <NavigationButtons anyError={error} data={data} setSuccess={setSuccess}/>
-
-                    <CustomAlert visible={isSuccess==true} title={t('allSet')} 
-                    message={t('takingYouToLogin')} 
-                    buttons={[{text:t('login') , style:"success" , action:()=>{navigation.navigate("Login"),setSuccess(null)}}]} />
-                
-                    <CustomAlert visible={isSuccess==false} title={t('ooopsShort')} 
-                    message={t('somethingWentWrong')} 
-                    buttons={[{text:t('cancel') ,style:"danger" , action:()=>setSuccess(null)}]} />
+                    <NavigationButtons anyError={error} data={data}/>
                 </View>
-                
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
     )

@@ -35,21 +35,21 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     lineHeight: 22,
   },
-  buttonContainer:{
-    flexDirection:'row',
-    gap:5
+  buttonContainer: {
+    flexDirection: 'row',
+    gap: 5
   },
 
   defaultButton: {
-    backgroundColor: '#5B3FD3', 
+    backgroundColor: '#5B3FD3',
     paddingVertical: 12,
     paddingHorizontal: 30,
     borderRadius: 12,
     alignItems: 'center',
-    flex:1
+    flex: 1
   },
   cancel: {
-    backgroundColor: '#6B7280', 
+    backgroundColor: '#6B7280',
     paddingVertical: 12,
     paddingHorizontal: 30,
     borderRadius: 12,
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
   },
 
   success: {
-    backgroundColor: '#10B981', 
+    backgroundColor: '#10B981',
     paddingVertical: 12,
     paddingHorizontal: 30,
     borderRadius: 12,
@@ -69,17 +69,34 @@ const styles = StyleSheet.create({
   },
 
   danger: {
-    backgroundColor: '#EF4444', 
+    backgroundColor: '#EF4444',
     paddingVertical: 12,
     paddingHorizontal: 30,
     borderRadius: 12,
     alignItems: 'center',
     flex: 1
   },
+
   buttonText: {
     color: 'white',
     fontSize: 16,
     fontWeight: '600',
+  },
+
+  defaultButtonDisabled: {
+    backgroundColor: '#B4A8EE',
+  },
+
+  cancelDisabled: {
+    backgroundColor: '#9CA3AF',
+  },
+
+  successDisabled: {
+    backgroundColor: '#A7F3D0',
+  },
+
+  dangerDisabled: {
+    backgroundColor: '#FCA5A5',
   },
 });
 

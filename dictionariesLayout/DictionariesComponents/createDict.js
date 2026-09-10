@@ -1,4 +1,4 @@
-import { View,Modal,TextInput,Text,TouchableOpacity,TouchableWithoutFeedback,Keyboard,KeyboardAvoidingView } from "react-native";
+import { View,Modal,TextInput,Text,TouchableOpacity,TouchableWithoutFeedback,Keyboard,KeyboardAvoidingView,ActivityIndicator } from "react-native";
 import styles from "../DictionariesStyles/dictStyles";
 import alertStyle from "../../commonComponents/customAlert/customAlertStyle";
 import { useState } from "react";
@@ -10,13 +10,16 @@ export default function CreateDictionary({visible,setVisible}){
     const { t } = useTranslation();
     const [dictName,setDictName] = useState("");
     const [dictDesc,setDictDesc] = useState("");
-    const [dictLang,setDictLang] = useState("TR to ENG")
+    const [dictLang,setDictLang] = useState("TR to ENG");
+    const [loading,setLoading] = useState(false);
     const {createDictionary} = useDictionary();
 
     const createButton = async () => {
         if (dictName!="" && dictDesc!="") {
+            setLoading(true);
             await createDictionary({name:dictName,description:dictDesc,language:dictLang});
             setVisible(false);
+            setLoading(false);
         }
     }
 
@@ -29,15 +32,16 @@ export default function CreateDictionary({visible,setVisible}){
                             <Text style={styles.addDictTitle}>{t('createNewDictionary')}</Text>
                             <Text style={styles.addDictLabel}>{t('dictionaryName')}</Text>
                             <TextInput placeholder={t('enterName')} 
-                            style={styles.addDictInput}
+                            style={styles.addDictInput} editable={!loading}
                             onChangeText={(value)=>setDictName(value.trim())}/>
                             <Text style={styles.addDictLabel}>{t('dictionaryDescription')}</Text>  
                             <TextInput placeholder={t('enterShortDescription')} 
-                            style={styles.addDictInput}
+                            style={styles.addDictInput} editable={!loading}
                             onChangeText={(value)=>setDictDesc(value.trim())}/>
                             <Text style={styles.addDictLabel}>{t('dictionaryLanguage')}</Text>
                             <View style={[alertStyle.buttonContainer,{marginBottom:25}]}>
-                                <TouchableOpacity onPress={()=>setDictLang("TR to ENG")} style={[styles.dictLangButton , dictLang=="ENG to TR" && {backgroundColor:'white'}]}>
+                                <TouchableOpacity onPress={()=>setDictLang("TR to ENG")} disabled={loading}
+                                style={[styles.dictLangButton , dictLang=="ENG to TR" && {backgroundColor:'white'}]}>
                                     <View style={{flexDirection:'row',gap:10,alignItems:'center'}}>
                                         <Text style={dictLang=="ENG to TR" ? {color:"#6b3fa0"}:{color:"white"}}>{t('tr')}</Text>
                                         <FontAwesome5 name="long-arrow-alt-right" size={24} color={dictLang=="ENG to TR" ? "#6b3fa0":"white"} />
@@ -45,7 +49,8 @@ export default function CreateDictionary({visible,setVisible}){
                                     </View>
                                 </TouchableOpacity>
 
-                                <TouchableOpacity onPress={()=>setDictLang("ENG to TR")} style={[styles.dictLangButton , dictLang=="TR to ENG" && {backgroundColor:'white'}]}>
+                                <TouchableOpacity onPress={()=>setDictLang("ENG to TR")} disabled={loading}
+                                style={[styles.dictLangButton , dictLang=="TR to ENG" && {backgroundColor:'white'}]}>
                                     <View style={{flexDirection:'row',gap:10,alignItems:'center'}}>
                                         <Text style={dictLang=="TR to ENG" ? {color:"#6b3fa0"}:{color:"white"}}>{t('eng')}</Text>
                                         <FontAwesome5 name="long-arrow-alt-right" size={24} color={dictLang=="TR to ENG" ? "#6b3fa0":"white"} />
@@ -55,11 +60,12 @@ export default function CreateDictionary({visible,setVisible}){
                             </View>
 
                             <View style={alertStyle.buttonContainer}>
-                                <TouchableOpacity style={alertStyle.cancel} onPress={()=>setVisible(false)}>
+                                <TouchableOpacity style={[alertStyle.cancel , loading && alertStyle.cancelDisabled]} onPress={()=>setVisible(false)} disabled={loading}>
                                     <Text style={{fontWeight:'700',color:'white'}}>{t('cancel')}</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={alertStyle.success} onPress={createButton}>
-                                    <Text style={{fontWeight:'700',color:'white'}}>{t('create')}</Text>
+                                <TouchableOpacity style={[alertStyle.success , loading && alertStyle.successDisabled]} onPress={createButton} disabled={loading}>
+                                    {loading ? (<ActivityIndicator size="small" color="#fff" />) :
+                                    (<Text style={{fontWeight:'700',color:'white'}}>{t('create')}</Text>)}
                                 </TouchableOpacity>
                             </View>
                         </View>

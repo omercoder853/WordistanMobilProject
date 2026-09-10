@@ -22,14 +22,15 @@ export default function DictDetails() {
     const [modalVisible, setModalVisible] = useState(false);
     const [wordInput, setWordInput] = useState("");
     const [meaningInput, setMeaningInput] = useState("");
+    const [pageLoading , setPageLoading] = useState(false);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+        if (!reload) return;
         let isMounted = true;
+        setPageLoading(true);
 
         const fetchWords = async () => {
-            if (!reload) return;
-
             try {
                 const fetchedWords = (await getWords(dictId)) || [];
                 if (isMounted) {
@@ -39,6 +40,7 @@ export default function DictDetails() {
                 console.error('Kelimeler çekilemedi:', error);
             } finally {
                 if (isMounted) {
+                    setPageLoading(false);
                     setReload(false);
                 }
             }
@@ -55,19 +57,19 @@ export default function DictDetails() {
         if (!wordInput.trim() || !meaningInput.trim() || loading) return;
         setLoading(true);
         try {
-            const status = await saveWord({
+            const ok = await saveWord({
                 dictionary_id: dictId,
                 word: wordInput.trim(),
-                meaning:meaningInput.trim()
+                meaning: meaningInput.trim()
             });
-            if (status) {
+            if (ok) {
                 setWordInput("");
                 setMeaningInput("");
                 setModalVisible(false);
                 setReload(true);
                 setDictReload(true);
             }
-            else{
+            else {
                 setWordInput("");
                 setMeaningInput("");
                 setModalVisible(false);
@@ -103,23 +105,24 @@ export default function DictDetails() {
                 <View style={{ borderWidth: 0.5, borderColor: 'rgba(255, 255, 255, 0.4)', marginVertical: 15 }}></View>
                 <Text style={styles.dictDescription}>{dict?.description}</Text>
             </LinearGradient>
-
-            <FlatList
+            {!pageLoading ?
+            (<FlatList
                 style={styles.wordList}
                 data={words}
                 renderItem={({ item, index }) => <Word word={item} index={index} setReload={setReload} />}
                 keyExtractor={item => item.id.toString()}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{ paddingBottom: 80 }}
-                ListEmptyComponent={(<EmptyDictionary />)}
-            />
+                ListEmptyComponent={(<EmptyDictionary />)}/>)  : 
+                (<View style={{flex:1 , alignItems:'center',marginTop:150}}>
+                    <ActivityIndicator size="large" style={{alignSelf:"center",transform:[{scale: 2.5}] }} color={'#c967e6'} />
+                </View>)}
 
             {/* Floating Action Button */}
             <TouchableOpacity
                 style={localStyles.fab}
                 onPress={() => setModalVisible(true)}
-                activeOpacity={0.8}
-            >
+                activeOpacity={0.8}>
                 <MaterialCommunityIcons name="plus" size={30} color="#FFFFFF" />
             </TouchableOpacity>
 
@@ -129,8 +132,8 @@ export default function DictDetails() {
                 statusBarTranslucent={true}
                 animationType="fade"
                 transparent
-                onRequestClose={handleCloseModal}
-            >
+                onRequestClose={handleCloseModal}>
+
                 <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
                     <View style={alertStyles.overlay}>
                         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>

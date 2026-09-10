@@ -2,13 +2,23 @@ import { View,Text,TouchableOpacity } from "react-native";
 import {Ionicons,Entypo} from '@expo/vector-icons';
 import styles from "../profileStyle/styles";
 import { useNavigation } from "@react-navigation/native";
+import { useFeedback } from "../../contextapis/FeedbackContext";
+import { useTranslation } from "react-i18next";
+import { useAuth } from "../../contextapis/AuthContext";
 
 
-export default function ConsoleButton({item,setAlertVisible}){
+export default function ConsoleButton({item}){
     const navigation = useNavigation();
+    const {t} = useTranslation();
+    const {logout} = useAuth();
+    const { setAlertTitle, setAlertMessage, addAlertButton, setAlertVisible, hideAlert } = useFeedback();
 
     function handleLogout() {
-        setAlertVisible(true)
+        setAlertTitle(t('warning'));
+        setAlertMessage(t('logoutWarning'));
+        addAlertButton({ text: t('cancel'), style: "cancel", action: () => hideAlert() });
+        addAlertButton({ text: t('exit'), style: "danger", action: logout });
+        setAlertVisible(true);
     }
 
     return(
