@@ -1,0 +1,46 @@
+import { View, Text, TouchableOpacity, Vibration } from "react-native";
+import styles from "../styles/MultipleChoiceStyles";
+import { useGame } from "@/contextapis/GamesContext";
+import { useState, useEffect } from "react";
+import { storage } from "@/storage/storage";
+import { STORAGE_KEYS } from "@/constants/StorageKeys";
+
+export default function QuizOption({ option, correctIndex, index, currentQuestion }) {
+    const { userAnswers, setUserAnswers } = useGame();
+    const [isVibrate, setVibrate] = useState(true)
+    useEffect(() => {
+        const loadVibration = async () => {
+            const val = await storage.get(STORAGE_KEYS.PREFERENCES.VIBRATION_PREF);
+            setVibrate(val !== null ? val : true);
+        };
+        loadVibration();
+    }, []);
+    const isAnswered = userAnswers?.find(answer => answer.question == currentQuestion)
+    const isCorrect = isAnswered?.userAnswer === isAnswered?.correctAnswer
+    const isSelected = isAnswered?.userAnswer === index
+
+    const clickOption = () => {
+        isVibrate && Vibration.vibrate(80)
+        setUserAnswers((prev) => {
+            return [...prev, { "question": currentQuestion, "userAnswer": index, "correctAnswer": correctIndex }]
+        })
+    }
+
+    const getDynamicStyle = () => {
+        if (isAnswered) {
+            if (isCorrect) {
+                return { borderColor: "green", backgroundColor: "#92B4A7" }
+            }
+            else { return { borderColor: "red", backgroundColor: "#C49292" } }
+        }
+        return
+    }
+
+    return (
+        <TouchableOpacity
+            style={[styles.quizOption, isSelected ? getDynamicStyle() : isAnswered && index === isAnswered.correctAnswer && { borderColor: "green", backgroundColor: "#92B4A7" }]}
+            onPress={clickOption} disabled={isAnswered ? true : false}>
+            <Text style={{ fontSize: 16, color: 'white', marginLeft: 25, fontWeight: '900' }}>{option}</Text>
+        </TouchableOpacity>
+    )
+}

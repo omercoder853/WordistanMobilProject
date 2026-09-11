@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "jsx": "react-native",
+    "moduleResolution": "bundler",
+    "target": "es2020"
+  },
+  "include": [
+    "src/**/*",
+    "assets/**/*",
+    "**/*.json",
+    "**/*.png",
+    "**/*.jpg"
+  ],
+  "exclude": ["node_modules"]
+}

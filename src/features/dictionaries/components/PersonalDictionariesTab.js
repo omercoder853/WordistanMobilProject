@@ -1,0 +1,40 @@
+import { View, Text, FlatList, TouchableOpacity, ActivityIndicator } from "react-native"
+import Dictionary from "./DictionaryCard"
+import styles from "../styles/DictionaryStyles"
+import { useDictionary } from "@/contextapis/DictContext";
+import { useEffect, useState } from "react";
+import NoDictionary from "./NoDictionariesState";
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import CreateDictionary from "./CreateDictionaryModal";
+import { useTranslation } from "react-i18next";
+import LottieView from "lottie-react-native";
+
+export default function Personal() {
+    const { t } = useTranslation();
+    const [visible, setVisible] = useState(false);
+
+    const { setDictReload, dicts, dictReload } = useDictionary()
+    useEffect(() => {
+        setDictReload(true)
+    }, [])
+
+
+    return (
+        <View style={{ flex: 1, paddingHorizontal: 15 }}>
+            <Text style={{ fontWeight: '700', fontSize: 20, marginVertical: 10 }}>{t('personalDictionaries')}</Text>
+            {dictReload
+                ? <LottieView speed={3} autoPlay loop source={require("../assets/anim_dictionary_loading.json")} style={{ width: '50%', aspectRatio: 1, alignSelf: 'center', top: '15%' }} />
+                : <FlatList
+                    style={{ flex: 1 }}
+                    showsVerticalScrollIndicator={false}
+                    data={dicts}
+                    renderItem={({ item }) => (<Dictionary title={item.name} length={JSON.stringify(item.words[0]["count"])} id={item.id} language={item.language} />)}
+                    keyExtractor={item => item.id}
+                    ListEmptyComponent={(<NoDictionary />)} refreshing={dictReload} onRefresh={() => setDictReload(true)} />}
+            <TouchableOpacity style={styles.addDictButton} onPress={() => setVisible(true)}>
+                <MaterialCommunityIcons style={{ fontWeight: '900' }} name="book-plus-outline" size={24} color="white" />
+            </TouchableOpacity>
+            <CreateDictionary visible={visible} setVisible={setVisible} />
+        </View>
+    )
+}
