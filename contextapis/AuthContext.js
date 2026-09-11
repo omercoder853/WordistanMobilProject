@@ -2,7 +2,6 @@ import { createContext, useContext, useState, useEffect } from "react";
 import i18n from '../src/i18n/i18n';
 import { ENDPOINTS } from "../src/constants/ApiConfig";
 import { jwtDecode } from "jwt-decode";
-import { supabase } from "../services/supabase";
 import { getNewToken } from "../src/services/AuthService";
 import { storage } from "../src/storage/storage";
 import { STORAGE_KEYS } from "../src/constants/StorageKeys";
@@ -97,7 +96,6 @@ export const AuthProvider = ({ children }) => {
 
     async function logout() {
         console.log("Hafızada tutulan veriler siliniyor...")
-        await supabase.auth.signOut();
         const res = await storage.clearSession();
         if (res) {
             setAccToken(null);

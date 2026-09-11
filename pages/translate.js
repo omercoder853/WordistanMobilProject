@@ -5,7 +5,6 @@ import ConvertButton from "../translateLayout/translateComponents/convertButton"
 import RecentWords from "../homePageLayout/HomePageComponents/lastWords";
 import ResultArea from "../translateLayout/translateComponents/translateResult";
 import styles from "../translateLayout/translateStyles/transStyles";
-import AddDictPage from "../translateLayout/translateComponents/addToDict";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 const Translate = ({ recentWords, addWord }) => {
@@ -15,7 +14,7 @@ const Translate = ({ recentWords, addWord }) => {
     const [from,setFrom] = useState("TR")
     const [result,setResult] = useState("");
     const [suggestionDisplay,setSuggestionDisplay] = useState("none")
-    const [visible,setVisible] = useState(false)
+
     return (
         <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
             <TouchableWithoutFeedback style={{flex:1}} onPress={()=>setSuggestionDisplay("none")}>
@@ -38,9 +37,8 @@ const Translate = ({ recentWords, addWord }) => {
                             setSuggestionDisplay={setSuggestionDisplay}
                             from={from} />
                     </View>
-                    <ResultArea display={display} result={result} setVisible={setVisible} />
+                    <ResultArea display={display} result={result} from={from} input={input}/>
                     <RecentWords recentWords={recentWords}/>
-                    <AddDictPage visible={visible} input={input} result={result} setVisible={setVisible} from={from}/>
                 </View>
             </TouchableWithoutFeedback>
         </ScrollView>

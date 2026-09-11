@@ -55,6 +55,7 @@ export const DictionaryProvider = ({ children }) => {
         const { ok, status, data } = await apiClient.get(ENDPOINTS.dictionaries);
         if (ok) {
             setDicts(data);
+            setDictReload(false);
             return true;
         }
         else {

@@ -68,7 +68,9 @@ export const UserStatsProvider = ({ children }) => {
             await clearPendingData();
         }
         else {
-            console.log("Error while fetching user stats!", status, data)
+            const savedUserStats = storage.get(STORAGE_KEYS.SESSION.USER_STATS);
+            if (savedUserStats) setUserStats(savedUserStats);
+            console.log("Error while fetching user stats!", status, data);
         }
     }, [clearPendingData]);
 

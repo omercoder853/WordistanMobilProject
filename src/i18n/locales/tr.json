@@ -172,6 +172,7 @@
   "fileSharingNotSupported" : "Dosya paylaşımı bu cihazda desteklenmiyor.",
   "fileShareFailed":"Dosya paylaşılırken bir hata oluştur.",
   "noWordsOrLoadFailed":"Sözlük boş ya da kelimeler yüklenemedi.",
+  "resultNotFound":"Sonuç bulunamadı.",
 
   "___GAMES___": "",
   "gameSettings": "Oyun Ayarları",

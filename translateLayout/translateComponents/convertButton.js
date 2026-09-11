@@ -1,4 +1,4 @@
-import { View, TouchableOpacity, Text } from "react-native";
+import { TouchableOpacity, Text } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import styles from "../translateStyles/transStyles";
 import wordData from '../../assets/data/words.json'
@@ -18,7 +18,7 @@ export default function ConvertButton({ setDisplay, input, addWord,setResult,set
         addWord(input, foundResult, from);
       }
       else{
-        setResult("Result not Found")
+        setResult(t('resultNotFound'));
       }
     }
   };

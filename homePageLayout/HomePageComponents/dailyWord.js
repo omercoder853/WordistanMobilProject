@@ -1,19 +1,17 @@
-import { View, Text, TouchableOpacity, Modal, ScrollView, ActivityIndicator, StyleSheet, Dimensions } from 'react-native'
-import { Feather, Entypo, MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import { Feather, Entypo } from '@expo/vector-icons';
 import { useState } from "react";
 import { useTranslation } from 'react-i18next';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useDictionary } from '../../contextapis/DictContext';
-import modalStyles from '../HomePageStyles/modalStyles';
 import useSpeech from '../../hooks/useSpeech';
+import SaveWordModal from '../../dictionariesLayout/DictionariesComponents/SaveWordModal';
 
 const DailyWord = () => {
     const { speak, stop, isSpeaking } = useSpeech();
     const { t, i18n } = useTranslation();
     const [modalVisible, setModalVisible] = useState(false)
-    const { saveWord, dailyWord, dicts, setDictReload, deleteWord } = useDictionary();
-    const [selectedDictId, setSelectedDictId] = useState(null)
-    const [loading, setLoading] = useState(false)
+    const { dailyWord, setDictReload, deleteWord,dicts } = useDictionary();
     const lang = i18n.language
 
     const heartToggle = async () => {
@@ -22,32 +20,7 @@ const DailyWord = () => {
         }
         else {
             setDictReload(true);
-            setSelectedDictId(null);
             setModalVisible(true);
-        }
-    }
-
-    const handleSave = async () => {
-        if (!selectedDictId || loading) return
-        setLoading(true)
-        try {
-            const result = await saveWord(
-                { dictionary_id: selectedDictId, word: dailyWord.word, meaning: dailyWord.meaning },
-                true
-            )
-
-        } catch (e) {
-            console.log("Error saving daily word:", e);
-        } finally {
-            setLoading(false)
-            setModalVisible(false)
-        }
-    }
-
-    const handleCloseModal = () => {
-        if (!loading) {
-            setModalVisible(false)
-            setSelectedDictId(null)
         }
     }
 
@@ -65,6 +38,10 @@ const DailyWord = () => {
         (lang === 'en' && dict.language === 'TR to ENG')
     );
 
+    const word = lang === 'tr' ? dailyWord?.word : dailyWord?.meaning;
+    const meaning = lang === 'tr' ? dailyWord?.meaning : dailyWord?.word;
+
+
     return (
         <>
             <LinearGradient colors={['#FF928A', '#DA87D6', '#C382FE']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.dailyWordContainer}>
@@ -81,144 +58,15 @@ const DailyWord = () => {
                     </View>
                 </View>
                 <Text style={[styles.dailyWordLabel, { color: 'rgba(255,255,255,0.8)' }]}>{t('word')}</Text>
-                <Text style={[styles.dailyWordContent, { color: 'white', fontSize: 28, marginTop: 5 }]}>{lang == 'tr' ? dailyWord?.word : dailyWord?.meaning}</Text>
+                <Text style={[styles.dailyWordContent, { color: 'white', fontSize: 28, marginTop: 5 }]}>{word}</Text>
                 <Text style={[styles.dailyWordLabel, { color: 'rgba(255,255,255,0.8)' }]}>{t('meaning')}</Text>
-                <Text style={[styles.dailyWordContent, { color: 'white', fontSize: 18 }]}>{lang == 'tr' ? dailyWord?.meaning : dailyWord?.word}</Text>
+                <Text style={[styles.dailyWordContent, { color: 'white', fontSize: 18 }]}>{meaning}</Text>
                 <Text style={[styles.dailyWordLabel, { color: 'rgba(255,255,255,0.8)' }]}>{t('inSentence')}</Text>
                 <Text style={[styles.dailyWordContent, { color: 'white' }]}>{lang == 'tr' ? dailyWord?.example_en : dailyWord?.example_tr}</Text>
             </LinearGradient>
 
             {/* Sözlük Seçim Modalı */}
-            <Modal
-                visible={modalVisible}
-                transparent={true}
-                animationType="fade"
-                statusBarTranslucent={true}
-                onRequestClose={handleCloseModal}
-            >
-                <TouchableOpacity
-                    style={modalStyles.overlay}
-                    activeOpacity={1}
-                    onPress={handleCloseModal}
-                >
-                    <TouchableOpacity activeOpacity={1} style={modalStyles.container}>
-                        {/* Header */}
-                        <View style={modalStyles.header}>
-                            <View style={modalStyles.headerLeft}>
-                                <View style={modalStyles.iconCircle}>
-                                    <MaterialCommunityIcons name="book-plus-outline" size={22} color="#8E4A7C" />
-                                </View>
-                                <Text style={modalStyles.title}>{t('saveToDict')}</Text>
-                            </View>
-                            <TouchableOpacity onPress={handleCloseModal} style={modalStyles.closeIcon}>
-                                <Ionicons name="close" size={22} color="#9CA3AF" />
-                            </TouchableOpacity>
-                        </View>
-
-                        {/* Divider */}
-                        <View style={modalStyles.divider} />
-
-                        {/* Kelime Kartı */}
-                        <View style={modalStyles.wordCard}>
-                            <Text style={modalStyles.wordCardLabel}>{t('wordToSave')}</Text>
-                            <View style={modalStyles.wordCardRow}>
-                                <Text style={modalStyles.wordCardWord}>{lang == 'tr' ? dailyWord?.word : dailyWord?.meaning}</Text>
-                                <View style={modalStyles.wordCardDot} />
-                                <Text style={modalStyles.wordCardMeaning}>{lang == 'tr' ? dailyWord?.meaning : dailyWord?.word}</Text>
-                            </View>
-                        </View>
-
-                        {/* Sözlük Listesi */}
-                        <Text style={modalStyles.sectionLabel}>{t('selectADictionary')}</Text>
-
-                        {filteredDicts.length > 0 ? (
-                            <ScrollView
-                                style={modalStyles.dictList}
-                                showsVerticalScrollIndicator={false}
-                                bounces={false}>
-
-                                {filteredDicts.map((dict) => {
-                                    const isMatch = (lang === 'tr' && dict.language === "ENG to TR") ||
-                                        (lang === 'en' && dict.language === "TR to ENG");
-                                    if (isMatch) {
-                                        const isSelected = selectedDictId === dict.id
-                                        return (
-                                            <TouchableOpacity
-                                                key={dict.id}
-                                                style={[
-                                                    modalStyles.dictItem,
-                                                    isSelected && modalStyles.dictItemSelected
-                                                ]}
-                                                onPress={() => setSelectedDictId(dict.id)}
-                                                activeOpacity={0.7}
-                                            >
-                                                <View style={modalStyles.dictItemLeft}>
-                                                    <View style={[
-                                                        modalStyles.dictItemIcon,
-                                                        isSelected && modalStyles.dictItemIconSelected
-                                                    ]}>
-                                                        <MaterialCommunityIcons
-                                                            name="book-outline"
-                                                            size={18}
-                                                            color={isSelected ? '#fff' : '#8E4A7C'}
-                                                        />
-                                                    </View>
-                                                    <View style={modalStyles.dictItemInfo}>
-                                                        <Text style={[
-                                                            modalStyles.dictItemName,
-                                                            isSelected && modalStyles.dictItemNameSelected
-                                                        ]}>{dict.name}</Text>
-                                                        <Text style={modalStyles.dictItemLang}>
-                                                            {dict.language?.toUpperCase()} • {dict.words?.length || 0} {t('words')}
-                                                        </Text>
-                                                    </View>
-                                                </View>
-                                                <View style={[
-                                                    modalStyles.radioOuter,
-                                                    isSelected && modalStyles.radioOuterSelected
-                                                ]}>
-                                                    {isSelected && <View style={modalStyles.radioInner} />}
-                                                </View>
-                                            </TouchableOpacity>
-                                        )
-                                    }
-
-                                })}
-                            </ScrollView>
-                        ) : (
-                            <View style={modalStyles.emptyState}>
-                                <MaterialCommunityIcons name="book-off-outline" size={40} color="#D1D5DB" />
-                                <Text style={modalStyles.emptyTitle}>{t('noDictYet')}</Text>
-                                <Text style={modalStyles.emptyDesc}>{t('createDictFirst')}</Text>
-                            </View>
-                        )}
-
-                        {/* Action Buttons */}
-                        <View style={modalStyles.buttonRow}>
-                            <TouchableOpacity
-                                style={modalStyles.cancelButton}
-                                onPress={handleCloseModal}
-                                disabled={loading}
-                            >
-                                <Text style={modalStyles.cancelButtonText}>{t('cancel')}</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={[
-                                    modalStyles.saveButton,
-                                    (!selectedDictId || loading) && modalStyles.saveButtonDisabled
-                                ]}
-                                onPress={handleSave}
-                                disabled={!selectedDictId || loading}
-                            >
-                                {loading
-                                    ? <ActivityIndicator color="white" size="small" />
-                                    : <Text style={modalStyles.saveButtonText}>{t('save')}</Text>
-                                }
-                            </TouchableOpacity>
-                        </View>
-                    </TouchableOpacity>
-                </TouchableOpacity>
-            </Modal>
+            <SaveWordModal modalVisible={modalVisible} setModalVisible={setModalVisible} filteredDicts={filteredDicts} word={word} meaning={meaning} isDaily={true} />
         </>
     )
 }

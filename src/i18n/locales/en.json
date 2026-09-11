@@ -176,6 +176,7 @@
   "fileSharingNotSupported":"File sharing is not supported on this device.",
   "fileShareFailed":"An error occurred while sharing the file.",
   "noWordsOrLoadFailed":"No words found or failed to load.",
+  "resultNotFound":"Result not found",
 
   "___GAMES___": "",
   "gameSettings": "Game Settings",
