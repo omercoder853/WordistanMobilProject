@@ -1,14 +1,27 @@
-import { createStackNavigator } from "@react-navigation/stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "../auth/screens/LoginScreen";
 import RegisterScreen from "../auth/screens/RegisterScreen";
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
-export default function AuthStackNavigator(){
+export default function AuthStackNavigator() {
     return (
-        <Stack.Navigator screenOptions={{headerShown:false}} initialRouteName="Login">
-            <Stack.Screen component={LoginScreen} name="Login"/>
-            <Stack.Screen component={RegisterScreen} name="Register"/>
+        <Stack.Navigator
+            screenOptions={{ headerShown: false }}
+            initialRouteName="Login"
+        >
+            {/* Login başlangıç noktası, animasyon yok */}
+            <Stack.Screen
+                component={LoginScreen}
+                name="Login"
+                options={{ animation: "none" }}
+            />
+            {/* Register: sağdan gelir — ilerleme hissi */}
+            <Stack.Screen
+                component={RegisterScreen}
+                name="Register"
+                options={{ animation: "slide_from_right" }}
+            />
         </Stack.Navigator>
     )
 }
