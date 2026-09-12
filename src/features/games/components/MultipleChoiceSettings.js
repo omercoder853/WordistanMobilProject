@@ -1,12 +1,11 @@
+import React, { memo } from "react";
 import { View, Text } from "react-native";
 import styles from "../styles/styles";
 import NumericInput from "./NumericInput";
-import { useGame } from "@/contextapis/GamesContext";
 import { useTranslation } from "react-i18next";
 
-export default function McqSettings() {
+function McqSettings({ numberOptions, setnumberOptions }) {
     const { t } = useTranslation();
-    const { numberOptions, setnumberOptions } = useGame();
     return (
         <View>
             <Text style={styles.setupOptionLabel}>{t('numberOfOptions')}</Text>
@@ -14,3 +13,5 @@ export default function McqSettings() {
         </View>
     );
 }
+
+export default memo(McqSettings);

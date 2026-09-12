@@ -1,12 +1,11 @@
+import React, { memo } from "react";
 import { View, Text } from "react-native";
 import styles from "../styles/styles";
 import NumericInput from "./NumericInput";
-import { useGame } from "@/contextapis/GamesContext";
 import { useTranslation } from "react-i18next";
 
-export default function MpSettings() {
+function MpSettings({ perPage, setPerPage }) {
     const { t } = useTranslation();
-    const { perPage, setPerPage } = useGame();
     return (
         <View>
             <Text style={styles.setupOptionLabel}>{t('questionsPerPage')}</Text>
@@ -14,3 +13,5 @@ export default function MpSettings() {
         </View>
     );
 }
+
+export default memo(MpSettings);

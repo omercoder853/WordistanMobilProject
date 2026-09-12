@@ -1,53 +1,80 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-    mainContainer:{
-        flex:1,
-        backgroundColor:'#2D2438',
-        alignItems:'center',
-        paddingHorizontal:20
+    mainContainer: {
+        flex: 1,
+        backgroundColor: '#F5F3FF',
+        paddingHorizontal: 20,
     },
-    lettersArea:{
-        flexDirection:'row',
-        gap:10,
-        justifyContent:'center',
-        alignItems:'center',
-        flexWrap:'wrap'
+    questionArea: {
+        backgroundColor: '#FFFFFF',
+        width: '100%',
+        paddingVertical: 36,
+        paddingHorizontal: 20,
+        marginTop: 16,
+        marginBottom: 32,
+        borderRadius: 24,
+        borderWidth: 1.5,
+        borderColor: '#E9E3FF',
+        shadowColor: '#5B3FD3',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.08,
+        shadowRadius: 12,
+        elevation: 4,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
-    letterInputContainer:{
-        aspectRatio:1,
-        width:45,
-        justifyContent:'center',
-        alignItems:'center',
+    question: {
+        color: '#1F2937',
+        fontSize: 24,
+        fontWeight: '800',
+        textAlign: 'center',
+        letterSpacing: 0.5,
     },
-    letterInput:{
-        flex:1,
-        width:'100%',
-        textAlign:'center',
-        fontSize:19,
-        textAlignVertical:'center',
-        fontWeight:'900',
-        backgroundColor:'white',
-        borderRadius:6,
-        borderColor:"#5A4E6B",
-        borderWidth:1
+    lettersArea: {
+        flexDirection: 'row',
+        gap: 8,
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        paddingHorizontal: 4,
+        marginBottom: 20,
     },
-    questionArea:{
-        backgroundColor:'#382E45',
-        width:'100%',
-        paddingVertical:40,
-        marginTop:30,
-        marginBottom:40,
-        borderRadius:15,
-        borderWidth:1,
-        borderColor:'#5A4E6B'
+    letterInputContainer: {
+        aspectRatio: 1,
+        width: 48,
+        minHeight: 48,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
-    question:{
-        color:"white",
-        fontSize:25,
-        fontWeight:'900',
-        textAlign:'center'
-    }
-})
+    letterInput: {
+        flex: 1,
+        width: '100%',
+        textAlign: 'center',
+        fontSize: 22,
+        textAlignVertical: 'center',
+        fontWeight: '800',
+        backgroundColor: '#FFFFFF',
+        borderRadius: 14,
+        borderColor: '#DDD6FE',
+        borderWidth: 2,
+        color: '#1F2937',
+        shadowColor: '#5B3FD3',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.06,
+        shadowRadius: 4,
+        elevation: 2,
+    },
+    letterInputCorrect: {
+        backgroundColor: '#DCFCE7',
+        borderColor: '#22C55E',
+        color: '#15803D',
+    },
+    letterInputWrong: {
+        backgroundColor: '#FEE2E2',
+        borderColor: '#EF4444',
+        color: '#B91C1C',
+    },
+});
 
-export default styles
+export default styles;

@@ -21,10 +21,18 @@ export default function GameSetupPage() {
     const { t } = useTranslation();
     const navigation = useNavigation();
     const { dicts, setDictReload, getWords } = useDictionary();
-    const { source, setSource, value, setValue, numberQuestion, setNumberQuestion, seconds, setSeconds,
-        hints, setHints, createQuestion, setGameType, autoCont, setAutoCont } = useGame();
+    const { gameSettings, setGameSettings, resetGame, createQuestion } = useGame();
     const router = useRoute();
     const { gameType } = router.params || {};
+
+    const [source, setSource] = useState(null);
+    const [value, setValue] = useState(null);
+    const [numberQuestion, setNumberQuestion] = useState(gameSettings?.numberQuestion || 5);
+    const [seconds, setSeconds] = useState(gameSettings?.seconds || 5);
+    const [visibleFirstLetter, setVisibleFirstLetter] = useState(gameSettings?.visibleFirstLetter || false);
+    const [numberOptions, setNumberOptions] = useState(gameSettings?.numberOptions || 4);
+    const [perPage, setPerPage] = useState(gameSettings?.perPage || 4);
+    const [autoCont, setAutoCont] = useState(gameSettings?.autoCont || false);
 
     const [modalVisible, setModalVisible] = useState(false);
     const [items, setItems] = useState([]);
@@ -35,9 +43,12 @@ export default function GameSetupPage() {
     }, [t, navigation]);
 
     useEffect(() => {
+        resetGame();
         const loadSaved = async () => {
             const savedAutoCont = await storage.get(STORAGE_KEYS.PREFERENCES.AUTO_CONT);
-            setAutoCont(savedAutoCont !== null ? savedAutoCont : false);
+            if (savedAutoCont !== null) {
+                setAutoCont(savedAutoCont);
+            }
         };
         loadSaved();
     }, []);
@@ -46,10 +57,12 @@ export default function GameSetupPage() {
         if (dicts.length === 0) {
             setDictReload(true);
         }
-        if (gameType) {
-            setGameType(gameType);
-        }
-    }, [gameType]);
+    }, [dicts]);
+
+    const handleToggleAutoCont = async (val) => {
+        setAutoCont(val);
+        await storage.set(STORAGE_KEYS.PREFERENCES.AUTO_CONT, val);
+    };
 
     // Handle source selection (personal vs collection)
     const handleSelectSource = (selectedSource) => {
@@ -116,7 +129,21 @@ export default function GameSetupPage() {
 
     const validGame = Boolean(source && value);
 
-    const startGame = () => {
+    const startGame = async () => {
+        const finalSettings = {
+            gameType,
+            source,
+            value,
+            numberQuestion,
+            seconds,
+            visibleFirstLetter,
+            numberOptions,
+            perPage,
+            autoCont,
+        };
+        setGameSettings(finalSettings);
+        await createQuestion(finalSettings);
+
         switch (gameType) {
             case "wc":
                 navigation.replace("Word Completion");
@@ -130,7 +157,6 @@ export default function GameSetupPage() {
             default:
                 break;
         }
-        createQuestion();
     };
 
     return (
@@ -210,15 +236,6 @@ export default function GameSetupPage() {
                             quantity={t('qQuestions') || "soru"}
                         />
 
-                        <Text style={styles.setupOptionLabel}>{t('numberOfHints') || "İpucu Sayısı"}</Text>
-                        <NumericInput
-                            value={hints}
-                            setValue={setHints}
-                            minValue={0}
-                            maxValue={5}
-                            quantity={t('qHints') || "ipucu"}
-                        />
-
                         <Text style={styles.setupOptionLabel}>{t('secondsPerQuestion') || "Soru Başı Saniye"}</Text>
                         <NumericInput
                             value={seconds}
@@ -231,9 +248,24 @@ export default function GameSetupPage() {
 
                     {/* Game-Specific Settings Card */}
                     <View style={styles.setupCard}>
-                        {gameType === "wc" && <WcSettings />}
-                        {gameType === "mcq" && <McqSettings />}
-                        {gameType === "mp" && <MpSettings />}
+                        {gameType === "wc" && (
+                            <WcSettings
+                                visibleFirstLetter={visibleFirstLetter}
+                                setVisibleFirstLetter={setVisibleFirstLetter}
+                            />
+                        )}
+                        {gameType === "mcq" && (
+                            <McqSettings
+                                numberOptions={numberOptions}
+                                setnumberOptions={setNumberOptions}
+                            />
+                        )}
+                        {gameType === "mp" && (
+                            <MpSettings
+                                perPage={perPage}
+                                setPerPage={setPerPage}
+                            />
+                        )}
 
                         <View style={pageStyles.switchRow}>
                             <View style={{ flex: 1 }}>
@@ -244,7 +276,7 @@ export default function GameSetupPage() {
                                 trackColor={{ false: "#E2E8F0", true: "#5B3FD3" }}
                                 thumbColor="#FFFFFF"
                                 value={autoCont}
-                                onValueChange={setAutoCont}
+                                onValueChange={handleToggleAutoCont}
                             />
                         </View>
                     </View>

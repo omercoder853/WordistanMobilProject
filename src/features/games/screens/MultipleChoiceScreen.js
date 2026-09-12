@@ -1,13 +1,13 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styles from "../styles/MultipleChoiceStyles";
 import QuizOption from "../components/MultipleChoiceOptions";
 import QuestionNavigation from "../components/QuestionNavigation";
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useGame } from "@/contextapis/GamesContext";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import GameHeader from "../components/GameHeader";
+import PauseModal from "../components/PauseModal";
 import { useTranslation } from "react-i18next";
 import { useFeedback } from "@/contextapis/FeedbackContext";
 import useTimer from "@/hooks/useTimer";
@@ -15,24 +15,58 @@ import useTimer from "@/hooks/useTimer";
 export default function MultipleChoiceGamePage() {
     const { t } = useTranslation();
     const navigation = useNavigation();
-    const { hints, questions, seconds, numberQuestion } = useGame();
-    const [currentQuestion, setCurrentQuestion] = useState(0)
+    const { questions, seconds, numberQuestion } = useGame();
+    const [currentQuestion, setCurrentQuestion] = useState(0);
+    const [isPaused, setIsPaused] = useState(false);
     const { timer, timeLeft } = useTimer(() => navigation.replace("Finish Game", { remainTime: 0 }));
     const { setAlertTitle, setAlertMessage, addAlertButton, setAlertVisible, hideAlert } = useFeedback();
 
-    const options = questions[currentQuestion].options
-    const correctOption = questions[currentQuestion].correctAnswerIndex
+    const currentItem = questions[currentQuestion] || {};
+    const options = currentItem.options || [];
+    const correctOption = currentItem.correctAnswerIndex;
+
+    const handlePause = () => {
+        timer.pause();
+        setIsPaused(true);
+    };
+
+    const handleResume = () => {
+        setIsPaused(false);
+        timer.start();
+    };
+
+    const handleExitRequest = () => {
+        setIsPaused(false);
+        timer.pause();
+        setAlertTitle(t('warning') || "Uyarı");
+        setAlertMessage(t('exitGameWarning') || "Oyundan gerçekten çıkmak istiyor musunuz? İlerlemeniz kaydedilmeyecek.");
+        addAlertButton({
+            text: t('cancel') || "İptal",
+            style: "cancel",
+            action: () => {
+                hideAlert();
+                timer.start();
+            }
+        });
+        addAlertButton({
+            text: t('exit') || "Çık",
+            style: "danger",
+            action: () => {
+                hideAlert();
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: "MainTabs", params: { screen: "Games" } }]
+                });
+            }
+        });
+        setAlertVisible(true);
+    };
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('beforeRemove', (e) => {
             if (timeLeft > 0 && e.data.action.type === "GO_BACK") {
                 e.preventDefault();
-                timer.pause();
-                setAlertTitle(t('warning'));
-                setAlertMessage(t('exitGameWarning'));
-                addAlertButton({ text: t('cancel'), style: "cancel", action: () => { hideAlert(), timer.start() } });
-                addAlertButton({ text: t('exit'), style: "danger", action: () => { hideAlert(), navigation.replace("MainTabs", { screen: "Games" }) } });
-                setAlertVisible(true);
+                handleExitRequest();
             }
         });
         return unsubscribe;
@@ -43,24 +77,42 @@ export default function MultipleChoiceGamePage() {
     useEffect(() => {
         timer.set(seconds * numberQuestion);
         timer.start();
-    }, [])
-
+    }, []);
 
     return (
         <SafeAreaView style={styles.mainContainer}>
-            <GameHeader hints={hints} remainTime={timeLeft} />
-            <View style={styles.questionArea}>
-                <Text style={{ fontSize: 35, color: 'white', fontWeight: '900' }}>{questions[currentQuestion].question}</Text>
+            <GameHeader onPause={handlePause} remainTime={timeLeft} />
+
+            <View style={styles.questionCard}>
+                <Text style={styles.questionPrompt}>{t('makeChoice') || "Bir seçim yapınız"}</Text>
+                <Text style={styles.questionText}>{currentItem.question}</Text>
             </View>
-            <TouchableOpacity style={[styles.gameStatItem, { marginLeft: 'auto', marginBottom: 10 }]}>
-                <MaterialIcons name="lightbulb-outline" size={24} color="yellow" />
-            </TouchableOpacity>
+
             <View style={styles.optionArea}>
-                {options.map((option, index) => <QuizOption option={option} key={index}
-                    index={index} correctIndex={correctOption} currentQuestion={currentQuestion} />)}
+                {options.map((option, index) => (
+                    <QuizOption
+                        option={option}
+                        key={index}
+                        index={index}
+                        correctIndex={correctOption}
+                        currentQuestion={currentQuestion}
+                    />
+                ))}
             </View>
-            <QuestionNavigation currentQuestion={currentQuestion}
-                setCurrentQuestion={setCurrentQuestion} timer={timer} remainTime={timeLeft} />
+
+            <QuestionNavigation
+                currentQuestion={currentQuestion}
+                setCurrentQuestion={setCurrentQuestion}
+                timer={timer}
+                remainTime={timeLeft}
+                onPause={handlePause}
+            />
+
+            <PauseModal
+                visible={isPaused}
+                onResume={handleResume}
+                onExit={handleExitRequest}
+            />
         </SafeAreaView>
-    )
+    );
 }

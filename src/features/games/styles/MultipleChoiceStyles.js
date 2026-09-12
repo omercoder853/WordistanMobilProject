@@ -1,55 +1,49 @@
 import { StyleSheet } from "react-native";
 
 const mcqStyles = StyleSheet.create({
-    mainContainer:{
-        flex:1,
-        backgroundColor:'#2D2438',
-        alignItems:'center',
-        paddingHorizontal:20
+    mainContainer: {
+        flex: 1,
+        backgroundColor: '#F5F3FF',
+        paddingHorizontal: 20,
     },
-    optionArea:{
-        marginTop:'auto',
-        width:'100%',
-        alignSelf:'center'
+    questionCard: {
+        flex: 1,
+        width: '100%',
+        backgroundColor: '#FFFFFF',
+        borderRadius: 24,
+        borderWidth: 1.5,
+        borderColor: '#E9E3FF',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: 24,
+        paddingVertical: 20,
+        marginVertical: 14,
+        shadowColor: '#5B3FD3',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.08,
+        shadowRadius: 12,
+        elevation: 4,
     },
-    quizOption:{
-        paddingVertical:18,
-        backgroundColor:'#382E45',
-        width:'100%',
-        marginBottom:15,
-        borderRadius:10,
-        borderWidth:1,
-        borderColor:'#5A4E6B'
+    questionPrompt: {
+        fontSize: 12,
+        fontWeight: '700',
+        color: '#7C3AED',
+        textTransform: 'uppercase',
+        letterSpacing: 1,
+        marginBottom: 8,
     },
-    questionArea:{
-        flex:1,
-        justifyContent:'center',
-        alignItems:'center'
+    questionText: {
+        fontSize: 28,
+        color: '#1F2937',
+        fontWeight: '900',
+        textAlign: 'center',
+        letterSpacing: 0.5,
     },
-    gameResultRow:{
-        flexDirection:'row',
-        gap:10,
-        marginBottom:30
+    optionArea: {
+        width: '100%',
+        alignSelf: 'center',
+        marginBottom: 4,
     },
-    gameResulItem:{
-        borderWidth:1,
-        borderRadius:10,
-        flex:1,
-        flexBasis:0,
-        alignItems:'center',
-        paddingVertical:10
-    },
-    resultLabel:{
-        color:"white",
-        fontWeight:'900',
-    },
-    result:{
-        backgroundColor:'white',
-        marginTop:5,
-        width:"60%",
-        textAlign:'center',
-        borderRadius:5
-    }
-})
+});
 
-export default mcqStyles
+export default mcqStyles;

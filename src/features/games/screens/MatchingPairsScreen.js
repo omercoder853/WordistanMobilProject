@@ -1,10 +1,11 @@
+import React, { useState, useEffect } from "react";
 import { View, Text, Pressable, Vibration } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styles from "../styles/MatchingPairsStyles";
 import { useGame } from "@/contextapis/GamesContext";
-import { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import GameHeader from "../components/GameHeader";
+import PauseModal from "../components/PauseModal";
 import QuestionNavigation from "../components/QuestionNavigation";
 import { useTranslation } from "react-i18next";
 import { storage } from "@/storage/storage";
@@ -13,7 +14,7 @@ import useTimer from "@/hooks/useTimer";
 import { useFeedback } from "@/contextapis/FeedbackContext";
 
 export default function MatchingPairsPage() {
-    const [isVibrate, setVibrate] = useState(true)
+    const [isVibrate, setVibrate] = useState(true);
     useEffect(() => {
         const loadVibration = async () => {
             const val = await storage.get(STORAGE_KEYS.PREFERENCES.VIBRATION_PREF);
@@ -21,64 +22,98 @@ export default function MatchingPairsPage() {
         };
         loadVibration();
     }, []);
+
     const { t } = useTranslation();
     const navigation = useNavigation();
-    const { hints, questions, seconds, numberQuestion, perPage, randomIndexCreater,
-        userAnswers, setUserAnswers } = useGame();
-    const [currentQuestionPage, setCurrentQuestionPage] = useState(0)
-    const [currentQuestions, setCurrentQuestions] = useState([])
-    const [currentAnswers, setCurrentAnswers] = useState([])
-    const [questionCounter, setQuestionCounter] = useState(0)
-    const [selectedQuestion, setSelectedQuestion] = useState();
-    const [selectedAnswer, setSelectedAnswer] = useState([])
+    const { questions, seconds, numberQuestion, perPage, randomIndexCreater, userAnswers, setUserAnswers } = useGame();
+    const [currentQuestionPage, setCurrentQuestionPage] = useState(0);
+    const [currentQuestions, setCurrentQuestions] = useState([]);
+    const [currentAnswers, setCurrentAnswers] = useState([]);
+    const [selectedQuestion, setSelectedQuestion] = useState(null);
+    const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [totalTry, setTotalTry] = useState(0);
+    const [isPaused, setIsPaused] = useState(false);
+
     const { setAlertTitle, setAlertMessage, addAlertButton, setAlertVisible, hideAlert } = useFeedback();
     const { timer, timeLeft } = useTimer(() => navigation.replace("Finish Game", { remainTime: 0 }));
 
-
     useEffect(() => {
-        const isExist = currentQuestions.some((questionList) => questionList.id == currentQuestionPage)
+        const isExist = currentQuestions.some((questionList) => questionList.id === currentQuestionPage);
         if (!isExist) {
             let tempAnswers = [];
             let tempQuestions = [];
             let usedIndexes = new Set();
             for (let i = currentQuestionPage * perPage; i < (currentQuestionPage + 1) * perPage; i++) {
                 if (questions[i]) {
-                    tempQuestions.push(questions[i].question)
-                    tempAnswers.push(questions[i].answer)
-                    setQuestionCounter(questionCounter + 1)
+                    tempQuestions.push(questions[i].question);
+                    tempAnswers.push(questions[i].answer);
                 }
             }
-            setCurrentQuestions((prev) => {
-                return [...prev, { id: currentQuestionPage, questions: tempQuestions }]
-            })
-            let randomAnswers = []
-            let correctIndexes = []
+            setCurrentQuestions((prev) => [
+                ...prev,
+                { id: currentQuestionPage, questions: tempQuestions }
+            ]);
+
+            let randomAnswers = [];
+            let correctIndexes = [];
             for (let i = 0; i < tempAnswers.length; i++) {
                 let randomIndex;
                 do {
-                    randomIndex = randomIndexCreater({ target_words: tempAnswers, length: null })
+                    randomIndex = randomIndexCreater({ target_words: tempAnswers, length: null });
                 } while (usedIndexes.has(randomIndex));
-                randomAnswers[randomIndex] = tempAnswers[i]
-                correctIndexes.push(randomIndex)
-                usedIndexes.add(randomIndex)
+                randomAnswers[randomIndex] = tempAnswers[i];
+                correctIndexes.push(randomIndex);
+                usedIndexes.add(randomIndex);
             }
-            setCurrentAnswers((prev) => {
-                return [...prev, { id: currentQuestionPage, answers: randomAnswers, correctIndexes }]
-            })
+            setCurrentAnswers((prev) => [
+                ...prev,
+                { id: currentQuestionPage, answers: randomAnswers, correctIndexes }
+            ]);
         }
-    }, [currentQuestionPage])
+    }, [currentQuestionPage, questions, perPage]);
+
+    const handlePause = () => {
+        timer.pause();
+        setIsPaused(true);
+    };
+
+    const handleResume = () => {
+        setIsPaused(false);
+        timer.start();
+    };
+
+    const handleExitRequest = () => {
+        setIsPaused(false);
+        timer.pause();
+        setAlertTitle(t('warning') || "Uyarı");
+        setAlertMessage(t('exitGameWarning') || "Oyundan gerçekten çıkmak istiyor musunuz? İlerlemeniz kaydedilmeyecek.");
+        addAlertButton({
+            text: t('cancel') || "İptal",
+            style: "cancel",
+            action: () => {
+                hideAlert();
+                timer.start();
+            }
+        });
+        addAlertButton({
+            text: t('exit') || "Çık",
+            style: "danger",
+            action: () => {
+                hideAlert();
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: "MainTabs", params: { screen: "Games" } }]
+                });
+            }
+        });
+        setAlertVisible(true);
+    };
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('beforeRemove', (e) => {
             if (timeLeft > 0 && e.data.action.type === "GO_BACK") {
                 e.preventDefault();
-                timer.pause();
-                setAlertTitle(t('warning'));
-                setAlertMessage(t('exitGameWarning'));
-                addAlertButton({ text: t('cancel'), style: "cancel", action: () => { hideAlert(), timer.start() } });
-                addAlertButton({ text: t('exit'), style: "danger", action: () => { hideAlert(), navigation.replace("MainTabs", { screen: "Games" }) } });
-                setAlertVisible(true);
+                handleExitRequest();
             }
         });
         return unsubscribe;
@@ -91,120 +126,144 @@ export default function MatchingPairsPage() {
         timer.start();
     }, []);
 
-    const getDynamicQuestionStyle = (ind) => {
-        if (selectedQuestion !== null && selectedQuestion !== undefined) {
-            if (ind === selectedQuestion) {
-                return { backgroundColor: '#4A3B5D', borderColor: "#A38CB8" }
-            }
-            else {
-                return { backgroundColor: '#322B3D', borderColor: "#453D52" }
-            }
-        }
-    }
+    const isAnswered = (ind, key) => {
+        return userAnswers.some((ans) => ans.currentPage === currentQuestionPage && ans[key] === ind);
+    };
 
-    const getDynamicAnswerStyle = (ind) => {
-        if (selectedQuestion !== null && selectedQuestion !== undefined) {
-            if (selectedAnswer !== undefined && selectedAnswer != null) {
-                if (selectedAnswer === ind) {
-                    if (checkList[selectedQuestion] === ind) {
-                        return { backgroundColor: "green" }
-                    }
-                    else {
-                        return { backgroundColor: "red" }
-                    }
-                }
-                else {
-                    return {}
-                }
-            }
-            return { backgroundColor: '#2D2438', borderColor: '#5A4E6B' }
-        }
-    }
-
-    const dynamicDisabledMaker = (ind, trigger, key) => {
-        if (isAnswered(ind, key)) {
-            return true
-        }
-        if (trigger !== undefined && trigger !== null) {
-            if (trigger == ind) {
-                return false
-            }
-            return true
-        }
-        return false
-    }
+    const questionList = currentQuestions.find((q) => q.id === currentQuestionPage)?.questions;
+    const currentAnswerObj = currentAnswers.find((a) => a.id === currentQuestionPage);
+    const answerList = currentAnswerObj?.answers;
+    const checkList = currentAnswerObj?.correctIndexes;
 
     const selectQuestionHandler = (ind) => {
-        isVibrate && Vibration.vibrate(80)
-        setSelectedAnswer(null)
-        if (selectedQuestion !== undefined && selectedQuestion !== null) {
-            setSelectedQuestion(null)
+        if (isAnswered(ind, "question")) return;
+        if (isVibrate) Vibration.vibrate(80);
+        setSelectedAnswer(null);
+        if (selectedQuestion === ind) {
+            setSelectedQuestion(null);
+        } else {
+            setSelectedQuestion(ind);
         }
-        else {
-            setSelectedQuestion(ind)
-        }
-    }
+    };
 
     const selectAnswerHandler = async (ind) => {
-        if (selectedAnswer == null && selectedAnswer == undefined) {
-            setTotalTry((prev) => prev + 1)
-            setSelectedAnswer(ind)
-            if (checkList[selectedQuestion] === ind) {
-                setUserAnswers((prev) => {
-                    return [...prev, { currentPage: currentQuestionPage, question: selectedQuestion, answer: ind }]
-                })
-                const interval = setTimeout(() => {
-                    setSelectedQuestion(null)
-                    setSelectedAnswer(null)
-                }, 800)
-                isVibrate && Vibration.vibrate(80)
+        if (selectedQuestion === null || selectedQuestion === undefined) return;
+        if (isAnswered(ind, "answer")) return;
+        if (selectedAnswer !== null) return;
+
+        setTotalTry((prev) => prev + 1);
+        setSelectedAnswer(ind);
+
+        if (checkList && checkList[selectedQuestion] === ind) {
+            setUserAnswers((prev) => [
+                ...prev,
+                { currentPage: currentQuestionPage, question: selectedQuestion, answer: ind }
+            ]);
+            setTimeout(() => {
+                setSelectedQuestion(null);
+                setSelectedAnswer(null);
+            }, 800);
+            if (isVibrate) Vibration.vibrate(80);
+        } else {
+            if (isVibrate) {
+                Vibration.vibrate(50);
+                await new Promise(resolve => setTimeout(resolve, 120));
+                Vibration.vibrate(50);
             }
-            else {
-                if (isVibrate) {
-                    Vibration.vibrate(50)
-                    await new Promise(resolve => setTimeout(resolve, 120));
-                    Vibration.vibrate(50)
-                }
-                const interval = setTimeout(() => {
-                    setSelectedAnswer(null)
-                }, 800)
+            setTimeout(() => {
+                setSelectedAnswer(null);
+            }, 800);
+        }
+    };
+
+    const getQuestionStyle = (ind) => {
+        if (isAnswered(ind, "question")) {
+            return { card: styles.cardMatched, text: styles.textMatched };
+        }
+        if (selectedQuestion === ind) {
+            return { card: styles.cardSelected, text: styles.textSelected };
+        }
+        return { card: styles.cardDefault, text: styles.textDefault };
+    };
+
+    const getAnswerStyle = (ind) => {
+        if (isAnswered(ind, "answer")) {
+            return { card: styles.cardMatched, text: styles.textMatched };
+        }
+        if (selectedAnswer === ind) {
+            const isCorrect = checkList && checkList[selectedQuestion] === ind;
+            if (isCorrect) {
+                return { card: styles.cardMatched, text: styles.textMatched };
+            } else {
+                return { card: styles.cardWrong, text: styles.textWrong };
             }
         }
-    }
+        return { card: styles.cardDefault, text: styles.textDefault };
+    };
 
-    const isAnswered = (ind, key) => {
-        return userAnswers.some((ans) => ans.currentPage === currentQuestionPage && ans[key] === ind)
-    }
-
-    const questionList = currentQuestions.find((q) => q.id == currentQuestionPage)?.questions
-    const answerList = currentAnswers.find((a) => a.id === currentQuestionPage)?.answers
-    const checkList = currentAnswers.find((a) => a.id === currentQuestionPage)?.correctIndexes
     return (
         <SafeAreaView style={styles.mainContainer}>
-            <GameHeader hints={hints} remainTime={timeLeft} />
+            <GameHeader onPause={handlePause} remainTime={timeLeft} />
+
             <View style={styles.gameContainer}>
-                <View style={styles.questionArea}>
-                    {questionList?.map((question, ind) => (
-                        <Pressable disabled={dynamicDisabledMaker(ind, selectedQuestion, "question")}
-                            onPress={() => selectQuestionHandler(ind)}
-                            style={[styles.question, getDynamicQuestionStyle(ind), isAnswered(ind, "question") && { backgroundColor: 'green' }]} key={ind}>
-                            <Text style={{ textAlign: 'center', color: 'white' }}>{question}</Text>
-                        </Pressable>
-                    ))}
+                {/* Questions Column */}
+                <View style={styles.columnArea}>
+                    <Text style={styles.columnTitle}>{t('english') || "İngilizce"}</Text>
+                    {questionList?.map((question, ind) => {
+                        const styleConfig = getQuestionStyle(ind);
+                        const disabled = isAnswered(ind, "question") || selectedAnswer !== null;
+                        return (
+                            <Pressable
+                                key={ind}
+                                disabled={disabled}
+                                onPress={() => selectQuestionHandler(ind)}
+                                style={[styles.cardBase, styleConfig.card]}
+                            >
+                                <Text style={[styles.cardTextBase, styleConfig.text]} numberOfLines={2}>
+                                    {question}
+                                </Text>
+                            </Pressable>
+                        );
+                    })}
                 </View>
 
-                <View style={styles.answerArea}>
-                    {answerList?.map((answer, ind) => (
-                        <Pressable key={ind} style={[styles.answer, getDynamicAnswerStyle(ind), isAnswered(ind, "answer") && { backgroundColor: 'green' }]}
-                            onPress={() => selectAnswerHandler(ind)}
-                            disabled={dynamicDisabledMaker(ind, selectedAnswer, "answer")} >
-                            <Text style={{ textAlign: 'center', color: 'white' }}>{answer}</Text>
-                        </Pressable>
-                    ))}
+                {/* Answers Column */}
+                <View style={styles.columnArea}>
+                    <Text style={styles.columnTitle}>{t('turkish') || "Türkçe"}</Text>
+                    {answerList?.map((answer, ind) => {
+                        const styleConfig = getAnswerStyle(ind);
+                        const disabled = isAnswered(ind, "answer") || selectedQuestion === null || selectedAnswer !== null;
+                        return (
+                            <Pressable
+                                key={ind}
+                                disabled={disabled}
+                                onPress={() => selectAnswerHandler(ind)}
+                                style={[styles.cardBase, styleConfig.card]}
+                            >
+                                <Text style={[styles.cardTextBase, styleConfig.text]} numberOfLines={2}>
+                                    {answer}
+                                </Text>
+                            </Pressable>
+                        );
+                    })}
                 </View>
             </View>
-            <QuestionNavigation currentQuestion={currentQuestionPage} timer={timer} remainTime={timeLeft}
-                setCurrentQuestion={setCurrentQuestionPage} setSelectedQuestion={setSelectedQuestion} totalTry={totalTry} />
+
+            <QuestionNavigation
+                currentQuestion={currentQuestionPage}
+                timer={timer}
+                remainTime={timeLeft}
+                setCurrentQuestion={setCurrentQuestionPage}
+                setSelectedQuestion={setSelectedQuestion}
+                totalTry={totalTry}
+                onPause={handlePause}
+            />
+
+            <PauseModal
+                visible={isPaused}
+                onResume={handleResume}
+                onExit={handleExitRequest}
+            />
         </SafeAreaView>
-    )
+    );
 }
