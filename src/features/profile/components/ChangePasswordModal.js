@@ -5,12 +5,14 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contextapis/AuthContext";
 import { useFeedback } from "@/contextapis/FeedbackContext";
 import { useNavigation } from "@react-navigation/native";
+import { useTheme } from "@/contextapis/ThemeContext";
 
 const { width } = Dimensions.get('window');
 
 export default function ChangePasswordModal({ visible, onClose }) {
     const { t } = useTranslation();
     const { changePassword } = useAuth();
+    const { colors, isDark } = useTheme();
 
     const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
@@ -67,31 +69,31 @@ export default function ChangePasswordModal({ visible, onClose }) {
     return (
         <Modal statusBarTranslucent={true} visible={visible} transparent animationType="fade">
             <View style={modalStyles.overlay}>
-                <View style={modalStyles.container}>
+                <View style={[modalStyles.container, isDark && { backgroundColor: colors.common.card }]}>
                     <View style={modalStyles.iconContainer}>
                         <MaterialCommunityIcons name="alert" size={40} color="#F59E0B" />
                     </View>
 
-                    <Text style={modalStyles.title}>{t("changePasswordModalTitle")}</Text>
+                    <Text style={[modalStyles.title, { color: colors.profile.textPrimary }]}>{t("changePasswordModalTitle")}</Text>
 
                     <TextInput
-                        style={modalStyles.input}
+                        style={[modalStyles.input, isDark && { backgroundColor: colors.common.surface, borderColor: colors.common.border, color: colors.profile.textPrimary }]}
                         placeholder={t("currentPassword")}
-                        placeholderTextColor="#94A3B8"
+                        placeholderTextColor={colors.profile.textSecondary}
                         secureTextEntry
                         value={currentPassword}
                         onChangeText={setCurrentPassword} />
                     <TextInput
-                        style={modalStyles.input}
+                        style={[modalStyles.input, isDark && { backgroundColor: colors.common.surface, borderColor: colors.common.border, color: colors.profile.textPrimary }]}
                         placeholder={t("newPassword")}
-                        placeholderTextColor="#94A3B8"
+                        placeholderTextColor={colors.profile.textSecondary}
                         secureTextEntry
                         value={newPassword}
                         onChangeText={setNewPassword} />
                     <TextInput
-                        style={modalStyles.input}
+                        style={[modalStyles.input, isDark && { backgroundColor: colors.common.surface, borderColor: colors.common.border, color: colors.profile.textPrimary }]}
                         placeholder={t("newPasswordRepeat")}
-                        placeholderTextColor="#94A3B8"
+                        placeholderTextColor={colors.profile.textSecondary}
                         secureTextEntry
                         value={newPasswordRepeat}
                         onChangeText={setNewPasswordRepeat} />
@@ -102,7 +104,7 @@ export default function ChangePasswordModal({ visible, onClose }) {
                         <TouchableOpacity style={modalStyles.closeButton} onPress={handleClose} disabled={loading}>
                             <Text style={modalStyles.buttonText}>{t("close")}</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={modalStyles.submitButton} onPress={handleChangePassword} disabled={loading}>
+                        <TouchableOpacity style={[modalStyles.submitButton, { backgroundColor: colors.common.primary }]} onPress={handleChangePassword} disabled={loading}>
                             {loading
                                 ? <ActivityIndicator color="white" size="small" />
                                 : <Text style={modalStyles.buttonText}>{t("changePasswordBtn")}</Text>}

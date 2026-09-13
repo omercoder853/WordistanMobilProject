@@ -12,9 +12,12 @@ import { storage } from "@/storage/storage";
 import { STORAGE_KEYS } from "@/constants/StorageKeys";
 import useTimer from "@/hooks/useTimer";
 import { useFeedback } from "@/contextapis/FeedbackContext";
+import { useTheme } from "@/contextapis/ThemeContext";
 
 export default function MatchingPairsPage() {
     const [isVibrate, setVibrate] = useState(true);
+    const { colors, isDark } = useTheme();
+
     useEffect(() => {
         const loadVibration = async () => {
             const val = await storage.get(STORAGE_KEYS.PREFERENCES.VIBRATION_PREF);
@@ -59,18 +62,20 @@ export default function MatchingPairsPage() {
             for (let i = 0; i < tempAnswers.length; i++) {
                 let randomIndex;
                 do {
-                    randomIndex = randomIndexCreater({ target_words: tempAnswers, length: null });
+                    randomIndex = randomIndexCreater(tempAnswers.length);
                 } while (usedIndexes.has(randomIndex));
-                randomAnswers[randomIndex] = tempAnswers[i];
-                correctIndexes.push(randomIndex);
+
                 usedIndexes.add(randomIndex);
+                randomAnswers.push(tempAnswers[randomIndex]);
+                correctIndexes.push(randomIndex);
             }
+
             setCurrentAnswers((prev) => [
                 ...prev,
-                { id: currentQuestionPage, answers: randomAnswers, correctIndexes }
+                { id: currentQuestionPage, answers: randomAnswers, checkList: correctIndexes }
             ]);
         }
-    }, [currentQuestionPage, questions, perPage]);
+    }, [currentQuestionPage, questions]);
 
     const handlePause = () => {
         timer.pause();
@@ -126,24 +131,23 @@ export default function MatchingPairsPage() {
         timer.start();
     }, []);
 
-    const isAnswered = (ind, key) => {
-        return userAnswers.some((ans) => ans.currentPage === currentQuestionPage && ans[key] === ind);
-    };
+    /* ---------- GAME LOGIC ---------- */
 
-    const questionList = currentQuestions.find((q) => q.id === currentQuestionPage)?.questions;
-    const currentAnswerObj = currentAnswers.find((a) => a.id === currentQuestionPage);
-    const answerList = currentAnswerObj?.answers;
-    const checkList = currentAnswerObj?.correctIndexes;
+    const questionList = currentQuestions.find(item => item.id === currentQuestionPage)?.questions;
+    const answerData = currentAnswers.find(item => item.id === currentQuestionPage);
+    const answerList = answerData?.answers;
+    const checkList = answerData?.checkList;
+
+    const isAnswered = (index, type) => {
+        return userAnswers.some(ans =>
+            ans.currentPage === currentQuestionPage && ans[type] === index
+        );
+    };
 
     const selectQuestionHandler = (ind) => {
         if (isAnswered(ind, "question")) return;
-        if (isVibrate) Vibration.vibrate(80);
-        setSelectedAnswer(null);
-        if (selectedQuestion === ind) {
-            setSelectedQuestion(null);
-        } else {
-            setSelectedQuestion(ind);
-        }
+        if (selectedAnswer !== null) return;
+        setSelectedQuestion(prev => prev === ind ? null : ind);
     };
 
     const selectAnswerHandler = async (ind) => {
@@ -178,37 +182,58 @@ export default function MatchingPairsPage() {
 
     const getQuestionStyle = (ind) => {
         if (isAnswered(ind, "question")) {
-            return { card: styles.cardMatched, text: styles.textMatched };
+            return {
+                card: { backgroundColor: colors.games.correctBg, borderColor: colors.games.correctBorder },
+                text: { color: colors.games.correctText, fontWeight: '700' }
+            };
         }
         if (selectedQuestion === ind) {
-            return { card: styles.cardSelected, text: styles.textSelected };
+            return {
+                card: { backgroundColor: colors.games.optionSelectedBg, borderColor: colors.games.optionSelectedBorder, borderWidth: 2 },
+                text: { color: colors.common.primary, fontWeight: '800' }
+            };
         }
-        return { card: styles.cardDefault, text: styles.textDefault };
+        return {
+            card: { backgroundColor: colors.games.optionBg, borderColor: colors.games.optionBorder, shadowColor: colors.games.cardShadow },
+            text: { color: colors.games.textPrimary, fontWeight: '600' }
+        };
     };
 
     const getAnswerStyle = (ind) => {
         if (isAnswered(ind, "answer")) {
-            return { card: styles.cardMatched, text: styles.textMatched };
+            return {
+                card: { backgroundColor: colors.games.correctBg, borderColor: colors.games.correctBorder },
+                text: { color: colors.games.correctText, fontWeight: '700' }
+            };
         }
         if (selectedAnswer === ind) {
             const isCorrect = checkList && checkList[selectedQuestion] === ind;
             if (isCorrect) {
-                return { card: styles.cardMatched, text: styles.textMatched };
+                return {
+                    card: { backgroundColor: colors.games.correctBg, borderColor: colors.games.correctBorder },
+                    text: { color: colors.games.correctText, fontWeight: '700' }
+                };
             } else {
-                return { card: styles.cardWrong, text: styles.textWrong };
+                return {
+                    card: { backgroundColor: colors.games.wrongBg, borderColor: colors.games.wrongBorder },
+                    text: { color: colors.games.wrongText, fontWeight: '700' }
+                };
             }
         }
-        return { card: styles.cardDefault, text: styles.textDefault };
+        return {
+            card: { backgroundColor: colors.games.optionBg, borderColor: colors.games.optionBorder, shadowColor: colors.games.cardShadow },
+            text: { color: colors.games.textPrimary, fontWeight: '600' }
+        };
     };
 
     return (
-        <SafeAreaView style={styles.mainContainer}>
+        <SafeAreaView style={[styles.mainContainer, { backgroundColor: colors.common.background }]}>
             <GameHeader onPause={handlePause} remainTime={timeLeft} />
 
             <View style={styles.gameContainer}>
                 {/* Questions Column */}
                 <View style={styles.columnArea}>
-                    <Text style={styles.columnTitle}>{t('english') || "İngilizce"}</Text>
+                    <Text style={[styles.columnTitle, { color: colors.common.primary }]}>{t('english') || "İngilizce"}</Text>
                     {questionList?.map((question, ind) => {
                         const styleConfig = getQuestionStyle(ind);
                         const disabled = isAnswered(ind, "question") || selectedAnswer !== null;
@@ -229,7 +254,7 @@ export default function MatchingPairsPage() {
 
                 {/* Answers Column */}
                 <View style={styles.columnArea}>
-                    <Text style={styles.columnTitle}>{t('turkish') || "Türkçe"}</Text>
+                    <Text style={[styles.columnTitle, { color: colors.common.primary }]}>{t('turkish') || "Türkçe"}</Text>
                     {answerList?.map((answer, ind) => {
                         const styleConfig = getAnswerStyle(ind);
                         const disabled = isAnswered(ind, "answer") || selectedQuestion === null || selectedAnswer !== null;

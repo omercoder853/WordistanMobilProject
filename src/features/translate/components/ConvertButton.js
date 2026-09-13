@@ -1,20 +1,22 @@
 import { TouchableOpacity, Text } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import styles from "../styles/styles";
-import wordData from '@/shared/data/words.json'
+import wordData from '@/shared/data/words.json';
 import { useTranslation } from "react-i18next";
+import { useTheme } from "@/contextapis/ThemeContext";
 
 export default function ConvertButton({ setDisplay, input, addWord, setResult, setSuggestionDisplay, from }) {
+  const { colors } = useTheme();
+  const tColors = colors.translate;
   const { t } = useTranslation();
-
 
   const showResult = () => {
     if (input != "") {
-      setSuggestionDisplay("none")
+      setSuggestionDisplay("none");
       setDisplay("flex");
-      const foundResult = findWord(input, from)
+      const foundResult = findWord(input, from);
       if (foundResult) {
-        setResult(foundResult)
+        setResult(foundResult);
         addWord(input, foundResult, from);
       }
       else {
@@ -25,11 +27,11 @@ export default function ConvertButton({ setDisplay, input, addWord, setResult, s
   return (
     <TouchableOpacity onPress={showResult} activeOpacity={0.8}>
       <LinearGradient
-        colors={['#4F46E5', '#7C3AED']}
+        colors={tColors.convertGradient}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
-        style={styles.convertButton}>
-        <Text style={styles.convertButtonText}>{t('convert')}</Text>
+        style={[styles.convertButton, { shadowColor: tColors.convertGradient[0] }]}>
+        <Text style={[styles.convertButtonText, { color: tColors.convertText }]}>{t('convert')}</Text>
       </LinearGradient>
     </TouchableOpacity>
   );

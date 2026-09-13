@@ -4,12 +4,14 @@ import { useGame } from "@/contextapis/GamesContext";
 import { storage } from "@/storage/storage";
 import { STORAGE_KEYS } from "@/constants/StorageKeys";
 import Feather from "@expo/vector-icons/Feather";
+import { useTheme } from "@/contextapis/ThemeContext";
 
 const OPTION_LETTERS = ['A', 'B', 'C', 'D', 'E', 'F'];
 
 export default function QuizOption({ option, correctIndex, index, currentQuestion }) {
     const { userAnswers, setUserAnswers } = useGame();
     const [isVibrate, setVibrate] = useState(true);
+    const { colors, isDark } = useTheme();
 
     useEffect(() => {
         const loadVibration = async () => {
@@ -32,34 +34,78 @@ export default function QuizOption({ option, correctIndex, index, currentQuestio
         ]);
     };
 
-    // Calculate styles based on state
-    let cardStyle = optionStyles.defaultCard;
-    let badgeStyle = optionStyles.defaultBadge;
-    let badgeTextStyle = optionStyles.defaultBadgeText;
-    let textStyle = optionStyles.defaultText;
+    // Calculate dynamic styles based on theme & state
+    let cardStyle = {
+        backgroundColor: colors.games.optionBg,
+        borderColor: colors.games.optionBorder,
+        shadowColor: colors.games.cardShadow,
+    };
+    let badgeStyle = {
+        backgroundColor: isDark ? colors.common.surface : '#F5F3FF',
+    };
+    let badgeTextStyle = {
+        color: colors.common.primary,
+    };
+    let textStyle = {
+        color: colors.games.textPrimary,
+        fontWeight: '600',
+    };
     let icon = null;
 
     if (isAnswered) {
         if (isCorrectOption) {
-            // This is the correct answer (whether selected or revealed)
-            cardStyle = optionStyles.correctCard;
-            badgeStyle = optionStyles.correctBadge;
-            badgeTextStyle = optionStyles.correctBadgeText;
-            textStyle = optionStyles.correctText;
+            // Correct answer
+            cardStyle = {
+                backgroundColor: colors.games.correctBg,
+                borderColor: colors.games.correctBorder,
+                shadowColor: colors.common.success,
+            };
+            badgeStyle = {
+                backgroundColor: colors.common.success,
+            };
+            badgeTextStyle = {
+                color: '#FFFFFF',
+            };
+            textStyle = {
+                color: colors.games.correctText,
+                fontWeight: '700',
+            };
             icon = <Feather name="check" size={16} color="#FFFFFF" />;
         } else if (isSelected && !isCorrectOption) {
-            // This was selected by user and is wrong
-            cardStyle = optionStyles.wrongCard;
-            badgeStyle = optionStyles.wrongBadge;
-            badgeTextStyle = optionStyles.wrongBadgeText;
-            textStyle = optionStyles.wrongText;
+            // Selected wrong
+            cardStyle = {
+                backgroundColor: colors.games.wrongBg,
+                borderColor: colors.games.wrongBorder,
+                shadowColor: colors.common.danger,
+            };
+            badgeStyle = {
+                backgroundColor: colors.common.danger,
+            };
+            badgeTextStyle = {
+                color: '#FFFFFF',
+            };
+            textStyle = {
+                color: colors.games.wrongText,
+                fontWeight: '700',
+            };
             icon = <Feather name="x" size={16} color="#FFFFFF" />;
         } else {
-            // Other unselected options
-            cardStyle = optionStyles.dimmedCard;
-            badgeStyle = optionStyles.dimmedBadge;
-            badgeTextStyle = optionStyles.dimmedBadgeText;
-            textStyle = optionStyles.dimmedText;
+            // Dimmed unselected
+            cardStyle = {
+                backgroundColor: isDark ? colors.common.surface : '#F8FAFC',
+                borderColor: colors.common.borderSubtle,
+                opacity: 0.5,
+            };
+            badgeStyle = {
+                backgroundColor: isDark ? '#2A2B36' : '#E2E8F0',
+            };
+            badgeTextStyle = {
+                color: colors.games.textMuted,
+            };
+            textStyle = {
+                color: colors.games.textSecondary,
+                fontWeight: '500',
+            };
         }
     }
 

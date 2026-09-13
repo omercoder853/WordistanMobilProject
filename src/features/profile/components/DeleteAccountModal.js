@@ -3,12 +3,14 @@ import { Modal, View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions,
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contextapis/AuthContext";
+import { useTheme } from "@/contextapis/ThemeContext";
 
 const { width } = Dimensions.get('window');
 
 export default function DeleteAccountModal({ visible, onClose }) {
     const { t } = useTranslation();
     const { deleteAccount } = useAuth();
+    const { colors, isDark } = useTheme();
 
     const [step, setStep] = useState(1);
     const [confirmText, setConfirmText] = useState("");
@@ -43,16 +45,16 @@ export default function DeleteAccountModal({ visible, onClose }) {
     return (
         <Modal statusBarTranslucent={true} visible={visible} transparent animationType="fade">
             <View style={modalStyles.overlay}>
-                <View style={modalStyles.container}>
+                <View style={[modalStyles.container, isDark && { backgroundColor: colors.common.card }]}>
                     <View style={modalStyles.iconContainer}>
                         <MaterialCommunityIcons name="alert-octagon" size={40} color="#EF4444" />
                     </View>
 
-                    <Text style={modalStyles.title}>{t("deleteAccountModalTitle")}</Text>
+                    <Text style={[modalStyles.title, { color: colors.profile.textPrimary }]}>{t("deleteAccountModalTitle")}</Text>
 
                     {step === 1 ? (
                         <>
-                            <Text style={modalStyles.message}>{t("deleteAccountConfirmQuestion")}</Text>
+                            <Text style={[modalStyles.message, { color: colors.profile.textSecondary }]}>{t("deleteAccountConfirmQuestion")}</Text>
 
                             <View style={modalStyles.buttonRow}>
                                 <TouchableOpacity style={modalStyles.closeButton} onPress={handleClose}>
@@ -65,12 +67,19 @@ export default function DeleteAccountModal({ visible, onClose }) {
                         </>
                     ) : (
                         <>
-                            <Text style={modalStyles.message}>{t("deleteAccountConfirmLabel")}</Text>
+                            <Text style={[modalStyles.message, { color: colors.profile.textSecondary }]}>{t("deleteAccountConfirmLabel")}</Text>
 
                             <TextInput
-                                style={modalStyles.input}
+                                style={[
+                                    modalStyles.input,
+                                    isDark && {
+                                        backgroundColor: colors.common.surface,
+                                        borderColor: "#EF4444",
+                                        color: colors.profile.textPrimary,
+                                    },
+                                ]}
                                 placeholder={t("deleteAccountConfirmPlaceholder")}
-                                placeholderTextColor="#94A3B8"
+                                placeholderTextColor={colors.profile.textSecondary}
                                 autoCapitalize="characters"
                                 value={confirmText}
                                 onChangeText={setConfirmText}

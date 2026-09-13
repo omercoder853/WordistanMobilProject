@@ -3,7 +3,6 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
     // --- Styles from collectionDetails.js ---
     detailsContainer: {
-        backgroundColor: '#F3F4F6',
         flex: 1
     },
     headerCard: {

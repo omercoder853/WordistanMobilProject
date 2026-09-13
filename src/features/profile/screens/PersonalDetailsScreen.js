@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contextapis/AuthContext";
 import ChangePasswordModal from "../components/ChangePasswordModal";
 import DeleteAccountModal from "../components/DeleteAccountModal";
+import { useTheme } from "@/contextapis/ThemeContext";
 
 // ─── Detail field config (icon + color per row) ───
 const detailFields = [
@@ -22,7 +23,8 @@ const detailFields = [
 export default function PersonalDetails() {
     const { user } = useAuth();
     const { t } = useTranslation();
-    const imgSource = user.gender == "male" ? require("@/shared/assets/default_avatar_boy.png") : require("@/shared/assets/default_avatar_girl.png")
+    const { colors, isDark } = useTheme();
+    const imgSource = user.gender == "male" ? require("@/shared/assets/default_avatar_boy.png") : require("@/shared/assets/default_avatar_girl.png");
 
     const [passwordModalVisible, setPasswordModalVisible] = useState(false);
     const [deleteModalVisible, setDeleteModalVisible] = useState(false);
@@ -35,61 +37,62 @@ export default function PersonalDetails() {
     };
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, { backgroundColor: colors.common.background }]}>
             <ScrollView
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={styles.scrollContent}
             >
                 {/* ─── Avatar Header ─── */}
-                <View style={styles.avatarSection}>
+                <View style={[styles.avatarSection, { backgroundColor: colors.profile.cardBg }]}>
                     <View style={styles.avatarWrapper}>
                         <Image style={styles.profilePhoto} source={imgSource} />
                         <TouchableOpacity style={styles.editPhoto}>
                             <MaterialCommunityIcons name="image-edit-outline" size={16} color="white" />
                         </TouchableOpacity>
                     </View>
-                    <Text style={styles.avatarName}>
+                    <Text style={[styles.avatarName, { color: colors.profile.textPrimary }]}>
                         {user?.first_name} {user?.last_name}
                     </Text>
-                    <Text style={styles.avatarEmail}>{user?.email}</Text>
+                    <Text style={[styles.avatarEmail, { color: colors.profile.textSecondary }]}>{user?.email}</Text>
                 </View>
 
                 {/* ─── Personal Info Card ─── */}
-                <View style={styles.detailsCard}>
-                    <Text style={styles.sectionTitle}>{t("personalDetails")}</Text>
+                <View style={[styles.detailsCard, { backgroundColor: colors.profile.cardBg, borderColor: colors.profile.cardBorder }]}>
+                    <Text style={[styles.sectionTitle, { color: colors.profile.sectionTitle }]}>{t("personalDetails")}</Text>
                     {detailFields.map((field, index) => (
                         <View key={field.key}>
                             <View style={styles.profileDetailItem}>
                                 <View style={[styles.detailIconBox, { backgroundColor: field.bg }]}>
-                                    <Ionicons name={field.icon} size={18} color={field.color} />
+                                    <Ionicons name={field.icon} size={20} color={field.color} />
                                 </View>
-                                <Text style={styles.profileLabel}>{t(field.key)}</Text>
-                                <Text style={styles.profileValue}>{getFieldValue(field)}</Text>
+                                <Text style={[styles.profileLabel, { color: colors.profile.textPrimary }]}>{t(field.key)}</Text>
+                                <Text style={[styles.profileValue, { color: colors.profile.textSecondary }]}>{getFieldValue(field)}</Text>
                             </View>
-                            {index < detailFields.length - 1 && <View style={styles.separator} />}
+                            {index < detailFields.length - 1 && <View style={[styles.separator, { backgroundColor: colors.profile.separator }]} />}
                         </View>
                     ))}
                 </View>
 
-                {/* ─── Security Card ─── */}
-                <View style={styles.detailsCard}>
-                    <Text style={styles.sectionTitle}>{t("passwordProfile")}</Text>
+                {/* ─── Security Card (Change Password) ─── */}
+                <View style={[styles.detailsCard, { backgroundColor: colors.profile.cardBg, borderColor: colors.profile.cardBorder }]}>
+                    <Text style={[styles.sectionTitle, { color: colors.profile.sectionTitle }]}>{t("security")}</Text>
                     <View style={styles.profileDetailItem}>
-                        <View style={[styles.detailIconBox, { backgroundColor: "rgba(239, 68, 68, 0.1)" }]}>
-                            <Ionicons name="lock-closed-outline" size={18} color="#EF4444" />
+                        <View style={[styles.detailIconBox, { backgroundColor: "rgba(91, 63, 211, 0.1)" }]}>
+                            <Ionicons name="key-outline" size={20} color="#5B3FD3" />
                         </View>
-                        <Text style={styles.profileLabel}>{t("changePassword")}</Text>
+                        <Text style={[styles.profileLabel, { color: colors.profile.textPrimary }]}>{t("changePassword")}</Text>
                         <TouchableOpacity
                             style={styles.changePasswordButton}
-                            onPress={() => setPasswordModalVisible(true)}>
+                            onPress={() => setPasswordModalVisible(true)}
+                        >
                             <Text style={styles.changePasswordText}>{t("changePassword")}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
 
-                {/* ─── Delete Account ─── */}
+                {/* ─── Danger Zone (Delete Account) ─── */}
                 <TouchableOpacity
-                    style={styles.deleteAccountButton}
+                    style={[styles.deleteAccountButton, isDark && { backgroundColor: 'rgba(239, 68, 68, 0.15)', borderColor: 'rgba(239, 68, 68, 0.3)' }]}
                     onPress={() => setDeleteModalVisible(true)}
                 >
                     <Ionicons name="trash-outline" size={18} color="#EF4444" />
@@ -99,11 +102,13 @@ export default function PersonalDetails() {
 
             <ChangePasswordModal
                 visible={passwordModalVisible}
-                onClose={() => setPasswordModalVisible(false)} />
+                onClose={() => setPasswordModalVisible(false)}
+            />
 
             <DeleteAccountModal
                 visible={deleteModalVisible}
-                onClose={() => setDeleteModalVisible(false)} />
+                onClose={() => setDeleteModalVisible(false)}
+            />
         </View>
     )
 }

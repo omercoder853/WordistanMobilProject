@@ -3,8 +3,11 @@ import Feather from '@expo/vector-icons/Feather';
 import { useDictionary } from "@/contextapis/DictContext";
 import { useTranslation } from "react-i18next";
 import { useFeedback } from "@/contextapis/FeedbackContext";
+import { useTheme } from "@/contextapis/ThemeContext";
 
 export default function Word({ word, index, setReload }) {
+    const { colors } = useTheme();
+    const dColors = colors.dictionaries;
     const { t } = useTranslation();
     const { deleteWord, setDictReload } = useDictionary();
 
@@ -16,8 +19,7 @@ export default function Word({ word, index, setReload }) {
         addAlertButton({ text: t("cancel"), style: "cancel", action: () => { hideAlert() } });
         addAlertButton({ text: t("delete"), style: "danger", action: () => handleDelete(), needLoading: true });
         setAlertVisible(true);
-    }
-
+    };
 
     const handleDelete = async () => {
         setAlertLoading(true);
@@ -25,15 +27,23 @@ export default function Word({ word, index, setReload }) {
         if (ok) { setDictReload(true), setReload(true) };
         setAlertLoading(false);
         hideAlert();
-    }
+    };
+
     return (
-        <View style={styles.wordRow}>
-            <View style={styles.wordId}>
-                <Text style={styles.wordIdText}>{index + 1}</Text>
+        <View style={[
+            styles.wordRow,
+            {
+                backgroundColor: dColors.wordItemBg,
+                borderColor: dColors.wordItemBorder,
+                shadowColor: dColors.cardShadow,
+            }
+        ]}>
+            <View style={[styles.wordId, { backgroundColor: dColors.badgeBg }]}>
+                <Text style={[styles.wordIdText, { color: dColors.badgeText }]}>{index + 1}</Text>
             </View>
             <View style={styles.wordContentWrapper}>
-                <Text style={styles.wordTarget}>{word.word}</Text>
-                <Text style={styles.wordMeaning}>{word.meaning}</Text>
+                <Text style={[styles.wordTarget, { color: dColors.textPrimary }]}>{word.word}</Text>
+                <Text style={[styles.wordMeaning, { color: dColors.textSecondary }]}>{word.meaning}</Text>
             </View>
             <View style={styles.deleteButtonContainer}>
                 <TouchableOpacity style={styles.deleteButton} onPress={handleTrashPress}>
@@ -41,7 +51,7 @@ export default function Word({ word, index, setReload }) {
                 </TouchableOpacity>
             </View>
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({

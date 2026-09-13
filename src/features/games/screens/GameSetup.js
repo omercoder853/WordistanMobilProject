@@ -16,9 +16,11 @@ import { useTranslation } from "react-i18next";
 import { LinearGradient } from 'expo-linear-gradient';
 import { storage } from "@/storage/storage";
 import { STORAGE_KEYS } from "@/constants/StorageKeys";
+import { useTheme } from "@/contextapis/ThemeContext";
 
 export default function GameSetupPage() {
     const { t } = useTranslation();
+    const { colors, isDark } = useTheme();
     const navigation = useNavigation();
     const { dicts, setDictReload, getWords } = useDictionary();
     const { gameSettings, setGameSettings, resetGame, createQuestion } = useGame();
@@ -54,10 +56,11 @@ export default function GameSetupPage() {
     }, []);
 
     useEffect(() => {
-        if (dicts.length === 0) {
+        const getDicts = async ()=> {
             setDictReload(true);
         }
-    }, [dicts]);
+        getDicts();
+    }, []);
 
     const handleToggleAutoCont = async (val) => {
         setAutoCont(val);
@@ -161,29 +164,30 @@ export default function GameSetupPage() {
 
     return (
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined} style={{ flex: 1 }}>
-            <LinearGradient colors={['#F5F3FF', '#FFFFFF']} style={{ flex: 1 }}>
+            <View style={{ flex: 1, backgroundColor: colors.common.background }}>
                 <ScrollView
                     contentContainerStyle={{ width: '92%', alignSelf: 'center', paddingBottom: 40, paddingTop: 16 }}
                     showsVerticalScrollIndicator={false}
                     keyboardShouldPersistTaps="handled"
                 >
                     {/* Source Selection Card */}
-                    <View style={styles.setupCard}>
-                        <Text style={styles.setupOptionLabel}>{t('sourceChoice') || "Kaynak Seçimi"}</Text>
+                    <View style={[styles.setupCard, { backgroundColor: colors.games.cardBg, borderColor: colors.games.cardBorder, shadowColor: colors.games.cardShadow }]}>
+                        <Text style={[styles.setupOptionLabel, { color: colors.games.textPrimary }]}>{t('sourceChoice') || "Kaynak Seçimi"}</Text>
 
                         <View style={pageStyles.sourceRow}>
                             <TouchableOpacity
                                 activeOpacity={0.8}
                                 style={[
                                     pageStyles.sourceCardButton,
-                                    source === "personal" && pageStyles.sourceCardButtonActive
+                                    { backgroundColor: colors.games.stepperBg, borderColor: colors.games.stepperBorder },
+                                    source === "personal" && { backgroundColor: colors.common.primary, borderColor: colors.common.primary }
                                 ]}
                                 onPress={() => handleSelectSource("personal")}
                             >
-                                <View style={[pageStyles.iconCircle, source === "personal" && pageStyles.iconCircleActive]}>
-                                    <Feather name="book-open" size={18} color={source === "personal" ? "#FFFFFF" : "#5B3FD3"} />
+                                <View style={[pageStyles.iconCircle, { backgroundColor: isDark ? colors.common.surface : '#EDE9FE' }, source === "personal" && pageStyles.iconCircleActive]}>
+                                    <Feather name="book-open" size={18} color={source === "personal" ? "#FFFFFF" : colors.common.primary} />
                                 </View>
-                                <Text style={[pageStyles.sourceText, source === "personal" && pageStyles.sourceTextActive]}>
+                                <Text style={[pageStyles.sourceText, { color: colors.games.textPrimary }, source === "personal" && pageStyles.sourceTextActive]}>
                                     {t('personal') || "Kişisel"}
                                 </Text>
                             </TouchableOpacity>
@@ -192,14 +196,15 @@ export default function GameSetupPage() {
                                 activeOpacity={0.8}
                                 style={[
                                     pageStyles.sourceCardButton,
-                                    source === "collection" && pageStyles.sourceCardButtonActive
+                                    { backgroundColor: colors.games.stepperBg, borderColor: colors.games.stepperBorder },
+                                    source === "collection" && { backgroundColor: colors.common.primary, borderColor: colors.common.primary }
                                 ]}
                                 onPress={() => handleSelectSource("collection")}
                             >
-                                <View style={[pageStyles.iconCircle, source === "collection" && pageStyles.iconCircleActive]}>
-                                    <Feather name="grid" size={18} color={source === "collection" ? "#FFFFFF" : "#5B3FD3"} />
+                                <View style={[pageStyles.iconCircle, { backgroundColor: isDark ? colors.common.surface : '#EDE9FE' }, source === "collection" && pageStyles.iconCircleActive]}>
+                                    <Feather name="grid" size={18} color={source === "collection" ? "#FFFFFF" : colors.common.primary} />
                                 </View>
-                                <Text style={[pageStyles.sourceText, source === "collection" && pageStyles.sourceTextActive]}>
+                                <Text style={[pageStyles.sourceText, { color: colors.games.textPrimary }, source === "collection" && pageStyles.sourceTextActive]}>
                                     {t('collections') || "Koleksiyonlar"}
                                 </Text>
                             </TouchableOpacity>
@@ -209,25 +214,25 @@ export default function GameSetupPage() {
                         {source && (
                             <TouchableOpacity
                                 activeOpacity={0.8}
-                                style={pageStyles.actionSheetTrigger}
+                                style={[pageStyles.actionSheetTrigger, { backgroundColor: colors.games.stepperBg, borderColor: colors.games.stepperBorder }]}
                                 onPress={() => setModalVisible(true)}
                             >
                                 <View style={{ flex: 1 }}>
-                                    <Text style={pageStyles.triggerPlaceholder}>
+                                    <Text style={[pageStyles.triggerPlaceholder, { color: colors.common.primary }]}>
                                         {source === "personal" ? (t('selectDictionary') || "Sözlük Seçin") : (t('selectCollection') || "Koleksiyon Seçin")}
                                     </Text>
-                                    <Text style={pageStyles.triggerValue} numberOfLines={1}>
+                                    <Text style={[pageStyles.triggerValue, { color: colors.games.textPrimary }]} numberOfLines={1}>
                                         {selectedItemLabel || (t('makeChoice') || "Seçim yapınız...")}
                                     </Text>
                                 </View>
-                                <Feather name="chevron-down" size={20} color="#5B3FD3" />
+                                <Feather name="chevron-down" size={20} color={colors.common.primary} />
                             </TouchableOpacity>
                         )}
                     </View>
 
                     {/* Numeric Options Card */}
-                    <View style={styles.setupCard}>
-                        <Text style={styles.setupOptionLabel}>{t('numberOfQuestions') || "Soru Sayısı"}</Text>
+                    <View style={[styles.setupCard, { backgroundColor: colors.games.cardBg, borderColor: colors.games.cardBorder, shadowColor: colors.games.cardShadow }]}>
+                        <Text style={[styles.setupOptionLabel, { color: colors.games.textPrimary }]}>{t('numberOfQuestions') || "Soru Sayısı"}</Text>
                         <NumericInput
                             value={numberQuestion}
                             setValue={setNumberQuestion}
@@ -236,7 +241,7 @@ export default function GameSetupPage() {
                             quantity={t('qQuestions') || "soru"}
                         />
 
-                        <Text style={styles.setupOptionLabel}>{t('secondsPerQuestion') || "Soru Başı Saniye"}</Text>
+                        <Text style={[styles.setupOptionLabel, { color: colors.games.textPrimary }]}>{t('secondsPerQuestion') || "Soru Başı Saniye"}</Text>
                         <NumericInput
                             value={seconds}
                             setValue={setSeconds}
@@ -247,7 +252,7 @@ export default function GameSetupPage() {
                     </View>
 
                     {/* Game-Specific Settings Card */}
-                    <View style={styles.setupCard}>
+                    <View style={[styles.setupCard, { backgroundColor: colors.games.cardBg, borderColor: colors.games.cardBorder, shadowColor: colors.games.cardShadow }]}>
                         {gameType === "wc" && (
                             <WcSettings
                                 visibleFirstLetter={visibleFirstLetter}
@@ -267,13 +272,13 @@ export default function GameSetupPage() {
                             />
                         )}
 
-                        <View style={pageStyles.switchRow}>
+                        <View style={[pageStyles.switchRow, { borderTopColor: colors.common.borderSubtle }]}>
                             <View style={{ flex: 1 }}>
-                                <Text style={[styles.setupOptionLabel, { marginBottom: 2 }]}>{t("autoCont") || "Otomatik Devam Et"}</Text>
-                                <Text style={pageStyles.switchSubtext}>{t("autoContDesc") || "Sonraki soruya otomatik geç"}</Text>
+                                <Text style={[styles.setupOptionLabel, { marginBottom: 2, color: colors.games.textPrimary }]}>{t("autoCont") || "Otomatik Devam Et"}</Text>
+                                <Text style={[pageStyles.switchSubtext, { color: colors.games.textSecondary }]}>{t("autoContDesc") || "Sonraki soruya otomatik geç"}</Text>
                             </View>
                             <Switch
-                                trackColor={{ false: "#E2E8F0", true: "#5B3FD3" }}
+                                trackColor={{ false: isDark ? "#333544" : "#E2E8F0", true: colors.common.primary }}
                                 thumbColor="#FFFFFF"
                                 value={autoCont}
                                 onValueChange={handleToggleAutoCont}
@@ -289,7 +294,7 @@ export default function GameSetupPage() {
                         style={{ marginTop: 8 }}
                     >
                         <LinearGradient
-                            colors={validGame ? ['#6D28D9', '#5B3FD3'] : ['#CBD5E1', '#94A3B8']}
+                            colors={validGame ? (isDark ? ['#7C3AED', '#5B3FD3'] : ['#6D28D9', '#5B3FD3']) : (isDark ? ['#2A2B36', '#1E1E24'] : ['#CBD5E1', '#94A3B8'])}
                             start={{ x: 0, y: 0 }}
                             end={{ x: 1, y: 1 }}
                             style={pageStyles.startGradientBtn}
@@ -299,34 +304,35 @@ export default function GameSetupPage() {
                         </LinearGradient>
                     </TouchableOpacity>
                 </ScrollView>
-            </LinearGradient>
+            </View>
 
             {/* ActionSheet Selection Modal */}
             <Modal
                 visible={modalVisible}
                 transparent={true}
                 animationType="slide"
+                statusBarTranslucent={true}
                 onRequestClose={() => setModalVisible(false)}
             >
-                <View style={actionSheetStyles.backdrop}>
+                <View style={[actionSheetStyles.backdrop, { backgroundColor: colors.games.modalOverlay }]}>
                     <Pressable style={actionSheetStyles.dismissArea} onPress={() => setModalVisible(false)} />
 
-                    <View style={actionSheetStyles.sheetContainer}>
-                        <View style={actionSheetStyles.handleBar} />
+                    <View style={[actionSheetStyles.sheetContainer, { backgroundColor: colors.games.modalBg }]}>
+                        <View style={[actionSheetStyles.handleBar, { backgroundColor: colors.common.borderSubtle }]} />
 
-                        <View style={actionSheetStyles.headerRow}>
-                            <Text style={actionSheetStyles.sheetTitle}>
+                        <View style={[actionSheetStyles.headerRow, { borderBottomColor: colors.common.borderSubtle }]}>
+                            <Text style={[actionSheetStyles.sheetTitle, { color: colors.games.textPrimary }]}>
                                 {source === "personal" ? (t('selectDictionary') || "Sözlük Seçin") : (t('selectCollection') || "Koleksiyon Seçin")}
                             </Text>
-                            <TouchableOpacity onPress={() => setModalVisible(false)} style={actionSheetStyles.closeBtn}>
-                                <Feather name="x" size={20} color="#64748B" />
+                            <TouchableOpacity onPress={() => setModalVisible(false)} style={[actionSheetStyles.closeBtn, { backgroundColor: isDark ? colors.common.surface : '#F1F5F9' }]}>
+                                <Feather name="x" size={20} color={colors.games.textSecondary} />
                             </TouchableOpacity>
                         </View>
 
                         {items.length === 0 ? (
                             <View style={actionSheetStyles.emptyBox}>
-                                <Feather name="alert-circle" size={32} color="#94A3B8" />
-                                <Text style={actionSheetStyles.emptyText}>
+                                <Feather name="alert-circle" size={32} color={colors.games.textMuted} />
+                                <Text style={[actionSheetStyles.emptyText, { color: colors.games.textSecondary }]}>
                                     {source === "personal"
                                         ? (t('noDictionaryFound') || "En az 5 kelimeli sözlük bulunamadı.")
                                         : (t('noItemFound') || "Öğe bulunamadı.")}
@@ -344,23 +350,25 @@ export default function GameSetupPage() {
                                             activeOpacity={0.7}
                                             style={[
                                                 actionSheetStyles.optionRow,
-                                                isSelected && actionSheetStyles.optionRowSelected
+                                                { backgroundColor: isDark ? colors.common.surface : '#F8FAFC', borderColor: colors.common.borderSubtle },
+                                                isSelected && { backgroundColor: isDark ? 'rgba(139, 92, 246, 0.25)' : '#F3E8FF', borderColor: colors.common.primary }
                                             ]}
                                             onPress={() => handleSelectItem(item.value)}
                                         >
                                             <View style={{ flex: 1 }}>
                                                 <Text style={[
                                                     actionSheetStyles.optionLabel,
-                                                    isSelected && actionSheetStyles.optionLabelSelected
+                                                    { color: colors.games.textPrimary },
+                                                    isSelected && { color: colors.common.primary }
                                                 ]}>
                                                     {item.label}
                                                 </Text>
                                                 {item.subtext ? (
-                                                    <Text style={actionSheetStyles.optionSubtext}>{item.subtext}</Text>
+                                                    <Text style={[actionSheetStyles.optionSubtext, { color: colors.games.textSecondary }]}>{item.subtext}</Text>
                                                 ) : null}
                                             </View>
                                             {isSelected && (
-                                                <View style={actionSheetStyles.checkIconWrapper}>
+                                                <View style={[actionSheetStyles.checkIconWrapper, { backgroundColor: colors.common.primary }]}>
                                                     <Feather name="check" size={16} color="#FFFFFF" />
                                                 </View>
                                             )}

@@ -7,7 +7,8 @@ const styles = StyleSheet.create({
         width:'100%',
         alignItems:'center',
         marginBottom:20,
-        marginTop:15
+        marginTop:15,
+        paddingHorizontal:15,
     },
     headerRowButtons:{
         padding:5,

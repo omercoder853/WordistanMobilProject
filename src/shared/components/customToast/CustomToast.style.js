@@ -58,11 +58,19 @@ export const TOAST_THEMES = {
   },
 };
 
-export const getToastTheme = (type) => {
-  return TOAST_THEMES[type] || TOAST_THEMES.default;
+export const getToastTheme = (type, toastColors) => {
+  const iconConfig = TOAST_THEMES[type] || TOAST_THEMES.default;
+  if (!toastColors) {
+    return iconConfig;
+  }
+  const themeConfig = toastColors[type] || toastColors.default || TOAST_THEMES.default;
+  return {
+    iconName: iconConfig.iconName,
+    ...themeConfig,
+  };
 };
 
-export const styles = StyleSheet.create({
+export const getToastStyles = (toastColors = {}) => StyleSheet.create({
   container: {
     position: 'absolute',
     left: 0,
@@ -84,7 +92,7 @@ export const styles = StyleSheet.create({
     overflow: 'hidden',
     ...Platform.select({
       ios: {
-        shadowColor: '#0F172A',
+        shadowColor: toastColors.cardShadow || '#0F172A',
         shadowOffset: { width: 0, height: 6 },
         shadowOpacity: 0.12,
         shadowRadius: 14,
@@ -133,9 +141,11 @@ export const styles = StyleSheet.create({
     width: 30,
     height: 30,
     borderRadius: 15,
-    backgroundColor: '#F1F5F9',
+    backgroundColor: toastColors.closeBtnBg || '#F1F5F9',
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 4,
   },
 });
+
+export const styles = getToastStyles();

@@ -10,6 +10,7 @@ import PieChart from "../components/PieChart";
 import BarChart from "../components/BarChart";
 import InfoTooltip from "@/shared/components/InfoTooltip";
 import styles from "../styles/StatisticsScreenStyle";
+import { useTheme } from "@/contextapis/ThemeContext";
 
 const FILTER_OPTIONS = [
     { key: 5, labelKey: "last5" },
@@ -29,6 +30,7 @@ export default function Statistics() {
     const { userStats, pendingEarnedXP } = useUserStats();
     const { gameSessions } = useGame();
     const { t } = useTranslation();
+    const { colors, isDark } = useTheme();
 
     const [filterCount, setFilterCount] = useState(5);
     const [selectedMetric, setSelectedMetric] = useState("score");
@@ -97,18 +99,18 @@ export default function Statistics() {
     const barLabels = [t("totalQuestions"), t("correctAnswers"), t("wrongAnswers"), t("passedAnswers")];
 
     return (
-        <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+        <ScrollView style={[styles.container, { backgroundColor: colors.common.background }]} contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
             {/* ─── Level Progress Card ─── */}
-            <View style={styles.card}>
+            <View style={[styles.card, isDark && { backgroundColor: colors.common.card, borderColor: colors.common.border }]}>
                 <View style={styles.levelHeader}>
                     <View style={styles.levelBadge}>
                         <Ionicons name="star" size={14} color="#FFFFFF" />
                     </View>
-                    <Text style={styles.levelTitle}>{t("level")} {level}</Text>
+                    <Text style={[styles.levelTitle, { color: colors.profile.textPrimary }]}>{t("level")} {level}</Text>
                     <Text style={styles.levelSubtitle}>{displayPercent}%</Text>
                 </View>
 
-                <View style={styles.progressTrack}>
+                <View style={[styles.progressTrack, isDark && { backgroundColor: colors.common.surface }]}>
                     <Animated.View style={[styles.progressFillContainer, { width: animatedWidth }]}>
                         <LinearGradient
                             colors={["#6366F1", "#EC4899"]}
@@ -121,10 +123,10 @@ export default function Statistics() {
 
                 <View style={styles.xpRow}>
                     <Text style={styles.xpCurrent}>{earnedInLevel} / {required_xp_for_level} XP</Text>
-                    <Text style={styles.xpTarget}>{remainingXP} XP {t("xpRemaining")}</Text>
+                    <Text style={[styles.xpTarget, { color: colors.profile.textSecondary }]}>{remainingXP} XP {t("xpRemaining")}</Text>
                 </View>
 
-                <Text style={styles.xpHint}>
+                <Text style={[styles.xpHint, { color: colors.profile.textSecondary }]}>
                     {t("level")} {level + 1} {t("xpFor")} {remainingXP} XP {t("xpRemaining")}
                 </Text>
             </View>
@@ -132,19 +134,19 @@ export default function Statistics() {
             {/* ─── Average Score Badges ─── */}
             {hasSessions && (
                 <View style={styles.avgRow}>
-                    <View style={styles.avgBadge}>
+                    <View style={[styles.avgBadge, isDark && { backgroundColor: colors.common.card }]}>
                         <View style={styles.avgBadgeHeader}>
-                            <Text style={styles.avgBadgeLabel}>{t("avgScore")}</Text>
+                            <Text style={[styles.avgBadgeLabel, { color: colors.profile.textSecondary }]}>{t("avgScore")}</Text>
                             <InfoTooltip text={t("scoreExplanation")} size={14} />
                         </View>
-                        <Text style={styles.avgBadgeValue}>
+                        <Text style={[styles.avgBadgeValue, { color: colors.profile.textPrimary }]}>
                             {avgScore != null ? avgScore.toFixed(1) : "—"}
                         </Text>
                         <Text style={styles.avgBadgeSuffix}>/100</Text>
                     </View>
-                    <View style={styles.avgBadge}>
+                    <View style={[styles.avgBadge, isDark && { backgroundColor: colors.common.card }]}>
                         <View style={styles.avgBadgeHeader}>
-                            <Text style={styles.avgBadgeLabel}>{t("avgPerformance")}</Text>
+                            <Text style={[styles.avgBadgeLabel, { color: colors.profile.textSecondary }]}>{t("avgPerformance")}</Text>
                             <InfoTooltip text={t("performanceExplanation")} size={14} />
                         </View>
                         <Text style={[styles.avgBadgeValue, { color: "#EC4899" }]}>
@@ -158,18 +160,18 @@ export default function Statistics() {
             {/* ─── Empty state for charts ─── */}
             {!hasSessions && (
                 <View style={styles.emptyContainer}>
-                    <Ionicons name="bar-chart-outline" size={48} color="#D1D5DB" style={styles.emptyIcon} />
-                    <Text style={styles.emptyTitle}>{t("noStatsYet")}</Text>
-                    <Text style={styles.emptyDesc}>{t("noStatsYetDesc")}</Text>
+                    <Ionicons name="bar-chart-outline" size={48} color={isDark ? colors.profile.textSecondary : "#D1D5DB"} style={styles.emptyIcon} />
+                    <Text style={[styles.emptyTitle, { color: colors.profile.textPrimary }]}>{t("noStatsYet")}</Text>
+                    <Text style={[styles.emptyDesc, { color: colors.profile.textSecondary }]}>{t("noStatsYetDesc")}</Text>
                 </View>
             )}
 
             {/* ─── LineChart: Score Progress ─── */}
             {hasSessions && (
-                <View style={styles.chartCard}>
+                <View style={[styles.chartCard, isDark && { backgroundColor: colors.common.card }]}>
                     <View style={styles.chartHeader}>
-                        <Text style={styles.chartTitle}>{t("scoreProgress")}</Text>
-                        <Text style={{ fontSize: 11, color: "#94A3B8" }}>
+                        <Text style={[styles.chartTitle, { color: colors.profile.textPrimary }]}>{t("scoreProgress")}</Text>
+                        <Text style={{ fontSize: 11, color: colors.profile.textSecondary }}>
                             {filteredSessions.length} {t("games")}
                         </Text>
                     </View>
@@ -179,12 +181,17 @@ export default function Statistics() {
                         {FILTER_OPTIONS.map((opt) => (
                             <TouchableOpacity
                                 key={opt.key}
-                                style={[styles.filterPill, filterCount === opt.key && styles.filterPillActive]}
+                                style={[
+                                    styles.filterPill,
+                                    isDark && { backgroundColor: colors.common.surface },
+                                    filterCount === opt.key && styles.filterPillActive,
+                                ]}
                                 onPress={() => setFilterCount(opt.key)}
                             >
                                 <Text
                                     style={[
                                         styles.filterPillText,
+                                        isDark && { color: colors.profile.textSecondary },
                                         filterCount === opt.key && styles.filterPillTextActive,
                                     ]}
                                 >
@@ -199,7 +206,11 @@ export default function Statistics() {
                         {METRIC_OPTIONS.map((opt) => (
                             <TouchableOpacity
                                 key={opt.key}
-                                style={[styles.metricTab, selectedMetric === opt.key && styles.metricTabActive]}
+                                style={[
+                                    styles.metricTab,
+                                    isDark && { backgroundColor: colors.common.surface, borderColor: colors.common.border },
+                                    selectedMetric === opt.key && (isDark ? { backgroundColor: colors.common.surface, borderColor: "#6366F1" } : styles.metricTabActive),
+                                ]}
                                 onPress={() => setSelectedMetric(opt.key)}
                             >
                                 <Text
@@ -224,9 +235,9 @@ export default function Statistics() {
 
             {/* ─── PieChart: Game Distribution ─── */}
             {hasSessions && (
-                <View style={styles.chartCard}>
+                <View style={[styles.chartCard, isDark && { backgroundColor: colors.common.card }]}>
                     <View style={styles.chartHeader}>
-                        <Text style={styles.chartTitle}>{t("gameDistribution")}</Text>
+                        <Text style={[styles.chartTitle, { color: colors.profile.textPrimary }]}>{t("gameDistribution")}</Text>
                     </View>
                     <PieChart data={pieData} colors={pieColors} labels={pieLabels} />
                 </View>
@@ -234,9 +245,9 @@ export default function Statistics() {
 
             {/* ─── BarChart: Question Stats ─── */}
             {hasSessions && (
-                <View style={styles.chartCard}>
+                <View style={[styles.chartCard, isDark && { backgroundColor: colors.common.card }]}>
                     <View style={styles.chartHeader}>
-                        <Text style={styles.chartTitle}>{t("questionStats")}</Text>
+                        <Text style={[styles.chartTitle, { color: colors.profile.textPrimary }]}>{t("questionStats")}</Text>
                     </View>
                     <BarChart data={barData} labels={barLabels} colors={barColors} />
                 </View>

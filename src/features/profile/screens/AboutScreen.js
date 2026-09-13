@@ -3,46 +3,48 @@ import { View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import aboutStyles from "../styles/AboutScreenStyle";
+import { useTheme } from "@/contextapis/ThemeContext";
 
 export default function About() {
   const { t } = useTranslation();
+  const { colors, isDark } = useTheme();
 
   return (
-    <View style={aboutStyles.container}>
+    <View style={[aboutStyles.container, { backgroundColor: colors.common.background }]}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={aboutStyles.scrollContent}
       >
         {/* ─── Header: Logo + Name + Slogan + Version ─── */}
-        <View style={aboutStyles.headerSection}>
+        <View style={[aboutStyles.headerSection, { backgroundColor: colors.profile.cardBg }]}>
           <Image
             source={require("@/shared/assets/logo.png")}
             style={aboutStyles.logoImage}
             resizeMode="contain"
           />
-          <Text style={aboutStyles.appName}>Wordistan</Text>
-          <Text style={aboutStyles.slogan}>{t("aboutSlogan")}</Text>
+          <Text style={[aboutStyles.appName, { color: colors.profile.textPrimary }]}>Wordistan</Text>
+          <Text style={[aboutStyles.slogan, { color: colors.profile.textSecondary }]}>{t("aboutSlogan")}</Text>
           <View style={aboutStyles.versionBadge}>
             <Text style={aboutStyles.versionText}>v1.0.0</Text>
           </View>
         </View>
 
         {/* ─── Description Card ─── */}
-        <View style={aboutStyles.card}>
-          <Text style={aboutStyles.cardTitle}>{t("aboutDescTitle")}</Text>
-          <Text style={aboutStyles.cardBody}>{t("aboutDescBody")}</Text>
+        <View style={[aboutStyles.card, { backgroundColor: colors.profile.cardBg, borderColor: colors.profile.cardBorder }]}>
+          <Text style={[aboutStyles.cardTitle, { color: colors.profile.sectionTitle }]}>{t("aboutDescTitle")}</Text>
+          <Text style={[aboutStyles.cardBody, { color: colors.profile.textSecondary }]}>{t("aboutDescBody")}</Text>
         </View>
 
         {/* ─── Developer Card ─── */}
-        <View style={aboutStyles.card}>
-          <Text style={aboutStyles.cardTitle}>{t("aboutDeveloper")}</Text>
+        <View style={[aboutStyles.card, { backgroundColor: colors.profile.cardBg, borderColor: colors.profile.cardBorder }]}>
+          <Text style={[aboutStyles.cardTitle, { color: colors.profile.sectionTitle }]}>{t("aboutDeveloper")}</Text>
           <View style={aboutStyles.developerRow}>
             <View style={aboutStyles.developerAvatar}>
               <Text style={aboutStyles.developerInitials}>ÖG</Text>
             </View>
             <View>
-              <Text style={aboutStyles.developerName}>Ömer Faruk Gülşen</Text>
-              <Text style={aboutStyles.developerRole}>
+              <Text style={[aboutStyles.developerName, { color: colors.profile.textPrimary }]}>Ömer Faruk Gülşen</Text>
+              <Text style={[aboutStyles.developerRole, { color: colors.profile.textSecondary }]}>
                 {t("aboutDeveloperRole")}
               </Text>
             </View>
@@ -50,8 +52,8 @@ export default function About() {
         </View>
 
         {/* ─── Legal Card ─── */}
-        <View style={aboutStyles.card}>
-          <Text style={aboutStyles.cardTitle}>{t("aboutLegal")}</Text>
+        <View style={[aboutStyles.card, { backgroundColor: colors.profile.cardBg, borderColor: colors.profile.cardBorder }]}>
+          <Text style={[aboutStyles.cardTitle, { color: colors.profile.sectionTitle }]}>{t("aboutLegal")}</Text>
 
           {/* Privacy Policy */}
           <TouchableOpacity

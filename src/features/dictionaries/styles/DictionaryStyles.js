@@ -24,7 +24,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
     },
     wordsTable:{
-        backgroundColor:'#FAFAFD',
         flex:1
     },
     wordsTitle: {

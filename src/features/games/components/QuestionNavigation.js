@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useEffect, useState, useRef } from 'react';
 import { useFeedback } from '@/contextapis/FeedbackContext';
 import Feather from '@expo/vector-icons/Feather';
+import { useTheme } from '@/contextapis/ThemeContext';
 
 export default function QuestionNavigation({
     currentQuestion,
@@ -16,6 +17,7 @@ export default function QuestionNavigation({
     onPause,
 }) {
     const { t } = useTranslation();
+    const { colors, isDark } = useTheme();
     const { numberQuestion, userAnswers, gameType, autoCont, perPage, gameSettings } = useGame();
     const navigation = useNavigation();
     const { setAlertTitle, setAlertMessage, addAlertButton, setAlertVisible, hideAlert } = useFeedback();
@@ -143,32 +145,40 @@ export default function QuestionNavigation({
             {/* Left Action (Exit or Back) */}
             <TouchableOpacity
                 activeOpacity={0.7}
-                style={[navStyles.navBtn, isFirst ? navStyles.exitBtn : navStyles.backBtn]}
+                style={[
+                    navStyles.navBtn,
+                    isFirst
+                        ? [navStyles.exitBtn, { backgroundColor: isDark ? 'rgba(239, 68, 68, 0.15)' : '#FEF2F2', borderColor: isDark ? 'rgba(239, 68, 68, 0.3)' : '#FECACA' }]
+                        : [navStyles.backBtn, { backgroundColor: colors.games.cardBg, borderColor: colors.games.cardBorder, shadowColor: colors.games.cardShadow }]
+                ]}
                 onPress={isFirst ? handleFirstQuestion : pastQuestion}
             >
                 <Feather
                     name={isFirst ? "log-out" : "chevron-left"}
                     size={16}
-                    color={isFirst ? "#EF4444" : "#5B3FD3"}
+                    color={isFirst ? "#EF4444" : colors.common.primary}
                     style={{ marginRight: 4 }}
                 />
-                <Text style={[navStyles.btnText, isFirst ? navStyles.exitBtnText : navStyles.backBtnText]}>
+                <Text style={[navStyles.btnText, isFirst ? navStyles.exitBtnText : { color: colors.common.primary }]}>
                     {isFirst ? (t('exit') || 'Çık') : (t('back') || 'Geri')}
                 </Text>
             </TouchableOpacity>
 
             {/* Question Counter Badge */}
-            <View style={navStyles.counterBadge}>
-                <Text style={navStyles.counterText}>
+            <View style={[navStyles.counterBadge, { backgroundColor: isDark ? colors.common.surface : '#EDE9FE' }]}>
+                <Text style={[navStyles.counterText, { color: colors.common.primary }]}>
                     {currentQuestion + 1}
-                    <Text style={navStyles.counterTotal}> / {totalPages}</Text>
+                    <Text style={[navStyles.counterTotal, { color: colors.common.primary }]}> / {totalPages}</Text>
                 </Text>
             </View>
 
             {/* Right Action (Next or Finish) */}
             <TouchableOpacity
                 activeOpacity={0.7}
-                style={[navStyles.navBtn, isLast ? navStyles.finishBtn : navStyles.nextBtn]}
+                style={[
+                    navStyles.navBtn,
+                    isLast ? navStyles.finishBtn : [navStyles.nextBtn, { backgroundColor: colors.common.primary }]
+                ]}
                 onPress={isLast ? finishGame : nextQuestion}
             >
                 <Text style={[navStyles.btnText, isLast ? navStyles.finishBtnText : navStyles.nextBtnText]}>

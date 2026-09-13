@@ -12,9 +12,11 @@ import { storage } from "@/storage/storage";
 import { STORAGE_KEYS } from "@/constants/StorageKeys";
 import useTimer from "@/hooks/useTimer";
 import { useFeedback } from "@/contextapis/FeedbackContext";
+import { useTheme } from "@/contextapis/ThemeContext";
 
 export default function WordCompletionPage() {
     const [isVibrate, setVibrate] = useState(true);
+    const { colors, isDark } = useTheme();
     useEffect(() => {
         const loadVibration = async () => {
             const val = await storage.get(STORAGE_KEYS.PREFERENCES.VIBRATION_PREF);
@@ -145,11 +147,18 @@ export default function WordCompletionPage() {
 
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-            <SafeAreaView style={styles.mainContainer}>
+            <SafeAreaView style={[styles.mainContainer, { backgroundColor: colors.common.background }]}>
                 <GameHeader onPause={handlePause} remainTime={timeLeft} />
 
-                <View style={styles.questionArea}>
-                    <Text style={styles.question}>{question}</Text>
+                <View style={[
+                    styles.questionArea,
+                    {
+                        backgroundColor: colors.games.cardBg,
+                        borderColor: colors.games.cardBorder,
+                        shadowColor: colors.games.cardShadow,
+                    }
+                ]}>
+                    <Text style={[styles.question, { color: colors.games.textPrimary }]}>{question}</Text>
                 </View>
 
                 <View style={styles.lettersArea} key={currentQuestionIndex}>
@@ -162,7 +171,17 @@ export default function WordCompletionPage() {
                                     ref={(el) => (inputs.current[index] = el)}
                                     style={[
                                         styles.letterInput,
-                                        isAnswered ? (isCorrectChar ? styles.letterInputCorrect : styles.letterInputWrong) : null
+                                        {
+                                            backgroundColor: colors.games.optionBg,
+                                            borderColor: colors.games.optionBorder,
+                                            color: colors.games.textPrimary,
+                                            shadowColor: colors.games.cardShadow,
+                                        },
+                                        isAnswered ? (
+                                            isCorrectChar
+                                                ? { backgroundColor: colors.games.correctBg, borderColor: colors.games.correctBorder, color: colors.games.correctText }
+                                                : { backgroundColor: colors.games.wrongBg, borderColor: colors.games.wrongBorder, color: colors.games.wrongText }
+                                        ) : null
                                     ]}
                                     autoCapitalize="characters"
                                     autoCorrect={false}

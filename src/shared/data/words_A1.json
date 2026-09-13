@@ -1,0 +1,8084 @@
+[
+  {
+    "word": "about",
+    "meaning1": "hemen hemen",
+    "typemeaning1": "zf",
+    "meaning2": "aşağı yukarı",
+    "typemeaning2": "zf",
+    "meaning3": "yaklaşık",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "above",
+    "meaning1": "üzerine",
+    "typemeaning1": "zf",
+    "meaning2": "yukarısında",
+    "typemeaning2": "zf",
+    "meaning3": "yukarıda",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "across",
+    "meaning1": "karşıya",
+    "typemeaning1": "zf",
+    "meaning2": "(deniz/okyanus) aşırı",
+    "typemeaning2": "zf",
+    "meaning3": "karşı karşıya",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "action",
+    "meaning1": "çalışma",
+    "typemeaning1": "i",
+    "meaning2": "davranış",
+    "typemeaning2": "i",
+    "meaning3": "aksiyon",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "activity",
+    "meaning1": "etkinlik",
+    "typemeaning1": "i",
+    "meaning2": "faaliyet",
+    "typemeaning2": "i",
+    "meaning3": "meşguliyet",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "actor",
+    "meaning1": "oyuncu",
+    "typemeaning1": "i",
+    "meaning2": "erkek oyuncu",
+    "typemeaning2": "i",
+    "meaning3": "artist",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "actress",
+    "meaning1": "oyuncu",
+    "typemeaning1": "i",
+    "meaning2": "artist",
+    "typemeaning2": "i",
+    "meaning3": "aktris",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "add",
+    "meaning1": "toplamak",
+    "typemeaning1": "f",
+    "meaning2": "eklemek",
+    "typemeaning2": "f",
+    "meaning3": "ilave etmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "address",
+    "meaning1": "hitap etmek",
+    "typemeaning1": "f",
+    "meaning2": "söylev",
+    "typemeaning2": "i",
+    "meaning3": "adres",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "adult",
+    "meaning1": "yetişkin",
+    "typemeaning1": "i",
+    "meaning2": "er kişi",
+    "typemeaning2": "i",
+    "meaning3": "yetişkin kişi",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "advice",
+    "meaning1": "nasihat",
+    "typemeaning1": "i",
+    "meaning2": "tavsiye",
+    "typemeaning2": "i",
+    "meaning3": "öğüt",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "afraid",
+    "meaning1": "korkmuş",
+    "typemeaning1": "s",
+    "meaning2": "korkan",
+    "typemeaning2": "s",
+    "meaning3": "ürkmüş",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "after",
+    "meaning1": "sonra",
+    "typemeaning1": "zf",
+    "meaning2": "öğleden sonra",
+    "typemeaning2": "i",
+    "meaning3": "sonra gelen",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "afternoon",
+    "meaning1": "öğleden sonra",
+    "typemeaning1": "i",
+    "meaning2": "bir şeyin orta ve son bölümü",
+    "typemeaning2": "i",
+    "meaning3": "son kısım",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "again",
+    "meaning1": "bir daha",
+    "typemeaning1": "zf",
+    "meaning2": "daha",
+    "typemeaning2": "zf",
+    "meaning3": "tekrar",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "age",
+    "meaning1": "yaş",
+    "typemeaning1": "i",
+    "meaning2": "çağ",
+    "typemeaning2": "i",
+    "meaning3": "devir",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "ago",
+    "meaning1": "evvel",
+    "typemeaning1": "zf",
+    "meaning2": "önce",
+    "typemeaning2": "zf",
+    "meaning3": "önce",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "agree",
+    "meaning1": "aynı fikirde olmak",
+    "typemeaning1": "f",
+    "meaning2": "anlaşmak",
+    "typemeaning2": "f",
+    "meaning3": "razı olmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "air",
+    "meaning1": "havalandırmak",
+    "typemeaning1": "f",
+    "meaning2": "yayına girmek",
+    "typemeaning2": "f",
+    "meaning3": "hava",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "airport",
+    "meaning1": "havalimanı",
+    "typemeaning1": "i",
+    "meaning2": "havaalanı",
+    "typemeaning2": "i",
+    "meaning3": "hava limanı",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "all",
+    "meaning1": "tüm",
+    "typemeaning1": "i",
+    "meaning2": "bütün",
+    "typemeaning2": "i",
+    "meaning3": "hepsi",
+    "typemeaning3": "zm"
+  },
+  {
+    "word": "also",
+    "meaning1": "ayrıca",
+    "typemeaning1": "zf",
+    "meaning2": "yine",
+    "typemeaning2": "zf",
+    "meaning3": "da",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "always",
+    "meaning1": "hep",
+    "typemeaning1": "zf",
+    "meaning2": "her zaman",
+    "typemeaning2": "zf",
+    "meaning3": "daima",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "amazing",
+    "meaning1": "şaşırtıcı",
+    "typemeaning1": "s",
+    "meaning2": "şaşırtma",
+    "typemeaning2": "i",
+    "meaning3": "hayrete düşürücü",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "and",
+    "meaning1": "ile",
+    "typemeaning1": "bağ",
+    "meaning2": "ve",
+    "typemeaning2": "bağ",
+    "meaning3": "sonra",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "angry",
+    "meaning1": "kızmış",
+    "typemeaning1": "s",
+    "meaning2": "sinirli",
+    "typemeaning2": "s",
+    "meaning3": "hiddetli",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "animal",
+    "meaning1": "hayvan",
+    "typemeaning1": "s",
+    "meaning2": "hayvan",
+    "typemeaning2": "i",
+    "meaning3": "hayvani",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "another",
+    "meaning1": "öbür",
+    "typemeaning1": "s",
+    "meaning2": "başka",
+    "typemeaning2": "zm",
+    "meaning3": "ikinci bir",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "answer",
+    "meaning1": "yanıt vermek",
+    "typemeaning1": "f",
+    "meaning2": "cevaplamak",
+    "typemeaning2": "f",
+    "meaning3": "cevap vermek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "any",
+    "meaning1": "lalettayin",
+    "typemeaning1": "s",
+    "meaning2": "bazı",
+    "typemeaning2": "s",
+    "meaning3": "her",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "anyone",
+    "meaning1": "hiç kimse",
+    "typemeaning1": "zm",
+    "meaning2": "kimse",
+    "typemeaning2": "zm",
+    "meaning3": "herhangi bir kimse",
+    "typemeaning3": "zm"
+  },
+  {
+    "word": "anything",
+    "meaning1": "hiçbir şey",
+    "typemeaning1": "zm",
+    "meaning2": "her şey",
+    "typemeaning2": "zm",
+    "meaning3": "bir şey",
+    "typemeaning3": "zm"
+  },
+  {
+    "word": "apartment",
+    "meaning1": "daire",
+    "typemeaning1": "i",
+    "meaning2": "apartman katı",
+    "typemeaning2": "i",
+    "meaning3": "apartman dairesi",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "apple",
+    "meaning1": "elma",
+    "typemeaning1": "i",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "April",
+    "meaning1": "nisan",
+    "typemeaning1": "i",
+    "meaning2": "yılın dördüncü ayı",
+    "typemeaning2": "i",
+    "meaning3": "nisan ayı",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "area",
+    "meaning1": "alan",
+    "typemeaning1": "i",
+    "meaning2": "saha",
+    "typemeaning2": "i",
+    "meaning3": "bölge",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "arm",
+    "meaning1": "kol",
+    "typemeaning1": "i",
+    "meaning2": "sarılmak",
+    "typemeaning2": "f",
+    "meaning3": "destek olmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "around",
+    "meaning1": "sularında",
+    "typemeaning1": "zf",
+    "meaning2": "çevrede",
+    "typemeaning2": "zf",
+    "meaning3": "etrafında",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "arrive",
+    "meaning1": "varmak",
+    "typemeaning1": "f",
+    "meaning2": "ulaşmak",
+    "typemeaning2": "f",
+    "meaning3": "gelip çatmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "art",
+    "meaning1": "sanat",
+    "typemeaning1": "i",
+    "meaning2": "beceri",
+    "typemeaning2": "i",
+    "meaning3": "maharet",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "article",
+    "meaning1": "bent",
+    "typemeaning1": "i",
+    "meaning2": "madde",
+    "typemeaning2": "i",
+    "meaning3": "(sözleşmede) madde",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "artist",
+    "meaning1": "artist",
+    "typemeaning1": "i",
+    "meaning2": "sanatkar",
+    "typemeaning2": "i",
+    "meaning3": "sanatçı",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "as",
+    "meaning1": "olarak",
+    "typemeaning1": "zf",
+    "meaning2": "gibi",
+    "typemeaning2": "ed",
+    "meaning3": "dahi",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "ask",
+    "meaning1": "soru sormak",
+    "typemeaning1": "f",
+    "meaning2": "istemek",
+    "typemeaning2": "f",
+    "meaning3": "çağırmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "at",
+    "meaning1": "üzere",
+    "typemeaning1": "zf",
+    "meaning2": "nezdinde",
+    "typemeaning2": "zf",
+    "meaning3": "haliyle",
+    "typemeaning3": "ed"
+  },
+  {
+    "word": "August",
+    "meaning1": "ağustos",
+    "typemeaning1": "i",
+    "meaning2": "yılın sekizinci ayı",
+    "typemeaning2": "i",
+    "meaning3": "ağustos ayı",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "aunt",
+    "meaning1": "hala",
+    "typemeaning1": "i",
+    "meaning2": "teyze",
+    "typemeaning2": "i",
+    "meaning3": "yenge",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "autumn",
+    "meaning1": "güz",
+    "typemeaning1": "i",
+    "meaning2": "sonbahar",
+    "typemeaning2": "i",
+    "meaning3": "hazan",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "away",
+    "meaning1": "uzak",
+    "typemeaning1": "s",
+    "meaning2": "uzağa",
+    "typemeaning2": "zf",
+    "meaning3": "uzakta",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "baby",
+    "meaning1": "yavru",
+    "typemeaning1": "i",
+    "meaning2": "bebek",
+    "typemeaning2": "i",
+    "meaning3": "şımartmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "back",
+    "meaning1": "art",
+    "typemeaning1": "i",
+    "meaning2": "arkalık",
+    "typemeaning2": "i",
+    "meaning3": "sırt",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "bad",
+    "meaning1": "kötü",
+    "typemeaning1": "s",
+    "meaning2": "fena",
+    "typemeaning2": "s",
+    "meaning3": "bozuk",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "bag",
+    "meaning1": "poşet",
+    "typemeaning1": "i",
+    "meaning2": "torba",
+    "typemeaning2": "i",
+    "meaning3": "çanta",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "ball",
+    "meaning1": "balo",
+    "typemeaning1": "i",
+    "meaning2": "yumak",
+    "typemeaning2": "i",
+    "meaning3": "bilye",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "banana",
+    "meaning1": "muz",
+    "typemeaning1": "i",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "band",
+    "meaning1": "bant",
+    "typemeaning1": "i",
+    "meaning2": "bando",
+    "typemeaning2": "i",
+    "meaning3": "şerit",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "bank",
+    "meaning1": "banka",
+    "typemeaning1": "i",
+    "meaning2": "önlemek",
+    "typemeaning2": "f",
+    "meaning3": "kümelenmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "bath",
+    "meaning1": "yıkanmak",
+    "typemeaning1": "f",
+    "meaning2": "banyo",
+    "typemeaning2": "i",
+    "meaning3": "banyo yapmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "bathroom",
+    "meaning1": "tuvalet",
+    "typemeaning1": "i",
+    "meaning2": "banyo",
+    "typemeaning2": "i",
+    "meaning3": "banyo odası",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "be",
+    "meaning1": "bulunmak",
+    "typemeaning1": "f",
+    "meaning2": "olmak",
+    "typemeaning2": "f",
+    "meaning3": "var olmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "beach",
+    "meaning1": "sahil",
+    "typemeaning1": "i",
+    "meaning2": "kumsal",
+    "typemeaning2": "i",
+    "meaning3": "plaj",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "beautiful",
+    "meaning1": "güzel",
+    "typemeaning1": "s",
+    "meaning2": "tatlı",
+    "typemeaning2": "s",
+    "meaning3": "ahım şahım",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "because",
+    "meaning1": "çünkü",
+    "typemeaning1": "bağ",
+    "meaning2": "-dığı için",
+    "typemeaning2": "bağ",
+    "meaning3": "zira",
+    "typemeaning3": "bağ"
+  },
+  {
+    "word": "become",
+    "meaning1": "haline gelmek",
+    "typemeaning1": "f",
+    "meaning2": "olmak",
+    "typemeaning2": "f",
+    "meaning3": "dönüşmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "bed",
+    "meaning1": "yatak",
+    "typemeaning1": "i",
+    "meaning2": "gömmek",
+    "typemeaning2": "f",
+    "meaning3": "oturtmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "bedroom",
+    "meaning1": "yatak odası",
+    "typemeaning1": "i",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "beer",
+    "meaning1": "bira",
+    "typemeaning1": "i",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "before",
+    "meaning1": "evvel",
+    "typemeaning1": "ed",
+    "meaning2": "önce",
+    "typemeaning2": "ed",
+    "meaning3": "daha önce",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "begin",
+    "meaning1": "başlatmak",
+    "typemeaning1": "f",
+    "meaning2": "başlamak",
+    "typemeaning2": "f",
+    "meaning3": "began - begun",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "beginning",
+    "meaning1": "başlangıç",
+    "typemeaning1": "i",
+    "meaning2": "baş",
+    "typemeaning2": "s",
+    "meaning3": "ilk adım",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "behind",
+    "meaning1": "ardındaki",
+    "typemeaning1": "s",
+    "meaning2": "arkaya",
+    "typemeaning2": "zf",
+    "meaning3": "geriye",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "believe",
+    "meaning1": "inanmak",
+    "typemeaning1": "f",
+    "meaning2": "inanmak",
+    "typemeaning2": "f",
+    "meaning3": "kanmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "below",
+    "meaning1": "alttaki",
+    "typemeaning1": "s",
+    "meaning2": "aşağıdaki",
+    "typemeaning2": "s",
+    "meaning3": "altta",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "best",
+    "meaning1": "en iyi",
+    "typemeaning1": "s",
+    "meaning2": "geçmek",
+    "typemeaning2": "f",
+    "meaning3": "baskın çıkmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "better",
+    "meaning1": "daha iyi",
+    "typemeaning1": "s",
+    "meaning2": "iyileştirmek",
+    "typemeaning2": "f",
+    "meaning3": "ıslah etmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "between",
+    "meaning1": "arasında",
+    "typemeaning1": "zf",
+    "meaning2": "arasına",
+    "typemeaning2": "zf",
+    "meaning3": "ortada",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "bicycle",
+    "meaning1": "bisiklet",
+    "typemeaning1": "i",
+    "meaning2": "bisiklet kullanarak gitmek",
+    "typemeaning2": "f",
+    "meaning3": "bisikletle gezmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "big",
+    "meaning1": "iri",
+    "typemeaning1": "s",
+    "meaning2": "büyük",
+    "typemeaning2": "s",
+    "meaning3": "kapı gibi",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "bike",
+    "meaning1": "bisiklete binmek",
+    "typemeaning1": "f",
+    "meaning2": "bisiklet",
+    "typemeaning2": "i",
+    "meaning3": "bisiklet sürmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "bill",
+    "meaning1": "senet",
+    "typemeaning1": "i",
+    "meaning2": "fatura",
+    "typemeaning2": "i",
+    "meaning3": "ilan etmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "bird",
+    "meaning1": "kuş",
+    "typemeaning1": "i",
+    "meaning2": "manita",
+    "typemeaning2": "i",
+    "meaning3": "kus",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "birthday",
+    "meaning1": "yaş günü",
+    "typemeaning1": "i",
+    "meaning2": "doğum günü",
+    "typemeaning2": "i",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "black",
+    "meaning1": "siyahi",
+    "typemeaning1": "s",
+    "meaning2": "kara",
+    "typemeaning2": "s",
+    "meaning3": "siyah",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "blog",
+    "meaning1": "web günlüğü internet günlüğ",
+    "typemeaning1": "",
+    "meaning2": "",
+    "typemeaning2": "internet günlüğü",
+    "meaning3": "",
+    "typemeaning3": "internet kullanıcılarının kendi istedikleri şeyleri yazdıkları ve bunları diğer kullanıcılarla paylaştıkları günlük benzeri platform"
+  },
+  {
+    "word": "blonde",
+    "meaning1": "sarışın",
+    "typemeaning1": "s",
+    "meaning2": "sarışın kız",
+    "typemeaning2": "i",
+    "meaning3": "sarı",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "blue",
+    "meaning1": "mavi",
+    "typemeaning1": "s",
+    "meaning2": "çarçur etmek",
+    "typemeaning2": "f",
+    "meaning3": "har vurup harman savurmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "boat",
+    "meaning1": "tekne",
+    "typemeaning1": "i",
+    "meaning2": "bot",
+    "typemeaning2": "i",
+    "meaning3": "kayık",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "body",
+    "meaning1": "ceset",
+    "typemeaning1": "i",
+    "meaning2": "gövde",
+    "typemeaning2": "i",
+    "meaning3": "vücut",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "book",
+    "meaning1": "ayırtmak",
+    "typemeaning1": "f",
+    "meaning2": "kitap",
+    "typemeaning2": "i",
+    "meaning3": "deftere işlemek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "boot",
+    "meaning1": "bot",
+    "typemeaning1": "i",
+    "meaning2": "çizme",
+    "typemeaning2": "i",
+    "meaning3": "kovmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "bored",
+    "meaning1": "sıkılmış",
+    "typemeaning1": "s",
+    "meaning2": "delinmiş",
+    "typemeaning2": "s",
+    "meaning3": "bıkkın",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "boring",
+    "meaning1": "bıktırıcı",
+    "typemeaning1": "s",
+    "meaning2": "bıktıran",
+    "typemeaning2": "s",
+    "meaning3": "sıkıcı",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "born",
+    "meaning1": "doğan",
+    "typemeaning1": "s",
+    "meaning2": "doğuştan",
+    "typemeaning2": "s",
+    "meaning3": "doğmuş",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "both",
+    "meaning1": "her ikisi de",
+    "typemeaning1": "s",
+    "meaning2": "her iki",
+    "typemeaning2": "s",
+    "meaning3": "her ikisi (de)",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "bottle",
+    "meaning1": "şişe",
+    "typemeaning1": "i",
+    "meaning2": "susturmak",
+    "typemeaning2": "f",
+    "meaning3": "şişelemek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "box",
+    "meaning1": "kutu",
+    "typemeaning1": "i",
+    "meaning2": "boks etmek",
+    "typemeaning2": "f",
+    "meaning3": "yumruk atmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "boy",
+    "meaning1": "delikanlı",
+    "typemeaning1": "i",
+    "meaning2": "erkek çocuk",
+    "typemeaning2": "i",
+    "meaning3": "oğlan",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "boyfriend",
+    "meaning1": "flört",
+    "typemeaning1": "i",
+    "meaning2": "sevgili",
+    "typemeaning2": "i",
+    "meaning3": "erkek arkadaş",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "bread",
+    "meaning1": "ekmek",
+    "typemeaning1": "i",
+    "meaning2": "pane etmek",
+    "typemeaning2": "f",
+    "meaning3": "geçim",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "break",
+    "meaning1": "kopmak",
+    "typemeaning1": "f",
+    "meaning2": "kırmak",
+    "typemeaning2": "f",
+    "meaning3": "bozmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "breakfast",
+    "meaning1": "kahvaltı",
+    "typemeaning1": "i",
+    "meaning2": "kahvaltı etmek",
+    "typemeaning2": "f",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "bring",
+    "meaning1": "getirmek",
+    "typemeaning1": "f",
+    "meaning2": "brought - brought",
+    "typemeaning2": "f",
+    "meaning3": "neden olmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "brother",
+    "meaning1": "kardeş",
+    "typemeaning1": "i",
+    "meaning2": "erkek kardeş",
+    "typemeaning2": "i",
+    "meaning3": "erkek kardeş",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "brown",
+    "meaning1": "kahverengi",
+    "typemeaning1": "s",
+    "meaning2": "kızarmak",
+    "typemeaning2": "f",
+    "meaning3": "karartmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "build",
+    "meaning1": "inşa etmek",
+    "typemeaning1": "f",
+    "meaning2": "built - built",
+    "typemeaning2": "f",
+    "meaning3": "bina etmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "building",
+    "meaning1": "inşaat",
+    "typemeaning1": "i",
+    "meaning2": "bina",
+    "typemeaning2": "i",
+    "meaning3": "yapma",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "bus",
+    "meaning1": "otobüs",
+    "typemeaning1": "i",
+    "meaning2": "otobüsle taşımak",
+    "typemeaning2": "f",
+    "meaning3": "otobüsle gitmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "business",
+    "meaning1": "işletme",
+    "typemeaning1": "i",
+    "meaning2": "iş",
+    "typemeaning2": "i",
+    "meaning3": "iş kuruluşu",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "busy",
+    "meaning1": "işlek",
+    "typemeaning1": "s",
+    "meaning2": "meşgul",
+    "typemeaning2": "s",
+    "meaning3": "faal",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "but",
+    "meaning1": "ancak",
+    "typemeaning1": "bağ",
+    "meaning2": "fakat",
+    "typemeaning2": "bağ",
+    "meaning3": "itiraz",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "butter",
+    "meaning1": "tereyağı",
+    "typemeaning1": "i",
+    "meaning2": "tereyağı sürmek",
+    "typemeaning2": "f",
+    "meaning3": "yağ sürmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "buy",
+    "meaning1": "ısmarlamak",
+    "typemeaning1": "f",
+    "meaning2": "satın almak",
+    "typemeaning2": "f",
+    "meaning3": "almak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "by",
+    "meaning1": "geçecek biçimde",
+    "typemeaning1": "zf",
+    "meaning2": "yakın",
+    "typemeaning2": "zf",
+    "meaning3": "evde",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "bye",
+    "meaning1": "ast",
+    "typemeaning1": "i",
+    "meaning2": "çiftli yarışan çiftlerden biri",
+    "typemeaning2": "i",
+    "meaning3": "hoşçakal",
+    "typemeaning3": "ünl"
+  },
+  {
+    "word": "cafe",
+    "meaning1": "kafe",
+    "typemeaning1": "i",
+    "meaning2": "bar",
+    "typemeaning2": "i",
+    "meaning3": "kahve",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "cake",
+    "meaning1": "kek",
+    "typemeaning1": "i",
+    "meaning2": "pasta",
+    "typemeaning2": "i",
+    "meaning3": "kabuklaşmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "call",
+    "meaning1": "çağırmak",
+    "typemeaning1": "f",
+    "meaning2": "telefon açmak",
+    "typemeaning2": "f",
+    "meaning3": "telefon etmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "camera",
+    "meaning1": "fotoğraf makinesi",
+    "typemeaning1": "i",
+    "meaning2": "kamera",
+    "typemeaning2": "i",
+    "meaning3": "fotograf makinesi",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "can",
+    "meaning1": "olabilmek",
+    "typemeaning1": "f",
+    "meaning2": "kovmak",
+    "typemeaning2": "f",
+    "meaning3": "konservelemek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "cannot",
+    "meaning1": "edememek",
+    "typemeaning1": "f",
+    "meaning2": "yapamamak",
+    "typemeaning2": "f",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "capital",
+    "meaning1": "sermaye",
+    "typemeaning1": "i",
+    "meaning2": "başkent",
+    "typemeaning2": "i",
+    "meaning3": "kapital",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "car",
+    "meaning1": "otomobil",
+    "typemeaning1": "i",
+    "meaning2": "araba",
+    "typemeaning2": "i",
+    "meaning3": "kabin",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "card",
+    "meaning1": "kart",
+    "typemeaning1": "i",
+    "meaning2": "iskambil kağıdı",
+    "typemeaning2": "i",
+    "meaning3": "fişlemek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "career",
+    "meaning1": "kariyer",
+    "typemeaning1": "i",
+    "meaning2": "hız yapmak",
+    "typemeaning2": "f",
+    "meaning3": "son hızda gitmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "carrot",
+    "meaning1": "kızıl saç",
+    "typemeaning1": "i",
+    "meaning2": "havuç",
+    "typemeaning2": "i",
+    "meaning3": "ödül/teşvik",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "carry",
+    "meaning1": "taşımak",
+    "typemeaning1": "f",
+    "meaning2": "sürüklemek",
+    "typemeaning2": "f",
+    "meaning3": "elde etmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "cat",
+    "meaning1": "kedi",
+    "typemeaning1": "i",
+    "meaning2": "istifra etmek",
+    "typemeaning2": "f",
+    "meaning3": "kusmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "CD",
+    "meaning1": "dış çap cd compact dis",
+    "typemeaning1": "CD dış çap cd compact dis",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "cent",
+    "meaning1": "sent",
+    "typemeaning1": "i",
+    "meaning2": "metelik",
+    "typemeaning2": "i",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "centre",
+    "meaning1": "merkez",
+    "typemeaning1": "i",
+    "meaning2": "merkezde toplanmak",
+    "typemeaning2": "f",
+    "meaning3": "konsantre olmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "century",
+    "meaning1": "asır",
+    "typemeaning1": "i",
+    "meaning2": "yüzyıl",
+    "typemeaning2": "i",
+    "meaning3": "asır",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "chair",
+    "meaning1": "koltuk",
+    "typemeaning1": "i",
+    "meaning2": "sandalye",
+    "typemeaning2": "i",
+    "meaning3": "iskemle",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "change",
+    "meaning1": "değişmek",
+    "typemeaning1": "f",
+    "meaning2": "değiştirmek",
+    "typemeaning2": "f",
+    "meaning3": "değişiklik",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "chart",
+    "meaning1": "çizelge",
+    "typemeaning1": "i",
+    "meaning2": "göstermek",
+    "typemeaning2": "f",
+    "meaning3": "haritaya almak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "cheap",
+    "meaning1": "ucuz",
+    "typemeaning1": "s",
+    "meaning2": "ucuzlatmak",
+    "typemeaning2": "f",
+    "meaning3": "değersiz",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "check",
+    "meaning1": "denetlemek",
+    "typemeaning1": "f",
+    "meaning2": "kontrol etmek",
+    "typemeaning2": "f",
+    "meaning3": "kontrol",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "cheese",
+    "meaning1": "peynir",
+    "typemeaning1": "i",
+    "meaning2": "peynir kalıbı",
+    "typemeaning2": "i",
+    "meaning3": "meyve konservesi",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "chicken",
+    "meaning1": "tavuk",
+    "typemeaning1": "i",
+    "meaning2": "piliç",
+    "typemeaning2": "i",
+    "meaning3": "korkak davranmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "child",
+    "meaning1": "evlat",
+    "typemeaning1": "i",
+    "meaning2": "çocuk",
+    "typemeaning2": "i",
+    "meaning3": "ürün",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "chocolate",
+    "meaning1": "çikolata",
+    "typemeaning1": "i",
+    "meaning2": "çikolatalı şekerleme",
+    "typemeaning2": "i",
+    "meaning3": "çikolatadan yapılmış",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "choose",
+    "meaning1": "seçmek",
+    "typemeaning1": "f",
+    "meaning2": "chose - chosen",
+    "typemeaning2": "f",
+    "meaning3": "ayırmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "cinema",
+    "meaning1": "sinema",
+    "typemeaning1": "i",
+    "meaning2": "sinema salonu",
+    "typemeaning2": "i",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "city",
+    "meaning1": "kent",
+    "typemeaning1": "i",
+    "meaning2": "şehir",
+    "typemeaning2": "i",
+    "meaning3": "metropol",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "class",
+    "meaning1": "ders",
+    "typemeaning1": "i",
+    "meaning2": "sınıf",
+    "typemeaning2": "i",
+    "meaning3": "saymak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "classroom",
+    "meaning1": "sınıf",
+    "typemeaning1": "i",
+    "meaning2": "dershane",
+    "typemeaning2": "i",
+    "meaning3": "derslik",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "clean",
+    "meaning1": "temizlemek",
+    "typemeaning1": "f",
+    "meaning2": "temiz",
+    "typemeaning2": "s",
+    "meaning3": "temizlenmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "climb",
+    "meaning1": "tırmanmak",
+    "typemeaning1": "f",
+    "meaning2": "tırmanış",
+    "typemeaning2": "i",
+    "meaning3": "çıkmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "clock",
+    "meaning1": "saat",
+    "typemeaning1": "i",
+    "meaning2": "saat tutmak",
+    "typemeaning2": "f",
+    "meaning3": "ölçmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "close",
+    "meaning1": "kapamak",
+    "typemeaning1": "f",
+    "meaning2": "kapatmak",
+    "typemeaning2": "f",
+    "meaning3": "yakın",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "clothes",
+    "meaning1": "giysi",
+    "typemeaning1": "i",
+    "meaning2": "elbise",
+    "typemeaning2": "i",
+    "meaning3": "esvap",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "club",
+    "meaning1": "kulüp",
+    "typemeaning1": "i",
+    "meaning2": "ortakça yatırmak",
+    "typemeaning2": "f",
+    "meaning3": "sopa ile dövmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "coat",
+    "meaning1": "kaplamak",
+    "typemeaning1": "f",
+    "meaning2": "kaban",
+    "typemeaning2": "i",
+    "meaning3": "mont",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "coffee",
+    "meaning1": "kahve",
+    "typemeaning1": "i",
+    "meaning2": "kahvehane",
+    "typemeaning2": "i",
+    "meaning3": "kıraathane",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "cold",
+    "meaning1": "soğukluk",
+    "typemeaning1": "i",
+    "meaning2": "soğukkanlı",
+    "typemeaning2": "s",
+    "meaning3": "soğuk",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "college",
+    "meaning1": "yüksekokul",
+    "typemeaning1": "i",
+    "meaning2": "kolej",
+    "typemeaning2": "i",
+    "meaning3": "üniversite",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "colour",
+    "meaning1": "renk",
+    "typemeaning1": "i",
+    "meaning2": "boya",
+    "typemeaning2": "i",
+    "meaning3": "yüzü kızarmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "come",
+    "meaning1": "gelmek",
+    "typemeaning1": "f",
+    "meaning2": "came - come",
+    "typemeaning2": "f",
+    "meaning3": "gelip dayanmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "common",
+    "meaning1": "alışılmış",
+    "typemeaning1": "s",
+    "meaning2": "alelade",
+    "typemeaning2": "s",
+    "meaning3": "yaygın",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "company",
+    "meaning1": "bölük",
+    "typemeaning1": "i",
+    "meaning2": "şirket",
+    "typemeaning2": "i",
+    "meaning3": "firma",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "compare",
+    "meaning1": "mukayese etmek",
+    "typemeaning1": "f",
+    "meaning2": "kıyaslamak",
+    "typemeaning2": "f",
+    "meaning3": "karşılaştırmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "complete",
+    "meaning1": "tamamlamak",
+    "typemeaning1": "f",
+    "meaning2": "tam",
+    "typemeaning2": "s",
+    "meaning3": "bütün",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "computer",
+    "meaning1": "bilgisayar",
+    "typemeaning1": "i",
+    "meaning2": "kompüter",
+    "typemeaning2": "i",
+    "meaning3": "elektronik beyin",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "concert",
+    "meaning1": "konser",
+    "typemeaning1": "i",
+    "meaning2": "anlaşmak",
+    "typemeaning2": "f",
+    "meaning3": "birlikte hareket etmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "conversation",
+    "meaning1": "konuşma",
+    "typemeaning1": "i",
+    "meaning2": "sohbet",
+    "typemeaning2": "i",
+    "meaning3": "muhabbet",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "cook",
+    "meaning1": "yemek pişirmek",
+    "typemeaning1": "f",
+    "meaning2": "pişirmek",
+    "typemeaning2": "f",
+    "meaning3": "aşçı",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "cooking",
+    "meaning1": "yemek pişirme",
+    "typemeaning1": "i",
+    "meaning2": "mutfak",
+    "typemeaning2": "i",
+    "meaning3": "pişim",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "cool",
+    "meaning1": "soğutmak",
+    "typemeaning1": "f",
+    "meaning2": "serinlik",
+    "typemeaning2": "i",
+    "meaning3": "serin",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "correct",
+    "meaning1": "düzeltmek",
+    "typemeaning1": "f",
+    "meaning2": "doğru",
+    "typemeaning2": "s",
+    "meaning3": "haddini bildirmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "cost",
+    "meaning1": "mal olmak",
+    "typemeaning1": "f",
+    "meaning2": "masraf",
+    "typemeaning2": "i",
+    "meaning3": "ücret",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "could",
+    "meaning1": "-abilirdi",
+    "typemeaning1": "f",
+    "meaning2": "-er misin(iz)",
+    "typemeaning2": "f",
+    "meaning3": "-ebilirdi",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "country",
+    "meaning1": "yurt",
+    "typemeaning1": "i",
+    "meaning2": "memleket",
+    "typemeaning2": "i",
+    "meaning3": "ülke",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "course",
+    "meaning1": "kurs",
+    "typemeaning1": "i",
+    "meaning2": "izlenen yol",
+    "typemeaning2": "i",
+    "meaning3": "rota",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "cousin",
+    "meaning1": "kuzen",
+    "typemeaning1": "i",
+    "meaning2": "teyze oğlu/kızı",
+    "typemeaning2": "i",
+    "meaning3": "amca oğlu",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "cow",
+    "meaning1": "inek",
+    "typemeaning1": "i",
+    "meaning2": "korkutmak",
+    "typemeaning2": "f",
+    "meaning3": "posta koymak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "cream",
+    "meaning1": "kaymak",
+    "typemeaning1": "i",
+    "meaning2": "krema",
+    "typemeaning2": "i",
+    "meaning3": "krem",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "create",
+    "meaning1": "meydana getirmek",
+    "typemeaning1": "f",
+    "meaning2": "oluşturmak",
+    "typemeaning2": "f",
+    "meaning3": "yaratmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "culture",
+    "meaning1": "kültür",
+    "typemeaning1": "i",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "cup",
+    "meaning1": "kupa",
+    "typemeaning1": "i",
+    "meaning2": "fincan",
+    "typemeaning2": "i",
+    "meaning3": "kavramak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "customer",
+    "meaning1": "müşteri",
+    "typemeaning1": "i",
+    "meaning2": "alıcı",
+    "typemeaning2": "i",
+    "meaning3": "tip",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "cut",
+    "meaning1": "kesmek",
+    "typemeaning1": "f",
+    "meaning2": "pay",
+    "typemeaning2": "i",
+    "meaning3": "kesik",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "dad",
+    "meaning1": "babacığım",
+    "typemeaning1": "i",
+    "meaning2": "baba",
+    "typemeaning2": "i",
+    "meaning3": "babacık",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "dance",
+    "meaning1": "dans etmek",
+    "typemeaning1": "f",
+    "meaning2": "dans",
+    "typemeaning2": "i",
+    "meaning3": "sıçramak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "dancer",
+    "meaning1": "dansöz",
+    "typemeaning1": "i",
+    "meaning2": "dansçı",
+    "typemeaning2": "i",
+    "meaning3": "rakkase",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "dancing",
+    "meaning1": "dans etme",
+    "typemeaning1": "i",
+    "meaning2": "dans",
+    "typemeaning2": "s",
+    "meaning3": "oynama",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "dangerous",
+    "meaning1": "tehlikeli",
+    "typemeaning1": "s",
+    "meaning2": "çekinceli",
+    "typemeaning2": "s",
+    "meaning3": "riskli",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "dark",
+    "meaning1": "karanlık",
+    "typemeaning1": "i",
+    "meaning2": "koyu",
+    "typemeaning2": "s",
+    "meaning3": "belirsizlik",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "date",
+    "meaning1": "(biriyle) çıkmak",
+    "typemeaning1": "f",
+    "meaning2": "randevuya çıkmak",
+    "typemeaning2": "f",
+    "meaning3": "zaman",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "daughter",
+    "meaning1": "kız çocuk",
+    "typemeaning1": "i",
+    "meaning2": "kız evlat",
+    "typemeaning2": "i",
+    "meaning3": "ilişki",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "day",
+    "meaning1": "gün",
+    "typemeaning1": "i",
+    "meaning2": "dönem",
+    "typemeaning2": "i",
+    "meaning3": "gündüz",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "dear",
+    "meaning1": "sevgili",
+    "typemeaning1": "s",
+    "meaning2": "canım",
+    "typemeaning2": "ünl",
+    "meaning3": "tatlı kimse",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "December",
+    "meaning1": "aralık (ayı)",
+    "typemeaning1": "f",
+    "meaning2": "aralık (ayı)",
+    "typemeaning2": "i",
+    "meaning3": "aralık ayı",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "decide",
+    "meaning1": "karar vermek",
+    "typemeaning1": "f",
+    "meaning2": "belirlemek",
+    "typemeaning2": "f",
+    "meaning3": "azmetmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "delicious",
+    "meaning1": "nefis",
+    "typemeaning1": "s",
+    "meaning2": "leziz",
+    "typemeaning2": "s",
+    "meaning3": "lezzetli",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "describe",
+    "meaning1": "betimlemek",
+    "typemeaning1": "f",
+    "meaning2": "tanımlamak",
+    "typemeaning2": "f",
+    "meaning3": "tarif etmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "description",
+    "meaning1": "tasvir",
+    "typemeaning1": "i",
+    "meaning2": "betimleme",
+    "typemeaning2": "i",
+    "meaning3": "tarif",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "design",
+    "meaning1": "dizayn etmek",
+    "typemeaning1": "f",
+    "meaning2": "tasarlamak",
+    "typemeaning2": "f",
+    "meaning3": "tasarım",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "desk",
+    "meaning1": "çalışma masası",
+    "typemeaning1": "i",
+    "meaning2": "okul sırası",
+    "typemeaning2": "i",
+    "meaning3": "kürsü",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "detail",
+    "meaning1": "detay",
+    "typemeaning1": "i",
+    "meaning2": "ayrıntı",
+    "typemeaning2": "i",
+    "meaning3": "ayrıntılı anlatmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "dialogue",
+    "meaning1": "diyalog",
+    "typemeaning1": "i",
+    "meaning2": "karşılıklı konuşma",
+    "typemeaning2": "i",
+    "meaning3": "konuşma",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "dictionary",
+    "meaning1": "sözlük",
+    "typemeaning1": "i",
+    "meaning2": "ansiklopedik sözlük",
+    "typemeaning2": "i",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "die",
+    "meaning1": "ölmek",
+    "typemeaning1": "f",
+    "meaning2": "çenesi atmak",
+    "typemeaning2": "f",
+    "meaning3": "kandilin yağı tükenmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "diet",
+    "meaning1": "diyet",
+    "typemeaning1": "i",
+    "meaning2": "perhiz",
+    "typemeaning2": "i",
+    "meaning3": "perhiz vermek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "difference",
+    "meaning1": "ayrım",
+    "typemeaning1": "i",
+    "meaning2": "fark",
+    "typemeaning2": "i",
+    "meaning3": "dava",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "different",
+    "meaning1": "farklı",
+    "typemeaning1": "s",
+    "meaning2": "değişik",
+    "typemeaning2": "s",
+    "meaning3": "başka",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "difficult",
+    "meaning1": "çetin",
+    "typemeaning1": "s",
+    "meaning2": "zor",
+    "typemeaning2": "s",
+    "meaning3": "zorlu",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "dinner",
+    "meaning1": "akşam yemeği",
+    "typemeaning1": "i",
+    "meaning2": "yemek",
+    "typemeaning2": "i",
+    "meaning3": "günün esas yemeği",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "dirty",
+    "meaning1": "pisletmek",
+    "typemeaning1": "f",
+    "meaning2": "pis",
+    "typemeaning2": "s",
+    "meaning3": "kirli",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "discuss",
+    "meaning1": "görüşmek",
+    "typemeaning1": "f",
+    "meaning2": "tartışmak",
+    "typemeaning2": "f",
+    "meaning3": "müzakere etmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "dish",
+    "meaning1": "tabak",
+    "typemeaning1": "i",
+    "meaning2": "mahvetmek",
+    "typemeaning2": "f",
+    "meaning3": "oymak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "do",
+    "meaning1": "etmek",
+    "typemeaning1": "f",
+    "meaning2": "yapmak",
+    "typemeaning2": "f",
+    "meaning3": "did - done",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "doctor",
+    "meaning1": "doktor",
+    "typemeaning1": "i",
+    "meaning2": "değiştirmek (kötü bir amaçla)",
+    "typemeaning2": "f",
+    "meaning3": "tahrif etmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "dog",
+    "meaning1": "it",
+    "typemeaning1": "i",
+    "meaning2": "köpek",
+    "typemeaning2": "i",
+    "meaning3": "bozulmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "dollar",
+    "meaning1": "amerikan parası",
+    "typemeaning1": "i",
+    "meaning2": "dolar",
+    "typemeaning2": "i",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "door",
+    "meaning1": "kapı",
+    "typemeaning1": "i",
+    "meaning2": "kapı",
+    "typemeaning2": "i",
+    "meaning3": "eşik",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "down",
+    "meaning1": "aşağıya doğru",
+    "typemeaning1": "zf",
+    "meaning2": "aşağı",
+    "typemeaning2": "ed",
+    "meaning3": "alaşağı etmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "downstairs",
+    "meaning1": "aşağı katta",
+    "typemeaning1": "i",
+    "meaning2": "altkat",
+    "typemeaning2": "i",
+    "meaning3": "alt kat",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "draw",
+    "meaning1": "karalamak",
+    "typemeaning1": "f",
+    "meaning2": "çekmek",
+    "typemeaning2": "f",
+    "meaning3": "çizmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "dress",
+    "meaning1": "giyinmek",
+    "typemeaning1": "f",
+    "meaning2": "giymek",
+    "typemeaning2": "f",
+    "meaning3": "giysi",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "drink",
+    "meaning1": "içmek",
+    "typemeaning1": "f",
+    "meaning2": "içki",
+    "typemeaning2": "i",
+    "meaning3": "drank - drunk",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "drive",
+    "meaning1": "sürmek",
+    "typemeaning1": "f",
+    "meaning2": "araba sürmek",
+    "typemeaning2": "f",
+    "meaning3": "dürtü",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "driver",
+    "meaning1": "sürücü",
+    "typemeaning1": "i",
+    "meaning2": "şoför",
+    "typemeaning2": "i",
+    "meaning3": "makinist",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "during",
+    "meaning1": "zarfında",
+    "typemeaning1": "zf",
+    "meaning2": "süresince",
+    "typemeaning2": "ed",
+    "meaning3": "sırasında",
+    "typemeaning3": "ed"
+  },
+  {
+    "word": "DVD",
+    "meaning1": "dvd",
+    "typemeaning1": "i",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "each",
+    "meaning1": "her biri",
+    "typemeaning1": "zm",
+    "meaning2": "herbir",
+    "typemeaning2": "s",
+    "meaning3": "beher",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "ear",
+    "meaning1": "kulak",
+    "typemeaning1": "i",
+    "meaning2": "başaklanmak",
+    "typemeaning2": "f",
+    "meaning3": "kulak",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "early",
+    "meaning1": "erken",
+    "typemeaning1": "s",
+    "meaning2": "ilkel",
+    "typemeaning2": "s",
+    "meaning3": "erken",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "east",
+    "meaning1": "doğu",
+    "typemeaning1": "i",
+    "meaning2": "doğudaki bölüm",
+    "typemeaning2": "i",
+    "meaning3": "gündoğusu",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "easy",
+    "meaning1": "rahat",
+    "typemeaning1": "s",
+    "meaning2": "kolay",
+    "typemeaning2": "s",
+    "meaning3": "basit",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "eat",
+    "meaning1": "yemek yemek",
+    "typemeaning1": "f",
+    "meaning2": "yemek",
+    "typemeaning2": "f",
+    "meaning3": "ate - eaten",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "egg",
+    "meaning1": "yumurta",
+    "typemeaning1": "i",
+    "meaning2": "teşvik etmek",
+    "typemeaning2": "f",
+    "meaning3": "tahrik etmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "eight",
+    "meaning1": "sekiz",
+    "typemeaning1": "i",
+    "meaning2": "ambar",
+    "typemeaning2": "i",
+    "meaning3": "sekiz rakamı (8, VIII)",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "eighteen",
+    "meaning1": "onsekiz",
+    "typemeaning1": "i",
+    "meaning2": "onsekiz sayısı (18, XVIII)",
+    "typemeaning2": "i",
+    "meaning3": "on sekiz",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "eighty",
+    "meaning1": "seksen",
+    "typemeaning1": "i",
+    "meaning2": "seksen sayısı (80)",
+    "typemeaning2": "i",
+    "meaning3": "80",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "elephant",
+    "meaning1": "fil",
+    "typemeaning1": "i",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "eleven",
+    "meaning1": "onbir",
+    "typemeaning1": "i",
+    "meaning2": "on bir sayısı (11, XI)",
+    "typemeaning2": "i",
+    "meaning3": "on bir",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "else",
+    "meaning1": "başka",
+    "typemeaning1": "s",
+    "meaning2": "başka türlü",
+    "typemeaning2": "s",
+    "meaning3": "daha",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "email",
+    "meaning1": "email göndermek",
+    "typemeaning1": "f",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "end",
+    "meaning1": "sona ermek",
+    "typemeaning1": "f",
+    "meaning2": "son vermek",
+    "typemeaning2": "f",
+    "meaning3": "son bulmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "enjoy",
+    "meaning1": "tadını çıkarmak",
+    "typemeaning1": "f",
+    "meaning2": "zevk almak",
+    "typemeaning2": "f",
+    "meaning3": "anlamak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "enough",
+    "meaning1": "kafi",
+    "typemeaning1": "s",
+    "meaning2": "yeterli",
+    "typemeaning2": "s",
+    "meaning3": "yeter",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "euro",
+    "meaning1": "euro",
+    "typemeaning1": "i",
+    "meaning2": "avro",
+    "typemeaning2": "i",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "even",
+    "meaning1": "düzgün",
+    "typemeaning1": "s",
+    "meaning2": "düz",
+    "typemeaning2": "s",
+    "meaning3": "pürüzsüz",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "evening",
+    "meaning1": "akşam",
+    "typemeaning1": "s",
+    "meaning2": "akşam",
+    "typemeaning2": "i",
+    "meaning3": "son evreler",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "event",
+    "meaning1": "olay",
+    "typemeaning1": "i",
+    "meaning2": "aksiyon",
+    "typemeaning2": "i",
+    "meaning3": "yarışma",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "ever",
+    "meaning1": "durmadan",
+    "typemeaning1": "zf",
+    "meaning2": "her zaman",
+    "typemeaning2": "zf",
+    "meaning3": "daima",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "every",
+    "meaning1": "her",
+    "typemeaning1": "s",
+    "meaning2": "bütün",
+    "typemeaning2": "s",
+    "meaning3": "alışılmış",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "everybody",
+    "meaning1": "cümle alem",
+    "typemeaning1": "zm",
+    "meaning2": "dost düşman",
+    "typemeaning2": "zm",
+    "meaning3": "herkes",
+    "typemeaning3": "zm"
+  },
+  {
+    "word": "everyone",
+    "meaning1": "herkes",
+    "typemeaning1": "zm",
+    "meaning2": "herkes",
+    "typemeaning2": "zm",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "everything",
+    "meaning1": "her şey",
+    "typemeaning1": "zm",
+    "meaning2": "her şey",
+    "typemeaning2": "zm",
+    "meaning3": "her şey",
+    "typemeaning3": "zm"
+  },
+  {
+    "word": "exam",
+    "meaning1": "imtihan",
+    "typemeaning1": "i",
+    "meaning2": "sınav",
+    "typemeaning2": "i",
+    "meaning3": "muayene",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "example",
+    "meaning1": "örnek",
+    "typemeaning1": "i",
+    "meaning2": "ibret",
+    "typemeaning2": "i",
+    "meaning3": "numune",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "excited",
+    "meaning1": "heyecanlı",
+    "typemeaning1": "s",
+    "meaning2": "hararetli",
+    "typemeaning2": "s",
+    "meaning3": "coşkulu",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "exciting",
+    "meaning1": "heyecanlı",
+    "typemeaning1": "s",
+    "meaning2": "heyecan verici",
+    "typemeaning2": "s",
+    "meaning3": "heyecanlandırma",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "exercise",
+    "meaning1": "alıştırma yapmak",
+    "typemeaning1": "f",
+    "meaning2": "egzersiz yapmak",
+    "typemeaning2": "f",
+    "meaning3": "egzersiz",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "expensive",
+    "meaning1": "masraflı",
+    "typemeaning1": "s",
+    "meaning2": "pahalı",
+    "typemeaning2": "s",
+    "meaning3": "pahalıya mal olan",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "explain",
+    "meaning1": "açıklamak",
+    "typemeaning1": "f",
+    "meaning2": "izah etmek",
+    "typemeaning2": "f",
+    "meaning3": "izah etmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "extra",
+    "meaning1": "ekstra",
+    "typemeaning1": "s",
+    "meaning2": "ilave gazete",
+    "typemeaning2": "i",
+    "meaning3": "ilave",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "eye",
+    "meaning1": "göz",
+    "typemeaning1": "i",
+    "meaning2": "dikkatle bakmak",
+    "typemeaning2": "f",
+    "meaning3": "süzmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "face",
+    "meaning1": "yüzleşmek",
+    "typemeaning1": "f",
+    "meaning2": "yüz yüze gelmek",
+    "typemeaning2": "f",
+    "meaning3": "yönelmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "fact",
+    "meaning1": "vaka",
+    "typemeaning1": "i",
+    "meaning2": "gerçek durum",
+    "typemeaning2": "i",
+    "meaning3": "vak’a",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "fall",
+    "meaning1": "inmek",
+    "typemeaning1": "f",
+    "meaning2": "düşmek",
+    "typemeaning2": "f",
+    "meaning3": "güz",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "FALSE",
+    "meaning1": "takma",
+    "typemeaning1": "s",
+    "meaning2": "düzmece",
+    "typemeaning2": "s",
+    "meaning3": "sahte",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "family",
+    "meaning1": "sülale",
+    "typemeaning1": "i",
+    "meaning2": "aile",
+    "typemeaning2": "i",
+    "meaning3": "hamile",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "famous",
+    "meaning1": "ünlü",
+    "typemeaning1": "s",
+    "meaning2": "meşhur",
+    "typemeaning2": "s",
+    "meaning3": "ünlü",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "fantastic",
+    "meaning1": "fantastik",
+    "typemeaning1": "s",
+    "meaning2": "şahane",
+    "typemeaning2": "s",
+    "meaning3": "harika",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "far",
+    "meaning1": "uzak",
+    "typemeaning1": "s",
+    "meaning2": "öteki",
+    "typemeaning2": "s",
+    "meaning3": "çok fazla",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "farm",
+    "meaning1": "çiftlik",
+    "typemeaning1": "i",
+    "meaning2": "ekmek",
+    "typemeaning2": "f",
+    "meaning3": "ekip biçmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "farmer",
+    "meaning1": "çiftçi",
+    "typemeaning1": "i",
+    "meaning2": "çiftlik sahibi",
+    "typemeaning2": "i",
+    "meaning3": "rençper",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "fast",
+    "meaning1": "süratli",
+    "typemeaning1": "s",
+    "meaning2": "çabuk",
+    "typemeaning2": "zf",
+    "meaning3": "hızlı",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "fat",
+    "meaning1": "semirtmek",
+    "typemeaning1": "f",
+    "meaning2": "şişmanlatmak",
+    "typemeaning2": "f",
+    "meaning3": "yağ",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "father",
+    "meaning1": "papaz",
+    "typemeaning1": "i",
+    "meaning2": "peder",
+    "typemeaning2": "i",
+    "meaning3": "baba",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "favourite",
+    "meaning1": "gözde",
+    "typemeaning1": "i",
+    "meaning2": "favori",
+    "typemeaning2": "i",
+    "meaning3": "gözde",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "February",
+    "meaning1": "şubat",
+    "typemeaning1": "i",
+    "meaning2": "yılın ikinci ayı",
+    "typemeaning2": "i",
+    "meaning3": "gücük ay",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "feel",
+    "meaning1": "hissetmek",
+    "typemeaning1": "f",
+    "meaning2": "felt - felt",
+    "typemeaning2": "f",
+    "meaning3": "sezmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "feeling",
+    "meaning1": "his",
+    "typemeaning1": "i",
+    "meaning2": "duygu",
+    "typemeaning2": "i",
+    "meaning3": "şefkat",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "festival",
+    "meaning1": "bayram",
+    "typemeaning1": "i",
+    "meaning2": "şenlik",
+    "typemeaning2": "i",
+    "meaning3": "festival",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "few",
+    "meaning1": "az",
+    "typemeaning1": "s",
+    "meaning2": "birkaç",
+    "typemeaning2": "s",
+    "meaning3": "az miktar",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "fifteen",
+    "meaning1": "onbeş",
+    "typemeaning1": "i",
+    "meaning2": "on beş sayısı (15, XV)",
+    "typemeaning2": "i",
+    "meaning3": "on beş",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "fifth",
+    "meaning1": "beşinci",
+    "typemeaning1": "s",
+    "meaning2": "beşte bir",
+    "typemeaning2": "s",
+    "meaning3": "beşi",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "fifty",
+    "meaning1": "elli sayısı (50)",
+    "typemeaning1": "i",
+    "meaning2": "elli",
+    "typemeaning2": "i",
+    "meaning3": "50",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "fill",
+    "meaning1": "doldurmak",
+    "typemeaning1": "f",
+    "meaning2": "kaplamak",
+    "typemeaning2": "f",
+    "meaning3": "şişirmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "film",
+    "meaning1": "film",
+    "typemeaning1": "i",
+    "meaning2": "zar vb kaplamak",
+    "typemeaning2": "f",
+    "meaning3": "filme almak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "final",
+    "meaning1": "final",
+    "typemeaning1": "i",
+    "meaning2": "nihai",
+    "typemeaning2": "s",
+    "meaning3": "kesin",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "find",
+    "meaning1": "bulmak",
+    "typemeaning1": "f",
+    "meaning2": "found - found",
+    "typemeaning2": "f",
+    "meaning3": "rastlamak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "fine",
+    "meaning1": "ceza kesmek",
+    "typemeaning1": "f",
+    "meaning2": "para cezası",
+    "typemeaning2": "i",
+    "meaning3": "hoş",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "finish",
+    "meaning1": "sona ermek",
+    "typemeaning1": "f",
+    "meaning2": "bitirmek",
+    "typemeaning2": "f",
+    "meaning3": "bitmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "fire",
+    "meaning1": "ateşlemek",
+    "typemeaning1": "f",
+    "meaning2": "kovmak",
+    "typemeaning2": "f",
+    "meaning3": "yangın",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "first",
+    "meaning1": "birinci",
+    "typemeaning1": "s",
+    "meaning2": "ilk",
+    "typemeaning2": "s",
+    "meaning3": "önce",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "fish",
+    "meaning1": "balık",
+    "typemeaning1": "i",
+    "meaning2": "balığa çıkmak",
+    "typemeaning2": "f",
+    "meaning3": "avlamak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "five",
+    "meaning1": "beş",
+    "typemeaning1": "i",
+    "meaning2": "beş rakamı (5, V)",
+    "typemeaning2": "i",
+    "meaning3": "iskambilde beşli",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "flat",
+    "meaning1": "düz yüzey",
+    "typemeaning1": "i",
+    "meaning2": "daire",
+    "typemeaning2": "i",
+    "meaning3": "yassı",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "flight",
+    "meaning1": "uçuş",
+    "typemeaning1": "i",
+    "meaning2": "uçmak",
+    "typemeaning2": "f",
+    "meaning3": "yağmur (kurşun, ok vb)",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "floor",
+    "meaning1": "yeri kaplamak",
+    "typemeaning1": "f",
+    "meaning2": "kat",
+    "typemeaning2": "i",
+    "meaning3": "yer",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "flower",
+    "meaning1": "çiçek",
+    "typemeaning1": "i",
+    "meaning2": "gelişmek",
+    "typemeaning2": "f",
+    "meaning3": "çiçeklenmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "fly",
+    "meaning1": "uçmak",
+    "typemeaning1": "f",
+    "meaning2": "sinek",
+    "typemeaning2": "i",
+    "meaning3": "flew - flown",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "follow",
+    "meaning1": "takip etmek",
+    "typemeaning1": "f",
+    "meaning2": "izlemek",
+    "typemeaning2": "f",
+    "meaning3": "kollamak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "food",
+    "meaning1": "besin",
+    "typemeaning1": "i",
+    "meaning2": "yiyecek",
+    "typemeaning2": "i",
+    "meaning3": "gıda",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "foot",
+    "meaning1": "ayak",
+    "typemeaning1": "i",
+    "meaning2": "hesaplamak",
+    "typemeaning2": "f",
+    "meaning3": "çıkarmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "football",
+    "meaning1": "futbol",
+    "typemeaning1": "i",
+    "meaning2": "futbol topu",
+    "typemeaning2": "i",
+    "meaning3": "amerikan futbolu",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "for",
+    "meaning1": "için",
+    "typemeaning1": "ed",
+    "meaning2": "yönünden",
+    "typemeaning2": "ed",
+    "meaning3": "zarfında",
+    "typemeaning3": "ed"
+  },
+  {
+    "word": "forget",
+    "meaning1": "unutmak",
+    "typemeaning1": "f",
+    "meaning2": "forgot - forgotten/forgot",
+    "typemeaning2": "f",
+    "meaning3": "ihmal etmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "form",
+    "meaning1": "biçimlendirmek",
+    "typemeaning1": "f",
+    "meaning2": "şekillendirmek",
+    "typemeaning2": "f",
+    "meaning3": "oluşturmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "forty",
+    "meaning1": "kırk sayısı (40)",
+    "typemeaning1": "i",
+    "meaning2": "kırk",
+    "typemeaning2": "i",
+    "meaning3": "40",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "four",
+    "meaning1": "dört",
+    "typemeaning1": "i",
+    "meaning2": "kare",
+    "typemeaning2": "i",
+    "meaning3": "dört rakamı 4",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "fourteen",
+    "meaning1": "on dört sayısı",
+    "typemeaning1": "i",
+    "meaning2": "XIV",
+    "typemeaning2": "i",
+    "meaning3": "on dört",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "fourth",
+    "meaning1": "dörtte bir",
+    "typemeaning1": "s",
+    "meaning2": "dördü",
+    "typemeaning2": "s",
+    "meaning3": "dördüncü",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "free",
+    "meaning1": "bağımsız",
+    "typemeaning1": "s",
+    "meaning2": "beleş",
+    "typemeaning2": "s",
+    "meaning3": "muaf",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "Friday",
+    "meaning1": "cuma",
+    "typemeaning1": "i",
+    "meaning2": "cuma günü",
+    "typemeaning2": "i",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "friend",
+    "meaning1": "ahbap",
+    "typemeaning1": "i",
+    "meaning2": "arkadaş",
+    "typemeaning2": "i",
+    "meaning3": "dost",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "friendly",
+    "meaning1": "arkadaş canlısı",
+    "typemeaning1": "s",
+    "meaning2": "arkadaşça",
+    "typemeaning2": "s",
+    "meaning3": "cana yakın",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "from",
+    "meaning1": "itibaren",
+    "typemeaning1": "ed",
+    "meaning2": "-den beri",
+    "typemeaning2": "ed",
+    "meaning3": "-den",
+    "typemeaning3": "ed"
+  },
+  {
+    "word": "front",
+    "meaning1": "yönelmek",
+    "typemeaning1": "f",
+    "meaning2": "ön",
+    "typemeaning2": "i",
+    "meaning3": "cephe",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "fruit",
+    "meaning1": "meyve vermek",
+    "typemeaning1": "f",
+    "meaning2": "meyve",
+    "typemeaning2": "i",
+    "meaning3": "meyvelenmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "full",
+    "meaning1": "tok",
+    "typemeaning1": "s",
+    "meaning2": "tam",
+    "typemeaning2": "s",
+    "meaning3": "dolu",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "fun",
+    "meaning1": "eğlence",
+    "typemeaning1": "i",
+    "meaning2": "eğlenme",
+    "typemeaning2": "i",
+    "meaning3": "şaka etmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "funny",
+    "meaning1": "komik",
+    "typemeaning1": "s",
+    "meaning2": "gırgır",
+    "typemeaning2": "s",
+    "meaning3": "güldürücü",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "future",
+    "meaning1": "istikbal",
+    "typemeaning1": "i",
+    "meaning2": "gelecek",
+    "typemeaning2": "i",
+    "meaning3": "gelecek zaman",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "game",
+    "meaning1": "oyun",
+    "typemeaning1": "i",
+    "meaning2": "kumar oynamak",
+    "typemeaning2": "f",
+    "meaning3": "maç",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "garden",
+    "meaning1": "bahçe",
+    "typemeaning1": "i",
+    "meaning2": "çiçeklerle uğraşmak",
+    "typemeaning2": "f",
+    "meaning3": "bahçede çalışmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "geography",
+    "meaning1": "coğrafya",
+    "typemeaning1": "i",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "get",
+    "meaning1": "elde etmek",
+    "typemeaning1": "f",
+    "meaning2": "almak",
+    "typemeaning2": "f",
+    "meaning3": "kazanmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "girl",
+    "meaning1": "kız",
+    "typemeaning1": "i",
+    "meaning2": "kız arkadaş",
+    "typemeaning2": "i",
+    "meaning3": "kız",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "girlfriend",
+    "meaning1": "kız arkadaş",
+    "typemeaning1": "i",
+    "meaning2": "manita",
+    "typemeaning2": "i",
+    "meaning3": "flört",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "give",
+    "meaning1": "vermek",
+    "typemeaning1": "f",
+    "meaning2": "gave - given",
+    "typemeaning2": "f",
+    "meaning3": "bahşetmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "glass",
+    "meaning1": "kadeh",
+    "typemeaning1": "i",
+    "meaning2": "bardak",
+    "typemeaning2": "i",
+    "meaning3": "cam",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "go",
+    "meaning1": "hareket etmek",
+    "typemeaning1": "f",
+    "meaning2": "gitmek",
+    "typemeaning2": "f",
+    "meaning3": "went - gone",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "good",
+    "meaning1": "güzel",
+    "typemeaning1": "s",
+    "meaning2": "hayırlı",
+    "typemeaning2": "s",
+    "meaning3": "iyi",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "goodbye",
+    "meaning1": "güle güle",
+    "typemeaning1": "i",
+    "meaning2": "hoşçakal",
+    "typemeaning2": "i",
+    "meaning3": "elveda",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "grandfather",
+    "meaning1": "dede",
+    "typemeaning1": "i",
+    "meaning2": "büyükbaba",
+    "typemeaning2": "i",
+    "meaning3": "cet",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "grandmother",
+    "meaning1": "babaanne",
+    "typemeaning1": "i",
+    "meaning2": "anneanne",
+    "typemeaning2": "i",
+    "meaning3": "nine",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "grandparent",
+    "meaning1": "büyükbaba",
+    "typemeaning1": "i",
+    "meaning2": "büyük ebeveyn",
+    "typemeaning2": "i",
+    "meaning3": "büyükbaba veya büyükanne",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "great",
+    "meaning1": "mükemmel",
+    "typemeaning1": "s",
+    "meaning2": "müthiş",
+    "typemeaning2": "s",
+    "meaning3": "harika",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "green",
+    "meaning1": "yeşil",
+    "typemeaning1": "s",
+    "meaning2": "yeşermek",
+    "typemeaning2": "f",
+    "meaning3": "yeşile boyamak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "grey",
+    "meaning1": "ağartmak",
+    "typemeaning1": "f",
+    "meaning2": "ağarmak",
+    "typemeaning2": "f",
+    "meaning3": "gri",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "group",
+    "meaning1": "grup",
+    "typemeaning1": "i",
+    "meaning2": "gruplandırmak",
+    "typemeaning2": "f",
+    "meaning3": "toplanmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "grow",
+    "meaning1": "yetişmek",
+    "typemeaning1": "f",
+    "meaning2": "büyümek",
+    "typemeaning2": "f",
+    "meaning3": "grew - grown",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "guess",
+    "meaning1": "tahmin etmek",
+    "typemeaning1": "f",
+    "meaning2": "tahmin",
+    "typemeaning2": "i",
+    "meaning3": "sanmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "guitar",
+    "meaning1": "gitarist",
+    "typemeaning1": "i",
+    "meaning2": "kitara",
+    "typemeaning2": "i",
+    "meaning3": "gitar",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "gym",
+    "meaning1": "spor salonu",
+    "typemeaning1": "i",
+    "meaning2": "jimnastik",
+    "typemeaning2": "i",
+    "meaning3": "beden eğitimi",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "hair",
+    "meaning1": "tüy",
+    "typemeaning1": "i",
+    "meaning2": "kıl",
+    "typemeaning2": "i",
+    "meaning3": "saç",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "half",
+    "meaning1": "yarım",
+    "typemeaning1": "s",
+    "meaning2": "yarı",
+    "typemeaning2": "s",
+    "meaning3": "devre",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "hand",
+    "meaning1": "el",
+    "typemeaning1": "i",
+    "meaning2": "yakalamak",
+    "typemeaning2": "f",
+    "meaning3": "uzatmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "happen",
+    "meaning1": "meydana gelmek",
+    "typemeaning1": "f",
+    "meaning2": "olmak",
+    "typemeaning2": "f",
+    "meaning3": "başından geçmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "happy",
+    "meaning1": "sevinçli",
+    "typemeaning1": "s",
+    "meaning2": "mutlu",
+    "typemeaning2": "s",
+    "meaning3": "çakırkeyif",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "hard",
+    "meaning1": "çetin",
+    "typemeaning1": "s",
+    "meaning2": "sert",
+    "typemeaning2": "s",
+    "meaning3": "zahmetli",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "hat",
+    "meaning1": "şapka",
+    "typemeaning1": "i",
+    "meaning2": "şapka",
+    "typemeaning2": "i",
+    "meaning3": "başlık",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "hate",
+    "meaning1": "nefret etmek",
+    "typemeaning1": "f",
+    "meaning2": "nefret",
+    "typemeaning2": "i",
+    "meaning3": "kin beslemek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "have",
+    "meaning1": "sahip olmak",
+    "typemeaning1": "f",
+    "meaning2": "had - had",
+    "typemeaning2": "f",
+    "meaning3": "elinde tutmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "have",
+    "meaning1": "to mecburiyetinde kalmak",
+    "typemeaning1": "f",
+    "meaning2": "gerekmek",
+    "typemeaning2": "f",
+    "meaning3": "mecbur olmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "he",
+    "meaning1": "eril o",
+    "typemeaning1": "zm",
+    "meaning2": "o",
+    "typemeaning2": "zm",
+    "meaning3": "kendileri",
+    "typemeaning3": "zm"
+  },
+  {
+    "word": "head",
+    "meaning1": "kelle",
+    "typemeaning1": "i",
+    "meaning2": "kafa",
+    "typemeaning2": "i",
+    "meaning3": "baş",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "health",
+    "meaning1": "sıhhat",
+    "typemeaning1": "i",
+    "meaning2": "sağlık",
+    "typemeaning2": "i",
+    "meaning3": "afiyet",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "healthy",
+    "meaning1": "sıhhatli",
+    "typemeaning1": "s",
+    "meaning2": "sağlıklı",
+    "typemeaning2": "s",
+    "meaning3": "sağlığa yararlı",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "hear",
+    "meaning1": "duymak",
+    "typemeaning1": "f",
+    "meaning2": "işitmek",
+    "typemeaning2": "f",
+    "meaning3": "heard - heard",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "hello",
+    "meaning1": "merhaba",
+    "typemeaning1": "ünl",
+    "meaning2": "merhaba",
+    "typemeaning2": "ünl",
+    "meaning3": "selam",
+    "typemeaning3": "ünl"
+  },
+  {
+    "word": "help",
+    "meaning1": "yardım etmek",
+    "typemeaning1": "f",
+    "meaning2": "yardım",
+    "typemeaning2": "i",
+    "meaning3": "muavenet etmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "her",
+    "meaning1": "ona",
+    "typemeaning1": "zm",
+    "meaning2": "dişil onu",
+    "typemeaning2": "zm",
+    "meaning3": "ondan",
+    "typemeaning3": "zm"
+  },
+  {
+    "word": "here",
+    "meaning1": "burada",
+    "typemeaning1": "zf",
+    "meaning2": "buraya",
+    "typemeaning2": "zf",
+    "meaning3": "burda",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "hey",
+    "meaning1": "sela",
+    "typemeaning1": "hey sela",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "hi",
+    "meaning1": "merhaba",
+    "typemeaning1": "ünl",
+    "meaning2": "selam",
+    "typemeaning2": "ünl",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "high",
+    "meaning1": "yüksek",
+    "typemeaning1": "s",
+    "meaning2": "direnmek",
+    "typemeaning2": "f",
+    "meaning3": "öfkelenmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "him",
+    "meaning1": "ona",
+    "typemeaning1": "zm",
+    "meaning2": "onu",
+    "typemeaning2": "zm",
+    "meaning3": "(erkek) onu",
+    "typemeaning3": "zm"
+  },
+  {
+    "word": "his",
+    "meaning1": "eril onunki",
+    "typemeaning1": "zm",
+    "meaning2": "onun",
+    "typemeaning2": "zm",
+    "meaning3": "onunki",
+    "typemeaning3": "zm"
+  },
+  {
+    "word": "history",
+    "meaning1": "geçmiş",
+    "typemeaning1": "i",
+    "meaning2": "tarih",
+    "typemeaning2": "i",
+    "meaning3": "kayıtlar",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "hobby",
+    "meaning1": "hobi",
+    "typemeaning1": "i",
+    "meaning2": "şahin",
+    "typemeaning2": "i",
+    "meaning3": "merak",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "holiday",
+    "meaning1": "bayram",
+    "typemeaning1": "i",
+    "meaning2": "tatil",
+    "typemeaning2": "i",
+    "meaning3": "tatil yapmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "home",
+    "meaning1": "ev",
+    "typemeaning1": "i",
+    "meaning2": "yerleştirmek",
+    "typemeaning2": "f",
+    "meaning3": "yuvasına dönmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "homework",
+    "meaning1": "ödev",
+    "typemeaning1": "i",
+    "meaning2": "ev ödevi",
+    "typemeaning2": "i",
+    "meaning3": "ödev",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "hope",
+    "meaning1": "ummak",
+    "typemeaning1": "f",
+    "meaning2": "umut etmek",
+    "typemeaning2": "f",
+    "meaning3": "ümit etmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "horse",
+    "meaning1": "beygir",
+    "typemeaning1": "i",
+    "meaning2": "at",
+    "typemeaning2": "i",
+    "meaning3": "oynamak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "hospital",
+    "meaning1": "hastane",
+    "typemeaning1": "i",
+    "meaning2": "darüşşifa",
+    "typemeaning2": "i",
+    "meaning3": "darülaceze",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "hot",
+    "meaning1": "kızgın",
+    "typemeaning1": "s",
+    "meaning2": "ateşli",
+    "typemeaning2": "s",
+    "meaning3": "acı",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "hotel",
+    "meaning1": "otel",
+    "typemeaning1": "i",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "hour",
+    "meaning1": "saat",
+    "typemeaning1": "i",
+    "meaning2": "vakit",
+    "typemeaning2": "i",
+    "meaning3": "zaman",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "house",
+    "meaning1": "ev",
+    "typemeaning1": "i",
+    "meaning2": "konut",
+    "typemeaning2": "i",
+    "meaning3": "kendi evine almak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "how",
+    "meaning1": "nasıl",
+    "typemeaning1": "zf",
+    "meaning2": "yapma yöntemi",
+    "typemeaning2": "i",
+    "meaning3": "yapma tarzı",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "however",
+    "meaning1": "bununla birlikte",
+    "typemeaning1": "zf",
+    "meaning2": "yine de",
+    "typemeaning2": "bağ",
+    "meaning3": "her nasılsa",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "hundred",
+    "meaning1": "yüz",
+    "typemeaning1": "s",
+    "meaning2": "yüzlük",
+    "typemeaning2": "i",
+    "meaning3": "yüz sayısı, 100",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "hungry",
+    "meaning1": "acıkmış",
+    "typemeaning1": "s",
+    "meaning2": "aç",
+    "typemeaning2": "s",
+    "meaning3": "istekli",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "husband",
+    "meaning1": "koca",
+    "typemeaning1": "i",
+    "meaning2": "eş",
+    "typemeaning2": "i",
+    "meaning3": "idareli kullanmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "I",
+    "meaning1": "ben",
+    "typemeaning1": "zm",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "Internet",
+    "meaning1": "internet",
+    "typemeaning1": "i",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "ice",
+    "meaning1": "buz",
+    "typemeaning1": "i",
+    "meaning2": "öldürmek",
+    "typemeaning2": "f",
+    "meaning3": "buzda soğutmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "ice",
+    "meaning1": "cream dondurma",
+    "typemeaning1": "i",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "idea",
+    "meaning1": "fikir",
+    "typemeaning1": "i",
+    "meaning2": "düşünce",
+    "typemeaning2": "i",
+    "meaning3": "sanı",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "if",
+    "meaning1": "eğer",
+    "typemeaning1": "bağ",
+    "meaning2": "belirsizlik",
+    "typemeaning2": "i",
+    "meaning3": "şart",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "imagine",
+    "meaning1": "hayal etmek",
+    "typemeaning1": "f",
+    "meaning2": "sanmak",
+    "typemeaning2": "f",
+    "meaning3": "kafasında canlandırmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "important",
+    "meaning1": "mühim",
+    "typemeaning1": "s",
+    "meaning2": "önemli",
+    "typemeaning2": "s",
+    "meaning3": "gururlu",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "improve",
+    "meaning1": "geliştirmek",
+    "typemeaning1": "f",
+    "meaning2": "gelişmek",
+    "typemeaning2": "f",
+    "meaning3": "ilerletmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "in",
+    "meaning1": "içeri",
+    "typemeaning1": "zf",
+    "meaning2": "içinde",
+    "typemeaning2": "ed",
+    "meaning3": "iç",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "include",
+    "meaning1": "katmak",
+    "typemeaning1": "f",
+    "meaning2": "içermek",
+    "typemeaning2": "f",
+    "meaning3": "kapsamak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "information",
+    "meaning1": "bilgi",
+    "typemeaning1": "i",
+    "meaning2": "ilmi vukuf",
+    "typemeaning2": "i",
+    "meaning3": "iddia",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "interest",
+    "meaning1": "ilgilendirmek",
+    "typemeaning1": "f",
+    "meaning2": "çıkar",
+    "typemeaning2": "i",
+    "meaning3": "faiz",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "interested",
+    "meaning1": "alakalı",
+    "typemeaning1": "s",
+    "meaning2": "ilgili",
+    "typemeaning2": "s",
+    "meaning3": "hissedar",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "interesting",
+    "meaning1": "ilginç",
+    "typemeaning1": "s",
+    "meaning2": "ilgi çekici",
+    "typemeaning2": "s",
+    "meaning3": "ilgilenme",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "interview",
+    "meaning1": "görüşmek",
+    "typemeaning1": "f",
+    "meaning2": "görüşme",
+    "typemeaning2": "i",
+    "meaning3": "mülakat",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "into",
+    "meaning1": "içine",
+    "typemeaning1": "ed",
+    "meaning2": "şekline",
+    "typemeaning2": "ed",
+    "meaning3": "biçimine",
+    "typemeaning3": "ed"
+  },
+  {
+    "word": "introduce",
+    "meaning1": "tanıtmak",
+    "typemeaning1": "f",
+    "meaning2": "tanıştırmak",
+    "typemeaning2": "f",
+    "meaning3": "içeri sokmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "island",
+    "meaning1": "ada",
+    "typemeaning1": "i",
+    "meaning2": "adacık",
+    "typemeaning2": "i",
+    "meaning3": "ada",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "it",
+    "meaning1": "ona",
+    "typemeaning1": "zm",
+    "meaning2": "ilişki",
+    "typemeaning2": "i",
+    "meaning3": "ebe (oyunlarda)",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "its",
+    "meaning1": "onun",
+    "typemeaning1": "zm",
+    "meaning2": "-in",
+    "typemeaning2": "zm",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "jacket",
+    "meaning1": "ceket",
+    "typemeaning1": "i",
+    "meaning2": "kaplamak",
+    "typemeaning2": "f",
+    "meaning3": "zarf",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "January",
+    "meaning1": "ocak",
+    "typemeaning1": "i",
+    "meaning2": "ocak (ay)",
+    "typemeaning2": "i",
+    "meaning3": "ocak ayı",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "jeans",
+    "meaning1": "kot",
+    "typemeaning1": "i",
+    "meaning2": "kot pantolon",
+    "typemeaning2": "i",
+    "meaning3": "blucin",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "job",
+    "meaning1": "görev",
+    "typemeaning1": "i",
+    "meaning2": "iş",
+    "typemeaning2": "i",
+    "meaning3": "kiraya vermek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "join",
+    "meaning1": "birleştirmek",
+    "typemeaning1": "f",
+    "meaning2": "katılmak",
+    "typemeaning2": "f",
+    "meaning3": "katmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "journey",
+    "meaning1": "yolculuk",
+    "typemeaning1": "i",
+    "meaning2": "seyahat",
+    "typemeaning2": "i",
+    "meaning3": "yolculuk etmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "juice",
+    "meaning1": "meyve suyu",
+    "typemeaning1": "i",
+    "meaning2": "özsu",
+    "typemeaning2": "i",
+    "meaning3": "benzin",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "July",
+    "meaning1": "temmuz",
+    "typemeaning1": "i",
+    "meaning2": "yılın yedinci ayı",
+    "typemeaning2": "i",
+    "meaning3": "temmuz ayı",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "June",
+    "meaning1": "haziran",
+    "typemeaning1": "i",
+    "meaning2": "yılın altıncı ayı",
+    "typemeaning2": "i",
+    "meaning3": "haziran ayı",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "just",
+    "meaning1": "sadece",
+    "typemeaning1": "s",
+    "meaning2": "adil",
+    "typemeaning2": "s",
+    "meaning3": "yalnızca",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "keep",
+    "meaning1": "tutmak",
+    "typemeaning1": "f",
+    "meaning2": "saklamak",
+    "typemeaning2": "f",
+    "meaning3": "kept - kept",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "key",
+    "meaning1": "anahtar",
+    "typemeaning1": "i",
+    "meaning2": "tuş",
+    "typemeaning2": "i",
+    "meaning3": "girmek bilgisayar",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "kilometre",
+    "meaning1": "kilometre",
+    "typemeaning1": "i",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "kind",
+    "meaning1": "tür",
+    "typemeaning1": "i",
+    "meaning2": "çeşit",
+    "typemeaning2": "i",
+    "meaning3": "cins",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "kitchen",
+    "meaning1": "mutfak",
+    "typemeaning1": "i",
+    "meaning2": "kuzine",
+    "typemeaning2": "i",
+    "meaning3": "nevale",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "know",
+    "meaning1": "bilmek",
+    "typemeaning1": "f",
+    "meaning2": "tanımak",
+    "typemeaning2": "f",
+    "meaning3": "knew - known",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "land",
+    "meaning1": "karaya ayak basmak",
+    "typemeaning1": "f",
+    "meaning2": "kıyıya çıkmak",
+    "typemeaning2": "f",
+    "meaning3": "karaya çıkmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "language",
+    "meaning1": "lisan",
+    "typemeaning1": "i",
+    "meaning2": "dil",
+    "typemeaning2": "i",
+    "meaning3": "edebiyat",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "large",
+    "meaning1": "iri",
+    "typemeaning1": "s",
+    "meaning2": "geniş",
+    "typemeaning2": "s",
+    "meaning3": "büyük",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "last",
+    "meaning1": "sonuncu",
+    "typemeaning1": "s",
+    "meaning2": "son",
+    "typemeaning2": "s",
+    "meaning3": "tutunmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "late",
+    "meaning1": "gecikmiş",
+    "typemeaning1": "s",
+    "meaning2": "geç",
+    "typemeaning2": "zf",
+    "meaning3": "her zamanki",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "later",
+    "meaning1": "sonradan",
+    "typemeaning1": "zf",
+    "meaning2": "sonra",
+    "typemeaning2": "zf",
+    "meaning3": "sonraki",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "laugh",
+    "meaning1": "gülmek",
+    "typemeaning1": "f",
+    "meaning2": "gülme",
+    "typemeaning2": "i",
+    "meaning3": "gülüş",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "learn",
+    "meaning1": "öğrenmek",
+    "typemeaning1": "f",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "leave",
+    "meaning1": "bırakmak",
+    "typemeaning1": "f",
+    "meaning2": "ayrılmak",
+    "typemeaning2": "f",
+    "meaning3": "terk etmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "left",
+    "meaning1": "sol",
+    "typemeaning1": "s",
+    "meaning2": "kalmak",
+    "typemeaning2": "f",
+    "meaning3": "sol kanat",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "leg",
+    "meaning1": "ayak (mobilya/pergel)",
+    "typemeaning1": "i",
+    "meaning2": "bacak",
+    "typemeaning2": "i",
+    "meaning3": "koşmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "lesson",
+    "meaning1": "ders",
+    "typemeaning1": "i",
+    "meaning2": "azar",
+    "typemeaning2": "i",
+    "meaning3": "hisse",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "let",
+    "meaning1": "izin vermek",
+    "typemeaning1": "f",
+    "meaning2": "let - let",
+    "typemeaning2": "f",
+    "meaning3": "vermek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "letter",
+    "meaning1": "mektup",
+    "typemeaning1": "i",
+    "meaning2": "harf",
+    "typemeaning2": "i",
+    "meaning3": "basmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "library",
+    "meaning1": "kitaplık",
+    "typemeaning1": "i",
+    "meaning2": "kütüphane",
+    "typemeaning2": "i",
+    "meaning3": "kütüphane binası",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "lie",
+    "meaning1": "yatmak",
+    "typemeaning1": "f",
+    "meaning2": "uzanmak",
+    "typemeaning2": "f",
+    "meaning3": "yalan söylemek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "life",
+    "meaning1": "yaşam",
+    "typemeaning1": "i",
+    "meaning2": "hayat",
+    "typemeaning2": "i",
+    "meaning3": "can",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "light",
+    "meaning1": "aydınlık",
+    "typemeaning1": "i",
+    "meaning2": "nur",
+    "typemeaning2": "i",
+    "meaning3": "ışık",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "like",
+    "meaning1": "beğenmek",
+    "typemeaning1": "f",
+    "meaning2": "hoşlanmak",
+    "typemeaning2": "f",
+    "meaning3": "sevmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "line",
+    "meaning1": "astarlamak",
+    "typemeaning1": "f",
+    "meaning2": "satır",
+    "typemeaning2": "i",
+    "meaning3": "hat",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "lion",
+    "meaning1": "aslan",
+    "typemeaning1": "i",
+    "meaning2": "arslan",
+    "typemeaning2": "i",
+    "meaning3": "başarılı ve aranan kimse",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "list",
+    "meaning1": "listelemek",
+    "typemeaning1": "f",
+    "meaning2": "liste",
+    "typemeaning2": "i",
+    "meaning3": "kaydetmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "listen",
+    "meaning1": "dinlemek",
+    "typemeaning1": "f",
+    "meaning2": "kulak asmak",
+    "typemeaning2": "f",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "little",
+    "meaning1": "ufak",
+    "typemeaning1": "s",
+    "meaning2": "az",
+    "typemeaning2": "s",
+    "meaning3": "küçük",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "live",
+    "meaning1": "yaşamak",
+    "typemeaning1": "f",
+    "meaning2": "naklen",
+    "typemeaning2": "zf",
+    "meaning3": "ikamet etmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "local",
+    "meaning1": "lokal",
+    "typemeaning1": "s",
+    "meaning2": "yerel",
+    "typemeaning2": "s",
+    "meaning3": "yerli",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "long",
+    "meaning1": "uzun",
+    "typemeaning1": "s",
+    "meaning2": "hasretini çekmek",
+    "typemeaning2": "f",
+    "meaning3": "susamak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "look",
+    "meaning1": "bakmak",
+    "typemeaning1": "f",
+    "meaning2": "görünüş",
+    "typemeaning2": "i",
+    "meaning3": "bakış",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "lose",
+    "meaning1": "kaybetmek",
+    "typemeaning1": "f",
+    "meaning2": "yitirmek",
+    "typemeaning2": "f",
+    "meaning3": "lost - lost",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "lot",
+    "meaning1": "pay",
+    "typemeaning1": "i",
+    "meaning2": "bölüştürmek",
+    "typemeaning2": "f",
+    "meaning3": "taksim etmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "love",
+    "meaning1": "sevmek",
+    "typemeaning1": "f",
+    "meaning2": "sevda",
+    "typemeaning2": "i",
+    "meaning3": "aşk",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "lunch",
+    "meaning1": "öğle yemeği",
+    "typemeaning1": "i",
+    "meaning2": "öğle yemeği yemek",
+    "typemeaning2": "f",
+    "meaning3": "tümsek",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "machine",
+    "meaning1": "makine",
+    "typemeaning1": "i",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "vermek",
+    "meaning1": "",
+    "typemeaning1": "f",
+    "meaning2": "makine ile yapmak",
+    "typemeaning2": "f",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "magazine",
+    "meaning1": "fişek haznesi",
+    "typemeaning1": "i",
+    "meaning2": "dergi",
+    "typemeaning2": "i",
+    "meaning3": "mecmua",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "main",
+    "meaning1": "esas",
+    "typemeaning1": "i",
+    "meaning2": "ana",
+    "typemeaning2": "s",
+    "meaning3": "baş",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "make",
+    "meaning1": "yapmak",
+    "typemeaning1": "f",
+    "meaning2": "made - made",
+    "typemeaning2": "f",
+    "meaning3": "katetmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "man",
+    "meaning1": "insan",
+    "typemeaning1": "i",
+    "meaning2": "adam",
+    "typemeaning2": "i",
+    "meaning3": "erkek",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "many",
+    "meaning1": "birçok",
+    "typemeaning1": "s",
+    "meaning2": "çok",
+    "typemeaning2": "zf",
+    "meaning3": "çoğu",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "map",
+    "meaning1": "harita",
+    "typemeaning1": "i",
+    "meaning2": "planlamak",
+    "typemeaning2": "f",
+    "meaning3": "saptamak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "March",
+    "meaning1": "yürüyüş yapmak (topluca)",
+    "typemeaning1": "f",
+    "meaning2": "yürüyüş (topluca)",
+    "typemeaning2": "i",
+    "meaning3": "mart ayı",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "market",
+    "meaning1": "çarşı",
+    "typemeaning1": "i",
+    "meaning2": "pazar",
+    "typemeaning2": "i",
+    "meaning3": "piyasa",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "married",
+    "meaning1": "evli",
+    "typemeaning1": "s",
+    "meaning2": "evliliğe/evlilere özgü",
+    "typemeaning2": "s",
+    "meaning3": "başı bağlı",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "match",
+    "meaning1": "eşleştirmek",
+    "typemeaning1": "f",
+    "meaning2": "eşlemek",
+    "typemeaning2": "f",
+    "meaning3": "eş",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "May",
+    "meaning1": "mayıs ayı",
+    "typemeaning1": "i",
+    "meaning2": "mayıs",
+    "typemeaning2": "i",
+    "meaning3": "mümkün olmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "maybe",
+    "meaning1": "belki",
+    "typemeaning1": "ünl",
+    "meaning2": "belki",
+    "typemeaning2": "zf",
+    "meaning3": "belki de",
+    "typemeaning3": "bağ"
+  },
+  {
+    "word": "me",
+    "meaning1": "ben",
+    "typemeaning1": "zm",
+    "meaning2": "mi",
+    "typemeaning2": "i",
+    "meaning3": "beni",
+    "typemeaning3": "zm"
+  },
+  {
+    "word": "meal",
+    "meaning1": "öğün",
+    "typemeaning1": "i",
+    "meaning2": "yemek",
+    "typemeaning2": "i",
+    "meaning3": "sofra",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "mean",
+    "meaning1": "demek istemek",
+    "typemeaning1": "f",
+    "meaning2": "kastetmek",
+    "typemeaning2": "f",
+    "meaning3": "anlamına gelmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "meaning",
+    "meaning1": "mana",
+    "typemeaning1": "i",
+    "meaning2": "meal",
+    "typemeaning2": "i",
+    "meaning3": "anlam",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "meat",
+    "meaning1": "et",
+    "typemeaning1": "i",
+    "meaning2": "yenecek et",
+    "typemeaning2": "i",
+    "meaning3": "öz",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "meet",
+    "meaning1": "karşılaşmak",
+    "typemeaning1": "f",
+    "meaning2": "buluşmak",
+    "typemeaning2": "f",
+    "meaning3": "görüşme yapmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "meeting",
+    "meaning1": "toplantı",
+    "typemeaning1": "i",
+    "meaning2": "buluşma",
+    "typemeaning2": "i",
+    "meaning3": "miting",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "member",
+    "meaning1": "üye",
+    "typemeaning1": "i",
+    "meaning2": "organ",
+    "typemeaning2": "i",
+    "meaning3": "mensup",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "menu",
+    "meaning1": "menü",
+    "typemeaning1": "i",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "message",
+    "meaning1": "ileti",
+    "typemeaning1": "i",
+    "meaning2": "mesaj",
+    "typemeaning2": "i",
+    "meaning3": "resmi bildiri",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "metre",
+    "meaning1": "metre",
+    "typemeaning1": "i",
+    "meaning2": "saat ile ölçmek",
+    "typemeaning2": "f",
+    "meaning3": "vezin",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "midnight",
+    "meaning1": "geceyarısı",
+    "typemeaning1": "i",
+    "meaning2": "gece yarısı",
+    "typemeaning2": "i",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "mile",
+    "meaning1": "mil",
+    "typemeaning1": "i",
+    "meaning2": "mil uzaklık ölçü birimi 1609 m",
+    "typemeaning2": "i",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "milk",
+    "meaning1": "süt",
+    "typemeaning1": "i",
+    "meaning2": "süt vermek (inek)",
+    "typemeaning2": "f",
+    "meaning3": "faydalanmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "million",
+    "meaning1": "milyon",
+    "typemeaning1": "i",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "minute",
+    "meaning1": "dakika",
+    "typemeaning1": "i",
+    "meaning2": "zabıt tutmak",
+    "typemeaning2": "f",
+    "meaning3": "tutanak tutmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "miss",
+    "meaning1": "ıska geçmek",
+    "typemeaning1": "f",
+    "meaning2": "özlemek",
+    "typemeaning2": "f",
+    "meaning3": "kaçırmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "mistake",
+    "meaning1": "yanılgı",
+    "typemeaning1": "i",
+    "meaning2": "hata",
+    "typemeaning2": "i",
+    "meaning3": "yanlış",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "model",
+    "meaning1": "model",
+    "typemeaning1": "i",
+    "meaning2": "manken",
+    "typemeaning2": "i",
+    "meaning3": "modellik etmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "modern",
+    "meaning1": "çağdaş",
+    "typemeaning1": "s",
+    "meaning2": "modern",
+    "typemeaning2": "s",
+    "meaning3": "modern kimse",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "moment",
+    "meaning1": "an",
+    "typemeaning1": "i",
+    "meaning2": "önem",
+    "typemeaning2": "i",
+    "meaning3": "cevher",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "Monday",
+    "meaning1": "pazartesi",
+    "typemeaning1": "i",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "money",
+    "meaning1": "para",
+    "typemeaning1": "i",
+    "meaning2": "para kırmak",
+    "typemeaning2": "f",
+    "meaning3": "patpat",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "month",
+    "meaning1": "ay",
+    "typemeaning1": "i",
+    "meaning2": "ay",
+    "typemeaning2": "i",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "more",
+    "meaning1": "daha fazla",
+    "typemeaning1": "s",
+    "meaning2": "daha",
+    "typemeaning2": "zf",
+    "meaning3": "fazla şey",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "morning",
+    "meaning1": "sabah",
+    "typemeaning1": "s",
+    "meaning2": "sabah vakti",
+    "typemeaning2": "i",
+    "meaning3": "başlama",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "most",
+    "meaning1": "en",
+    "typemeaning1": "s",
+    "meaning2": "en çok",
+    "typemeaning2": "s",
+    "meaning3": "en fazlası",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "mother",
+    "meaning1": "ana",
+    "typemeaning1": "i",
+    "meaning2": "anne",
+    "typemeaning2": "i",
+    "meaning3": "anne gibi davranmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "mountain",
+    "meaning1": "dağ",
+    "typemeaning1": "i",
+    "meaning2": "yığın",
+    "typemeaning2": "i",
+    "meaning3": "cebel",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "mouse",
+    "meaning1": "fare",
+    "typemeaning1": "i",
+    "meaning2": "fare avlamak",
+    "typemeaning2": "f",
+    "meaning3": "fare tutmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "mouth",
+    "meaning1": "ağız",
+    "typemeaning1": "i",
+    "meaning2": "tane tane söylemek",
+    "typemeaning2": "f",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "move",
+    "meaning1": "kımıldamak",
+    "typemeaning1": "f",
+    "meaning2": "kıpırdamak",
+    "typemeaning2": "f",
+    "meaning3": "hareket etmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "movie",
+    "meaning1": "film (sinemada gösterilen)",
+    "typemeaning1": "i",
+    "meaning2": "sinema",
+    "typemeaning2": "i",
+    "meaning3": "film",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "much",
+    "meaning1": "fazla",
+    "typemeaning1": "s",
+    "meaning2": "çok",
+    "typemeaning2": "zf",
+    "meaning3": "çok şey",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "mum",
+    "meaning1": "maske ile oynamak",
+    "typemeaning1": "f",
+    "meaning2": "kasımpatı",
+    "typemeaning2": "i",
+    "meaning3": "hanımefendi",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "museum",
+    "meaning1": "müze",
+    "typemeaning1": "i",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "music",
+    "meaning1": "müzik",
+    "typemeaning1": "i",
+    "meaning2": "ahenk",
+    "typemeaning2": "i",
+    "meaning3": "nağme",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "must",
+    "meaning1": "gerekmek",
+    "typemeaning1": "f",
+    "meaning2": "-malı",
+    "typemeaning2": "f",
+    "meaning3": "-meli",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "my",
+    "meaning1": "benim",
+    "typemeaning1": "zm",
+    "meaning2": "bana ait",
+    "typemeaning2": "ünl",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "name",
+    "meaning1": "isim",
+    "typemeaning1": "i",
+    "meaning2": "ad",
+    "typemeaning2": "i",
+    "meaning3": "ismiyle çağırmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "natural",
+    "meaning1": "tabii",
+    "typemeaning1": "s",
+    "meaning2": "doğuştan",
+    "typemeaning2": "s",
+    "meaning3": "natürel",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "near",
+    "meaning1": "yakın",
+    "typemeaning1": "zf",
+    "meaning2": "yakınlaşmak",
+    "typemeaning2": "f",
+    "meaning3": "yaklaşmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "need",
+    "meaning1": "ihtiyaç duymak",
+    "typemeaning1": "f",
+    "meaning2": "gerek",
+    "typemeaning2": "i",
+    "meaning3": "gereksinim",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "negative",
+    "meaning1": "negatif",
+    "typemeaning1": "s",
+    "meaning2": "olumsuz",
+    "typemeaning2": "s",
+    "meaning3": "etkisiz hale getirmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "neighbour",
+    "meaning1": "komşu",
+    "typemeaning1": "i",
+    "meaning2": "komşu olmak",
+    "typemeaning2": "f",
+    "meaning3": "yaklaşmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "never",
+    "meaning1": "hiç",
+    "typemeaning1": "zf",
+    "meaning2": "asla",
+    "typemeaning2": "ünl",
+    "meaning3": "katiyen",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "new",
+    "meaning1": "yeni",
+    "typemeaning1": "s",
+    "meaning2": "keşfedilmemiş",
+    "typemeaning2": "s",
+    "meaning3": "değişik",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "news",
+    "meaning1": "haber",
+    "typemeaning1": "i",
+    "meaning2": "havadis",
+    "typemeaning2": "i",
+    "meaning3": "bilgi",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "newspaper",
+    "meaning1": "gazete",
+    "typemeaning1": "i",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "next",
+    "meaning1": "sonraki",
+    "typemeaning1": "ed",
+    "meaning2": "bundan sonraki",
+    "typemeaning2": "s",
+    "meaning3": "en bitişik",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "next",
+    "meaning1": "to bitişik",
+    "typemeaning1": "s",
+    "meaning2": "yanında",
+    "typemeaning2": "zf",
+    "meaning3": "hemen yanındaki",
+    "typemeaning3": "ed"
+  },
+  {
+    "word": "nice",
+    "meaning1": "sevimli",
+    "typemeaning1": "s",
+    "meaning2": "güzel",
+    "typemeaning2": "s",
+    "meaning3": "hoş",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "night",
+    "meaning1": "gece",
+    "typemeaning1": "s",
+    "meaning2": "tün",
+    "typemeaning2": "i",
+    "meaning3": "karanlık",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "nine",
+    "meaning1": "dokuz",
+    "typemeaning1": "i",
+    "meaning2": "dokuzu",
+    "typemeaning2": "i",
+    "meaning3": "9",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "nineteen",
+    "meaning1": "XIX",
+    "typemeaning1": "i",
+    "meaning2": "on dokuz",
+    "typemeaning2": "i",
+    "meaning3": "on dokuz sayısı",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "ninety",
+    "meaning1": "doksan sayısı (90)",
+    "typemeaning1": "i",
+    "meaning2": "doksan",
+    "typemeaning2": "i",
+    "meaning3": "90",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "no",
+    "meaning1": "hayır",
+    "typemeaning1": "ünl",
+    "meaning2": "aleyhte oy",
+    "typemeaning2": "i",
+    "meaning3": "red",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "no",
+    "meaning1": "one hiç kimse",
+    "typemeaning1": "zm",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "nobody",
+    "meaning1": "hiç kimse",
+    "typemeaning1": "zm",
+    "meaning2": "önemsiz biri",
+    "typemeaning2": "i",
+    "meaning3": "bir hiç",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "north",
+    "meaning1": "kuzey",
+    "typemeaning1": "i",
+    "meaning2": "şimal",
+    "typemeaning2": "i",
+    "meaning3": "kuzeye bakan",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "nose",
+    "meaning1": "burun",
+    "typemeaning1": "i",
+    "meaning2": "koku almak",
+    "typemeaning2": "f",
+    "meaning3": "yavaş ilerlemek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "not",
+    "meaning1": "gayri",
+    "typemeaning1": "s",
+    "meaning2": "yoksa",
+    "typemeaning2": "zf",
+    "meaning3": "asla",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "note",
+    "meaning1": "not etmek",
+    "typemeaning1": "f",
+    "meaning2": "senet",
+    "typemeaning2": "i",
+    "meaning3": "nota",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "nothing",
+    "meaning1": "hiç",
+    "typemeaning1": "i",
+    "meaning2": "hiçbir şey",
+    "typemeaning2": "i",
+    "meaning3": "önemsiz (şey)",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "November",
+    "meaning1": "kasım",
+    "typemeaning1": "i",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "now",
+    "meaning1": "şimdi",
+    "typemeaning1": "zf",
+    "meaning2": "halen",
+    "typemeaning2": "zf",
+    "meaning3": "derhal",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "number",
+    "meaning1": "numaralamak",
+    "typemeaning1": "f",
+    "meaning2": "saymak",
+    "typemeaning2": "f",
+    "meaning3": "sayı",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "nurse",
+    "meaning1": "hemşirelik yapmak",
+    "typemeaning1": "f",
+    "meaning2": "meme vermek",
+    "typemeaning2": "f",
+    "meaning3": "bakıcılık yapmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "object",
+    "meaning1": "itiraz etmek",
+    "typemeaning1": "f",
+    "meaning2": "razı olmamak",
+    "typemeaning2": "f",
+    "meaning3": "karşı çıkmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "o'clock",
+    "meaning1": "saat",
+    "typemeaning1": "zf",
+    "meaning2": "saate göre",
+    "typemeaning2": "zf",
+    "meaning3": "saat (tam saatlerle kullanılır)",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "October",
+    "meaning1": "ekim",
+    "typemeaning1": "i",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "of",
+    "meaning1": "karşı",
+    "typemeaning1": "ed",
+    "meaning2": "olan",
+    "typemeaning2": "ed",
+    "meaning3": "hakkında",
+    "typemeaning3": "ed"
+  },
+  {
+    "word": "off",
+    "meaning1": "kapalı",
+    "typemeaning1": "s",
+    "meaning2": "dışında",
+    "typemeaning2": "zf",
+    "meaning3": "kalkmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "office",
+    "meaning1": "makam",
+    "typemeaning1": "i",
+    "meaning2": "ofis",
+    "typemeaning2": "i",
+    "meaning3": "büro",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "often",
+    "meaning1": "sık sık",
+    "typemeaning1": "zf",
+    "meaning2": "çoğu kez",
+    "typemeaning2": "zf",
+    "meaning3": "sık",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "oh",
+    "meaning1": "ey",
+    "typemeaning1": "ünl",
+    "meaning2": "ha",
+    "typemeaning2": "ünl",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "OK",
+    "meaning1": "onaylamak",
+    "typemeaning1": "f",
+    "meaning2": "okeylemek",
+    "typemeaning2": "f",
+    "meaning3": "kabul etmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "old",
+    "meaning1": "eskimiş",
+    "typemeaning1": "s",
+    "meaning2": "yaşlı",
+    "typemeaning2": "s",
+    "meaning3": "eski",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "on",
+    "meaning1": "üstünde",
+    "typemeaning1": "ed",
+    "meaning2": "üzerinde",
+    "typemeaning2": "ed",
+    "meaning3": "yanmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "once",
+    "meaning1": "bir kere",
+    "typemeaning1": "zf",
+    "meaning2": "bir kez",
+    "typemeaning2": "zf",
+    "meaning3": "birkez",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "one",
+    "meaning1": "bir",
+    "typemeaning1": "i",
+    "meaning2": "tek",
+    "typemeaning2": "s",
+    "meaning3": "biri",
+    "typemeaning3": "zm"
+  },
+  {
+    "word": "onion",
+    "meaning1": "soğan",
+    "typemeaning1": "i",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "online",
+    "meaning1": "bağlantılı",
+    "typemeaning1": "s",
+    "meaning2": "online olarak",
+    "typemeaning2": "zf",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "only",
+    "meaning1": "tek",
+    "typemeaning1": "s",
+    "meaning2": "sırf",
+    "typemeaning2": "zf",
+    "meaning3": "yalnızca",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "open",
+    "meaning1": "açılmak",
+    "typemeaning1": "f",
+    "meaning2": "açmak",
+    "typemeaning2": "f",
+    "meaning3": "açık",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "opinion",
+    "meaning1": "kanaat",
+    "typemeaning1": "i",
+    "meaning2": "kanı",
+    "typemeaning2": "i",
+    "meaning3": "düşünce",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "opposite",
+    "meaning1": "zıt",
+    "typemeaning1": "i",
+    "meaning2": "aksi",
+    "typemeaning2": "s",
+    "meaning3": "karşıt",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "or",
+    "meaning1": "ya da",
+    "typemeaning1": "bağ",
+    "meaning2": "veya",
+    "typemeaning2": "bağ",
+    "meaning3": "altın sarısı",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "orange",
+    "meaning1": "portakal",
+    "typemeaning1": "i",
+    "meaning2": "portakal rengi",
+    "typemeaning2": "i",
+    "meaning3": "portakalrengi",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "order",
+    "meaning1": "sipariş vermek",
+    "typemeaning1": "f",
+    "meaning2": "emretmek",
+    "typemeaning2": "f",
+    "meaning3": "buyurmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "other",
+    "meaning1": "öbür",
+    "typemeaning1": "s",
+    "meaning2": "öteki",
+    "typemeaning2": "s",
+    "meaning3": "başka",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "our",
+    "meaning1": "bizim",
+    "typemeaning1": "zm",
+    "meaning2": "bizim",
+    "typemeaning2": "zm",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "out",
+    "meaning1": "çıkış",
+    "typemeaning1": "i",
+    "meaning2": "dışarıda",
+    "typemeaning2": "zf",
+    "meaning3": "dışarı",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "outside",
+    "meaning1": "dıştan",
+    "typemeaning1": "zf",
+    "meaning2": "dışarı",
+    "typemeaning2": "zf",
+    "meaning3": "dışarısı",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "over",
+    "meaning1": "bitmiş",
+    "typemeaning1": "s",
+    "meaning2": "üzerine",
+    "typemeaning2": "ed",
+    "meaning3": "üstüne",
+    "typemeaning3": "ed"
+  },
+  {
+    "word": "own",
+    "meaning1": "sahip olmak",
+    "typemeaning1": "f",
+    "meaning2": "kendi",
+    "typemeaning2": "zm",
+    "meaning3": "itiraf etmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "page",
+    "meaning1": "sayfa",
+    "typemeaning1": "i",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "paint",
+    "meaning1": "boyamak",
+    "typemeaning1": "f",
+    "meaning2": "boya",
+    "typemeaning2": "i",
+    "meaning3": "portresini yapmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "painting",
+    "meaning1": "tablo",
+    "typemeaning1": "i",
+    "meaning2": "resim",
+    "typemeaning2": "i",
+    "meaning3": "ressamlık",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "pair",
+    "meaning1": "çift",
+    "typemeaning1": "i",
+    "meaning2": "eşleştirmek",
+    "typemeaning2": "f",
+    "meaning3": "eşlemek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "paper",
+    "meaning1": "kağıt",
+    "typemeaning1": "i",
+    "meaning2": "duvar kağıdı kaplamak",
+    "typemeaning2": "f",
+    "meaning3": "örtbas etmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "paragraph",
+    "meaning1": "fıkra",
+    "typemeaning1": "i",
+    "meaning2": "paragraf",
+    "typemeaning2": "i",
+    "meaning3": "makale",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "parent",
+    "meaning1": "ebeveynlik etmek",
+    "typemeaning1": "f",
+    "meaning2": "ata",
+    "typemeaning2": "i",
+    "meaning3": "soy",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "park",
+    "meaning1": "park etmek",
+    "typemeaning1": "f",
+    "meaning2": "park",
+    "typemeaning2": "i",
+    "meaning3": "park yapmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "part",
+    "meaning1": "parça",
+    "typemeaning1": "i",
+    "meaning2": "kısım",
+    "typemeaning2": "i",
+    "meaning3": "taraf",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "partner",
+    "meaning1": "eş",
+    "typemeaning1": "i",
+    "meaning2": "ortak",
+    "typemeaning2": "i",
+    "meaning3": "ortak etmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "party",
+    "meaning1": "taraf",
+    "typemeaning1": "i",
+    "meaning2": "parti",
+    "typemeaning2": "i",
+    "meaning3": "(parti yaparak) kutlamak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "passport",
+    "meaning1": "pasaport",
+    "typemeaning1": "i",
+    "meaning2": "geçiş belgesi",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "past",
+    "meaning1": "geçmiş",
+    "typemeaning1": "s",
+    "meaning2": "geçmiş zaman",
+    "typemeaning2": "i",
+    "meaning3": "bir kimsenin geçmişi",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "pay",
+    "meaning1": "ödemek",
+    "typemeaning1": "f",
+    "meaning2": "ödeme",
+    "typemeaning2": "i",
+    "meaning3": "ücret",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "pen",
+    "meaning1": "kalem",
+    "typemeaning1": "i",
+    "meaning2": "hapsetmek",
+    "typemeaning2": "f",
+    "meaning3": "kaleme almak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "pencil",
+    "meaning1": "kalem",
+    "typemeaning1": "i",
+    "meaning2": "kurşunkalem",
+    "typemeaning2": "i",
+    "meaning3": "kurşunkalemle çizmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "people",
+    "meaning1": "insanlar",
+    "typemeaning1": "i",
+    "meaning2": "ulus",
+    "typemeaning2": "i",
+    "meaning3": "halk",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "pepper",
+    "meaning1": "biber",
+    "typemeaning1": "i",
+    "meaning2": "üzerine biber ekmek",
+    "typemeaning2": "f",
+    "meaning3": "pul biber koymak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "perfect",
+    "meaning1": "kusursuz",
+    "typemeaning1": "s",
+    "meaning2": "mükemmel",
+    "typemeaning2": "s",
+    "meaning3": "mükemmelleştirmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "period",
+    "meaning1": "devir",
+    "typemeaning1": "i",
+    "meaning2": "dönem",
+    "typemeaning2": "i",
+    "meaning3": "çağ",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "person",
+    "meaning1": "kişi",
+    "typemeaning1": "i",
+    "meaning2": "şahıs",
+    "typemeaning2": "i",
+    "meaning3": "kimse",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "personal",
+    "meaning1": "kişisel",
+    "typemeaning1": "s",
+    "meaning2": "özel",
+    "typemeaning2": "s",
+    "meaning3": "şahsi",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "phone",
+    "meaning1": "telefon etmek",
+    "typemeaning1": "f",
+    "meaning2": "telefon açmak",
+    "typemeaning2": "f",
+    "meaning3": "telefonlamak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "photo",
+    "meaning1": "foto",
+    "typemeaning1": "i",
+    "meaning2": "fotoğraflamak",
+    "typemeaning2": "f",
+    "meaning3": "resim vermek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "photograph",
+    "meaning1": "fotoğraflamak",
+    "typemeaning1": "f",
+    "meaning2": "fotoğrafını çekmek",
+    "typemeaning2": "f",
+    "meaning3": "resim vermek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "phrase",
+    "meaning1": "ifade etmek",
+    "typemeaning1": "f",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "piano",
+    "meaning1": "piyano çalgı",
+    "typemeaning1": "i",
+    "meaning2": "piyano",
+    "typemeaning2": "i",
+    "meaning3": "hafif",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "picture",
+    "meaning1": "resim",
+    "typemeaning1": "i",
+    "meaning2": "yansıtmak",
+    "typemeaning2": "f",
+    "meaning3": "resmetmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "piece",
+    "meaning1": "tane",
+    "typemeaning1": "i",
+    "meaning2": "parça",
+    "typemeaning2": "i",
+    "meaning3": "yamamak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "pig",
+    "meaning1": "domuz",
+    "typemeaning1": "i",
+    "meaning2": "pislik içinde yaşamak",
+    "typemeaning2": "f",
+    "meaning3": "yavrulamak (domuz)",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "pink",
+    "meaning1": "pembe",
+    "typemeaning1": "i",
+    "meaning2": "delmek (süngü ile)",
+    "typemeaning2": "f",
+    "meaning3": "süngü ile delmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "place",
+    "meaning1": "koymak",
+    "typemeaning1": "f",
+    "meaning2": "oturtmak",
+    "typemeaning2": "f",
+    "meaning3": "yerleştirmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "plan",
+    "meaning1": "planlamak",
+    "typemeaning1": "f",
+    "meaning2": "tasarlamak",
+    "typemeaning2": "f",
+    "meaning3": "plan",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "plane",
+    "meaning1": "düzlemek",
+    "typemeaning1": "f",
+    "meaning2": "düz (yüzey)",
+    "typemeaning2": "i",
+    "meaning3": "düzlem",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "plant",
+    "meaning1": "dikmek",
+    "typemeaning1": "f",
+    "meaning2": "ekmek",
+    "typemeaning2": "f",
+    "meaning3": "tesis",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "play",
+    "meaning1": "oynamak",
+    "typemeaning1": "f",
+    "meaning2": "çalmak",
+    "typemeaning2": "f",
+    "meaning3": "piyes",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "player",
+    "meaning1": "oyuncu",
+    "typemeaning1": "i",
+    "meaning2": "çalgıcı",
+    "typemeaning2": "i",
+    "meaning3": "sporcu",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "please",
+    "meaning1": "memnun etmek",
+    "typemeaning1": "f",
+    "meaning2": "lütfen",
+    "typemeaning2": "ünl",
+    "meaning3": "gönlünü hoş etmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "point",
+    "meaning1": "nokta",
+    "typemeaning1": "i",
+    "meaning2": "puan",
+    "typemeaning2": "i",
+    "meaning3": "uç",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "police",
+    "meaning1": "polis",
+    "typemeaning1": "i",
+    "meaning2": "inzibat altına almak",
+    "typemeaning2": "f",
+    "meaning3": "güvenliği sağlamak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "policeman",
+    "meaning1": "polis",
+    "typemeaning1": "i",
+    "meaning2": "zabıta memuru",
+    "typemeaning2": "i",
+    "meaning3": "polis (memuru)",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "pool",
+    "meaning1": "havuz",
+    "typemeaning1": "i",
+    "meaning2": "toplamak",
+    "typemeaning2": "f",
+    "meaning3": "karı paylaşmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "poor",
+    "meaning1": "kötü",
+    "typemeaning1": "s",
+    "meaning2": "fakir",
+    "typemeaning2": "s",
+    "meaning3": "zavallı",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "popular",
+    "meaning1": "popüler",
+    "typemeaning1": "s",
+    "meaning2": "halkın kesesine elverişli",
+    "typemeaning2": "i",
+    "meaning3": "halka hitap eden",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "positive",
+    "meaning1": "pozitif",
+    "typemeaning1": "s",
+    "meaning2": "artı",
+    "typemeaning2": "s",
+    "meaning3": "olumlu",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "possible",
+    "meaning1": "olabilir",
+    "typemeaning1": "s",
+    "meaning2": "olanaklı",
+    "typemeaning2": "s",
+    "meaning3": "muhtemel",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "post",
+    "meaning1": "postalamak",
+    "typemeaning1": "f",
+    "meaning2": "makam",
+    "typemeaning2": "i",
+    "meaning3": "direk",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "potato",
+    "meaning1": "patates",
+    "typemeaning1": "i",
+    "meaning2": "baş",
+    "typemeaning2": "i",
+    "meaning3": "kafa",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "pound",
+    "meaning1": "yumruklamak",
+    "typemeaning1": "f",
+    "meaning2": "çakmak",
+    "typemeaning2": "f",
+    "meaning3": "dalgaya çarpmak (gemi)",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "practice",
+    "meaning1": "uygulamak",
+    "typemeaning1": "f",
+    "meaning2": "alıştırma yapmak",
+    "typemeaning2": "f",
+    "meaning3": "yapmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "practise",
+    "meaning1": "pratik yapmak",
+    "typemeaning1": "f",
+    "meaning2": "alıştırma yapmak",
+    "typemeaning2": "f",
+    "meaning3": "etmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "prefer",
+    "meaning1": "tercih etmek",
+    "typemeaning1": "f",
+    "meaning2": "yeğlemek",
+    "typemeaning2": "f",
+    "meaning3": "yeğ tutmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "prepare",
+    "meaning1": "hazırlamak",
+    "typemeaning1": "f",
+    "meaning2": "düzmek",
+    "typemeaning2": "f",
+    "meaning3": "pişirmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "present",
+    "meaning1": "sunmak",
+    "typemeaning1": "f",
+    "meaning2": "takdim etmek",
+    "typemeaning2": "f",
+    "meaning3": "şimdiki zaman",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "pretty",
+    "meaning1": "şirin",
+    "typemeaning1": "s",
+    "meaning2": "tatlı",
+    "typemeaning2": "s",
+    "meaning3": "güzel",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "price",
+    "meaning1": "bedel",
+    "typemeaning1": "i",
+    "meaning2": "fiyat",
+    "typemeaning2": "i",
+    "meaning3": "ücret",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "probably",
+    "meaning1": "galiba",
+    "typemeaning1": "zf",
+    "meaning2": "muhtemelen",
+    "typemeaning2": "zf",
+    "meaning3": "muhtemel olarak",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "problem",
+    "meaning1": "problem",
+    "typemeaning1": "i",
+    "meaning2": "mesele",
+    "typemeaning2": "i",
+    "meaning3": "sorun",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "product",
+    "meaning1": "ürün",
+    "typemeaning1": "i",
+    "meaning2": "mahsul",
+    "typemeaning2": "i",
+    "meaning3": "meyve",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "programme",
+    "meaning1": "program",
+    "typemeaning1": "i",
+    "meaning2": "programlamak",
+    "typemeaning2": "f",
+    "meaning3": "planlamak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "project",
+    "meaning1": "proje",
+    "typemeaning1": "i",
+    "meaning2": "iz düşürmek",
+    "typemeaning2": "f",
+    "meaning3": "planını çizmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "purple",
+    "meaning1": "mor",
+    "typemeaning1": "i",
+    "meaning2": "mora boyamak",
+    "typemeaning2": "f",
+    "meaning3": "erguvan rengi",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "put",
+    "meaning1": "koymak",
+    "typemeaning1": "f",
+    "meaning2": "put - put",
+    "typemeaning2": "f",
+    "meaning3": "hamletmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "quarter",
+    "meaning1": "çeyrek",
+    "typemeaning1": "i",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "question",
+    "meaning1": "soru",
+    "typemeaning1": "i",
+    "meaning2": "sorular sormak",
+    "typemeaning2": "f",
+    "meaning3": "sorgulamak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "quick",
+    "meaning1": "süratli",
+    "typemeaning1": "s",
+    "meaning2": "hızlı",
+    "typemeaning2": "s",
+    "meaning3": "çabuk",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "quickly",
+    "meaning1": "hızla",
+    "typemeaning1": "zf",
+    "meaning2": "aceleyle",
+    "typemeaning2": "zf",
+    "meaning3": "süratle",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "quiet",
+    "meaning1": "sessizlik",
+    "typemeaning1": "i",
+    "meaning2": "sakin",
+    "typemeaning2": "s",
+    "meaning3": "sessiz",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "quite",
+    "meaning1": "epeyce",
+    "typemeaning1": "zf",
+    "meaning2": "pek",
+    "typemeaning2": "zf",
+    "meaning3": "epey",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "radio",
+    "meaning1": "radyo",
+    "typemeaning1": "i",
+    "meaning2": "telsiz",
+    "typemeaning2": "i",
+    "meaning3": "telsizle haber vermek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "rain",
+    "meaning1": "yağmur yağmak",
+    "typemeaning1": "f",
+    "meaning2": "yağmur",
+    "typemeaning2": "i",
+    "meaning3": "yağmur gibi yağdırmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "read",
+    "meaning1": "okumak",
+    "typemeaning1": "f",
+    "meaning2": "çözmek",
+    "typemeaning2": "f",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "reader",
+    "meaning1": "okur",
+    "typemeaning1": "i",
+    "meaning2": "okuyucu",
+    "typemeaning2": "i",
+    "meaning3": "eleştirmen",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "reading",
+    "meaning1": "okuma",
+    "typemeaning1": "s",
+    "meaning2": "mana",
+    "typemeaning2": "i",
+    "meaning3": "yorum",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "ready",
+    "meaning1": "hazır",
+    "typemeaning1": "s",
+    "meaning2": "hazırlamak",
+    "typemeaning2": "f",
+    "meaning3": "peşin para",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "real",
+    "meaning1": "hakiki",
+    "typemeaning1": "s",
+    "meaning2": "gerçek",
+    "typemeaning2": "s",
+    "meaning3": "taşınmaz",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "really",
+    "meaning1": "hakikaten",
+    "typemeaning1": "zf",
+    "meaning2": "gerçekten",
+    "typemeaning2": "zf",
+    "meaning3": "cidden",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "reason",
+    "meaning1": "sebep",
+    "typemeaning1": "i",
+    "meaning2": "akıl",
+    "typemeaning2": "i",
+    "meaning3": "gerekçe",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "red",
+    "meaning1": "al",
+    "typemeaning1": "s",
+    "meaning2": "kızıl",
+    "typemeaning2": "s",
+    "meaning3": "kırmızı",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "relax",
+    "meaning1": "rahatlamak",
+    "typemeaning1": "f",
+    "meaning2": "rahatlatmak",
+    "typemeaning2": "f",
+    "meaning3": "dinlenmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "remember",
+    "meaning1": "hatırlamak",
+    "typemeaning1": "f",
+    "meaning2": "anımsamak",
+    "typemeaning2": "f",
+    "meaning3": "anmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "repeat",
+    "meaning1": "yinelemek",
+    "typemeaning1": "f",
+    "meaning2": "tekrarlamak",
+    "typemeaning2": "f",
+    "meaning3": "tekerrür etmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "report",
+    "meaning1": "haber vermek",
+    "typemeaning1": "f",
+    "meaning2": "rapor etmek",
+    "typemeaning2": "f",
+    "meaning3": "ihbar etmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "restaurant",
+    "meaning1": "restoran",
+    "typemeaning1": "i",
+    "meaning2": "lokanta",
+    "typemeaning2": "i",
+    "meaning3": "doyumevi",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "result",
+    "meaning1": "netice",
+    "typemeaning1": "i",
+    "meaning2": "sonuç",
+    "typemeaning2": "i",
+    "meaning3": "sonucu olmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "return",
+    "meaning1": "geri dönmek",
+    "typemeaning1": "f",
+    "meaning2": "dönmek",
+    "typemeaning2": "f",
+    "meaning3": "iade etmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "rice",
+    "meaning1": "pirinç",
+    "typemeaning1": "i",
+    "meaning2": "çeltik",
+    "typemeaning2": "i",
+    "meaning3": "pilav",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "rich",
+    "meaning1": "zengin",
+    "typemeaning1": "s",
+    "meaning2": "varsıl",
+    "typemeaning2": "s",
+    "meaning3": "bol bol",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "ride",
+    "meaning1": "binmek",
+    "typemeaning1": "f",
+    "meaning2": "gezinti",
+    "typemeaning2": "i",
+    "meaning3": "rode - ridden",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "right",
+    "meaning1": "sağ",
+    "typemeaning1": "i",
+    "meaning2": "hak",
+    "typemeaning2": "i",
+    "meaning3": "haklı",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "river",
+    "meaning1": "nehir",
+    "typemeaning1": "i",
+    "meaning2": "nehir",
+    "typemeaning2": "i",
+    "meaning3": "akış",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "road",
+    "meaning1": "yol",
+    "typemeaning1": "i",
+    "meaning2": "uyulan ilke",
+    "typemeaning2": "i",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "room",
+    "meaning1": "oda",
+    "typemeaning1": "i",
+    "meaning2": "oturmak",
+    "typemeaning2": "f",
+    "meaning3": "kalmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "routine",
+    "meaning1": "rutin",
+    "typemeaning1": "s",
+    "meaning2": "adet",
+    "typemeaning2": "i",
+    "meaning3": "hergünkü işler",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "rule",
+    "meaning1": "hüküm sürmek",
+    "typemeaning1": "f",
+    "meaning2": "hükmetmek",
+    "typemeaning2": "f",
+    "meaning3": "kural",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "run",
+    "meaning1": "çalıştırmak",
+    "typemeaning1": "f",
+    "meaning2": "işletmek",
+    "typemeaning2": "f",
+    "meaning3": "koşmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "sad",
+    "meaning1": "hüzünlü",
+    "typemeaning1": "s",
+    "meaning2": "mahzun",
+    "typemeaning2": "s",
+    "meaning3": "üzücü",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "salad",
+    "meaning1": "salata",
+    "typemeaning1": "i",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "salt",
+    "meaning1": "tuz",
+    "typemeaning1": "i",
+    "meaning2": "biriktirmek",
+    "typemeaning2": "f",
+    "meaning3": "tuzlayarak saklamak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "same",
+    "meaning1": "aynı",
+    "typemeaning1": "s",
+    "meaning2": "eşit",
+    "typemeaning2": "s",
+    "meaning3": "farksız",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "sandwich",
+    "meaning1": "sandviç",
+    "typemeaning1": "i",
+    "meaning2": "sıkıştırmak",
+    "typemeaning2": "f",
+    "meaning3": "arasına sıkıştırmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "Saturday",
+    "meaning1": "cumartesi",
+    "typemeaning1": "i",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "say",
+    "meaning1": "söylemek",
+    "typemeaning1": "f",
+    "meaning2": "demek",
+    "typemeaning2": "f",
+    "meaning3": "said - said",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "school",
+    "meaning1": "mektep",
+    "typemeaning1": "i",
+    "meaning2": "okul",
+    "typemeaning2": "i",
+    "meaning3": "yetiştirmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "science",
+    "meaning1": "ilim",
+    "typemeaning1": "i",
+    "meaning2": "bilim",
+    "typemeaning2": "i",
+    "meaning3": "beceri",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "scientist",
+    "meaning1": "bilgin",
+    "typemeaning1": "i",
+    "meaning2": "bilim insanı",
+    "typemeaning2": "i",
+    "meaning3": "bilim adamı",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "sea",
+    "meaning1": "deniz",
+    "typemeaning1": "i",
+    "meaning2": "okyanus",
+    "typemeaning2": "i",
+    "meaning3": "dalga",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "second",
+    "meaning1": "saniye",
+    "typemeaning1": "i",
+    "meaning2": "ikinci",
+    "typemeaning2": "s",
+    "meaning3": "destek vermek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "section",
+    "meaning1": "kesit",
+    "typemeaning1": "i",
+    "meaning2": "bölüm",
+    "typemeaning2": "i",
+    "meaning3": "kısım",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "see",
+    "meaning1": "görmek",
+    "typemeaning1": "f",
+    "meaning2": "bakmak",
+    "typemeaning2": "f",
+    "meaning3": "saw - seen",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "sell",
+    "meaning1": "satılmak",
+    "typemeaning1": "f",
+    "meaning2": "satmak",
+    "typemeaning2": "f",
+    "meaning3": "sold - sold",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "send",
+    "meaning1": "yollamak",
+    "typemeaning1": "f",
+    "meaning2": "göndermek",
+    "typemeaning2": "f",
+    "meaning3": "sent - sent",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "sentence",
+    "meaning1": "cümle",
+    "typemeaning1": "i",
+    "meaning2": "mahkum etmek",
+    "typemeaning2": "f",
+    "meaning3": "hüküm giydirmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "September",
+    "meaning1": "eylül",
+    "typemeaning1": "i",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "seven",
+    "meaning1": "yedi",
+    "typemeaning1": "i",
+    "meaning2": "7",
+    "typemeaning2": "i",
+    "meaning3": "yedi rakamı",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "seventeen",
+    "meaning1": "XVII",
+    "typemeaning1": "i",
+    "meaning2": "on yedi sayısı",
+    "typemeaning2": "i",
+    "meaning3": "on yedi",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "seventy",
+    "meaning1": "yetmiş",
+    "typemeaning1": "i",
+    "meaning2": "LXX",
+    "typemeaning2": "i",
+    "meaning3": "yetmiş sayısı",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "share",
+    "meaning1": "paylaşmak",
+    "typemeaning1": "f",
+    "meaning2": "hisse",
+    "typemeaning2": "i",
+    "meaning3": "pay",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "she",
+    "meaning1": "dişi hayvan",
+    "typemeaning1": "i",
+    "meaning2": "dişi",
+    "typemeaning2": "i",
+    "meaning3": "kadın",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "sheep",
+    "meaning1": "koyun",
+    "typemeaning1": "i",
+    "meaning2": "koyun gibi tip",
+    "typemeaning2": "i",
+    "meaning3": "ezik kimse",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "shirt",
+    "meaning1": "gömlek",
+    "typemeaning1": "i",
+    "meaning2": "mintan",
+    "typemeaning2": "i",
+    "meaning3": "gömlek",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "shoe",
+    "meaning1": "ayakkabı",
+    "typemeaning1": "i",
+    "meaning2": "pabuç",
+    "typemeaning2": "i",
+    "meaning3": "shoed/shod - shoed/shod",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "shop",
+    "meaning1": "mağaza",
+    "typemeaning1": "i",
+    "meaning2": "dükkan",
+    "typemeaning2": "i",
+    "meaning3": "ele vermek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "shopping",
+    "meaning1": "alışveriş",
+    "typemeaning1": "i",
+    "meaning2": "çarşı pazar dolaşma",
+    "typemeaning2": "i",
+    "meaning3": "çarşıya çıkma",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "short",
+    "meaning1": "az",
+    "typemeaning1": "s",
+    "meaning2": "alçak",
+    "typemeaning2": "s",
+    "meaning3": "kısa",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "should",
+    "meaning1": "gerekmek",
+    "typemeaning1": "f",
+    "meaning2": "-malı",
+    "typemeaning2": "f",
+    "meaning3": "-meli",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "show",
+    "meaning1": "göstermek",
+    "typemeaning1": "f",
+    "meaning2": "gösteri",
+    "typemeaning2": "i",
+    "meaning3": "showed - shown/showed",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "shower",
+    "meaning1": "sağanak",
+    "typemeaning1": "i",
+    "meaning2": "duş",
+    "typemeaning2": "i",
+    "meaning3": "duş almak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "sick",
+    "meaning1": "hasta",
+    "typemeaning1": "s",
+    "meaning2": "yakalatmak",
+    "typemeaning2": "f",
+    "meaning3": "kusmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "similar",
+    "meaning1": "benzer",
+    "typemeaning1": "s",
+    "meaning2": "eş",
+    "typemeaning2": "s",
+    "meaning3": "benzeş",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "sing",
+    "meaning1": "söylemek",
+    "typemeaning1": "f",
+    "meaning2": "ötmek",
+    "typemeaning2": "f",
+    "meaning3": "şarkı söylemek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "singer",
+    "meaning1": "şarkıcı",
+    "typemeaning1": "i",
+    "meaning2": "hanende",
+    "typemeaning2": "i",
+    "meaning3": "şair",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "sister",
+    "meaning1": "abla",
+    "typemeaning1": "i",
+    "meaning2": "kardeş",
+    "typemeaning2": "i",
+    "meaning3": "kız kardeş",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "sit",
+    "meaning1": "oturmak",
+    "typemeaning1": "f",
+    "meaning2": "sat - sat",
+    "typemeaning2": "f",
+    "meaning3": "tünemek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "situation",
+    "meaning1": "hal",
+    "typemeaning1": "i",
+    "meaning2": "durum",
+    "typemeaning2": "i",
+    "meaning3": "ekmek kapısı",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "six",
+    "meaning1": "şeş",
+    "typemeaning1": "i",
+    "meaning2": "altı rakamı",
+    "typemeaning2": "i",
+    "meaning3": "altı",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "sixteen",
+    "meaning1": "onaltı",
+    "typemeaning1": "i",
+    "meaning2": "XVI",
+    "typemeaning2": "i",
+    "meaning3": "on altı sayısı",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "sixty",
+    "meaning1": "altmış",
+    "typemeaning1": "i",
+    "meaning2": "LX",
+    "typemeaning2": "i",
+    "meaning3": "altmış sayısı (60, LX)",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "skill",
+    "meaning1": "maharet",
+    "typemeaning1": "i",
+    "meaning2": "beceri",
+    "typemeaning2": "i",
+    "meaning3": "hüner",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "skirt",
+    "meaning1": "etek",
+    "typemeaning1": "i",
+    "meaning2": "kenarından geçmek",
+    "typemeaning2": "f",
+    "meaning3": "uzak durmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "sleep",
+    "meaning1": "uyumak",
+    "typemeaning1": "f",
+    "meaning2": "uyku",
+    "typemeaning2": "i",
+    "meaning3": "slept - slept",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "slow",
+    "meaning1": "yavaşlatmak",
+    "typemeaning1": "f",
+    "meaning2": "yavaş",
+    "typemeaning2": "s",
+    "meaning3": "ağır",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "small",
+    "meaning1": "az",
+    "typemeaning1": "s",
+    "meaning2": "küçük",
+    "typemeaning2": "s",
+    "meaning3": "ufak",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "snake",
+    "meaning1": "yılan",
+    "typemeaning1": "i",
+    "meaning2": "yılan gibi gitmek",
+    "typemeaning2": "f",
+    "meaning3": "yılan gibi kıvrılmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "snow",
+    "meaning1": "kar",
+    "typemeaning1": "i",
+    "meaning2": "yağmak",
+    "typemeaning2": "f",
+    "meaning3": "karla kaplamak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "so",
+    "meaning1": "bu yüzden",
+    "typemeaning1": "zf",
+    "meaning2": "öyle",
+    "typemeaning2": "zf",
+    "meaning3": "böyle",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "some",
+    "meaning1": "biraz",
+    "typemeaning1": "s",
+    "meaning2": "bazı",
+    "typemeaning2": "s",
+    "meaning3": "birkaç",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "somebody",
+    "meaning1": "biri",
+    "typemeaning1": "zm",
+    "meaning2": "birisi",
+    "typemeaning2": "zm",
+    "meaning3": "şahsiyet",
+    "typemeaning3": "zm"
+  },
+  {
+    "word": "someone",
+    "meaning1": "birisi",
+    "typemeaning1": "zm",
+    "meaning2": "kimse",
+    "typemeaning2": "zm",
+    "meaning3": "bir kimse",
+    "typemeaning3": "zm"
+  },
+  {
+    "word": "something",
+    "meaning1": "bir şey",
+    "typemeaning1": "i",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "sometimes",
+    "meaning1": "bazen",
+    "typemeaning1": "zf",
+    "meaning2": "ara sıra",
+    "typemeaning2": "zf",
+    "meaning3": "ara sıra",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "son",
+    "meaning1": "oğul",
+    "typemeaning1": "i",
+    "meaning2": "evlat",
+    "typemeaning2": "i",
+    "meaning3": "mahdum",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "song",
+    "meaning1": "şarkı",
+    "typemeaning1": "i",
+    "meaning2": "şakıma",
+    "typemeaning2": "i",
+    "meaning3": "güfte",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "soon",
+    "meaning1": "birazdan",
+    "typemeaning1": "zf",
+    "meaning2": "kısa süre içinde",
+    "typemeaning2": "zf",
+    "meaning3": "az sonra",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "sorry",
+    "meaning1": "üzgün",
+    "typemeaning1": "s",
+    "meaning2": "esef etmek",
+    "typemeaning2": "f",
+    "meaning3": "eseflenmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "sound",
+    "meaning1": "ses",
+    "typemeaning1": "i",
+    "meaning2": "söylemek",
+    "typemeaning2": "f",
+    "meaning3": "derine dalmak (balina)",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "soup",
+    "meaning1": "çorba",
+    "typemeaning1": "i",
+    "meaning2": "nitrogliserin",
+    "typemeaning2": "i",
+    "meaning3": "yoğun sis",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "south",
+    "meaning1": "güney",
+    "typemeaning1": "i",
+    "meaning2": "cenup",
+    "typemeaning2": "i",
+    "meaning3": "lodos",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "space",
+    "meaning1": "aralık",
+    "typemeaning1": "i",
+    "meaning2": "açıklık",
+    "typemeaning2": "i",
+    "meaning3": "mekan",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "speak",
+    "meaning1": "konuşmak",
+    "typemeaning1": "f",
+    "meaning2": "spoke - spoken",
+    "typemeaning2": "f",
+    "meaning3": "ses çıkarmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "special",
+    "meaning1": "özel",
+    "typemeaning1": "s",
+    "meaning2": "yemek (lokantaya has)",
+    "typemeaning2": "i",
+    "meaning3": "özel sayı",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "spell",
+    "meaning1": "hecelemek",
+    "typemeaning1": "f",
+    "meaning2": "büyü",
+    "typemeaning2": "i",
+    "meaning3": "spelled/spelt - spelled/spelt",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "spelling",
+    "meaning1": "yazım",
+    "typemeaning1": "s",
+    "meaning2": "yazılış",
+    "typemeaning2": "i",
+    "meaning3": "imla",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "spend",
+    "meaning1": "geçirmek (geceyi vb)",
+    "typemeaning1": "f",
+    "meaning2": "harcamak",
+    "typemeaning2": "f",
+    "meaning3": "spent - spent",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "sport",
+    "meaning1": "spor",
+    "typemeaning1": "i",
+    "meaning2": "şaka söylemek",
+    "typemeaning2": "f",
+    "meaning3": "oynamak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "spring",
+    "meaning1": "memba",
+    "typemeaning1": "i",
+    "meaning2": "ilkbahar",
+    "typemeaning2": "i",
+    "meaning3": "bahar",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "stand",
+    "meaning1": "(teklif) geçerli olmak",
+    "typemeaning1": "f",
+    "meaning2": "katlanmak",
+    "typemeaning2": "f",
+    "meaning3": "ayakta durmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "star",
+    "meaning1": "yıldız",
+    "typemeaning1": "i",
+    "meaning2": "yıldızlarla süslemek",
+    "typemeaning2": "f",
+    "meaning3": "başrolde oynatmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "start",
+    "meaning1": "başlamak",
+    "typemeaning1": "f",
+    "meaning2": "başlatmak",
+    "typemeaning2": "f",
+    "meaning3": "başlangıç",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "statement",
+    "meaning1": "ifade",
+    "typemeaning1": "i",
+    "meaning2": "söz",
+    "typemeaning2": "i",
+    "meaning3": "beyan",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "station",
+    "meaning1": "terminal",
+    "typemeaning1": "i",
+    "meaning2": "istasyon",
+    "typemeaning2": "i",
+    "meaning3": "görevlendirmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "stay",
+    "meaning1": "kalmak",
+    "typemeaning1": "f",
+    "meaning2": "kalma süresi",
+    "typemeaning2": "i",
+    "meaning3": "kalma",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "still",
+    "meaning1": "durgun",
+    "typemeaning1": "s",
+    "meaning2": "hareketsiz",
+    "typemeaning2": "s",
+    "meaning3": "hala",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "stop",
+    "meaning1": "durmak",
+    "typemeaning1": "f",
+    "meaning2": "durdurmak",
+    "typemeaning2": "f",
+    "meaning3": "dinmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "story",
+    "meaning1": "hikaye",
+    "typemeaning1": "i",
+    "meaning2": "anlatı",
+    "typemeaning2": "i",
+    "meaning3": "tarih",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "street",
+    "meaning1": "cadde",
+    "typemeaning1": "i",
+    "meaning2": "sokak",
+    "typemeaning2": "i",
+    "meaning3": "mahalle",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "strong",
+    "meaning1": "güçlü",
+    "typemeaning1": "s",
+    "meaning2": "kuvvetli",
+    "typemeaning2": "s",
+    "meaning3": "domuz gibi",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "student",
+    "meaning1": "öğrenci",
+    "typemeaning1": "i",
+    "meaning2": "talebe",
+    "typemeaning2": "i",
+    "meaning3": "mektepli",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "study",
+    "meaning1": "incelemek",
+    "typemeaning1": "f",
+    "meaning2": "çalışmak",
+    "typemeaning2": "f",
+    "meaning3": "çalışma",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "style",
+    "meaning1": "biçim",
+    "typemeaning1": "i",
+    "meaning2": "tarz",
+    "typemeaning2": "i",
+    "meaning3": "biçem",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "subject",
+    "meaning1": "ders",
+    "typemeaning1": "i",
+    "meaning2": "özne",
+    "typemeaning2": "i",
+    "meaning3": "konu",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "success",
+    "meaning1": "muvaffakiyet",
+    "typemeaning1": "i",
+    "meaning2": "başarı",
+    "typemeaning2": "i",
+    "meaning3": "başarılmış iş",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "sugar",
+    "meaning1": "şeker",
+    "typemeaning1": "i",
+    "meaning2": "kompliman yapmak",
+    "typemeaning2": "f",
+    "meaning3": "şeker katmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "summer",
+    "meaning1": "yaz",
+    "typemeaning1": "i",
+    "meaning2": "yazı geçirmek",
+    "typemeaning2": "f",
+    "meaning3": "hayatın baharı",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "sun",
+    "meaning1": "güneş",
+    "typemeaning1": "i",
+    "meaning2": "güneşte bırakmak",
+    "typemeaning2": "f",
+    "meaning3": "güneşlenmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "Sunday",
+    "meaning1": "pazar",
+    "typemeaning1": "i",
+    "meaning2": "pazar günü",
+    "typemeaning2": "i",
+    "meaning3": "bayramlık",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "supermarket",
+    "meaning1": "süpermarket",
+    "typemeaning1": "i",
+    "meaning2": "market",
+    "typemeaning2": "i",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "sure",
+    "meaning1": "emin",
+    "typemeaning1": "s",
+    "meaning2": "elbette",
+    "typemeaning2": "zf",
+    "meaning3": "soruşturmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "sweater",
+    "meaning1": "süveter",
+    "typemeaning1": "i",
+    "meaning2": "hırka",
+    "typemeaning2": "i",
+    "meaning3": "sömüren işveren",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "swim",
+    "meaning1": "yüzmek",
+    "typemeaning1": "f",
+    "meaning2": "yüzme",
+    "typemeaning2": "i",
+    "meaning3": "swam - swum",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "swimming",
+    "meaning1": "yüzme",
+    "typemeaning1": "i",
+    "meaning2": "yüzücülük",
+    "typemeaning2": "i",
+    "meaning3": "yüzme sporu",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "table",
+    "meaning1": "masa",
+    "typemeaning1": "i",
+    "meaning2": "tablo",
+    "typemeaning2": "i",
+    "meaning3": "sofra",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "take",
+    "meaning1": "almak",
+    "typemeaning1": "f",
+    "meaning2": "(fotoğraf) çekmek",
+    "typemeaning2": "f",
+    "meaning3": "götürmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "talk",
+    "meaning1": "konuşmak",
+    "typemeaning1": "f",
+    "meaning2": "sohbet",
+    "typemeaning2": "i",
+    "meaning3": "konuşma",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "tall",
+    "meaning1": "uzun",
+    "typemeaning1": "s",
+    "meaning2": "yüksek",
+    "typemeaning2": "s",
+    "meaning3": "uzun boylu",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "taxi",
+    "meaning1": "taksi",
+    "typemeaning1": "i",
+    "meaning2": "taksiyle gitmek",
+    "typemeaning2": "f",
+    "meaning3": "birini taksiyle götürmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "tea",
+    "meaning1": "çay",
+    "typemeaning1": "i",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "teach",
+    "meaning1": "ders vermek",
+    "typemeaning1": "f",
+    "meaning2": "öğretmek",
+    "typemeaning2": "f",
+    "meaning3": "taught - taught",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "teacher",
+    "meaning1": "öğretmen",
+    "typemeaning1": "i",
+    "meaning2": "hoca",
+    "typemeaning2": "i",
+    "meaning3": "öğretmen",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "team",
+    "meaning1": "takım",
+    "typemeaning1": "i",
+    "meaning2": "ekip",
+    "typemeaning2": "i",
+    "meaning3": "takım halinde yapmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "teenager",
+    "meaning1": "on üç ile on dokuz yaşlar arasındaki kimse",
+    "typemeaning1": "i",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "telephone",
+    "meaning1": "telefon",
+    "typemeaning1": "i",
+    "meaning2": "telefon etmek",
+    "typemeaning2": "f",
+    "meaning3": "telefon açmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "television",
+    "meaning1": "televizyon",
+    "typemeaning1": "i",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "tell",
+    "meaning1": "haber vermek",
+    "typemeaning1": "f",
+    "meaning2": "söylemek",
+    "typemeaning2": "f",
+    "meaning3": "anlatmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "ten",
+    "meaning1": "on",
+    "typemeaning1": "i",
+    "meaning2": "onluk",
+    "typemeaning2": "i",
+    "meaning3": "onlu",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "tennis",
+    "meaning1": "tenis",
+    "typemeaning1": "i",
+    "meaning2": "alantopu",
+    "typemeaning2": "i",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "terrible",
+    "meaning1": "berbat",
+    "typemeaning1": "s",
+    "meaning2": "korkunç",
+    "typemeaning2": "s",
+    "meaning3": "müthiş",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "test",
+    "meaning1": "sınamak",
+    "typemeaning1": "f",
+    "meaning2": "deneme",
+    "typemeaning2": "i",
+    "meaning3": "test",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "text",
+    "meaning1": "metin",
+    "typemeaning1": "i",
+    "meaning2": "mesaj atmak (cepten)",
+    "typemeaning2": "f",
+    "meaning3": "parça",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "than",
+    "meaning1": "-den",
+    "typemeaning1": "ed",
+    "meaning2": "hariç",
+    "typemeaning2": "ed",
+    "meaning3": "-mektense",
+    "typemeaning3": "ed"
+  },
+  {
+    "word": "thank",
+    "meaning1": "teşekkür etmek",
+    "typemeaning1": "f",
+    "meaning2": "teşekkür",
+    "typemeaning2": "i",
+    "meaning3": "teşekkür etmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "thanks",
+    "meaning1": "teşekkür",
+    "typemeaning1": "i",
+    "meaning2": "teşekkürler",
+    "typemeaning2": "ünl",
+    "meaning3": "sağ ol",
+    "typemeaning3": "ünl"
+  },
+  {
+    "word": "that",
+    "meaning1": "şu",
+    "typemeaning1": "zm",
+    "meaning2": "o",
+    "typemeaning2": "zm",
+    "meaning3": "o kadar",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "the",
+    "meaning1": "belli bir objeyi/kişiyi/yeri nitelemek için kullanılır",
+    "typemeaning1": "i",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "theatre",
+    "meaning1": "tiyatro",
+    "typemeaning1": "i",
+    "meaning2": "amfi",
+    "typemeaning2": "i",
+    "meaning3": "alan",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "their",
+    "meaning1": "onların",
+    "typemeaning1": "zm",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "them",
+    "meaning1": "onlara",
+    "typemeaning1": "zm",
+    "meaning2": "onları",
+    "typemeaning2": "zm",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "then",
+    "meaning1": "o zamanlar",
+    "typemeaning1": "i",
+    "meaning2": "o zamanki",
+    "typemeaning2": "s",
+    "meaning3": "o zamanın",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "there",
+    "meaning1": "oraya",
+    "typemeaning1": "zf",
+    "meaning2": "orada",
+    "typemeaning2": "zf",
+    "meaning3": "ora",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "they",
+    "meaning1": "onlar",
+    "typemeaning1": "zm",
+    "meaning2": "kendileri",
+    "typemeaning2": "zm",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "thing",
+    "meaning1": "şey",
+    "typemeaning1": "i",
+    "meaning2": "nesne",
+    "typemeaning2": "i",
+    "meaning3": "olay",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "think",
+    "meaning1": "sanmak",
+    "typemeaning1": "f",
+    "meaning2": "düşünmek",
+    "typemeaning2": "f",
+    "meaning3": "thought - thought",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "third",
+    "meaning1": "üçte bir",
+    "typemeaning1": "i",
+    "meaning2": "üçüncü",
+    "typemeaning2": "s",
+    "meaning3": "üçüncü olarak",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "thirsty",
+    "meaning1": "susuz",
+    "typemeaning1": "s",
+    "meaning2": "susamış",
+    "typemeaning2": "s",
+    "meaning3": "kurak",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "thirteen",
+    "meaning1": "on üç sayısı (13, XIII)",
+    "typemeaning1": "i",
+    "meaning2": "onüç",
+    "typemeaning2": "i",
+    "meaning3": "on üç",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "thirty",
+    "meaning1": "otuz sayısı (30, XXX)",
+    "typemeaning1": "i",
+    "meaning2": "otuz",
+    "typemeaning2": "i",
+    "meaning3": "30",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "this",
+    "meaning1": "bu",
+    "typemeaning1": "zm",
+    "meaning2": "böylesine",
+    "typemeaning2": "zf",
+    "meaning3": "bu kadar",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "thousand",
+    "meaning1": "bin",
+    "typemeaning1": "i",
+    "meaning2": "bin sayısı (1000, M)",
+    "typemeaning2": "i",
+    "meaning3": "binlik",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "three",
+    "meaning1": "iskambilde üçlü",
+    "typemeaning1": "i",
+    "meaning2": "üç rakamı (3, III)",
+    "typemeaning2": "i",
+    "meaning3": "se",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "through",
+    "meaning1": "başından sonuna kadar",
+    "typemeaning1": "ed",
+    "meaning2": "yoluyla",
+    "typemeaning2": "ed",
+    "meaning3": "üzerinden",
+    "typemeaning3": "ed"
+  },
+  {
+    "word": "Thursday",
+    "meaning1": "perşembe",
+    "typemeaning1": "i",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "ticket",
+    "meaning1": "bilet",
+    "typemeaning1": "i",
+    "meaning2": "etiket koymak",
+    "typemeaning2": "f",
+    "meaning3": "etiketlemek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "time",
+    "meaning1": "kez",
+    "typemeaning1": "i",
+    "meaning2": "kere",
+    "typemeaning2": "i",
+    "meaning3": "müddet",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "tired",
+    "meaning1": "argın",
+    "typemeaning1": "s",
+    "meaning2": "yorgun",
+    "typemeaning2": "s",
+    "meaning3": "yorgun düşmüş",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "title",
+    "meaning1": "unvan",
+    "typemeaning1": "i",
+    "meaning2": "başlık",
+    "typemeaning2": "i",
+    "meaning3": "isimlendirmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "to",
+    "meaning1": "karşı",
+    "typemeaning1": "ed",
+    "meaning2": "-mek/-mak (mastar)",
+    "typemeaning2": "f",
+    "meaning3": "kadar",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "today",
+    "meaning1": "bugün",
+    "typemeaning1": "zf",
+    "meaning2": "şimdi",
+    "typemeaning2": "zf",
+    "meaning3": "bu günlerde",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "together",
+    "meaning1": "birlikte",
+    "typemeaning1": "zf",
+    "meaning2": "beraber",
+    "typemeaning2": "zf",
+    "meaning3": "kuyruk (kimse)",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "toilet",
+    "meaning1": "hela",
+    "typemeaning1": "i",
+    "meaning2": "tuvalet",
+    "typemeaning2": "i",
+    "meaning3": "makyaj",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "tomato",
+    "meaning1": "domates",
+    "typemeaning1": "i",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "tomorrow",
+    "meaning1": "yarın",
+    "typemeaning1": "zf",
+    "meaning2": "yarın",
+    "typemeaning2": "i",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "tonight",
+    "meaning1": "akşama",
+    "typemeaning1": "zf",
+    "meaning2": "bu akşam",
+    "typemeaning2": "zf",
+    "meaning3": "bu gece",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "too",
+    "meaning1": "gereğinden çok",
+    "typemeaning1": "s",
+    "meaning2": "çok",
+    "typemeaning2": "s",
+    "meaning3": "aşırı",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "tooth",
+    "meaning1": "diş",
+    "typemeaning1": "i",
+    "meaning2": "dişle kaplamak",
+    "typemeaning2": "f",
+    "meaning3": "dişlemek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "topic",
+    "meaning1": "konu",
+    "typemeaning1": "i",
+    "meaning2": "başlık",
+    "typemeaning2": "i",
+    "meaning3": "bahis",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "tourist",
+    "meaning1": "turist",
+    "typemeaning1": "i",
+    "meaning2": "gezgin",
+    "typemeaning2": "i",
+    "meaning3": "seyyah",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "town",
+    "meaning1": "şehir",
+    "typemeaning1": "i",
+    "meaning2": "kasaba",
+    "typemeaning2": "i",
+    "meaning3": "şehir merkezi",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "traffic",
+    "meaning1": "gidiş geliş",
+    "typemeaning1": "i",
+    "meaning2": "trafik",
+    "typemeaning2": "i",
+    "meaning3": "iş yapmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "train",
+    "meaning1": "eğitim vermek",
+    "typemeaning1": "f",
+    "meaning2": "eğitmek",
+    "typemeaning2": "f",
+    "meaning3": "tren",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "travel",
+    "meaning1": "gezmek",
+    "typemeaning1": "f",
+    "meaning2": "seyahat etmek",
+    "typemeaning2": "f",
+    "meaning3": "yolculuk etmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "tree",
+    "meaning1": "ağaç",
+    "typemeaning1": "i",
+    "meaning2": "ağaca çıkarmak",
+    "typemeaning2": "f",
+    "meaning3": "çarmıh",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "trip",
+    "meaning1": "seyahat",
+    "typemeaning1": "i",
+    "meaning2": "yolculuk",
+    "typemeaning2": "i",
+    "meaning3": "gezi",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "trousers",
+    "meaning1": "pantolon",
+    "typemeaning1": "i",
+    "meaning2": "pantolon",
+    "typemeaning2": "i",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "TRUE",
+    "meaning1": "hakiki",
+    "typemeaning1": "s",
+    "meaning2": "gerçek",
+    "typemeaning2": "s",
+    "meaning3": "doğru",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "try",
+    "meaning1": "denemek",
+    "typemeaning1": "f",
+    "meaning2": "deneme",
+    "typemeaning2": "i",
+    "meaning3": "yoklamak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "T-shirt",
+    "meaning1": "tişört",
+    "typemeaning1": "i",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "Tuesday",
+    "meaning1": "salı",
+    "typemeaning1": "i",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "turn",
+    "meaning1": "dönmek",
+    "typemeaning1": "f",
+    "meaning2": "döndürmek",
+    "typemeaning2": "f",
+    "meaning3": "çevirmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "TV",
+    "meaning1": "televizyon",
+    "typemeaning1": "i",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "twelve",
+    "meaning1": "oniki",
+    "typemeaning1": "i",
+    "meaning2": "on iki sayısı (12, XII)",
+    "typemeaning2": "i",
+    "meaning3": "on iki",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "twenty",
+    "meaning1": "yirmi",
+    "typemeaning1": "i",
+    "meaning2": "yirmi sayısı (20, XX)",
+    "typemeaning2": "i",
+    "meaning3": "20",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "twice",
+    "meaning1": "iki kez",
+    "typemeaning1": "zf",
+    "meaning2": "iki sefer",
+    "typemeaning2": "zf",
+    "meaning3": "iki kere",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "two",
+    "meaning1": "iki",
+    "typemeaning1": "i",
+    "meaning2": "iskambilde ikili",
+    "typemeaning2": "i",
+    "meaning3": "iki rakamı",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "type",
+    "meaning1": "yazmak",
+    "typemeaning1": "f",
+    "meaning2": "tür",
+    "typemeaning2": "i",
+    "meaning3": "tip",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "umbrella",
+    "meaning1": "şemsiye",
+    "typemeaning1": "i",
+    "meaning2": "şemsiyelik",
+    "typemeaning2": "i",
+    "meaning3": "koruyucu",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "uncle",
+    "meaning1": "dayı",
+    "typemeaning1": "i",
+    "meaning2": "amca",
+    "typemeaning2": "i",
+    "meaning3": "enişte",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "under",
+    "meaning1": "altında",
+    "typemeaning1": "ed",
+    "meaning2": "alt",
+    "typemeaning2": "s",
+    "meaning3": "az",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "understand",
+    "meaning1": "anlayış göstermek",
+    "typemeaning1": "f",
+    "meaning2": "anlamak",
+    "typemeaning2": "f",
+    "meaning3": "understood - understood",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "university",
+    "meaning1": "üniversite",
+    "typemeaning1": "i",
+    "meaning2": "üniversite",
+    "typemeaning2": "i",
+    "meaning3": "bilimyurt",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "until",
+    "meaning1": "ila",
+    "typemeaning1": "ed",
+    "meaning2": "değin",
+    "typemeaning2": "ed",
+    "meaning3": "dek",
+    "typemeaning3": "ed"
+  },
+  {
+    "word": "up",
+    "meaning1": "yukarı",
+    "typemeaning1": "ünl",
+    "meaning2": "yükseltmek",
+    "typemeaning2": "f",
+    "meaning3": "artırmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "upstairs",
+    "meaning1": "üst kat",
+    "typemeaning1": "i",
+    "meaning2": "üst kat",
+    "typemeaning2": "i",
+    "meaning3": "yukarı kat",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "us",
+    "meaning1": "biz",
+    "typemeaning1": "zm",
+    "meaning2": "abd",
+    "typemeaning2": "i",
+    "meaning3": "bizi",
+    "typemeaning3": "zm"
+  },
+  {
+    "word": "use",
+    "meaning1": "kullanmak",
+    "typemeaning1": "f",
+    "meaning2": "kullanım",
+    "typemeaning2": "i",
+    "meaning3": "kullanma",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "useful",
+    "meaning1": "faydalı",
+    "typemeaning1": "s",
+    "meaning2": "yararlı",
+    "typemeaning2": "s",
+    "meaning3": "kullanışlı",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "usually",
+    "meaning1": "genellikle",
+    "typemeaning1": "zf",
+    "meaning2": "çoğunlukla",
+    "typemeaning2": "zf",
+    "meaning3": "çoğu zaman",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "vacation",
+    "meaning1": "tatil",
+    "typemeaning1": "i",
+    "meaning2": "tatil yapmak",
+    "typemeaning2": "f",
+    "meaning3": "izin",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "vegetable",
+    "meaning1": "sebze",
+    "typemeaning1": "i",
+    "meaning2": "bitkisel",
+    "typemeaning2": "s",
+    "meaning3": "göveri",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "very",
+    "meaning1": "çok",
+    "typemeaning1": "zf",
+    "meaning2": "hatta",
+    "typemeaning2": "s",
+    "meaning3": "bile",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "video",
+    "meaning1": "video terminal",
+    "typemeaning1": "i",
+    "meaning2": "ekran",
+    "typemeaning2": "i",
+    "meaning3": "video filmi",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "village",
+    "meaning1": "köy",
+    "typemeaning1": "i",
+    "meaning2": "köy halkı",
+    "typemeaning2": "i",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "visit",
+    "meaning1": "ziyaret etmek",
+    "typemeaning1": "f",
+    "meaning2": "ziyaret",
+    "typemeaning2": "i",
+    "meaning3": "gezmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "visitor",
+    "meaning1": "ziyaretçi",
+    "typemeaning1": "i",
+    "meaning2": "ziyarete giden kimse",
+    "typemeaning2": "i",
+    "meaning3": "zair",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "wait",
+    "meaning1": "beklemek",
+    "typemeaning1": "f",
+    "meaning2": "bekleyiş",
+    "typemeaning2": "i",
+    "meaning3": "bekleme",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "waiter",
+    "meaning1": "garson",
+    "typemeaning1": "i",
+    "meaning2": "erkek garson",
+    "typemeaning2": "i",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "wake",
+    "meaning1": "canlanmak",
+    "typemeaning1": "f",
+    "meaning2": "uyanmak",
+    "typemeaning2": "f",
+    "meaning3": "woke/waked - woken/waked",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "walk",
+    "meaning1": "yürümek",
+    "typemeaning1": "f",
+    "meaning2": "dolaşmak",
+    "typemeaning2": "f",
+    "meaning3": "yürüyerek gitmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "wall",
+    "meaning1": "duvar",
+    "typemeaning1": "i",
+    "meaning2": "tecrit etmek",
+    "typemeaning2": "f",
+    "meaning3": "ayırmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "want",
+    "meaning1": "istemek",
+    "typemeaning1": "f",
+    "meaning2": "istek",
+    "typemeaning2": "i",
+    "meaning3": "isteklenmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "warm",
+    "meaning1": "ısıtmak",
+    "typemeaning1": "f",
+    "meaning2": "ısınmak",
+    "typemeaning2": "f",
+    "meaning3": "ılık",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "wash",
+    "meaning1": "yıkanmak",
+    "typemeaning1": "f",
+    "meaning2": "aşındırmak",
+    "typemeaning2": "f",
+    "meaning3": "yıkamak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "watch",
+    "meaning1": "seyretmek (tv)",
+    "typemeaning1": "f",
+    "meaning2": "seyretmek",
+    "typemeaning2": "f",
+    "meaning3": "gözlemek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "water",
+    "meaning1": "sulamak",
+    "typemeaning1": "f",
+    "meaning2": "su",
+    "typemeaning2": "s",
+    "meaning3": "ıslatmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "way",
+    "meaning1": "yol",
+    "typemeaning1": "i",
+    "meaning2": "taraf",
+    "typemeaning2": "i",
+    "meaning3": "tarz",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "we",
+    "meaning1": "biz",
+    "typemeaning1": "zm",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "wear",
+    "meaning1": "giymek",
+    "typemeaning1": "f",
+    "meaning2": "takmak",
+    "typemeaning2": "f",
+    "meaning3": "aşındırmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "weather",
+    "meaning1": "hava",
+    "typemeaning1": "i",
+    "meaning2": "hava durumu",
+    "typemeaning2": "i",
+    "meaning3": "yalpalamak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "website",
+    "meaning1": "internet sitesi",
+    "typemeaning1": "i",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "Wednesday",
+    "meaning1": "çarşamba",
+    "typemeaning1": "i",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "week",
+    "meaning1": "hafta",
+    "typemeaning1": "i",
+    "meaning2": "ardışık yedi günlük süre",
+    "typemeaning2": "i",
+    "meaning3": "hafta",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "weekend",
+    "meaning1": "hafta sonu",
+    "typemeaning1": "i",
+    "meaning2": "hafta sonunu geçirmek",
+    "typemeaning2": "f",
+    "meaning3": "haftasonu",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "welcome",
+    "meaning1": "hoş geldiniz",
+    "typemeaning1": "ünl",
+    "meaning2": "hoş geldin",
+    "typemeaning2": "ünl",
+    "meaning3": "hoş karşılamak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "well",
+    "meaning1": "fışkırmak",
+    "typemeaning1": "f",
+    "meaning2": "kuyu",
+    "typemeaning2": "i",
+    "meaning3": "iyi",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "west",
+    "meaning1": "batı",
+    "typemeaning1": "i",
+    "meaning2": "batıdaki",
+    "typemeaning2": "s",
+    "meaning3": "batıya doğru",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "what",
+    "meaning1": "ne",
+    "typemeaning1": "ünl",
+    "meaning2": "neyi",
+    "typemeaning2": "i",
+    "meaning3": "hangi",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "when",
+    "meaning1": "ne zaman",
+    "typemeaning1": "zf",
+    "meaning2": "zaman",
+    "typemeaning2": "i",
+    "meaning3": "ne vakit",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "where",
+    "meaning1": "nereye",
+    "typemeaning1": "zf",
+    "meaning2": "nerede",
+    "typemeaning2": "zf",
+    "meaning3": "nere",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "which",
+    "meaning1": "hangi",
+    "typemeaning1": "s",
+    "meaning2": "kaçıncı",
+    "typemeaning2": "s",
+    "meaning3": "hangi",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "white",
+    "meaning1": "beyaz",
+    "typemeaning1": "s",
+    "meaning2": "ak",
+    "typemeaning2": "s",
+    "meaning3": "solgun",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "who",
+    "meaning1": "kimi",
+    "typemeaning1": "zm",
+    "meaning2": "kim",
+    "typemeaning2": "zm",
+    "meaning3": "kime",
+    "typemeaning3": "zm"
+  },
+  {
+    "word": "why",
+    "meaning1": "neden",
+    "typemeaning1": "zf",
+    "meaning2": "niçin",
+    "typemeaning2": "zf",
+    "meaning3": "niye",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "wife",
+    "meaning1": "kocanın eşi",
+    "typemeaning1": "i",
+    "meaning2": "hanım",
+    "typemeaning2": "i",
+    "meaning3": "karı",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "will",
+    "meaning1": "vasiyet",
+    "typemeaning1": "i",
+    "meaning2": "irade",
+    "typemeaning2": "i",
+    "meaning3": "dilemek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "win",
+    "meaning1": "kazanmak",
+    "typemeaning1": "f",
+    "meaning2": "galip gelmek",
+    "typemeaning2": "f",
+    "meaning3": "zafer",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "window",
+    "meaning1": "pencere",
+    "typemeaning1": "i",
+    "meaning2": "camekan",
+    "typemeaning2": "i",
+    "meaning3": "vitrin",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "wine",
+    "meaning1": "şarap sunmak",
+    "typemeaning1": "f",
+    "meaning2": "şarap",
+    "typemeaning2": "i",
+    "meaning3": "şarap rengi",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "winter",
+    "meaning1": "kış",
+    "typemeaning1": "i",
+    "meaning2": "kışlık",
+    "typemeaning2": "s",
+    "meaning3": "kışlamak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "with",
+    "meaning1": "ile",
+    "typemeaning1": "ed",
+    "meaning2": "-lı",
+    "typemeaning2": "zf",
+    "meaning3": "beraberinde",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "without",
+    "meaning1": "dış",
+    "typemeaning1": "i",
+    "meaning2": "dıştan",
+    "typemeaning2": "zf",
+    "meaning3": "dışarıda",
+    "typemeaning3": "zf"
+  },
+  {
+    "word": "woman",
+    "meaning1": "kadın",
+    "typemeaning1": "i",
+    "meaning2": "hanım",
+    "typemeaning2": "i",
+    "meaning3": "kadın",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "wonderful",
+    "meaning1": "müthiş",
+    "typemeaning1": "s",
+    "meaning2": "harikulade",
+    "typemeaning2": "s",
+    "meaning3": "harika",
+    "typemeaning3": "s"
+  },
+  {
+    "word": "word",
+    "meaning1": "laf",
+    "typemeaning1": "i",
+    "meaning2": "söz",
+    "typemeaning2": "i",
+    "meaning3": "sözcük",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "work",
+    "meaning1": "çalışmak",
+    "typemeaning1": "f",
+    "meaning2": "işe yaramak",
+    "typemeaning2": "f",
+    "meaning3": "iş yapmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "worker",
+    "meaning1": "işçi",
+    "typemeaning1": "i",
+    "meaning2": "adam",
+    "typemeaning2": "i",
+    "meaning3": "amele",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "world",
+    "meaning1": "alem",
+    "typemeaning1": "i",
+    "meaning2": "dünya",
+    "typemeaning2": "i",
+    "meaning3": "evren",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "would",
+    "meaning1": "istemek",
+    "typemeaning1": "f",
+    "meaning2": "-ecekti",
+    "typemeaning2": "f",
+    "meaning3": "-çekti",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "write",
+    "meaning1": "yazmak",
+    "typemeaning1": "f",
+    "meaning2": "wrote - written",
+    "typemeaning2": "f",
+    "meaning3": "kaydetmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "writer",
+    "meaning1": "yazar",
+    "typemeaning1": "i",
+    "meaning2": "müellif",
+    "typemeaning2": "i",
+    "meaning3": "muharrir",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "writing",
+    "meaning1": "yazma",
+    "typemeaning1": "i",
+    "meaning2": "yazım",
+    "typemeaning2": "i",
+    "meaning3": "yazı",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "wrong",
+    "meaning1": "yanlış",
+    "typemeaning1": "s",
+    "meaning2": "gadretmek",
+    "typemeaning2": "f",
+    "meaning3": "haksızlık etmek",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "yeah",
+    "meaning1": "tamam",
+    "typemeaning1": "ünl",
+    "meaning2": "he",
+    "typemeaning2": "ünl",
+    "meaning3": "evet",
+    "typemeaning3": "ünl"
+  },
+  {
+    "word": "year",
+    "meaning1": "yıl",
+    "typemeaning1": "i",
+    "meaning2": "sene",
+    "typemeaning2": "i",
+    "meaning3": "ihtiyarlık",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "yellow",
+    "meaning1": "sarı",
+    "typemeaning1": "s",
+    "meaning2": "sararmak",
+    "typemeaning2": "f",
+    "meaning3": "sarartmak",
+    "typemeaning3": "f"
+  },
+  {
+    "word": "yes",
+    "meaning1": "evet",
+    "typemeaning1": "i",
+    "meaning2": "olumlu cevap",
+    "typemeaning2": "i",
+    "meaning3": "olumlu oy",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "yesterday",
+    "meaning1": "dün",
+    "typemeaning1": "zf",
+    "meaning2": "",
+    "typemeaning2": "",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "you",
+    "meaning1": "siz",
+    "typemeaning1": "zm",
+    "meaning2": "sen",
+    "typemeaning2": "zm",
+    "meaning3": "seni",
+    "typemeaning3": "zm"
+  },
+  {
+    "word": "young",
+    "meaning1": "genç",
+    "typemeaning1": "i",
+    "meaning2": "hayvan yavrusu",
+    "typemeaning2": "i",
+    "meaning3": "döl",
+    "typemeaning3": "i"
+  },
+  {
+    "word": "your",
+    "meaning1": "senin",
+    "typemeaning1": "zm",
+    "meaning2": "sizin",
+    "typemeaning2": "zm",
+    "meaning3": "",
+    "typemeaning3": ""
+  },
+  {
+    "word": "yourself",
+    "meaning1": "kendiniz",
+    "typemeaning1": "zm",
+    "meaning2": "kendin",
+    "typemeaning2": "zm",
+    "meaning3": "kendini",
+    "typemeaning3": "zm"
+  }
+]

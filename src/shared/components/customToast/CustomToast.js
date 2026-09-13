@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import {
   View,
   Text,
@@ -8,10 +8,14 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFeedback } from '@/contextapis/FeedbackContext';
-import { styles, getToastTheme } from './CustomToast.style';
+import { useTheme } from '@/contextapis/ThemeContext';
+import { getToastStyles, getToastTheme } from './CustomToast.style';
 
 export default function CustomToast() {
   const { toastVisible, toastTitle, toastMessage, toastType, hideToast } = useFeedback();
+  const { colors } = useTheme();
+  const toastColors = colors.customToast;
+  const styles = useMemo(() => getToastStyles(toastColors), [toastColors]);
   const insets = useSafeAreaInsets();
 
   const [shouldRender, setShouldRender] = useState(false);
@@ -88,7 +92,7 @@ export default function CustomToast() {
     return null;
   }
 
-  const theme = getToastTheme(toastType);
+  const theme = getToastTheme(toastType, toastColors);
   const topInset = Math.max(insets?.top || 0, 16);
 
   return (
@@ -109,6 +113,7 @@ export default function CustomToast() {
         style={[
           styles.toastCard,
           {
+            backgroundColor: theme.backgroundColor,
             borderColor: theme.borderColor,
           },
         ]}
@@ -150,7 +155,7 @@ export default function CustomToast() {
           onPress={dismiss}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
-          <Ionicons name="close" size={16} color="#64748B" />
+          <Ionicons name="close" size={16} color={toastColors?.closeBtnIcon || '#64748B'} />
         </TouchableOpacity>
       </TouchableOpacity>
     </Animated.View>

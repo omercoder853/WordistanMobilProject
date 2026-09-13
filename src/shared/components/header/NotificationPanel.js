@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
     View,
     Text,
@@ -14,12 +14,17 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { useNotification } from '@/contextapis/NotificationContext';
+import { useTheme } from '@/contextapis/ThemeContext';
 import Notification from './Notification';
 import NotificationModal from './NotificationModal';
 
 const { height } = Dimensions.get('window');
 
 const NotificationPanel = () => {
+    const { colors } = useTheme();
+    const npColors = colors.notificationPanel;
+    const styles = useMemo(() => getStyles(npColors), [npColors]);
+
     const { t, i18n } = useTranslation();
     const lang = i18n.language || 'tr';
     const isTr = lang.startsWith('tr');
@@ -78,7 +83,7 @@ const NotificationPanel = () => {
     const renderEmptyComponent = () => (
         <View style={styles.emptyContainer}>
             <View style={styles.emptyIconCircle}>
-                <Ionicons name="notifications-off-outline" size={48} color="#A78BFA" />
+                <Ionicons name="notifications-off-outline" size={48} color={npColors.emptyIcon} />
             </View>
             <Text style={styles.emptyTitle}>
                 {isTr ? 'Henüz Bildirim Yok' : 'No Notifications Yet'}
@@ -95,6 +100,7 @@ const NotificationPanel = () => {
         <Modal
             visible={!!notificationPanel}
             transparent={true}
+            statusBarTranslucent={true}
             animationType="slide"
             onRequestClose={handleClosePanel}
         >
@@ -138,7 +144,7 @@ const NotificationPanel = () => {
                                 ]}
                             >
                                 {readingAll ? (
-                                    <ActivityIndicator size="small" color="#5B3FD3" />
+                                    <ActivityIndicator size="small" color={npColors.readAllText} />
                                 ) : (
                                     <Text
                                         style={[
@@ -157,7 +163,7 @@ const NotificationPanel = () => {
                                 onPress={handleClosePanel}
                                 style={styles.closeButton}
                             >
-                                <Ionicons name="close" size={20} color="#6B7280" />
+                                <Ionicons name="close" size={20} color={npColors.closeBtnIcon} />
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -184,8 +190,8 @@ const NotificationPanel = () => {
                             <RefreshControl
                                 refreshing={refreshing}
                                 onRefresh={handleRefresh}
-                                colors={['#5B3FD3']}
-                                tintColor="#5B3FD3"
+                                colors={[npColors.refreshIndicator]}
+                                tintColor={npColors.refreshIndicator}
                             />
                         }
                     />
@@ -204,22 +210,22 @@ const NotificationPanel = () => {
 
 export default NotificationPanel;
 
-const styles = StyleSheet.create({
+const getStyles = (npColors) => StyleSheet.create({
     modalOverlay: {
         flex: 1,
-        backgroundColor: 'rgba(0, 0, 0, 0.45)',
+        backgroundColor: npColors.overlay,
         justifyContent: 'flex-end',
     },
     backdropTouch: {
         flex: 1,
     },
     sheetContainer: {
-        backgroundColor: '#FFFFFF',
+        backgroundColor: npColors.sheetBg,
         borderTopLeftRadius: 28,
         borderTopRightRadius: 28,
         maxHeight: height * 0.82,
         minHeight: height * 0.45,
-        shadowColor: '#000',
+        shadowColor: npColors.sheetShadow,
         shadowOffset: { width: 0, height: -4 },
         shadowOpacity: 0.1,
         shadowRadius: 16,
@@ -234,7 +240,7 @@ const styles = StyleSheet.create({
         width: 44,
         height: 5,
         borderRadius: 2.5,
-        backgroundColor: '#E5E7EB',
+        backgroundColor: npColors.handleBar,
     },
     header: {
         flexDirection: 'row',
@@ -250,10 +256,10 @@ const styles = StyleSheet.create({
     headerTitle: {
         fontSize: 20,
         fontWeight: '700',
-        color: '#1F2937',
+        color: npColors.title,
     },
     countBadge: {
-        backgroundColor: '#EDE9FE',
+        backgroundColor: npColors.countBadgeBg,
         paddingHorizontal: 8,
         paddingVertical: 2,
         borderRadius: 12,
@@ -262,7 +268,7 @@ const styles = StyleSheet.create({
     countBadgeText: {
         fontSize: 12,
         fontWeight: '700',
-        color: '#6D28D9',
+        color: npColors.countBadgeText,
     },
     headerActions: {
         flexDirection: 'row',
@@ -273,31 +279,31 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingVertical: 6,
         borderRadius: 12,
-        backgroundColor: '#F5F0FF',
+        backgroundColor: npColors.readAllBg,
     },
     readAllButtonDisabled: {
-        backgroundColor: '#F3F4F6',
+        backgroundColor: npColors.readAllBgDisabled,
         opacity: 0.6,
     },
     readAllText: {
         fontSize: 13,
         fontWeight: '600',
-        color: '#5B3FD3',
+        color: npColors.readAllText,
     },
     readAllTextDisabled: {
-        color: '#9CA3AF',
+        color: npColors.readAllTextDisabled,
     },
     closeButton: {
         width: 32,
         height: 32,
         borderRadius: 16,
-        backgroundColor: '#F3F4F6',
+        backgroundColor: npColors.closeBtnBg,
         justifyContent: 'center',
         alignItems: 'center',
     },
     divider: {
         height: 1,
-        backgroundColor: '#F3F4F6',
+        backgroundColor: npColors.divider,
         marginBottom: 8,
     },
     listContent: {
@@ -318,7 +324,7 @@ const styles = StyleSheet.create({
         width: 80,
         height: 80,
         borderRadius: 40,
-        backgroundColor: '#F5EDFF',
+        backgroundColor: npColors.emptyIconCircleBg,
         justifyContent: 'center',
         alignItems: 'center',
         marginBottom: 16,
@@ -326,13 +332,13 @@ const styles = StyleSheet.create({
     emptyTitle: {
         fontSize: 17,
         fontWeight: '700',
-        color: '#1F2937',
+        color: npColors.emptyTitle,
         marginBottom: 6,
         textAlign: 'center',
     },
     emptySubtitle: {
         fontSize: 13,
-        color: '#6B7280',
+        color: npColors.emptySubtitle,
         textAlign: 'center',
         lineHeight: 18,
     },

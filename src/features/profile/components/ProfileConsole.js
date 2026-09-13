@@ -16,7 +16,7 @@ export default function ProfileConsole(){
     ];
 
     return (
-        <ScrollView style={{flex:1,width:'90%'}} showsVerticalScrollIndicator={false} 
+        <ScrollView style={{flex:1,width:'100%'}} showsVerticalScrollIndicator={false} 
         contentContainerStyle={{paddingBottom:20}}>
             {consoleItems.map((item,index) => (<ConsoleButton key={index} item={item}/>))}
         </ScrollView>

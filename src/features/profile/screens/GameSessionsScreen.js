@@ -6,10 +6,12 @@ import { useGame } from "@/contextapis/GamesContext";
 import GameSessionCard from "../components/GameSessionCard";
 import GameSessionModal from "../components/GameSessionModal";
 import gameSessionsStyle from "../styles/GameSessionsScreenStyle";
+import { useTheme } from "@/contextapis/ThemeContext";
 
 export default function GameSessions() {
     const { t } = useTranslation();
     const { gameSessions } = useGame();
+    const { colors, isDark } = useTheme();
     const [selectedSession, setSelectedSession] = useState(null);
 
     const sessions = gameSessions?.sessions || [];
@@ -20,29 +22,29 @@ export default function GameSessions() {
     // Empty state
     if (!sessions || sessions.length === 0) {
         return (
-            <View style={gameSessionsStyle.container}>
+            <View style={[gameSessionsStyle.container, { backgroundColor: colors.common.background }]}>
                 <View style={gameSessionsStyle.emptyContainer}>
-                    <Ionicons name="game-controller-outline" size={56} color="#D1D5DB" />
-                    <Text style={gameSessionsStyle.emptyTitle}>{t("noGameSessions")}</Text>
-                    <Text style={gameSessionsStyle.emptyDesc}>{t("noGameSessionsDesc")}</Text>
+                    <Ionicons name="game-controller-outline" size={56} color={colors.profile.textSecondary} />
+                    <Text style={[gameSessionsStyle.emptyTitle, { color: colors.profile.textPrimary }]}>{t("noGameSessions")}</Text>
+                    <Text style={[gameSessionsStyle.emptyDesc, { color: colors.profile.textSecondary }]}>{t("noGameSessionsDesc")}</Text>
                 </View>
             </View>
         );
     }
 
     return (
-        <View style={gameSessionsStyle.container}>
+        <View style={[gameSessionsStyle.container, { backgroundColor: colors.common.background }]}>
             {/* Summary badges */}
             <View style={gameSessionsStyle.summaryRow}>
-                <View style={gameSessionsStyle.summaryBadge}>
-                    <Text style={gameSessionsStyle.summaryValue}>{totalGames}</Text>
-                    <Text style={gameSessionsStyle.summaryLabel}>{t("totalGames")}</Text>
+                <View style={[gameSessionsStyle.summaryBadge, { backgroundColor: colors.profile.cardBg, borderColor: colors.profile.cardBorder }]}>
+                    <Text style={[gameSessionsStyle.summaryValue, { color: colors.profile.textPrimary }]}>{totalGames}</Text>
+                    <Text style={[gameSessionsStyle.summaryLabel, { color: colors.profile.textSecondary }]}>{t("totalGames")}</Text>
                 </View>
-                <View style={gameSessionsStyle.summaryBadge}>
-                    <Text style={[gameSessionsStyle.summaryValue, { color: "#6366F1" }]}>
+                <View style={[gameSessionsStyle.summaryBadge, { backgroundColor: colors.profile.cardBg, borderColor: colors.profile.cardBorder }]}>
+                    <Text style={[gameSessionsStyle.summaryValue, { color: colors.common.primary }]}>
                         {bestScore ? bestScore.toFixed(1) : "—"}
                     </Text>
-                    <Text style={gameSessionsStyle.summaryLabel}>{t("bestPerformance")}</Text>
+                    <Text style={[gameSessionsStyle.summaryLabel, { color: colors.profile.textSecondary }]}>{t("bestPerformance")}</Text>
                 </View>
             </View>
 

@@ -1,40 +1,43 @@
-import { View, Text, Image, TouchableOpacity,StyleSheet } from "react-native";
+import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
+import { useTheme } from "@/contextapis/ThemeContext";
 
 export default function Collection({ title, data, desc }) {
+    const { colors } = useTheme();
+    const dColors = colors.dictionaries;
     const navigation = useNavigation();
     const { t } = useTranslation();
     const wordCount = data ? data.length : 0;
 
     return (
         <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={() => navigation.navigate("CollectionDetails", { title, data, desc })}>
-            <View style={styles.cardContainer}>
-                <Image 
-                    source={require('../assets/dictionary_default_cover.jpg')} 
-                    style={styles.cardImage} />
-                <View style={styles.cardContentWrapper}>
-                    <Text style={styles.cardTitle} numberOfLines={1}>
-                        {t(title)}
+            style={[styles.cardContainer, { backgroundColor: dColors.cardBg, shadowColor: dColors.cardShadow }]}
+            activeOpacity={0.7}
+            onPress={() => navigation.navigate("CollectionDetails", { title, data, desc })}
+        >
+            <Image 
+                source={require('../assets/dictionary_default_cover.jpg')} 
+                style={styles.cardImage} />
+            <View style={styles.cardContentWrapper}>
+                <Text style={[styles.cardTitle, { color: dColors.textPrimary }]} numberOfLines={1}>
+                    {t(title)}
+                </Text>
+                
+                <View style={styles.cardTagsRow}>
+                    <Text style={styles.cardTagBlue}>
+                        {wordCount} {t("words")}
                     </Text>
-                    
-                    <View style={styles.cardTagsRow}>
-                        <Text style={styles.cardTagBlue}>
-                            {wordCount} {t("words")}
-                        </Text>
-                        <Text style={styles.cardTagPurple}>
-                            A1-A2
-                        </Text>
-                        <Text style={styles.cardTagPink}>
-                            ENG - TR
-                        </Text>
-                    </View>
+                    <Text style={styles.cardTagPurple}>
+                        A1-A2
+                    </Text>
+                    <Text style={styles.cardTagPink}>
+                        ENG - TR
+                    </Text>
                 </View>
             </View>
         </TouchableOpacity>
-    )
+    );
 }
 
 const styles = StyleSheet.create({

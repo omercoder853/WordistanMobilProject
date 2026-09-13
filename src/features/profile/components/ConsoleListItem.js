@@ -5,12 +5,13 @@ import { useNavigation } from "@react-navigation/native";
 import { useFeedback } from "@/contextapis/FeedbackContext";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contextapis/AuthContext";
-
+import { useTheme } from "@/contextapis/ThemeContext";
 
 export default function ConsoleButton({ item }) {
     const navigation = useNavigation();
     const { t } = useTranslation();
     const { logout } = useAuth();
+    const { colors, isDark } = useTheme();
     const { setAlertTitle, setAlertMessage, addAlertButton, setAlertVisible, hideAlert } = useFeedback();
 
     function handleLogout() {
@@ -21,15 +22,17 @@ export default function ConsoleButton({ item }) {
         setAlertVisible(true);
     }
 
+    const isLogout = item.name === "Logout";
+
     return (
-        <TouchableOpacity onPress={item.name === "Logout" ? handleLogout : () => navigation.navigate("Profile Navigation", { screen: item.name })}>
-            <View style={[styles.consoleButton, item.name === "Logout" && { borderColor: 'red', borderWidth: 1 }]}>
-                <View style={{ backgroundColor: 'white', padding: 6, borderRadius: 16, marginHorizontal: 10 }}>
-                    <Ionicons name={item.icon} size={25} color={item.name === "Logout" ? "red" : "black"} />
+        <TouchableOpacity onPress={isLogout ? handleLogout : () => navigation.navigate("Profile Navigation", { screen: item.name })}>
+            <View style={[styles.consoleButton, isLogout && { borderColor: 'red', borderWidth: 1 }]}>
+                <View style={{ backgroundColor: isDark ? colors.common.surface : 'white', padding: 6, borderRadius: 16, marginHorizontal: 10 }}>
+                    <Ionicons name={item.icon} size={25} color={isLogout ? "red" : colors.profile.textPrimary} />
                 </View>
-                <Text style={item.name === "Logout" && { color: 'red' }}>{item.label || item.name}</Text>
-                <Entypo style={{ marginLeft: 'auto', marginRight: 10 }} name="chevron-small-right" size={30} color={item.name === "Logout" ? "red" : "black"} />
+                <Text style={isLogout ? { color: 'red' } : { color: colors.profile.textPrimary, fontWeight: '600' }}>{item.label || item.name}</Text>
+                <Entypo style={{ marginLeft: 'auto', marginRight: 10 }} name="chevron-small-right" size={30} color={isLogout ? "red" : colors.profile.textSecondary} />
             </View>
         </TouchableOpacity>
-    )
+    );
 }

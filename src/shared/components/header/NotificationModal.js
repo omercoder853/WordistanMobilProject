@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
     View,
     Text,
@@ -12,11 +12,16 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { formatNotificationTime } from '@/shared/components/header/Notification';
+import { useTheme } from '@/contextapis/ThemeContext';
 
 const { width } = Dimensions.get('window');
 
 const NotificationModal = ({ visible, notification, onClose }) => {
-    const { t, i18n } = useTranslation();
+    const { colors } = useTheme();
+    const nmColors = colors.notificationModal;
+    const styles = useMemo(() => getStyles(nmColors), [nmColors]);
+
+    const { i18n } = useTranslation();
     const lang = i18n.language || 'tr';
 
     if (!notification) return null;
@@ -43,11 +48,11 @@ const NotificationModal = ({ visible, notification, onClose }) => {
                         <View style={styles.header}>
                             <View style={styles.headerLeft}>
                                 <View style={styles.iconCircle}>
-                                    <Ionicons name="notifications" size={22} color="#6D28D9" />
+                                    <Ionicons name="notifications" size={22} color={nmColors.iconCircleIcon} />
                                 </View>
                                 {timeFormatted ? (
                                     <View style={styles.timeContainer}>
-                                        <Ionicons name="time-outline" size={13} color="#8B5CF6" style={{ marginRight: 4 }} />
+                                        <Ionicons name="time-outline" size={13} color={nmColors.timeIcon} style={{ marginRight: 4 }} />
                                         <Text style={styles.timeText}>{timeFormatted}</Text>
                                     </View>
                                 ) : null}
@@ -58,7 +63,7 @@ const NotificationModal = ({ visible, notification, onClose }) => {
                                 onPress={onClose}
                                 style={styles.closeButton}
                             >
-                                <Ionicons name="close" size={20} color="#6B7280" />
+                                <Ionicons name="close" size={20} color={nmColors.closeBtnIcon} />
                             </TouchableOpacity>
                         </View>
 
@@ -96,10 +101,10 @@ const NotificationModal = ({ visible, notification, onClose }) => {
 
 export default NotificationModal;
 
-const styles = StyleSheet.create({
+const getStyles = (nmColors) => StyleSheet.create({
     overlay: {
         flex: 1,
-        backgroundColor: 'rgba(0, 0, 0, 0.55)',
+        backgroundColor: nmColors.overlay,
         justifyContent: 'center',
         alignItems: 'center',
         padding: 20,
@@ -107,10 +112,10 @@ const styles = StyleSheet.create({
     modalCard: {
         width: width * 0.88,
         maxHeight: '75%',
-        backgroundColor: '#FFFFFF',
+        backgroundColor: nmColors.cardBg,
         borderRadius: 24,
         padding: 20,
-        shadowColor: '#000',
+        shadowColor: nmColors.cardShadow,
         shadowOffset: { width: 0, height: 8 },
         shadowOpacity: 0.15,
         shadowRadius: 20,
@@ -130,7 +135,7 @@ const styles = StyleSheet.create({
         width: 38,
         height: 38,
         borderRadius: 19,
-        backgroundColor: '#EDE9FE',
+        backgroundColor: nmColors.iconCircleBg,
         justifyContent: 'center',
         alignItems: 'center',
         marginRight: 10,
@@ -138,34 +143,34 @@ const styles = StyleSheet.create({
     timeContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#F5EDFF',
+        backgroundColor: nmColors.timeContainerBg,
         paddingHorizontal: 8,
         paddingVertical: 4,
         borderRadius: 12,
     },
     timeText: {
         fontSize: 12,
-        color: '#8B5CF6',
+        color: nmColors.timeText,
         fontWeight: '600',
     },
     closeButton: {
         width: 32,
         height: 32,
         borderRadius: 16,
-        backgroundColor: '#F3F4F6',
+        backgroundColor: nmColors.closeBtnBg,
         justifyContent: 'center',
         alignItems: 'center',
     },
     titleText: {
         fontSize: 18,
         fontWeight: '700',
-        color: '#1F2937',
+        color: nmColors.title,
         lineHeight: 24,
         marginBottom: 8,
     },
     divider: {
         height: 1,
-        backgroundColor: '#F3F4F6',
+        backgroundColor: nmColors.divider,
         marginVertical: 10,
     },
     scrollArea: {
@@ -178,17 +183,17 @@ const styles = StyleSheet.create({
     descriptionText: {
         fontSize: 15,
         lineHeight: 22,
-        color: '#4B5563',
+        color: nmColors.description,
     },
     actionButton: {
-        backgroundColor: '#5B3FD3',
+        backgroundColor: nmColors.actionBtnBg,
         borderRadius: 16,
         paddingVertical: 12,
         alignItems: 'center',
         marginTop: 16,
     },
     actionButtonText: {
-        color: '#FFFFFF',
+        color: nmColors.actionBtnText,
         fontSize: 15,
         fontWeight: '700',
     },

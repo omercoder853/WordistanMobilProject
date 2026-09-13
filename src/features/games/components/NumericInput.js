@@ -1,9 +1,11 @@
 import { View, TouchableOpacity, TextInput, Text, StyleSheet } from "react-native";
 import Feather from '@expo/vector-icons/Feather';
 import { useState } from "react";
+import { useTheme } from "@/contextapis/ThemeContext";
 
 export default function NumericInput({ minValue, maxValue, setValue, value, quantity }) {
     const [error, setError] = useState(false);
+    const { colors, isDark } = useTheme();
 
     const increaseValue = () => {
         if (value < maxValue) {
@@ -39,34 +41,48 @@ export default function NumericInput({ minValue, maxValue, setValue, value, quan
 
     return (
         <View style={numericStyles.container}>
-            <View style={numericStyles.stepperRow}>
+            <View style={[
+                numericStyles.stepperRow,
+                {
+                    backgroundColor: colors.games.stepperBg,
+                    borderColor: colors.games.stepperBorder,
+                }
+            ]}>
                 <TouchableOpacity
-                    style={[numericStyles.btn, numericStyles.btnMinus, isMinDisabled && numericStyles.btnDisabled]}
+                    style={[
+                        numericStyles.btn,
+                        { backgroundColor: colors.games.stepperBtnMinusBg },
+                        isMinDisabled && { backgroundColor: colors.games.stepperDisabledBg, opacity: 0.6 }
+                    ]}
                     onPress={decreaseValue}
                     disabled={isMinDisabled}
                     activeOpacity={0.7}
                 >
-                    <Feather name="minus" size={18} color={isMinDisabled ? "#A0AEC0" : "#5B3FD3"} />
+                    <Feather name="minus" size={18} color={isMinDisabled ? colors.games.textMuted : colors.common.primary} />
                 </TouchableOpacity>
 
                 <View style={numericStyles.inputWrapper}>
                     <TextInput
-                        style={numericStyles.textInput}
+                        style={[numericStyles.textInput, { color: colors.games.textPrimary }]}
                         value={value ? value.toString() : "0"}
                         keyboardType="numeric"
                         onChangeText={changeValue}
                         onBlur={checkValue}
                     />
-                    <Text style={numericStyles.quantityText}>{quantity}</Text>
+                    <Text style={[numericStyles.quantityText, { color: colors.games.textSecondary }]}>{quantity}</Text>
                 </View>
 
                 <TouchableOpacity
-                    style={[numericStyles.btn, numericStyles.btnPlus, isMaxDisabled && numericStyles.btnDisabled]}
+                    style={[
+                        numericStyles.btn,
+                        { backgroundColor: colors.games.stepperBtnPlusBg },
+                        isMaxDisabled && { backgroundColor: colors.games.stepperDisabledBg, opacity: 0.6 }
+                    ]}
                     onPress={increaseValue}
                     disabled={isMaxDisabled}
                     activeOpacity={0.7}
                 >
-                    <Feather name="plus" size={18} color={isMaxDisabled ? "#A0AEC0" : "#FFFFFF"} />
+                    <Feather name="plus" size={18} color={isMaxDisabled ? colors.games.textMuted : "#FFFFFF"} />
                 </TouchableOpacity>
             </View>
 

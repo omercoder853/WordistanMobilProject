@@ -6,8 +6,11 @@ import { useState } from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { useDictionary } from '@/contextapis/DictContext';
 import { useFeedback } from '@/contextapis/FeedbackContext';
+import { useTheme } from '@/contextapis/ThemeContext';
 
 export default function Dictionary({ title, length, id, language }) {
+    const { colors } = useTheme();
+    const dColors = colors.dictionaries;
     const { t } = useTranslation();
     const navigation = useNavigation();
     const [visible, setVisible] = useState(false);
@@ -123,28 +126,35 @@ export default function Dictionary({ title, length, id, language }) {
         <>
             <TouchableOpacity
                 onPress={() => navigation.navigate("DictDetails", { dictId: id })}
-                style={styles.dictionaryButton}
+                style={[
+                    styles.dictionaryButton,
+                    {
+                        backgroundColor: dColors.cardBg,
+                        borderColor: dColors.cardBorder,
+                        shadowColor: dColors.cardShadow,
+                    }
+                ]}
                 activeOpacity={0.8}>
                 <View style={styles.dictionaryRow}>
                     <Image source={require('../assets/dictionary_default_cover.jpg')} style={styles.dictionaryCover} />
                     <View style={{ flex: 1, paddingHorizontal: 12, gap: 2 }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Text style={{ flex: 1, fontWeight: '700', fontSize: 16, color: '#1E1B4B' }}>{title}</Text>
+                            <Text style={{ flex: 1, fontWeight: '700', fontSize: 16, color: dColors.textPrimary }}>{title}</Text>
                             <TouchableOpacity onPress={handleOpenOptions} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
-                                <SimpleLineIcons name="options" size={18} color="#8E4A7C" />
+                                <SimpleLineIcons name="options" size={18} color={dColors.badgeText} />
                             </TouchableOpacity>
                         </View>
 
                         {/* Dil Yönü Rozeti */}
-                        <View style={styles.langBadge}>
-                            <Text style={styles.langBadgeText}>{formattedLang}</Text>
+                        <View style={[styles.langBadge, { backgroundColor: dColors.badgeBg, borderColor: dColors.badgeBorder }]}>
+                            <Text style={[styles.langBadgeText, { color: dColors.badgeText }]}>{formattedLang}</Text>
                         </View>
 
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 2 }}>
-                            <Text style={{ color: '#64748B', fontSize: 13, fontWeight: '500' }}>
+                            <Text style={{ color: dColors.textSecondary, fontSize: 13, fontWeight: '500' }}>
                                 {length == 0 ? t('empty') : length + ' ' + t('words')}
                             </Text>
-                            <Text style={{ color: '#94A3B8', fontSize: 11 }}>{t('lastUpdateStr')}</Text>
+                            <Text style={{ color: dColors.textMuted, fontSize: 11 }}>{t('lastUpdateStr')}</Text>
                         </View>
                     </View>
                 </View>
@@ -152,30 +162,30 @@ export default function Dictionary({ title, length, id, language }) {
 
             <Modal statusBarTranslucent={true} visible={visible} transparent animationType="fade" onRequestClose={() => setVisible(false)}>
                 <Pressable style={styles.overlay} onPress={handleCloseOptions}>
-                    <Pressable style={styles.modalContainer} onPress={(e) => e.stopPropagation()}>
-                        <View style={styles.modalHeader}>
-                            <Text style={styles.modalTitle}>{t('dictOptions')}</Text>
+                    <Pressable style={[styles.modalContainer, { backgroundColor: dColors.modalBg, shadowColor: dColors.cardShadow }]} onPress={(e) => e.stopPropagation()}>
+                        <View style={[styles.modalHeader, { borderBottomColor: dColors.cardBorder }]}>
+                            <Text style={[styles.modalTitle, { color: dColors.modalTitle }]}>{t('dictOptions')}</Text>
                             <TouchableOpacity onPress={handleCloseOptions} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
-                                <Ionicons name="close" size={20} color="#64748B" />
+                                <Ionicons name="close" size={20} color={dColors.textSecondary} />
                             </TouchableOpacity>
                         </View>
 
                         <View style={styles.modalOptionsList}>
                             <TouchableOpacity style={styles.modalOptionItem} activeOpacity={0.7} onPress={() => handleOptionPress('edit')}>
-                                <View style={styles.modalOptionIconWrapper}>
-                                    <Ionicons name="create-outline" size={20} color="#8E4A7C" />
+                                <View style={[styles.modalOptionIconWrapper, { backgroundColor: dColors.badgeBg }]}>
+                                    <Ionicons name="create-outline" size={20} color={dColors.badgeText} />
                                 </View>
-                                <Text style={styles.modalOptionText}>{t('editDictionary')}</Text>
+                                <Text style={[styles.modalOptionText, { color: dColors.textPrimary }]}>{t('editDictionary')}</Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity style={styles.modalOptionItem} activeOpacity={0.7} onPress={handleOptionShare}>
-                                <View style={styles.modalOptionIconWrapper}>
-                                    <Ionicons name="share-social-outline" size={20} color="#8E4A7C" />
+                                <View style={[styles.modalOptionIconWrapper, { backgroundColor: dColors.badgeBg }]}>
+                                    <Ionicons name="share-social-outline" size={20} color={dColors.badgeText} />
                                 </View>
-                                <Text style={styles.modalOptionText}>{t('shareDictionary')}</Text>
+                                <Text style={[styles.modalOptionText, { color: dColors.textPrimary }]}>{t('shareDictionary')}</Text>
                             </TouchableOpacity>
 
-                            <View style={styles.divider} />
+                            <View style={[styles.divider, { backgroundColor: dColors.cardBorder }]} />
 
                             <TouchableOpacity style={styles.modalOptionItem} activeOpacity={0.7} onPress={() => handleDeleteButton()}>
                                 <View style={[styles.modalOptionIconWrapper, styles.modalDangerIconWrapper]}>
@@ -196,26 +206,26 @@ export default function Dictionary({ title, length, id, language }) {
                 animationType="fade"
                 onRequestClose={handleCloseShare}>
                 <Pressable style={styles.overlay} onPress={handleCloseShare}>
-                    <Pressable style={styles.shareModalContainer} onPress={(e) => e.stopPropagation()}>
-                        <View style={styles.shareModalHeader}>
+                    <Pressable style={[styles.shareModalContainer, { backgroundColor: dColors.modalBg }]} onPress={(e) => e.stopPropagation()}>
+                        <View style={[styles.shareModalHeader, { borderBottomColor: dColors.cardBorder }]}>
                             <View style={styles.shareHeaderLeft}>
-                                <View style={styles.shareHeaderIconWrapper}>
-                                    <Ionicons name="share-social-outline" size={20} color="#8E4A7C" />
+                                <View style={[styles.shareHeaderIconWrapper, { backgroundColor: dColors.badgeBg }]}>
+                                    <Ionicons name="share-social-outline" size={20} color={dColors.badgeText} />
                                 </View>
                                 <View style={{ flex: 1 }}>
-                                    <Text style={styles.shareModalTitle}>{t('exportDictionaryModalTitle')}</Text>
-                                    <Text style={styles.shareModalSubtitle} numberOfLines={1}>{title}</Text>
+                                    <Text style={[styles.shareModalTitle, { color: dColors.modalTitle }]}>{t('exportDictionaryModalTitle')}</Text>
+                                    <Text style={[styles.shareModalSubtitle, { color: dColors.textSecondary }]} numberOfLines={1}>{title}</Text>
                                 </View>
                             </View>
                             <TouchableOpacity onPress={handleCloseShare} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
-                                <Ionicons name="close" size={20} color="#64748B" />
+                                <Ionicons name="close" size={20} color={dColors.textSecondary} />
                             </TouchableOpacity>
                         </View>
 
                         <View style={styles.shareModalBody}>
                             <View style={styles.shareLabelRow}>
-                                <Ionicons name="document-text-outline" size={15} color="#8E4A7C" />
-                                <Text style={styles.shareInputLabel}>{t('exportDocumentAs')}</Text>
+                                <Ionicons name="document-text-outline" size={15} color={dColors.badgeText} />
+                                <Text style={[styles.shareInputLabel, { color: dColors.textSecondary }]}>{t('exportDocumentAs')}</Text>
                             </View>
 
                             <View style={{ zIndex: 5000, elevation: 5 }}>
@@ -227,9 +237,9 @@ export default function Dictionary({ title, length, id, language }) {
                                     setValue={setSelectedFileType}
                                     listMode="SCROLLVIEW"
                                     scrollViewProps={{ nestedScrollEnabled: true }}
-                                    style={styles.dropdownPicker}
-                                    dropDownContainerStyle={styles.dropdownContainer}
-                                    textStyle={styles.dropdownText}
+                                    style={[styles.dropdownPicker, { backgroundColor: dColors.searchBarBg, borderColor: dColors.searchBarBorder }]}
+                                    dropDownContainerStyle={[styles.dropdownContainer, { backgroundColor: dColors.searchBarBg, borderColor: dColors.searchBarBorder }]}
+                                    textStyle={[styles.dropdownText, { color: dColors.textPrimary }]}
                                     labelStyle={styles.dropdownLabel}
                                     placeholder={t('selectFileType')}
                                     zIndex={5000}
@@ -237,9 +247,9 @@ export default function Dictionary({ title, length, id, language }) {
                                 />
                             </View>
 
-                            <View style={[styles.selectedFormatPreview, { backgroundColor: formatColors[selectedFileType]?.bg || '#F8FAFC' }]}>
-                                <View style={[styles.formatDot, { backgroundColor: formatColors[selectedFileType]?.color || '#8E4A7C' }]} />
-                                <Text style={[styles.selectedFormatText, { color: formatColors[selectedFileType]?.color || '#1E293B' }]} numberOfLines={1}>
+                            <View style={[styles.selectedFormatPreview, { backgroundColor: formatColors[selectedFileType]?.bg || dColors.modalItemBg }]}>
+                                <View style={[styles.formatDot, { backgroundColor: formatColors[selectedFileType]?.color || dColors.badgeText }]} />
+                                <Text style={[styles.selectedFormatText, { color: formatColors[selectedFileType]?.color || dColors.textPrimary }]} numberOfLines={1}>
                                     {formatColors[selectedFileType]?.name || 'FILE'} • {title}{selectedFileType}
                                 </Text>
                             </View>
@@ -247,19 +257,19 @@ export default function Dictionary({ title, length, id, language }) {
 
                         <View style={styles.shareModalButtons}>
                             <TouchableOpacity
-                                style={styles.shareCloseButton}
+                                style={[styles.shareCloseButton, { backgroundColor: dColors.modalItemBg, borderColor: dColors.cardBorder }]}
                                 onPress={handleCloseShare}
                                 activeOpacity={0.7}
                             >
-                                <Text style={styles.shareCloseButtonText}>{t('close')}</Text>
+                                <Text style={[styles.shareCloseButtonText, { color: dColors.textSecondary }]}>{t('close')}</Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity
-                                style={styles.shareSubmitButton}
+                                style={[styles.shareSubmitButton, { backgroundColor: dColors.addBtnBg }]}
                                 onPress={handleShareSubmit}
                                 activeOpacity={0.8}
                             >
-                                <Ionicons name="share-social" size={16} color="#FFFFFF" />
+                                <Ionicons name="share-social" size={16} color={dColors.addBtnIcon} />
                                 <Text style={styles.shareSubmitButtonText}>{t('export')}</Text>
                             </TouchableOpacity>
                         </View>

@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
     gameButton: {
-        width: '100%',
+        width: '90%',
         alignSelf: 'center',
         marginBottom: 15,
         backgroundColor: 'white',
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingVertical: 16,
         alignItems: 'center',
-        paddingHorizontal: 16,
+        paddingHorizontal: 10,
     },
     gameCover: {
         width: 60,
@@ -224,4 +224,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default styles;
+export default styles;

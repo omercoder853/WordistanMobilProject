@@ -3,9 +3,11 @@ import ProgressBar from "@/shared/components/progressBar";
 import { useTranslation } from "react-i18next";
 import { useUserStats } from "@/contextapis/UserStatsContext";
 import { Ionicons } from "@expo/vector-icons";
+import { useTheme } from "@/contextapis/ThemeContext";
 
 export default function Achievement({ ach, isEarned }) {
     const { i18n } = useTranslation();
+    const { colors, isDark } = useTheme();
     const { userStats, pendingSavedWords, pendingTranslated, pendingDictCreated } = useUserStats();
     const lang = i18n.language;
 
@@ -36,7 +38,7 @@ export default function Achievement({ ach, isEarned }) {
     }[tier] || { bg: '#FFF7ED', border: '#FDBA74', text: '#C2410C' };
 
     return (
-        <View style={styles.achievementRow}>
+        <View style={[styles.achievementRow, { backgroundColor: colors.profile.cardBg, borderColor: colors.profile.cardBorder }]}>
             {!earned && (
                 <View style={styles.lockOverlay}>
                     <Text style={{ fontSize: 25 }}>🔒</Text>
@@ -44,8 +46,8 @@ export default function Achievement({ ach, isEarned }) {
             )}
             <Image style={styles.achievementImage} source={{ uri: ach.icon_url }} />
             <View style={{ marginLeft: 10, flex: 1, justifyContent: 'center', marginRight: 10, paddingVertical: 10 }}>
-                <Text style={styles.achievementTitle}>{ach["title_" + lang]}</Text>
-                <Text style={styles.achievementDec}>{ach["description_" + lang]}</Text>
+                <Text style={[styles.achievementTitle, { color: colors.profile.textPrimary }]}>{ach["title_" + lang]}</Text>
+                <Text style={[styles.achievementDec, { color: colors.profile.textSecondary }]}>{ach["description_" + lang]}</Text>
 
                 {/* Badges Row: XP Reward & Type */}
                 <View style={styles.badgeRow}>

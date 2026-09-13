@@ -5,7 +5,13 @@
     "version": "1.0.0",
     "scheme": "wordistan",
     "icon": "./src/shared/assets/logo.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
+    "backgroundColor": "#121214",
+    "androidStatusBar": {
+      "barStyle": "dark-content",
+      "backgroundColor": "#F5F3FF",
+      "translucent": true
+    },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.wordistan.mobile",

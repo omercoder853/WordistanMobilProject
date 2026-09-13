@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
+import { useTheme } from '@/contextapis/ThemeContext';
 
 export const formatNotificationTime = (createdAt, lang = 'tr') => {
     if (!createdAt) return '';
@@ -38,6 +39,10 @@ export const formatNotificationTime = (createdAt, lang = 'tr') => {
 };
 
 const Notification = ({ item, onPress }) => {
+    const { colors } = useTheme();
+    const npColors = colors.notificationPanel;
+    const styles = useMemo(() => getStyles(npColors), [npColors]);
+
     const { i18n } = useTranslation();
     const lang = i18n.language || 'tr';
 
@@ -60,7 +65,7 @@ const Notification = ({ item, onPress }) => {
                 <Ionicons
                     name={isRead ? "notifications-outline" : "notifications"}
                     size={20}
-                    color={isRead ? "#9CA3AF" : "#6D28D9"}
+                    color={isRead ? npColors.readIconColor : npColors.unreadIconColor}
                 />
             </View>
 
@@ -95,7 +100,7 @@ const Notification = ({ item, onPress }) => {
 
 export default Notification;
 
-const styles = StyleSheet.create({
+const getStyles = (npColors) => StyleSheet.create({
     cardContainer: {
         flexDirection: 'row',
         alignItems: 'flex-start',
@@ -103,23 +108,23 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         marginVertical: 5,
         marginHorizontal: 16,
-        shadowColor: '#000',
+        shadowColor: npColors.itemShadow,
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.05,
         shadowRadius: 6,
         elevation: 2,
     },
     unreadCard: {
-        backgroundColor: '#FAF7FF',
+        backgroundColor: npColors.unreadCardBg,
         borderWidth: 1,
-        borderColor: '#E9D5FF',
+        borderColor: npColors.unreadCardBorder,
         borderLeftWidth: 4,
-        borderLeftColor: '#7C3AED',
+        borderLeftColor: npColors.unreadCardLeftBorder,
     },
     readCard: {
-        backgroundColor: '#FFFFFF',
+        backgroundColor: npColors.readCardBg,
         borderWidth: 1,
-        borderColor: '#F3F4F6',
+        borderColor: npColors.readCardBorder,
     },
     iconContainer: {
         width: 40,
@@ -130,10 +135,10 @@ const styles = StyleSheet.create({
         marginRight: 12,
     },
     unreadIconContainer: {
-        backgroundColor: '#EDE9FE',
+        backgroundColor: npColors.unreadIconBg,
     },
     readIconContainer: {
-        backgroundColor: '#F3F4F6',
+        backgroundColor: npColors.readIconBg,
     },
     contentContainer: {
         flex: 1,
@@ -152,11 +157,11 @@ const styles = StyleSheet.create({
     },
     unreadTitleText: {
         fontWeight: '700',
-        color: '#1F2937',
+        color: npColors.unreadTitle,
     },
     readTitleText: {
         fontWeight: '600',
-        color: '#4B5563',
+        color: npColors.readTitle,
     },
     timeBadgeContainer: {
         flexDirection: 'row',
@@ -164,14 +169,14 @@ const styles = StyleSheet.create({
     },
     timeText: {
         fontSize: 11,
-        color: '#8B5CF6',
+        color: npColors.itemTimeText,
         fontWeight: '500',
     },
     unreadDot: {
         width: 8,
         height: 8,
         borderRadius: 4,
-        backgroundColor: '#7C3AED',
+        backgroundColor: npColors.unreadDot,
         marginLeft: 6,
     },
     descriptionText: {
@@ -179,9 +184,9 @@ const styles = StyleSheet.create({
         lineHeight: 18,
     },
     unreadDescriptionText: {
-        color: '#374151',
+        color: npColors.unreadDesc,
     },
     readDescriptionText: {
-        color: '#6B7280',
+        color: npColors.readDesc,
     },
 });

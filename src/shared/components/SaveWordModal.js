@@ -1,12 +1,15 @@
-import { View, Text, TouchableOpacity, Modal, ScrollView, ActivityIndicator } from 'react-native'
-import { useState } from 'react';
+import { View, Text, TouchableOpacity, Modal, ScrollView, ActivityIndicator } from 'react-native';
+import { useState, useMemo } from 'react';
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
-import modalStyles from '../styles/modalStyles'
+import { getModalStyles } from '../styles/modalStyles';
 import { useDictionary } from '@/contextapis/DictContext';
 import { useTranslation } from 'react-i18next';
-
+import { useTheme } from '@/contextapis/ThemeContext';
 
 export default function SaveWordModal({ modalVisible, setModalVisible, word, meaning, filteredDicts = [], isDaily = false }) {
+    const { colors } = useTheme();
+    const swColors = colors.saveWordModal;
+    const modalStyles = useMemo(() => getModalStyles(swColors), [swColors]);
 
     const [loading, setLoading] = useState(false);
     const [selectedDictId, setSelectedDictId] = useState(null);
@@ -15,27 +18,26 @@ export default function SaveWordModal({ modalVisible, setModalVisible, word, mea
 
     const handleCloseModal = () => {
         if (!loading) {
-            setModalVisible(false)
-            setSelectedDictId(null)
+            setModalVisible(false);
+            setSelectedDictId(null);
         }
-    }
+    };
 
     const handleSave = async () => {
-        if (!selectedDictId || loading) return
-        setLoading(true)
+        if (!selectedDictId || loading) return;
+        setLoading(true);
         try {
-            const result = await saveWord(
+            await saveWord(
                 { dictionary_id: selectedDictId, word: word, meaning: meaning },
                 isDaily
-            )
-
+            );
         } catch (e) {
             console.log("Error saving daily word:", e);
         } finally {
             setLoading(false);
             setModalVisible(false);
         }
-    }
+    };
 
     return (
         <Modal
@@ -54,12 +56,12 @@ export default function SaveWordModal({ modalVisible, setModalVisible, word, mea
                     <View style={modalStyles.header}>
                         <View style={modalStyles.headerLeft}>
                             <View style={modalStyles.iconCircle}>
-                                <MaterialCommunityIcons name="book-plus-outline" size={22} color="#8E4A7C" />
+                                <MaterialCommunityIcons name="book-plus-outline" size={22} color={swColors.headerIcon} />
                             </View>
                             <Text style={modalStyles.title}>{t('saveToDict')}</Text>
                         </View>
                         <TouchableOpacity onPress={handleCloseModal} style={modalStyles.closeIcon}>
-                            <Ionicons name="close" size={22} color="#9CA3AF" />
+                            <Ionicons name="close" size={22} color={swColors.closeIcon} />
                         </TouchableOpacity>
                     </View>
 
@@ -85,7 +87,7 @@ export default function SaveWordModal({ modalVisible, setModalVisible, word, mea
                             bounces={false}>
 
                             {filteredDicts.map((dict) => {
-                                const isSelected = selectedDictId === dict.id
+                                const isSelected = selectedDictId === dict.id;
                                 return (
                                     <TouchableOpacity
                                         key={dict.id}
@@ -94,8 +96,7 @@ export default function SaveWordModal({ modalVisible, setModalVisible, word, mea
                                             isSelected && modalStyles.dictItemSelected
                                         ]}
                                         onPress={() => setSelectedDictId(dict.id)}
-                                        activeOpacity={0.7}
-                                    >
+                                        activeOpacity={0.7}>
                                         <View style={modalStyles.dictItemLeft}>
                                             <View style={[
                                                 modalStyles.dictItemIcon,
@@ -104,7 +105,7 @@ export default function SaveWordModal({ modalVisible, setModalVisible, word, mea
                                                 <MaterialCommunityIcons
                                                     name="book-outline"
                                                     size={18}
-                                                    color={isSelected ? '#fff' : '#8E4A7C'}
+                                                    color={isSelected ? swColors.dictItemIconSelectedColor : swColors.dictItemIconColor}
                                                 />
                                             </View>
                                             <View style={modalStyles.dictItemInfo}>
@@ -113,7 +114,7 @@ export default function SaveWordModal({ modalVisible, setModalVisible, word, mea
                                                     isSelected && modalStyles.dictItemNameSelected
                                                 ]}>{dict.name}</Text>
                                                 <Text style={modalStyles.dictItemLang}>
-                                                    {dict.language?.toUpperCase()} • {dict.words?.length || 0} {t('words')}
+                                                    {dict.language?.toUpperCase()} • {JSON.stringify(dict.words[0]["count"]) || 0} {t('words')}
                                                 </Text>
                                             </View>
                                         </View>
@@ -124,12 +125,12 @@ export default function SaveWordModal({ modalVisible, setModalVisible, word, mea
                                             {isSelected && <View style={modalStyles.radioInner} />}
                                         </View>
                                     </TouchableOpacity>
-                                )
+                                );
                             })}
                         </ScrollView>
                     ) : (
                         <View style={modalStyles.emptyState}>
-                            <MaterialCommunityIcons name="book-off-outline" size={40} color="#D1D5DB" />
+                            <MaterialCommunityIcons name="book-off-outline" size={40} color={swColors.emptyIcon} />
                             <Text style={modalStyles.emptyTitle}>{t('noDictYet')}</Text>
                             <Text style={modalStyles.emptyDesc}>{t('createDictFirst')}</Text>
                         </View>
@@ -153,7 +154,7 @@ export default function SaveWordModal({ modalVisible, setModalVisible, word, mea
                             disabled={!selectedDictId || loading}
                         >
                             {loading
-                                ? <ActivityIndicator color="white" size="small" />
+                                ? <ActivityIndicator color={swColors.saveBtnText} size="small" />
                                 : <Text style={modalStyles.saveButtonText}>{t('save')}</Text>
                             }
                         </TouchableOpacity>
@@ -161,5 +162,5 @@ export default function SaveWordModal({ modalVisible, setModalVisible, word, mea
                 </TouchableOpacity>
             </TouchableOpacity>
         </Modal>
-    )
+    );
 }

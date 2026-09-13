@@ -17,6 +17,7 @@ export const STORAGE_KEYS = Object.freeze({
   },
   
   PREFERENCES:{
+    THEME : "theme_mode",
     LANGUAGE: 'language',
     VIBRATION_PREF: 'vibration',
     INITIAL_PAGE: 'initialPage',

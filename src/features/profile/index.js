@@ -9,9 +9,11 @@ import { useEffect } from "react";
 import ProfileConsole from './components/ProfileConsole';
 import { storage } from '@/storage/storage';
 import { STORAGE_KEYS } from '@/constants/StorageKeys';
+import { useTheme } from '@/contextapis/ThemeContext';
 
 const Profile = () => {
     const { user, setUser } = useAuth();
+    const { colors, isDark } = useTheme();
 
     useEffect(() => {
         if (!user) {
@@ -25,21 +27,23 @@ const Profile = () => {
         }
     }, [user]);
 
+    const gradientColors = isDark ? ['#1E1E24', '#1f1f1f'] : ['#e9d5ff', colors.common.background];
+
     return (
-        <LinearGradient colors={['#e9d5ff', '#ffffff']} start={{ x: 0, y: 0 }}
-            end={{ x: 0, y: 0.5 }} style={{ flex: 1, alignItems: 'center' }}>
+        <LinearGradient colors={gradientColors} start={{ x: 0, y: 0 }}
+            end={{ x: 0, y: 0.5 }} style={{ flex: 1, alignItems: 'center' , paddingTop:40 }}>
             <SafeAreaView style={{ flex: 1 }} edges={['top', 'left', 'right']}>
-                <View style={{ width: '90%', alignItems: 'center' }}>
-                    <HeaderTopRow />
+                <View style={{ alignItems: 'center' }}>
+                    {/*<HeaderTopRow />*/}
                     <ProfileHeader />
                     <ProfileStatsRow />
                 </View>
-                <View style={{ flex: 1, width: '100%', alignItems: 'center' }}>
+                <View style={{ flex: 1, width: '100%', alignItems: 'center', paddingHorizontal:15 }}>
                     <ProfileConsole />
                 </View>
             </SafeAreaView>
         </LinearGradient>
-    )
-}
+    );
+};
 
 export default Profile;

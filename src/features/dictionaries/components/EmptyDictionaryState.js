@@ -1,21 +1,26 @@
-import { View,Text } from "react-native";
+import { View, Text } from "react-native";
 import { useTranslation } from "react-i18next";
 import LottieView from "lottie-react-native";
-import * as Animatable from "react-native-animatable"
+import * as Animatable from "react-native-animatable";
+import { useTheme } from "@/contextapis/ThemeContext";
 
-export default function EmptyDictionary(){
+export default function EmptyDictionary() {
+    const { colors } = useTheme();
+    const dColors = colors.dictionaries;
     const { t } = useTranslation();
-    return(
-    <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
-        <LottieView autoPlay loop={false}
-        source={require("../assets/anim_empty_dictionary.json")} style={{width:'85%',aspectRatio:1}}/>
-        <Animatable.Text animation="fadeIn" duration={1200} delay={500} 
-        style={{marginTop:5,fontSize:20,color:'#BDC3C7'}} >
-            {t('startYourJourney')}
-        </Animatable.Text>
-        <Animatable.Text animation="fadeIn" duration={1200} delay={500} 
-        style={{fontSize:20,color:'#BDC3C7'}} >
-            {t('byAddingYourFirstWord')}
-        </Animatable.Text>
-    </View>)
+
+    return (
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <LottieView autoPlay loop={false}
+                source={require("../assets/anim_empty_dictionary.json")} style={{ width: '85%', aspectRatio: 1 }} />
+            <Animatable.Text animation="fadeIn" duration={1200} delay={500}
+                style={{ marginTop: 5, fontSize: 20, color: dColors.textMuted }} >
+                {t('startYourJourney')}
+            </Animatable.Text>
+            <Animatable.Text animation="fadeIn" duration={1200} delay={500}
+                style={{ fontSize: 20, color: dColors.textMuted }} >
+                {t('byAddingYourFirstWord')}
+            </Animatable.Text>
+        </View>
+    );
 }

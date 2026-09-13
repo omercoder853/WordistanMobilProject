@@ -11,9 +11,11 @@ import PauseModal from "../components/PauseModal";
 import { useTranslation } from "react-i18next";
 import { useFeedback } from "@/contextapis/FeedbackContext";
 import useTimer from "@/hooks/useTimer";
+import { useTheme } from "@/contextapis/ThemeContext";
 
 export default function MultipleChoiceGamePage() {
     const { t } = useTranslation();
+    const { colors } = useTheme();
     const navigation = useNavigation();
     const { questions, seconds, numberQuestion } = useGame();
     const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -80,12 +82,19 @@ export default function MultipleChoiceGamePage() {
     }, []);
 
     return (
-        <SafeAreaView style={styles.mainContainer}>
+        <SafeAreaView style={[styles.mainContainer, { backgroundColor: colors.common.background }]}>
             <GameHeader onPause={handlePause} remainTime={timeLeft} />
 
-            <View style={styles.questionCard}>
-                <Text style={styles.questionPrompt}>{t('makeChoice') || "Bir seçim yapınız"}</Text>
-                <Text style={styles.questionText}>{currentItem.question}</Text>
+            <View style={[
+                styles.questionCard,
+                {
+                    backgroundColor: colors.games.cardBg,
+                    borderColor: colors.games.cardBorder,
+                    shadowColor: colors.games.cardShadow,
+                }
+            ]}>
+                <Text style={[styles.questionPrompt, { color: colors.common.primary }]}>{t('makeChoice') || "Bir seçim yapınız"}</Text>
+                <Text style={[styles.questionText, { color: colors.games.textPrimary }]}>{currentItem.question}</Text>
             </View>
 
             <View style={styles.optionArea}>

@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Feather, Entypo } from '@expo/vector-icons';
 import { useState } from "react";
 import { useTranslation } from 'react-i18next';
@@ -6,13 +6,16 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useDictionary } from '@/contextapis/DictContext';
 import useSpeech from '@/hooks/useSpeech';
 import SaveWordModal from '@/shared/components/SaveWordModal';
+import { useTheme } from '@/contextapis/ThemeContext';
 
 const DailyWord = () => {
+    const { colors } = useTheme();
+    const dwColors = colors.home.dailyWord;
     const { speak, stop, isSpeaking } = useSpeech();
     const { t, i18n } = useTranslation();
-    const [modalVisible, setModalVisible] = useState(false)
+    const [modalVisible, setModalVisible] = useState(false);
     const { dailyWord, setDictReload, deleteWord, dicts } = useDictionary();
-    const lang = i18n.language
+    const lang = i18n.language;
 
     const heartToggle = async () => {
         if (dailyWord != null && dailyWord.is_saved) {
@@ -22,7 +25,7 @@ const DailyWord = () => {
             setDictReload(true);
             setModalVisible(true);
         }
-    }
+    };
 
     const handleSpeak = () => {
         if (!isSpeaking) {
@@ -31,7 +34,7 @@ const DailyWord = () => {
         else {
             stop();
         }
-    }
+    };
 
     const filteredDicts = (dicts || []).filter(dict =>
         (lang === 'tr' && dict.language === 'ENG to TR') ||
@@ -41,35 +44,48 @@ const DailyWord = () => {
     const word = lang === 'tr' ? dailyWord?.word : dailyWord?.meaning;
     const meaning = lang === 'tr' ? dailyWord?.meaning : dailyWord?.word;
 
-
     return (
         <>
-            <LinearGradient colors={['#FF928A', '#DA87D6', '#C382FE']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.dailyWordContainer}>
+            <LinearGradient
+                colors={dwColors.gradient}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={[styles.dailyWordContainer, { shadowColor: dwColors.shadow }]}
+            >
                 <View style={styles.dailyWordRow}>
-                    <Text style={[styles.dailyWordTitle, { color: 'white' }]}>{t('wordOfTheDay')}</Text>
+                    <Text style={[styles.dailyWordTitle, { color: dwColors.title }]}>{t('wordOfTheDay')}</Text>
                     <View style={styles.dailyWordButtons}>
-                        <TouchableOpacity onPress={handleSpeak}
-                            style={{ backgroundColor: 'rgba(255,255,255,0.2)', padding: 8, borderRadius: 20, marginRight: 8 }}>
-                            <Feather name="volume-2" size={20} color="white" />
+                        <TouchableOpacity
+                            onPress={handleSpeak}
+                            style={[styles.actionBtn, { backgroundColor: dwColors.buttonBg }]}
+                        >
+                            <Feather name="volume-2" size={20} color={dwColors.speakerIcon} />
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={heartToggle} style={{ backgroundColor: 'rgba(255,255,255,0.2)', padding: 8, borderRadius: 20 }}>
-                            <Entypo name={dailyWord?.is_saved ? "heart" : "heart-outlined"} size={20} color={dailyWord?.is_saved ? "red" : "white"} />
+                        <TouchableOpacity
+                            onPress={heartToggle}
+                            style={[styles.actionBtn, { backgroundColor: dwColors.buttonBg }]}
+                        >
+                            <Entypo
+                                name={dailyWord?.is_saved ? "heart" : "heart-outlined"}
+                                size={20}
+                                color={dailyWord?.is_saved ? dwColors.heartActive : dwColors.heartInactive}
+                            />
                         </TouchableOpacity>
                     </View>
                 </View>
-                <Text style={[styles.dailyWordLabel, { color: 'rgba(255,255,255,0.8)' }]}>{t('word')}</Text>
-                <Text style={[styles.dailyWordContent, { color: 'white', fontSize: 28, marginTop: 5 }]}>{word}</Text>
-                <Text style={[styles.dailyWordLabel, { color: 'rgba(255,255,255,0.8)' }]}>{t('meaning')}</Text>
-                <Text style={[styles.dailyWordContent, { color: 'white', fontSize: 18 }]}>{meaning}</Text>
-                <Text style={[styles.dailyWordLabel, { color: 'rgba(255,255,255,0.8)' }]}>{t('inSentence')}</Text>
-                <Text style={[styles.dailyWordContent, { color: 'white' }]}>{lang == 'tr' ? dailyWord?.example_en : dailyWord?.example_tr}</Text>
+                <Text style={[styles.dailyWordLabel, { color: dwColors.label }]}>{t('word')}</Text>
+                <Text style={[styles.dailyWordContent, { color: dwColors.content, fontSize: 28, marginTop: 5 }]}>{word}</Text>
+                <Text style={[styles.dailyWordLabel, { color: dwColors.label }]}>{t('meaning')}</Text>
+                <Text style={[styles.dailyWordContent, { color: dwColors.content, fontSize: 18 }]}>{meaning}</Text>
+                <Text style={[styles.dailyWordLabel, { color: dwColors.label }]}>{t('inSentence')}</Text>
+                <Text style={[styles.dailyWordContent, { color: dwColors.content }]}>{lang == 'tr' ? dailyWord?.example_en : dailyWord?.example_tr}</Text>
             </LinearGradient>
 
             {/* Sözlük Seçim Modalı */}
             <SaveWordModal modalVisible={modalVisible} setModalVisible={setModalVisible} filteredDicts={filteredDicts} word={word} meaning={meaning} isDaily={true} />
         </>
-    )
-}
+    );
+};
 
 export default DailyWord;
 
@@ -83,7 +99,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.3,
         shadowRadius: 10,
         marginHorizontal: 10,
-        marginVertical: 15
+        marginTop:5,
+        marginBottom:10
     },
     dailyWordRow: {
         flexDirection: 'row',
@@ -107,5 +124,10 @@ const styles = StyleSheet.create({
     dailyWordContent: {
         fontSize: 15,
         fontWeight: '700'
+    },
+    actionBtn: {
+        padding: 8,
+        borderRadius: 20,
+        marginLeft: 8,
     },
 })

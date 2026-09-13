@@ -4,11 +4,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import { Ionicons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
 import { useState } from "react";
+import { useTheme } from "@/contextapis/ThemeContext";
 
 export default function FinishGame() {
     const { t } = useTranslation();
+    const { colors, isDark } = useTheme();
     const router = useRoute();
     const { remainTime, totalTry } = router.params || {};
     const navigation = useNavigation();
@@ -83,12 +84,12 @@ export default function FinishGame() {
             bg: 'rgba(239, 68, 68, 0.12)'
         },
         {
-            id: 'passed',
-            label: t('passed') || 'Boş',
+            id: 'empty',
+            label: t('empty') || 'Boş',
             value: empty_count,
-            icon: 'remove-circle-outline',
-            color: '#F59E0B',
-            bg: 'rgba(245, 158, 11, 0.12)'
+            icon: 'ellipse-outline',
+            color: '#6B7280',
+            bg: 'rgba(107, 114, 128, 0.12)'
         },
     ];
 
@@ -106,81 +107,85 @@ export default function FinishGame() {
         try {
             const res = await saveGameSession(sessionData);
             if (res) {
-                console.log("Game results saved successfully:", res);
-            }
-            else {
+                console.log("Game results saved successfully");
+            } else {
                 console.log("Failed to save game results.");
             }
+        } catch (error) {
+            console.log("Error while saving game results : ", error);
         }
-        catch (error) {
-            console.log("Error while saving game results : ", error)
-        }
-        setLoading(false)
-        navigation.replace("MainTabs", { screen: target })
-    }
+        setLoading(false);
+        navigation.replace("MainTabs", { screen: target });
+    };
 
     return (
         <>
-            <LinearGradient
-                colors={['#FFF8F8', '#FDF2F2', '#FAF0F0']}
-                style={{ flex: 1 }}>
-                <SafeAreaView style={finishStyles.safeArea}>
-                    <ScrollView
-                        contentContainerStyle={finishStyles.scrollContent}
-                        showsVerticalScrollIndicator={false}
-                    >
-                        {/* Header Section */}
-                        <View style={finishStyles.headerContainer}>
-                            <View style={finishStyles.trophyWrapper}>
-                                <Ionicons name="trophy" size={42} color="#dc9f9f" />
-                            </View>
-                            <Text style={finishStyles.titleText}>{t('gameCompleted') || "Oyun Tamamlandı!"}</Text>
-                            <Text style={finishStyles.subtitleText}>
-                                {t('resultsSummary') || "Performans özetin aşağıda yer almaktadır"}
-                            </Text>
+            <SafeAreaView style={[finishStyles.safeArea, { backgroundColor: colors.common.background }]}>
+                <ScrollView
+                    contentContainerStyle={finishStyles.scrollContent}
+                    showsVerticalScrollIndicator={false}
+                >
+                    {/* Header Section */}
+                    <View style={finishStyles.headerContainer}>
+                        <View style={[finishStyles.trophyWrapper, { backgroundColor: colors.games.cardBg, borderColor: colors.games.cardBorder, shadowColor: colors.games.cardShadow }]}>
+                            <Ionicons name="trophy" size={42} color={colors.common.primary} />
                         </View>
+                        <Text style={[finishStyles.titleText, { color: colors.games.textPrimary }]}>{t('gameCompleted') || "Oyun Tamamlandı!"}</Text>
+                        <Text style={[finishStyles.subtitleText, { color: colors.games.textSecondary }]}>
+                            {t('resultsSummary') || "Performans özetin aşağıda yer almaktadır"}
+                        </Text>
+                    </View>
 
-                        {/* 6 Metrics Grid */}
-                        <View style={finishStyles.gridContainer}>
-                            {metricsData.map((item) => (
-                                <View key={item.id} style={[finishStyles.card, { shadowColor: item.color }]}>
-                                    <View style={[finishStyles.iconCircle, { backgroundColor: item.bg }]}>
-                                        <Ionicons name={item.icon} size={22} color={item.color} />
-                                    </View>
-                                    <Text style={finishStyles.cardValue}>{item.value}</Text>
-                                    <Text style={finishStyles.cardLabel}>{item.label}</Text>
+                    {/* 6 Metrics Grid */}
+                    <View style={finishStyles.gridContainer}>
+                        {metricsData.map((item) => (
+                            <View
+                                key={item.id}
+                                style={[
+                                    finishStyles.card,
+                                    {
+                                        backgroundColor: colors.games.cardBg,
+                                        borderColor: colors.games.cardBorder,
+                                        shadowColor: item.color,
+                                    }
+                                ]}
+                            >
+                                <View style={[finishStyles.iconCircle, { backgroundColor: item.bg }]}>
+                                    <Ionicons name={item.icon} size={22} color={item.color} />
                                 </View>
-                            ))}
-                        </View>
+                                <Text style={[finishStyles.cardValue, { color: colors.games.textPrimary }]}>{item.value}</Text>
+                                <Text style={[finishStyles.cardLabel, { color: colors.games.textSecondary }]}>{item.label}</Text>
+                            </View>
+                        ))}
+                    </View>
 
-                        {/* Action Buttons */}
-                        <View style={finishStyles.buttonRow}>
-                            <TouchableOpacity
-                                activeOpacity={0.85}
-                                style={[finishStyles.actionButton, finishStyles.homeButton]}
-                                onPress={() => saveResults("Home")}
-                            >
-                                <Ionicons name="home-outline" size={20} color="#FFFFFF" style={{ marginRight: 8 }} />
-                                <Text style={finishStyles.buttonText}>{t('home') || "Ana Sayfa"}</Text>
-                            </TouchableOpacity>
+                    {/* Action Buttons */}
+                    <View style={finishStyles.buttonRow}>
+                        <TouchableOpacity
+                            activeOpacity={0.85}
+                            style={[finishStyles.actionButton, finishStyles.homeButton, { backgroundColor: isDark ? colors.common.surface : '#dc9f9f', shadowColor: isDark ? colors.common.shadow : '#dc9f9f' }]}
+                            onPress={() => saveResults("Home")}
+                        >
+                            <Ionicons name="home-outline" size={20} color="#FFFFFF" style={{ marginRight: 8 }} />
+                            <Text style={finishStyles.buttonText}>{t('home') || "Ana Sayfa"}</Text>
+                        </TouchableOpacity>
 
-                            <TouchableOpacity
-                                activeOpacity={0.85}
-                                style={[finishStyles.actionButton, finishStyles.newGameButton]}
-                                onPress={() => saveResults("Games")}
-                            >
-                                <Ionicons name="game-controller-outline" size={20} color="#FFFFFF" style={{ marginRight: 8 }} />
-                                <Text style={finishStyles.buttonText}>{t('newGame') || "Yeni Oyun"}</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </ScrollView>
-                </SafeAreaView>
-            </LinearGradient>
+                        <TouchableOpacity
+                            activeOpacity={0.85}
+                            style={[finishStyles.actionButton, finishStyles.newGameButton, { backgroundColor: colors.common.primary, shadowColor: colors.common.primary }]}
+                            onPress={() => saveResults("Games")}
+                        >
+                            <Ionicons name="game-controller-outline" size={20} color="#FFFFFF" style={{ marginRight: 8 }} />
+                            <Text style={finishStyles.buttonText}>{t('newGame') || "Yeni Oyun"}</Text>
+                        </TouchableOpacity>
+                    </View>
+                </ScrollView>
+            </SafeAreaView>
 
-            <Modal visible={loading} transparent animationType="fade">
-                <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.3)', justifyContent: 'center', alignItems: 'center' }}>
-                    <View style={{ width: 100, height: 100, backgroundColor: 'white', borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}>
-                        <ActivityIndicator size="large" color="#0000ff" />
+            <Modal visible={loading} transparent animationType="fade" statusBarTranslucent={true}>
+                <View style={{ flex: 1, backgroundColor: colors.games.modalOverlay, justifyContent: 'center', alignItems: 'center' }}>
+                    <View style={{ width: 100, height: 100, backgroundColor: colors.games.modalBg, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}>
+                        <ActivityIndicator size="large" color={colors.common.primary} />
                     </View>
                 </View>
             </Modal>

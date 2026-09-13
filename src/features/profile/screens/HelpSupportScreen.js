@@ -13,6 +13,7 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contextapis/AuthContext";
 import aboutStyles from "../styles/AboutScreenStyle";
 import { useCallback } from "react";
+import { useTheme } from "@/contextapis/ThemeContext";
 
 // ─── Social channels data ───
 const socialChannels = [
@@ -57,9 +58,12 @@ const socialChannels = [
 export default function HelpSupport() {
   const { t } = useTranslation();
   const { user } = useAuth();
+  const { colors, isDark } = useTheme();
 
   // Default email from user context
   const userEmail = user?.email || "";
+  const [subject, setSubject] = React.useState("");
+  const [message, setMessage] = React.useState("");
 
   const OpenUrl = async (url) => {
     const supported = await Linking.canOpenURL(url)
@@ -71,90 +75,96 @@ export default function HelpSupport() {
     }
   }
 
+  const handleOpenChannel = (channel) => {
+    if (channel.url) {
+      OpenUrl(channel.url);
+    } else {
+      Alert.alert("This link can not be opened");
+    }
+  };
+
+  const handleSendEmail = () => {
+    // no-op
+  };
+
   return (
-    <View style={aboutStyles.container}>
+    <View style={[aboutStyles.container, { backgroundColor: colors.common.background }]}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={aboutStyles.scrollContent}
       >
-        {/* ─── Header ─── */}
+        {/* ─── Contact Header ─── */}
         <View style={aboutStyles.contactHeader}>
-          <Text style={aboutStyles.contactTitle}>{t("contactGetInTouch")}</Text>
-          <Text style={aboutStyles.contactSubtitle}>
+          <Text style={[aboutStyles.contactTitle, { color: colors.profile.textPrimary }]}>{t("contactGetInTouch")}</Text>
+          <Text style={[aboutStyles.contactSubtitle, { color: colors.profile.textSecondary }]}>
             {t("contactSubtitle")}
           </Text>
         </View>
 
         {/* ─── Email Form Card ─── */}
-        <View style={aboutStyles.emailFormCard}>
+        <View style={[aboutStyles.emailFormCard, { backgroundColor: colors.profile.cardBg, borderColor: colors.profile.cardBorder }]}>
           <View style={aboutStyles.emailFormHeader}>
             <View style={aboutStyles.emailFormIconBox}>
-              <Ionicons name="mail-outline" size={22} color="#3B82F6" />
+              <Ionicons name="mail-unread-outline" size={22} color="#3B82F6" />
             </View>
             <View>
-              <Text style={aboutStyles.emailFormTitle}>
+              <Text style={[aboutStyles.emailFormTitle, { color: colors.profile.textPrimary }]}>
                 {t("contactEmailTitle")}
               </Text>
-              <Text style={aboutStyles.emailFormSubtitle}>
+              <Text style={[aboutStyles.emailFormSubtitle, { color: colors.profile.textSecondary }]}>
                 {t("contactEmailSubtitle")}
               </Text>
             </View>
           </View>
 
-          {/* Sender Email */}
-          <Text style={aboutStyles.inputLabel}>{t("contactFromLabel")}</Text>
+          {/* Email (read-only / pre-filled) */}
+          <Text style={[aboutStyles.inputLabel, { color: colors.profile.textSecondary }]}>{t("emailLabel")}</Text>
           <TextInput
-            style={aboutStyles.textInput}
-            defaultValue={userEmail}
-            placeholder="email@example.com"
-            placeholderTextColor="#D1D5DB"
-            keyboardType="email-address"
-            autoCapitalize="none"
+            style={[aboutStyles.textInput, { backgroundColor: isDark ? colors.common.surface : '#F9FAFB', borderColor: colors.profile.separator, color: colors.profile.textPrimary }]}
+            value={userEmail}
             editable={false}
           />
 
           {/* Subject */}
-          <Text style={aboutStyles.inputLabel}>{t("contactSubjectLabel")}</Text>
+          <Text style={[aboutStyles.inputLabel, { color: colors.profile.textSecondary }]}>{t("contactSubjectLabel")}</Text>
           <TextInput
-            style={aboutStyles.textInput}
+            style={[aboutStyles.textInput, { backgroundColor: isDark ? colors.common.surface : '#F9FAFB', borderColor: colors.profile.separator, color: colors.profile.textPrimary }]}
+            value={subject}
+            onChangeText={setSubject}
             placeholder={t("contactSubjectPlaceholder")}
-            placeholderTextColor="#D1D5DB"
+            placeholderTextColor={colors.common.placeholder}
           />
 
           {/* Message */}
-          <Text style={aboutStyles.inputLabel}>{t("contactMessageLabel")}</Text>
+          <Text style={[aboutStyles.inputLabel, { color: colors.profile.textSecondary }]}>{t("contactMessageLabel")}</Text>
           <TextInput
-            style={aboutStyles.textArea}
+            style={[aboutStyles.textArea, { backgroundColor: isDark ? colors.common.surface : '#F9FAFB', borderColor: colors.profile.separator, color: colors.profile.textPrimary }]}
+            value={message}
+            onChangeText={setMessage}
             placeholder={t("contactMessagePlaceholder")}
-            placeholderTextColor="#D1D5DB"
+            placeholderTextColor={colors.common.placeholder}
             multiline
             numberOfLines={4}
           />
 
-          {/* Send Button (no-op) */}
+          {/* Send Button */}
           <TouchableOpacity
             activeOpacity={0.8}
+            onPress={handleSendEmail}
             style={aboutStyles.sendButton}
-            onPress={() => { }}
           >
-            <Ionicons name="send" size={18} color="#FFFFFF" />
-            <Text style={aboutStyles.sendButtonText}>
-              {t("contactSendBtn")}
-            </Text>
+            <Ionicons name="send" size={16} color="#FFFFFF" />
+            <Text style={aboutStyles.sendButtonText}>{t("contactSendBtn")}</Text>
           </TouchableOpacity>
         </View>
 
-        {/* ─── Social Links Card ─── */}
-        <View style={[aboutStyles.card, { marginTop: 16, paddingVertical: 4, paddingHorizontal: 0 }]}>
-          <Text style={[aboutStyles.cardTitle, { paddingHorizontal: 18, paddingTop: 14 }]}>
-            {t("contactSocialTitle")}
-          </Text>
-
+        {/* ─── Social Channels Card ─── */}
+        <View style={[aboutStyles.socialCard, { backgroundColor: colors.profile.cardBg, borderColor: colors.profile.cardBorder }]}>
           {socialChannels.map((channel, index) => (
-            <View key={channel.id}>
+            <React.Fragment key={channel.id}>
               <TouchableOpacity
                 activeOpacity={0.7}
-                onPress={() => OpenUrl(channel.url)}
+                onPress={() => handleOpenChannel(channel)}
                 style={aboutStyles.socialRow}
               >
                 <View
@@ -170,17 +180,19 @@ export default function HelpSupport() {
                   />
                 </View>
                 <View style={{ flex: 1 }}>
-                  <Text style={aboutStyles.socialLabel}>
-                    {t(channel.labelKey)}
-                  </Text>
-                  <Text style={aboutStyles.socialHandle}>{channel.handle}</Text>
+                  <Text style={[aboutStyles.socialLabel, { color: colors.profile.textPrimary }]}>{t(channel.labelKey)}</Text>
+                  <Text style={[aboutStyles.socialHandle, { color: colors.profile.textSecondary }]}>{channel.handle}</Text>
                 </View>
-                <Ionicons name="chevron-forward" size={16} color="#D1D5DB" />
+                <Ionicons
+                  name="chevron-forward"
+                  size={18}
+                  color={colors.profile.textSecondary}
+                />
               </TouchableOpacity>
               {index < socialChannels.length - 1 && (
-                <View style={aboutStyles.socialSeparator} />
+                <View style={[aboutStyles.socialSeparator, { backgroundColor: colors.profile.separator }]} />
               )}
-            </View>
+            </React.Fragment>
           ))}
         </View>
 

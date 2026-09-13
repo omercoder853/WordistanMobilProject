@@ -3,9 +3,11 @@ import { View, Text, Modal, TouchableOpacity, StyleSheet, Pressable } from 'reac
 import { LinearGradient } from 'expo-linear-gradient';
 import Feather from '@expo/vector-icons/Feather';
 import { useTranslation } from 'react-i18next';
+import { useTheme } from '@/contextapis/ThemeContext';
 
 export default function PauseModal({ visible, onResume, onExit }) {
     const { t } = useTranslation();
+    const { colors, isDark } = useTheme();
 
     return (
         <Modal
@@ -15,17 +17,17 @@ export default function PauseModal({ visible, onResume, onExit }) {
             statusBarTranslucent={true}
             onRequestClose={onResume}
         >
-            <View style={styles.backdrop}>
+            <View style={[styles.backdrop, { backgroundColor: colors.games.modalOverlay }]}>
                 <Pressable style={styles.dismissArea} onPress={onResume} />
-                <View style={styles.modalCard}>
+                <View style={[styles.modalCard, { backgroundColor: colors.games.modalBg, shadowColor: colors.games.cardShadow }]}>
                     {/* Pause Icon */}
-                    <View style={styles.iconCircle}>
-                        <Feather name="pause" size={30} color="#5B3FD3" />
+                    <View style={[styles.iconCircle, { backgroundColor: isDark ? colors.common.surface : '#EDE9FE' }]}>
+                        <Feather name="pause" size={30} color={colors.common.primary} />
                     </View>
 
                     {/* Title & Subtitle */}
-                    <Text style={styles.title}>{t('gamePaused') || 'Oyun Duraklatıldı'}</Text>
-                    <Text style={styles.subtitle}>
+                    <Text style={[styles.title, { color: colors.games.textPrimary }]}>{t('gamePaused') || 'Oyun Duraklatıldı'}</Text>
+                    <Text style={[styles.subtitle, { color: colors.games.textSecondary }]}>
                         {t('gamePausedDesc') || 'Oyuna devam edebilir veya oyundan çıkabilirsiniz.'}
                     </Text>
 
@@ -37,7 +39,7 @@ export default function PauseModal({ visible, onResume, onExit }) {
                             style={styles.resumeButtonWrapper}
                         >
                             <LinearGradient
-                                colors={['#6D28D9', '#5B3FD3']}
+                                colors={isDark ? ['#7C3AED', '#5B3FD3'] : ['#6D28D9', '#5B3FD3']}
                                 start={{ x: 0, y: 0 }}
                                 end={{ x: 1, y: 1 }}
                                 style={styles.resumeGradientBtn}
@@ -50,7 +52,13 @@ export default function PauseModal({ visible, onResume, onExit }) {
                         <TouchableOpacity
                             activeOpacity={0.7}
                             onPress={onExit}
-                            style={styles.exitButton}
+                            style={[
+                                styles.exitButton,
+                                {
+                                    backgroundColor: isDark ? 'rgba(239, 68, 68, 0.15)' : '#FEF2F2',
+                                    borderColor: isDark ? 'rgba(239, 68, 68, 0.3)' : '#FECACA',
+                                }
+                            ]}
                         >
                             <Feather name="log-out" size={18} color="#EF4444" style={{ marginRight: 8 }} />
                             <Text style={styles.exitText}>{t('exitGame') || 'Oyundan Çık'}</Text>

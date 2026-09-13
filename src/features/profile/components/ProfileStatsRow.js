@@ -5,32 +5,34 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contextapis/AuthContext";
 import { useUserStats } from "@/contextapis/UserStatsContext";
 import { useAchievements } from "@/contextapis/AchievementsContext";
+import { useTheme } from "@/contextapis/ThemeContext";
 
 export default function ProfileStatsRow() {
     const { t } = useTranslation();
     const { user } = useAuth();
+    const { colors } = useTheme();
     const { earnedAchievementsList } = useAchievements();
 
     const { translated_words, saved_words } = useUserStats();
     return (
         <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginVertical: 20 }}>
             <View style={styles.statColumn}>
-                <Feather name="search" size={18} color="black" />
-                <Text style={{ fontSize: 15, fontWeight: '700' }}>{translated_words}</Text>
-                <Text style={{ fontSize: 12, color: '#64748B', marginTop: -5 }}>{t('lookups')}</Text>
+                <Feather name="search" size={18} color={colors.profile.textPrimary} />
+                <Text style={{ fontSize: 15, fontWeight: '700', color: colors.profile.textPrimary }}>{translated_words}</Text>
+                <Text style={{ fontSize: 12, color: colors.profile.textSecondary, marginTop: -5 }}>{t('lookups')}</Text>
             </View>
-            <View style={{ borderWidth: 0.4, borderColor: '#94A3B8', marginHorizontal: 5 }}></View>
+            <View style={{ borderWidth: 0.4, borderColor: colors.profile.separator, marginHorizontal: 5 }}></View>
             <View style={styles.statColumn}>
-                <FontAwesome name="bookmark-o" size={18} color="black" />
-                <Text style={{ fontSize: 15, fontWeight: '700' }}>{saved_words}</Text>
-                <Text style={{ fontSize: 12, color: '#64748B', marginTop: -5 }}>{t('saved')}</Text>
+                <FontAwesome name="bookmark-o" size={18} color={colors.profile.textPrimary} />
+                <Text style={{ fontSize: 15, fontWeight: '700', color: colors.profile.textPrimary }}>{saved_words}</Text>
+                <Text style={{ fontSize: 12, color: colors.profile.textSecondary, marginTop: -5 }}>{t('saved')}</Text>
             </View>
-            <View style={{ borderWidth: 0.4, borderColor: '#94A3B8', marginHorizontal: 5 }}></View>
+            <View style={{ borderWidth: 0.4, borderColor: colors.profile.separator, marginHorizontal: 5 }}></View>
             <View style={styles.statColumn}>
-                <FontAwesome6 name="award" size={18} color="black" />
-                <Text style={{ fontSize: 15, fontWeight: '700' }}>{earnedAchievementsList?.length || 0}</Text>
-                <Text style={{ fontSize: 12, color: '#64748B', marginTop: -5 }}>{t('badges')}</Text>
+                <FontAwesome6 name="award" size={18} color={colors.profile.textPrimary} />
+                <Text style={{ fontSize: 15, fontWeight: '700', color: colors.profile.textPrimary }}>{earnedAchievementsList?.length || 0}</Text>
+                <Text style={{ fontSize: 12, color: colors.profile.textSecondary, marginTop: -5 }}>{t('badges')}</Text>
             </View>
         </View>
-    )
+    );
 }

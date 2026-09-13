@@ -7,25 +7,32 @@ import { useUserStats } from "@/contextapis/UserStatsContext";
 import { useNavigation } from "@react-navigation/native";
 import Svg, { Circle } from "react-native-svg";
 import { useNotification } from "@/contextapis/NotificationContext";
+import { useTranslation } from "react-i18next";
+import { useTheme } from "@/contextapis/ThemeContext";
 import { storage } from "@/storage/storage";
 import { STORAGE_KEYS } from "@/constants/StorageKeys";
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
-const AVATAR_SIZE = 46;
-const STROKE_WIDTH = 3;
+const AVATAR_SIZE = 40;
+const STROKE_WIDTH = 2.5;
 const RADIUS = (AVATAR_SIZE + STROKE_WIDTH) / 2;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
 const AppHeader = () => {
     const insets = useSafeAreaInsets();
+    const { t } = useTranslation();
+    const { colors } = useTheme();
     const { userStats, pendingEarnedXP } = useUserStats();
     const { user, setUser } = useAuth();
     const navigation = useNavigation();
     const { notifications, setNotificationPanel } = useNotification();
     const unreadCount = (notifications || []).filter(n => !n.is_read).length;
 
-    const imgSource = user?.gender == "male" ? require('../../assets/default_avatar_boy.png') : require('../../assets/default_avatar_girl.png')
+    const imgSource = user?.gender === "male"
+        ? require('../../assets/default_avatar_boy.png')
+        : require('../../assets/default_avatar_girl.png');
+
     useEffect(() => {
         if (!user) {
             const loadUser = async () => {
@@ -62,69 +69,78 @@ const AppHeader = () => {
 
     const svgSize = AVATAR_SIZE + STROKE_WIDTH * 2 + 4;
 
+    const firstName = user?.first_name
+        ? (user.first_name.includes(" ") ? user.first_name.split(" ")[0] : user.first_name)
+        : "";
+
     return (
-        <View style={[styles.profileRowContainer, { marginTop: insets.top }]}>
+        <View style={[styles.profileRowContainer, { paddingTop: insets.top + 10, backgroundColor: colors.header.background, shadowColor: colors.header.shadow }]}>
             <View style={styles.greeting}>
                 <Image
-                    style={styles.logoImage}
-                    source={require("../../assets/logo.png")} />
-                <Text style={styles.textWelcome}>elcome, </Text>
-                <Text style={{ fontSize: 18 }}>{user?.first_name.includes(" ") ? user?.first_name.split(" ")[0] : user?.first_name}</Text>
+                    style={[styles.logoImage, { borderColor: colors.header.logoBorder }]}
+                    source={require('../../assets/logo.png')}
+                />
+                <View style={styles.greetingTextContainer}>
+                    <Text style={[styles.textWelcome, { color: colors.header.textWelcome }]}>{t('welcome')}</Text>
+                    <Text style={[styles.textUserName, { color: colors.header.textUserName }]} numberOfLines={1}>
+                        {firstName}
+                    </Text>
+                </View>
             </View>
+
             <View style={styles.profileContainer}>
                 <TouchableOpacity
                     onPress={() => navigation.navigate("Profile Navigation", { screen: "Statistics" })}
                     activeOpacity={0.7}
                     style={styles.avatarWithProgress}>
-                    {/* Circular progress ring */}
                     <Svg
                         width={svgSize}
                         height={svgSize}
                         style={{ position: 'absolute', top: -2, left: -2 }}>
-                        {/* Track (background circle) */}
                         <Circle
                             cx={svgSize / 2}
                             cy={svgSize / 2}
                             r={RADIUS}
-                            stroke="#EDE9FE"
+                            stroke={colors.header.progressRingBg}
                             strokeWidth={STROKE_WIDTH}
-                            fill="none" />
-                        {/* Progress arc */}
+                            fill="none"
+                        />
                         <AnimatedCircle
                             cx={svgSize / 2}
                             cy={svgSize / 2}
                             r={RADIUS}
-                            stroke="#8B5CF6"
+                            stroke={colors.header.progressRingFill}
                             strokeWidth={STROKE_WIDTH}
                             fill="none"
                             strokeDasharray={CIRCUMFERENCE}
                             strokeDashoffset={animatedStrokeDashoffset}
                             strokeLinecap="round"
                             rotation="-90"
-                            origin={`${svgSize / 2}, ${svgSize / 2}`} />
+                            origin={`${svgSize / 2}, ${svgSize / 2}`}
+                        />
                     </Svg>
-                    {/* Profile image */}
                     <Image
                         style={styles.profileImage}
-                        source={imgSource} />
-                    {/* Level badge */}
-                    <View style={styles.levelBadge}>
-                        <Text style={styles.levelBadgeText}>{userStats?.level || 1}</Text>
+                        source={imgSource}
+                    />
+                    <View style={[styles.levelBadge, { backgroundColor: colors.header.levelBadgeBg, borderColor: colors.header.levelBadgeBorder }]}>
+                        <Text style={[styles.levelBadgeText, { color: colors.header.levelBadgeText }]}>{userStats?.level || 1}</Text>
                     </View>
                 </TouchableOpacity>
+
                 <TouchableOpacity
                     onPress={() => setNotificationPanel(true)}
                     activeOpacity={0.7}
-                    style={styles.notificationButton}
+                    style={[styles.notificationButton, { backgroundColor: colors.header.iconButtonBg, borderColor: colors.header.iconButtonBorder }]}
                 >
                     <Ionicons
                         name={unreadCount > 0 ? "notifications" : "notifications-outline"}
-                        size={24}
-                        color="#5B3FD3"
+                        size={22}
+                        color={colors.header.iconButtonColor}
                     />
                     {unreadCount > 0 && (
-                        <View style={styles.notificationBadge}>
-                            <Text style={styles.notificationBadgeText}>
+                        <View style={[styles.notificationBadge, { backgroundColor: colors.header.badgeBg, borderColor: colors.header.background }]}>
+                            <Text style={[styles.notificationBadgeText, { color: colors.header.badgeText }]}>
                                 {unreadCount > 99 ? '99+' : unreadCount}
                             </Text>
                         </View>
@@ -132,84 +148,107 @@ const AppHeader = () => {
                 </TouchableOpacity>
             </View>
         </View>
-    )
+    );
 };
 
 export default AppHeader;
 
 const styles = StyleSheet.create({
-    logoImage: {
-        width: 72,
-        aspectRatio: 1,
-        borderRadius: 25,
-    },
     profileRowContainer: {
-        display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
         width: '100%',
         justifyContent: 'space-between',
-        paddingVertical: 5,
-        paddingRight: 10,
-        backgroundColor: 'transparent'
-    },
-    textWelcome: {
-        fontSize: 18,
-        marginLeft: -12
-    },
-    profileContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
+        paddingHorizontal: 16,
+        paddingTop: 20,
+        paddingBottom: 12,
+        backgroundColor: '#faf7fa',
+        shadowColor: '#0F172A',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.04,
+        shadowRadius: 10,
+        elevation: 0,
     },
     greeting: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'flex-start',
+        flex: 1,
+        marginRight: 10,
+    },
+    logoImage: {
+        width: 48,
+        height: 48,
+        borderRadius: 14,
+        borderWidth: 1,
+        borderColor: 'rgba(91, 63, 211, 0.1)',
+    },
+    greetingTextContainer: {
+        marginLeft: 11,
+        justifyContent: 'center',
+    },
+    textWelcome: {
+        fontSize: 13,
+        fontWeight: '600',
+        color: '#94A3B8',
+        lineHeight: 17,
+    },
+    textUserName: {
+        fontSize: 18,
+        fontWeight: '800',
+        color: '#1E293B',
+        letterSpacing: -0.2,
+    },
+    profileContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 8,
     },
     profileImage: {
-        width: 46,
-        height: 46,
-        borderRadius: 23,
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        marginRight:2,
+        marginBottom:4
     },
     avatarWithProgress: {
-        width: 52,
-        height: 52,
+        width: 46,
+        height: 46,
         justifyContent: 'center',
         alignItems: 'center',
         position: 'relative',
-        overflow: 'visible',
     },
     levelBadge: {
         position: 'absolute',
         bottom: -2,
         right: -2,
         backgroundColor: '#8B5CF6',
-        borderRadius: 10,
-        minWidth: 20,
-        height: 20,
+        borderRadius: 9,
+        minWidth: 18,
+        height: 18,
         justifyContent: 'center',
         alignItems: 'center',
-        paddingHorizontal: 4,
+        paddingHorizontal: 3,
         borderWidth: 2,
         borderColor: '#FFFFFF',
     },
     levelBadgeText: {
         color: '#FFFFFF',
-        fontSize: 10,
+        fontSize: 9,
         fontWeight: '800',
     },
     notificationButton: {
-        marginLeft: 8,
-        position: 'relative',
-        padding: 4,
+        width: 42,
+        height: 42,
+        borderRadius: 13,
+        borderWidth: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        position: 'relative',
     },
     notificationBadge: {
         position: 'absolute',
         top: -2,
-        right: -4,
+        right: -2,
         backgroundColor: '#EF4444',
         borderRadius: 9,
         minWidth: 18,
@@ -225,5 +264,5 @@ const styles = StyleSheet.create({
         fontSize: 9,
         fontWeight: '800',
         textAlign: 'center',
-    }
-})
+    },
+});

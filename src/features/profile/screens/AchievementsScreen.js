@@ -4,11 +4,13 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import Achievement from "../components/AchievementListItem";
 import { useAchievements } from "@/contextapis/AchievementsContext";
 import { useUserStats } from "@/contextapis/UserStatsContext";
+import { useTheme } from "@/contextapis/ThemeContext";
 
 export default function Achievements() {
     const { achievements, isAlreadyEarned } = useAchievements();
     const { userStats, pendingSavedWords, pendingTranslated, pendingDictCreated } = useUserStats();
     const { t } = useTranslation();
+    const { colors, isDark } = useTheme();
     const { width: screenWidth } = Dimensions.get('window');
 
     const getProgress = (ach) => {
@@ -33,9 +35,9 @@ export default function Achievements() {
     }, { bronze: 0, silver: 0, gold: 0 });
 
     return (
-        <View style={{ flex: 1, alignItems: 'center' }}>
-            <View style={styles.achievementSumMainContainer}>
-                <Text style={styles.achievementSumTitle}>{t("achievementSummary")}</Text>
+        <View style={{ flex: 1, alignItems: 'center', backgroundColor: colors.common.background }}>
+            <View style={[styles.achievementSumMainContainer, { backgroundColor: colors.profile.cardBg }]}>
+                <Text style={[styles.achievementSumTitle, { color: colors.profile.textPrimary }]}>{t("achievementSummary")}</Text>
                 <View style={styles.achievementSumContainer}>
                     <ImageBackground style={styles.achievementSumCover}
                         resizeMode="contain" imageStyle={{ resizeMode: 'contain' }}
@@ -55,10 +57,10 @@ export default function Achievements() {
                 </View>
             </View>
             <View style={{ flexDirection: 'row', width: '90%', marginTop: 15, alignItems: 'center' }}>
-                <Text style={styles.mainTitle}>{t("achievements")}</Text>
-                <Ionicons style={{ marginLeft: 'auto' }} name="filter-sharp" size={screenWidth * 0.07} color="black" />
+                <Text style={[styles.mainTitle, { color: colors.profile.textPrimary }]}>{t("achievements")}</Text>
+                <Ionicons style={{ marginLeft: 'auto' }} name="filter-sharp" size={screenWidth * 0.07} color={colors.profile.textPrimary} />
             </View>
-            <View style={{ borderWidth: 1, borderColor: '#E0E0E0', width: '90%', marginVertical: 10 }}></View>
+            <View style={{ borderWidth: 1, borderColor: colors.profile.separator, width: '90%', marginVertical: 10 }}></View>
             <FlatList
                 data={achievements}
                 keyExtractor={(item) => item.id?.toString()}

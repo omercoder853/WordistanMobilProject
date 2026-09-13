@@ -7,26 +7,36 @@ import ResultArea from "./components/translateResult";
 import styles from "./styles/styles";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useTheme } from "@/contextapis/ThemeContext";
+
 const Translate = ({ recentWords, addWord }) => {
+    const { colors } = useTheme();
+    const tColors = colors.translate;
     const { t } = useTranslation();
     const [input, setInput] = useState("");
     const [display, setDisplay] = useState("none");
-    const [from, setFrom] = useState("TR")
+    const [from, setFrom] = useState("TR");
     const [result, setResult] = useState("");
-    const [suggestionDisplay, setSuggestionDisplay] = useState("none")
+    const [suggestionDisplay, setSuggestionDisplay] = useState("none");
 
     return (
-        <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+        <ScrollView
+            style={{ flex: 1, backgroundColor: colors.common.background }}
+            contentContainerStyle={{ paddingBottom: 36 }}
+            showsVerticalScrollIndicator={false}
+        >
             <TouchableWithoutFeedback style={{ flex: 1 }} onPress={() => setSuggestionDisplay("none")}>
                 <View style={{ flex: 1 }}>
                     <View style={styles.translateAreaContainer}>
-                        <Text style={styles.translateTitle}>{t('translate')}</Text>
+                        <Text style={[styles.translateTitle, { color: tColors.title }]}>{t('translate')}</Text>
                         <InputArea
                             setInput={setInput}
-                            setDisplay={setDisplay} input={input}
+                            setDisplay={setDisplay}
+                            input={input}
                             suggestionDisplay={suggestionDisplay}
                             setSuggestionDisplay={setSuggestionDisplay}
-                            from={from} />
+                            from={from}
+                        />
                         <Direction setDisplay={setDisplay} from={from} setFrom={setFrom} />
                         <ConvertButton
                             setDisplay={setDisplay}
@@ -35,7 +45,8 @@ const Translate = ({ recentWords, addWord }) => {
                             setResult={setResult}
                             result={result}
                             setSuggestionDisplay={setSuggestionDisplay}
-                            from={from} />
+                            from={from}
+                        />
                     </View>
                     <ResultArea display={display} result={result} from={from} input={input} />
                     <RecentWords recentWords={recentWords} />
