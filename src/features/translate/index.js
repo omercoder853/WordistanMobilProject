@@ -48,7 +48,7 @@ const Translate = ({ recentWords, addWord }) => {
                             from={from}
                         />
                     </View>
-                    <ResultArea display={display} result={result} from={from} input={input} />
+                    <ResultArea display={display} result={result} from={from}/>
                     <RecentWords recentWords={recentWords} />
                 </View>
             </TouchableWithoutFeedback>

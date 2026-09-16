@@ -6,9 +6,8 @@ import { useTranslation } from 'react-i18next';
 export default function useSpeech() {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const {i18n} = useTranslation();
-  const lang = i18n.language
 
-  const speak = async (text, lang = lang) => {
+  const speak = async (text, lang) => {
     try {
       const speaking = await Speech.isSpeakingAsync();
       if (speaking) {

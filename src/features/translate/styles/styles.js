@@ -93,37 +93,93 @@ const styles = StyleSheet.create({
         letterSpacing: 0.5 
     },
     resultContainer: {
-        flex: 1,
         width: '90%',
         alignSelf: 'center',
-        marginTop: 25,
+        marginTop: 20,
         backgroundColor: '#FFFFFF',
-        paddingVertical: 25,
-        paddingHorizontal: 20,
+        paddingVertical: 18,
+        paddingHorizontal: 18,
         borderRadius: 24,
         elevation: 8,
         shadowColor: '#7C3AED',
         shadowOffset: { width: 0, height: 6 },
-        shadowOpacity: 0.15,
+        shadowOpacity: 0.12,
         shadowRadius: 12,
         borderWidth: 1,
-        borderColor: '#F3E8FF'
+        borderColor: '#F3E8FF',
     },
-    addMyDictButton: {
-        backgroundColor: '#EEF2FF',
+    resultsList: {
+        width: '100%',
+    },
+    meaningItem: {
+        width: '100%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingVertical: 14,
+    },
+    meaningItemBorder: {
+        borderBottomWidth: 1,
+    },
+    indexBadge: {
+        width: 26,
+        height: 26,
+        borderRadius: 13,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: 12,
+    },
+    indexBadgeText: {
+        fontSize: 12,
+        fontWeight: '800',
+    },
+    meaningContent: {
+        flex: 1,
+        paddingRight: 8,
+    },
+    meaningRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        gap: 8,
+    },
+    meaningText: {
+        fontSize: 20,
+        fontWeight: '800',
+        letterSpacing: -0.2,
+    },
+    typeBadge: {
+        paddingHorizontal: 8,
+        paddingVertical: 3,
+        borderRadius: 8,
+        borderWidth: 1,
         alignSelf: 'flex-start',
-        paddingHorizontal: 20,
-        paddingVertical: 10,
-        borderRadius: 20,
+    },
+    typeBadgeText: {
+        fontSize: 11,
+        fontWeight: '800',
+        letterSpacing: 0.4,
+        textTransform: 'uppercase',
+    },
+    actionsRow: {
         flexDirection: 'row',
         alignItems: 'center',
         gap: 8,
-        marginTop: 15,
     },
-    addMyDictButtonText: {
-        color: '#4F46E5',
+    actionButton: {
+        width: 38,
+        height: 38,
+        borderRadius: 19,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    notFoundContainer: {
+        paddingVertical: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    notFoundText: {
+        fontSize: 18,
         fontWeight: '700',
-        fontSize: 14
     },
     suggestionContainer: {
         position: 'absolute',

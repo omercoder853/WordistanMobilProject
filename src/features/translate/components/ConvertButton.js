@@ -1,7 +1,7 @@
 import { TouchableOpacity, Text } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import styles from "../styles/styles";
-import wordData from '@/shared/data/words.json';
+import wordData from '@/shared/data/words_data.json';
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@/contextapis/ThemeContext";
 
@@ -17,10 +17,10 @@ export default function ConvertButton({ setDisplay, input, addWord, setResult, s
       const foundResult = findWord(input, from);
       if (foundResult) {
         setResult(foundResult);
-        addWord(input, foundResult, from);
+        addWord(foundResult.word, foundResult.meanings[0].meaning, from);
       }
       else {
-        setResult(t('resultNotFound'));
+        setResult(null);
       }
     }
   };
@@ -39,17 +39,39 @@ export default function ConvertButton({ setDisplay, input, addWord, setResult, s
 
 function findWord(target, from) {
   if (from == "TR") {
-    for (const word of wordData) {
-      if (word.tr.toLowerCase() === target.toLowerCase()) {
-        return word.en
+    const lowerTarget = target.toLocaleLowerCase('tr-TR');
+    let meanings = [];
+    for (const obj of wordData) {
+      if (obj.meaning1.toLocaleLowerCase('tr-TR') === lowerTarget) {
+        meanings.push({"meaning":obj.word,"type":obj.typemeaning1})
+      }
+      else if (obj.meaning2.toLocaleLowerCase('tr-TR') === lowerTarget) {
+        meanings.push({"meaning":obj.word,"type":obj.typemeaning2})
+      }
+      else if (obj.meaning3.toLocaleLowerCase('tr-TR') === lowerTarget) {
+        meanings.push({"meaning":obj.word,"type":obj.typemeaning3})
       }
     }
-    return null;
+    if (meanings.length > 0) {
+      return {
+        "word" : target,
+        "meanings":meanings 
+      }
+    }
+    return null
   }
+
   else {
-    for (const word of wordData) {
-      if (word.en.toLowerCase() === target.toLowerCase()) {
-        return word.tr
+    for (const obj of wordData) {
+      if (obj.word.toLocaleLowerCase('tr-TR') === target.toLocaleLowerCase('tr-TR')) {
+        let meanings = [];
+        meanings.push({"meaning":obj.meaning1 , "type":obj.typemeaning1});
+        if (obj.meaning2 !== "") meanings.push({"meaning":obj.meaning2,"type":obj.typemeaning2});
+        if (obj.meaning3 !== "") meanings.push({"meaning":obj.meaning3,"type":obj.typemeaning3});
+        return {
+          "word":obj.word,
+          "meanings":meanings
+        }
       }
     }
     return null;

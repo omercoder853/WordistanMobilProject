@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { View, TextInput, Text, TouchableOpacity } from "react-native";
 import styles from "../styles/styles";
-import wordData from '@/shared/data/words.json';
+import wordData from '@/shared/data/words_data.json';
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@/contextapis/ThemeContext";
 
@@ -61,19 +61,25 @@ function filterData(query, from) {
     if (query !== "") {
         let suggestions = new Set();
         if (from == "TR") {
-            wordData.forEach(word => {
+            wordData.forEach(obj => {
                 if (suggestions.size < 4) {
-                    if (word.tr.toLocaleLowerCase().startsWith(query.toLowerCase())) {
-                        suggestions.add(word.tr);
+                    if (obj.meaning1.toLocaleLowerCase().startsWith(query.toLowerCase())) {
+                        suggestions.add(obj.meaning1);
+                    }
+                    else if (obj.meaning2.toLocaleLowerCase().startsWith(query.toLowerCase())) {
+                        suggestions.add(obj.meaning2);
+                    }
+                    else if (obj.meaning3.toLocaleLowerCase().startsWith(query.toLowerCase())) {
+                        suggestions.add(obj.meaning3);
                     }
                 }
             });
         }
         else {
-            wordData.forEach(word => {
+            wordData.forEach(obj => {
                 if (suggestions.size < 4) {
-                    if (word.en.toLocaleLowerCase().startsWith(query.toLowerCase())) {
-                        suggestions.add(word.en);
+                    if (obj.word.toLocaleLowerCase().startsWith(query.toLowerCase())) {
+                        suggestions.add(obj.word);
                     }
                 }
             });
