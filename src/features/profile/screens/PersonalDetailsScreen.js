@@ -24,7 +24,7 @@ export default function PersonalDetails() {
     const { user } = useAuth();
     const { t } = useTranslation();
     const { colors, isDark } = useTheme();
-    const imgSource = user.gender == "male" ? require("@/shared/assets/default_avatar_boy.png") : require("@/shared/assets/default_avatar_girl.png");
+    const imgSource = user?.gender == "male" ? require("@/shared/assets/default_avatar_boy.png") : require("@/shared/assets/default_avatar_girl.png");
 
     const [passwordModalVisible, setPasswordModalVisible] = useState(false);
     const [deleteModalVisible, setDeleteModalVisible] = useState(false);

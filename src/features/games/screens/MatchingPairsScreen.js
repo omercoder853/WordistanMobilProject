@@ -16,7 +16,7 @@ import { useTheme } from "@/contextapis/ThemeContext";
 
 export default function MatchingPairsPage() {
     const [isVibrate, setVibrate] = useState(true);
-    const { colors, isDark } = useTheme();
+    const { colors } = useTheme();
 
     useEffect(() => {
         const loadVibration = async () => {
@@ -62,17 +62,16 @@ export default function MatchingPairsPage() {
             for (let i = 0; i < tempAnswers.length; i++) {
                 let randomIndex;
                 do {
-                    randomIndex = randomIndexCreater(tempAnswers.length);
+                    randomIndex = randomIndexCreater({ target_words: tempAnswers, length: null });
                 } while (usedIndexes.has(randomIndex));
-
-                usedIndexes.add(randomIndex);
-                randomAnswers.push(tempAnswers[randomIndex]);
+                randomAnswers[randomIndex] = tempAnswers[i];
                 correctIndexes.push(randomIndex);
+                usedIndexes.add(randomIndex);
             }
 
             setCurrentAnswers((prev) => [
                 ...prev,
-                { id: currentQuestionPage, answers: randomAnswers, checkList: correctIndexes }
+                { id: currentQuestionPage, answers: randomAnswers, correctIndexes }
             ]);
         }
     }, [currentQuestionPage, questions]);
@@ -136,7 +135,7 @@ export default function MatchingPairsPage() {
     const questionList = currentQuestions.find(item => item.id === currentQuestionPage)?.questions;
     const answerData = currentAnswers.find(item => item.id === currentQuestionPage);
     const answerList = answerData?.answers;
-    const checkList = answerData?.checkList;
+    const checkList = answerData?.correctIndexes;
 
     const isAnswered = (index, type) => {
         return userAnswers.some(ans =>
@@ -146,7 +145,8 @@ export default function MatchingPairsPage() {
 
     const selectQuestionHandler = (ind) => {
         if (isAnswered(ind, "question")) return;
-        if (selectedAnswer !== null) return;
+        if (isVibrate) Vibration.vibrate(80);
+        setSelectedAnswer(null);
         setSelectedQuestion(prev => prev === ind ? null : ind);
     };
 
@@ -207,6 +207,7 @@ export default function MatchingPairsPage() {
             };
         }
         if (selectedAnswer === ind) {
+            console.log(checkList)
             const isCorrect = checkList && checkList[selectedQuestion] === ind;
             if (isCorrect) {
                 return {
@@ -254,7 +255,7 @@ export default function MatchingPairsPage() {
 
                 {/* Answers Column */}
                 <View style={styles.columnArea}>
-                    <Text style={[styles.columnTitle, { color: colors.common.primary }]}>{t('turkish') || "Türkçe"}</Text>
+                    <Text style={[styles.columnTitle, { color: colors.common.primary }]}>{t('turkish')}</Text>
                     {answerList?.map((answer, ind) => {
                         const styleConfig = getAnswerStyle(ind);
                         const disabled = isAnswered(ind, "answer") || selectedQuestion === null || selectedAnswer !== null;

@@ -98,9 +98,16 @@ export default function GameSessionModal({ session, isBest, visible, onClose }) 
 
                     {/* Header */}
                     <View style={gameSessionsStyle.modalHeader}>
-                        <Text style={[gameSessionsStyle.modalTitle, { color: colors.profile.textPrimary }]}>
-                            {t(config.labelKey)} — {t("sessionDetails")}
-                        </Text>
+                        <View>
+                            <Text style={[gameSessionsStyle.modalTitle , { color: colors.profile.textPrimary }]}>{t("sessionDetails")}</Text>
+                            <Text style={{ fontSize: 12, color: "#94A3B8", marginTop: 2 }}>{dateStr}</Text>
+                            <View style={{ flexDirection: "row", alignItems: "center", gap: 5, marginTop: 4 }}>
+                                <Ionicons name={config.icon} size={14} color={config.color} />
+                                <Text style={{ fontSize: 13, fontWeight: "600", color: config.color }}>
+                                    {t(config.labelKey)}
+                                </Text>
+                            </View>
+                        </View>
                         <TouchableOpacity onPress={onClose} style={gameSessionsStyle.modalCloseBtn}>
                             <Ionicons name="close" size={22} color={colors.profile.textSecondary} />
                         </TouchableOpacity>
@@ -112,7 +119,7 @@ export default function GameSessionModal({ session, isBest, visible, onClose }) 
                             <View style={gameSessionsStyle.bestBanner}>
                                 <Ionicons name="trophy" size={18} color="#D97706" />
                                 <Text style={gameSessionsStyle.bestBannerText}>
-                                    {t("bestPerformanceBanner")}
+                                    {t("bestPerformance")} 🏆
                                 </Text>
                             </View>
                         )}
@@ -129,9 +136,9 @@ export default function GameSessionModal({ session, isBest, visible, onClose }) 
                                 />
                                 <View style={gameSessionsStyle.scoreCircleLabel}>
                                     <Text style={[gameSessionsStyle.scoreCircleLabelText, { color: colors.profile.textSecondary }]}>
-                                        {t("successRate")}
+                                        {t("scoreLabel")}
                                     </Text>
-                                    <InfoTooltip text={t("successRateTooltip")} />
+                                    <InfoTooltip text={t("scoreExplanation")} />
                                 </View>
                             </View>
 
@@ -145,9 +152,9 @@ export default function GameSessionModal({ session, isBest, visible, onClose }) 
                                 />
                                 <View style={gameSessionsStyle.scoreCircleLabel}>
                                     <Text style={[gameSessionsStyle.scoreCircleLabelText, { color: colors.profile.textSecondary }]}>
-                                        {t("performanceScore")}
+                                        {t("performanceScoreLabel")}
                                     </Text>
-                                    <InfoTooltip text={t("performanceScoreTooltip")} />
+                                    <InfoTooltip text={t("performanceExplanation")} />
                                 </View>
                             </View>
                         </View>

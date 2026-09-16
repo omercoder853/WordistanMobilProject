@@ -3,11 +3,15 @@ import Step1Personal from "../components/Step1Personal";
 import Step2Preferences from "../components/Step2Preferences";
 import Step3Account from "../components/Step3Account";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { StatusBar } from "expo-status-bar";
+import { useTheme } from "@/contextapis/ThemeContext";
 
 const Stack = createNativeStackNavigator();
 export default function RegisterScreen() {
+    const { colors, isDark } = useTheme();
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: '#ffffff' }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: colors.auth.background }}>
+            <StatusBar style={isDark ? "light" : "dark"} backgroundColor={colors.auth.background} />
             <Stack.Navigator
                 initialRouteName="Personal Info"
                 screenOptions={{

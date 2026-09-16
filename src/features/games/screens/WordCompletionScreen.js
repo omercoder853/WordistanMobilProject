@@ -59,7 +59,7 @@ export default function WordCompletionPage() {
         const isAllFilled = updated.filter(char => char !== "" && char !== undefined).length === answer.length;
         if (isAllFilled) {
             setUserAnswers((prev) => [
-                ...prev,
+                ...prev.filter(ans => ans.question !== currentQuestionIndex),
                 { question: currentQuestionIndex, answer, userAnswer: updated }
             ]);
         }

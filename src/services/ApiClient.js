@@ -9,7 +9,6 @@ async function request(endpoint, options = {}, needToken = true, isRetry = false
     const controller = new AbortController();
     const timer = setTimeout(() => { controller.abort() }, TIMEOUT);
     const token = needToken ? await storage.getSecure(STORAGE_KEYS.SECURE.ACCESS_TOKEN) : null;
-
     const headers = {
         'Content-Type': 'application/json',
         ...(token && needToken ? { Authorization: `Bearer ${token}` } : {}),

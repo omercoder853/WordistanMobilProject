@@ -1,164 +1,382 @@
-import { View,Text,TouchableOpacity,TextInput,Image,KeyboardAvoidingView,Platform,TouchableWithoutFeedback,Keyboard } from "react-native";
+import { 
+    View, 
+    Text, 
+    TouchableOpacity, 
+    TextInput, 
+    Image, 
+    KeyboardAvoidingView, 
+    Platform, 
+    TouchableWithoutFeedback, 
+    Keyboard,
+    ScrollView,
+    StyleSheet 
+} from "react-native";
 import { useAuth } from "@/contextapis/AuthContext";
 import { useState } from "react";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import LottieView from "lottie-react-native";
 import { useNavigation } from "@react-navigation/native";
-import { StyleSheet } from "react-native";
 import { useTranslation } from "react-i18next";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { StatusBar } from "expo-status-bar";
 import { storage } from "@/storage/storage";
 import { ENDPOINTS } from "@/constants/ApiConfig";
 import { STORAGE_KEYS } from "@/constants/StorageKeys";
 import { apiClient } from "@/services/ApiClient";
 import { useFeedback } from "@/contextapis/FeedbackContext";
+import { useTheme } from "@/contextapis/ThemeContext";
 
-
-export default function LoginScreen(){
+export default function LoginScreen() {
     const { t } = useTranslation();
     const navigation = useNavigation();
+    const { colors, isDark } = useTheme();
+    const aColors = colors.auth;
+
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
     const emailRegex = /^\S+@\S+\.[a-z]{2,}$/;
-    const [email,setEmail] = useState();
-    const [password,setPassword] = useState();
-    const {setLogin,setUser} = useAuth();
-    const [isLoading,setLoading] = useState(false);
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
+    const [focusedInput, setFocusedInput] = useState(null);
+    const { setLogin, setUser } = useAuth();
+    const [isLoading, setLoading] = useState(false);
     const { setAlertTitle, setAlertMessage, addAlertButton, setAlertVisible, hideAlert } = useFeedback();
 
-    const isValidEmail = emailRegex.test(email)
-    const isValidPassword = passwordRegex.test(password)
-    const anyError = !isValidEmail || !isValidPassword
+    const isValidEmail = emailRegex.test(email);
+    const isValidPassword = passwordRegex.test(password);
+    const anyError = !isValidEmail || !isValidPassword;
+
     const login = async () => {
         Keyboard.dismiss();
         if (!anyError) {
-            setLoading(true)
-            const {ok , status , data} = await apiClient.post(ENDPOINTS.login,{email,password},false);
+            setLoading(true);
+            const { ok, status, data } = await apiClient.post(ENDPOINTS.login, { email, password }, false);
             if (ok) {
-                await storage.setSecure(STORAGE_KEYS.SECURE.ACCESS_TOKEN,data['access_token'])
-                await storage.setSecure(STORAGE_KEYS.SECURE.REFRESH_TOKEN,data['refresh_token'])
-                await storage.set(STORAGE_KEYS.SESSION.USER , data['metadata']);
-                setUser(data['metadata'])
-                setLogin(true)
-            }
-            else {
-                // eğer giriş bilgileri yanlışsa 400 hatası ve detail olarak da Invalid login credentials geliyor.
-                console.log("Error while sign in! Status : " , status,data);
+                await storage.setSecure(STORAGE_KEYS.SECURE.ACCESS_TOKEN, data['access_token']);
+                await storage.setSecure(STORAGE_KEYS.SECURE.REFRESH_TOKEN, data['refresh_token']);
+                await storage.set(STORAGE_KEYS.SESSION.USER, data['metadata']);
+                setUser(data['metadata']);
+                setLogin(true);
+            } else {
+                console.log("Error while sign in! Status : ", status, data);
                 setAlertTitle(t('loginFailed'));
                 setAlertMessage(t('checkYourLoginDetails'));
-                addAlertButton({text:t('cancel') , style:"danger" , action:hideAlert});
+                addAlertButton({ text: t('cancel'), style: "danger", action: hideAlert });
                 setAlertVisible(true);
             }
-            setLoading(false)
+            setLoading(false);
         }
-        
-    }
+    };
 
     return (
-        <SafeAreaView style={{flex: 1, backgroundColor: '#EBE1FF'}}>
-        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{flex:1}}>
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                <View style={styles.mainContainer}>
-                    <View style={styles.loginArea}>
-                        <View style={styles.loginTitleRow}>
-                            <Image source={require('@/shared/assets/logo.png')} style={{width:60,height:60}}/>
-                            <Text style={styles.loginTitle}>{t('wordistan')}</Text>
+        <SafeAreaView style={[styles.safeArea, { backgroundColor: aColors.background }]}>
+            <StatusBar style={isDark ? "light" : "dark"} backgroundColor={aColors.background} />
+            <KeyboardAvoidingView 
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
+                style={styles.keyboardAvoid}
+                keyboardVerticalOffset={Platform.OS === 'ios' ? 10 : 0}
+            >
+                <ScrollView 
+                    contentContainerStyle={styles.scrollContent} 
+                    showsVerticalScrollIndicator={false}
+                    keyboardShouldPersistTaps="handled"
+                    keyboardDismissMode="on-drag"
+                >
+                    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+                        <View style={[styles.mainContainer, { backgroundColor: aColors.mainContainerBg }]}>
+                            <View style={[
+                                styles.loginArea, 
+                                { 
+                                    backgroundColor: aColors.cardBg, 
+                                    borderColor: aColors.cardBorder,
+                                    shadowColor: aColors.cardShadow 
+                                }
+                            ]}>
+                                {/* Header / Logo */}
+                                <View style={styles.loginTitleRow}>
+                                    <Image 
+                                        source={require('@/shared/assets/logo.png')} 
+                                        style={styles.logo} 
+                                        resizeMode="contain"
+                                    />
+                                    <Text style={[styles.loginTitle, { color: aColors.title }]}>
+                                        {t('wordistan')}
+                                    </Text>
+                                </View>
+                                <Text style={[styles.loginTitleSmall, { color: aColors.subtitle }]}>
+                                    {t('translateDesc')}
+                                </Text>
+
+                                {/* Email Input */}
+                                <View style={styles.inputGroup}>
+                                    <View style={styles.inputLabelRow}>
+                                        <MaterialIcons name="email" size={18} color={aColors.inputIcon} />
+                                        <Text style={[styles.inputLabel, { color: aColors.label }]}>
+                                            {t('emailLabel')}
+                                        </Text>
+                                    </View>
+                                    <View style={[
+                                        styles.inputWrapper,
+                                        {
+                                            backgroundColor: aColors.inputBg,
+                                            borderColor: focusedInput === 'email' 
+                                                ? aColors.inputBorderFocused 
+                                                : aColors.inputBorder,
+                                        }
+                                    ]}>
+                                        <TextInput 
+                                            style={[styles.textInput, { color: aColors.inputText }]} 
+                                            autoCapitalize="none"
+                                            autoCorrect={false}
+                                            keyboardType="email-address"
+                                            textContentType="emailAddress"
+                                            placeholder={t('emailPlaceholder')} 
+                                            placeholderTextColor={aColors.placeholder}
+                                            value={email}
+                                            onFocus={() => setFocusedInput('email')}
+                                            onBlur={() => setFocusedInput(null)}
+                                            onChangeText={(value) => setEmail(value.trim().toLowerCase())}
+                                        />
+                                    </View>
+                                    {!isValidEmail && email.length > 0 && (
+                                        <Text style={[styles.warningText, { color: aColors.errorText }]}>
+                                            {t('validEmailAddressWarning')}
+                                        </Text>
+                                    )}
+                                </View>
+
+                                {/* Password Input */}
+                                <View style={styles.inputGroup}>
+                                    <View style={styles.inputLabelRow}>
+                                        <MaterialIcons name="vpn-key" size={18} color={aColors.inputIcon} />
+                                        <Text style={[styles.inputLabel, { color: aColors.label }]}>
+                                            {t('loginPasswordLabel')}
+                                        </Text>
+                                    </View>
+                                    <View style={[
+                                        styles.inputWrapper,
+                                        {
+                                            backgroundColor: aColors.inputBg,
+                                            borderColor: focusedInput === 'password' 
+                                                ? aColors.inputBorderFocused 
+                                                : aColors.inputBorder,
+                                        }
+                                    ]}>
+                                        <TextInput 
+                                            style={[styles.textInput, styles.passwordInput, { color: aColors.inputText }]} 
+                                            autoCapitalize="none"
+                                            autoCorrect={false}
+                                            secureTextEntry={!showPassword}
+                                            textContentType="password"
+                                            placeholder={t('password')} 
+                                            placeholderTextColor={aColors.placeholder}
+                                            value={password}
+                                            onFocus={() => setFocusedInput('password')}
+                                            onBlur={() => setFocusedInput(null)}
+                                            onChangeText={(value) => setPassword(value.trim())}
+                                        />
+                                        <TouchableOpacity 
+                                            style={styles.passwordToggle}
+                                            onPress={() => setShowPassword(prev => !prev)}
+                                            activeOpacity={0.7}
+                                            hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+                                        >
+                                            <MaterialIcons 
+                                                name={showPassword ? "visibility" : "visibility-off"} 
+                                                size={20} 
+                                                color={aColors.toggleIcon} 
+                                            />
+                                        </TouchableOpacity>
+                                    </View>
+                                    {!isValidPassword && password.length > 0 && (
+                                        <Text style={[styles.warningText, { color: aColors.errorText }]}>
+                                            {t('passwordRule')}
+                                        </Text>
+                                    )}
+                                </View>
+
+                                {/* Submit Button */}
+                                <TouchableOpacity 
+                                    onPress={login} 
+                                    activeOpacity={0.8}
+                                    style={[
+                                        styles.loginButton, 
+                                        { backgroundColor: aColors.primaryButtonBg },
+                                        (isLoading || anyError) && styles.disabledButton
+                                    ]} 
+                                    disabled={isLoading || anyError}
+                                >
+                                    {isLoading ? (
+                                        <LottieView 
+                                            source={require('../assets/anim_loading_dots.json')} 
+                                            style={styles.lottieLoading} 
+                                            loop 
+                                            autoPlay 
+                                            colorFilters={[{ keypath: "*", color: aColors.primaryButtonText }]} 
+                                        />
+                                    ) : (
+                                        <Text style={[styles.loginButtonText, { color: aColors.primaryButtonText }]}>
+                                            {t('login')}
+                                        </Text>
+                                    )}
+                                </TouchableOpacity>
+
+                                {/* Register Link */}
+                                <View style={styles.registerRow}>
+                                    <Text style={[styles.dontHaveAccountText, { color: aColors.linkSubtext }]}>
+                                        {t('dontHaveAccount')}
+                                    </Text>
+                                    <TouchableOpacity 
+                                        activeOpacity={0.7} 
+                                        onPress={() => navigation.navigate("Register")}
+                                    >
+                                        <Text style={[styles.registerLinkText, { color: aColors.linkText }]}>
+                                            {t('register')}
+                                        </Text> 
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
                         </View>
-                        <Text style={styles.loginTitleSmall}>{t('translateDesc')}</Text>
-                        <View style={styles.inputLabelRow}>
-                            <MaterialIcons name="email" size={18} color="#b565f5" />
-                            <Text style={styles.inputLabel}>{t('emailLabel')}</Text>
-                        </View>
-                        <TextInput style={styles.textInput} autoCapitalize="none" placeholder={t('emailPlaceholder')} 
-                        onChangeText={(value) => setEmail(value.trim().toLowerCase())}/>
-                        {!isValidEmail && email?.length>0 && <Text style={styles.warningText}>{t('validEmailAddressWarning')}</Text>}
-                        <View style={styles.inputLabelRow}>
-                            <MaterialIcons name="vpn-key" size={18} color="#b565f5"/>
-                            <Text style={styles.inputLabel}>{t('loginPasswordLabel')}</Text>
-                        </View>
-                        <TextInput style={styles.textInput} autoCapitalize="none" placeholder={t('password')} 
-                        onChangeText={(value)=>setPassword(value.trim())}/>
-                        {!isValidPassword && password?.length>0 && <Text style={styles.warningText}>{t('passwordRule')}</Text>}
-                        <TouchableOpacity onPress={login} style={[styles.loginButton,isLoading || anyError && {opacity:0.5}]} disabled={isLoading || anyError}>
-                            {isLoading ?
-                            (<LottieView source={require('../assets/anim_loading_dots.json')} 
-                            style={{height:19,width:37,transform:[{scale:6}]}} loop autoPlay colorFilters={[{keypath:"*",color:"#FFFFFF"}]} />): 
-                            (<Text style={{color:'white',fontWeight:'900'}}>{t('login')}</Text>)}
-                        </TouchableOpacity>
-                        <View style={{flexDirection:'row',marginTop:20,gap:10}}>
-                            <Text style={{fontSize:12}}>{t('dontHaveAccount')}</Text>
-                            <Text style={{textDecorationLine:'underline',color: '#e86ad0',fontWeight:'600'}} 
-                            onPress={()=>navigation.navigate("Register")}>{t('register')}</Text> 
-                        </View>
-                    </View>
-                </View>
-            </TouchableWithoutFeedback>
-        </KeyboardAvoidingView>
+                    </TouchableWithoutFeedback>
+                </ScrollView>
+            </KeyboardAvoidingView>
         </SafeAreaView>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
-    mainContainer:{
-        backgroundColor:'#EBE1FF70',
-        flex:1,
-        justifyContent:'center',
-        alignItems:'center'
+    safeArea: {
+        flex: 1,
     },
-    loginArea:{
-        width:'85%',
-        borderWidth:3,
-        borderColor:'#B565F54D',
-        paddingHorizontal:35,
-        paddingVertical:30,
-        borderRadius:25,
-        backgroundColor:'#FCFAFF90'
+    keyboardAvoid: {
+        flex: 1,
     },
-    loginTitleRow:{
-        flexDirection:'row',
-        alignItems:'center',
-        justifyContent:'center'
+    scrollContent: {
+        flexGrow: 1,
+        justifyContent: 'center',
     },
-    loginTitle:{
-        color:'#b565f5',
-        fontWeight:'900',
-        fontSize:30
+    mainContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: 20,
     },
-    loginTitleSmall:{
-        color:'#555',
-        fontSize:12,
-        width:'70%',
-        textAlign:'center',
-        alignSelf:'center',
-        marginBottom:25
+    loginArea: {
+        width: '88%',
+        maxWidth: 420,
+        borderWidth: 2,
+        paddingHorizontal: 28,
+        paddingVertical: 30,
+        borderRadius: 24,
+        shadowOffset: { width: 0, height: 6 },
+        shadowOpacity: 0.12,
+        shadowRadius: 16,
+        elevation: 5,
     },
-    inputLabelRow:{
-        flexDirection:'row',
-        alignItems:'center',
-        gap:5,
-        marginBottom:10
+    loginTitleRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 8,
     },
-    inputLabel:{
-        color: '#6b3fa0',
-        fontWeight:'800'
+    logo: {
+        width: 54,
+        height: 54,
     },
-    textInput:{
-        borderWidth:2,
-        borderColor:'#B565F54D',
-        borderRadius:10,
-        marginBottom:20,
-        paddingHorizontal:10
+    loginTitle: {
+        fontWeight: '900',
+        fontSize: 30,
+        letterSpacing: 0.5,
     },
-    warningText:{
-        color:"#FF3B30",
-        marginTop:-15,
-        fontSize:13,
-        marginBottom:20
+    loginTitleSmall: {
+        fontSize: 12.5,
+        width: '80%',
+        textAlign: 'center',
+        alignSelf: 'center',
+        marginTop: 6,
+        marginBottom: 24,
+        lineHeight: 18,
     },
-    loginButton:{
-        paddingHorizontal:35,
-        paddingVertical:13,
-        backgroundColor:'#e86ad0',
-        borderRadius:10,
-        alignSelf:'center'
-    }
-})
+    inputGroup: {
+        marginBottom: 16,
+    },
+    inputLabelRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 6,
+        marginBottom: 8,
+    },
+    inputLabel: {
+        fontWeight: '800',
+        fontSize: 13.5,
+    },
+    inputWrapper: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderWidth: 1.5,
+        borderRadius: 12,
+        paddingHorizontal: 12,
+        minHeight: 48,
+    },
+    textInput: {
+        flex: 1,
+        fontSize: 14.5,
+        paddingVertical: 10,
+    },
+    passwordInput: {
+        paddingRight: 8,
+    },
+    passwordToggle: {
+        padding: 4,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    warningText: {
+        marginTop: 6,
+        fontSize: 12,
+        lineHeight: 16,
+    },
+    loginButton: {
+        width: '100%',
+        paddingVertical: 14,
+        borderRadius: 12,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 8,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.15,
+        shadowRadius: 6,
+        elevation: 3,
+    },
+    disabledButton: {
+        opacity: 0.55,
+    },
+    loginButtonText: {
+        fontWeight: '800',
+        fontSize: 15,
+        letterSpacing: 0.3,
+    },
+    lottieLoading: {
+        height: 20,
+        width: 40,
+        transform: [{ scale: 4 }],
+    },
+    registerRow: {
+        flexDirection: 'row',
+        marginTop: 22,
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: 8,
+    },
+    dontHaveAccountText: {
+        fontSize: 13,
+        fontWeight: '500',
+    },
+    registerLinkText: {
+        fontSize: 13,
+        fontWeight: '700',
+        textDecorationLine: 'underline',
+    },
+});

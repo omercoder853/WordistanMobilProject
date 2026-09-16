@@ -12,7 +12,11 @@ export default function Collection({ title, data, desc }) {
 
     return (
         <TouchableOpacity
-            style={[styles.cardContainer, { backgroundColor: dColors.cardBg, shadowColor: dColors.cardShadow }]}
+            style={[styles.cardContainer,{
+                backgroundColor: dColors.cardBg, 
+                shadowColor: dColors.cardShadow , 
+                borderColor: dColors.cardBorder
+            }]}
             activeOpacity={0.7}
             onPress={() => navigation.navigate("CollectionDetails", { title, data, desc })}
         >
@@ -44,16 +48,15 @@ const styles = StyleSheet.create({
     cardContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#FFFFFF',
         borderRadius: 16,
         padding: 12,
         marginBottom: 12,
-        shadowColor: '#7C3AED',
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.15,
         shadowRadius: 6,
         elevation: 4,
-        width: '100%'
+        width: '100%',
+        borderWidth:1
     },
     cardImage: {
         width: 65, 

@@ -163,11 +163,14 @@ export default function FinishGame() {
                     <View style={finishStyles.buttonRow}>
                         <TouchableOpacity
                             activeOpacity={0.85}
-                            style={[finishStyles.actionButton, finishStyles.homeButton, { backgroundColor: isDark ? colors.common.surface : '#dc9f9f', shadowColor: isDark ? colors.common.shadow : '#dc9f9f' }]}
+                            style={[finishStyles.actionButton, finishStyles.homeButton, 
+                                { backgroundColor: isDark ? colors.common.surface : '#dc9f9f', 
+                                    shadowColor: isDark ? colors.common.shadow : '#dc9f9f',
+                                borderColor:colors.games.cardBorder }]}
                             onPress={() => saveResults("Home")}
                         >
                             <Ionicons name="home-outline" size={20} color="#FFFFFF" style={{ marginRight: 8 }} />
-                            <Text style={finishStyles.buttonText}>{t('home') || "Ana Sayfa"}</Text>
+                            <Text style={finishStyles.buttonText}>{t('home')}</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity
@@ -176,7 +179,7 @@ export default function FinishGame() {
                             onPress={() => saveResults("Games")}
                         >
                             <Ionicons name="game-controller-outline" size={20} color="#FFFFFF" style={{ marginRight: 8 }} />
-                            <Text style={finishStyles.buttonText}>{t('newGame') || "Yeni Oyun"}</Text>
+                            <Text style={finishStyles.buttonText}>{t('newGame')}</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
@@ -184,8 +187,9 @@ export default function FinishGame() {
 
             <Modal visible={loading} transparent animationType="fade" statusBarTranslucent={true}>
                 <View style={{ flex: 1, backgroundColor: colors.games.modalOverlay, justifyContent: 'center', alignItems: 'center' }}>
-                    <View style={{ width: 100, height: 100, backgroundColor: colors.games.modalBg, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}>
+                    <View style={{width:150,height:150, backgroundColor: colors.games.modalBg, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}>
                         <ActivityIndicator size="large" color={colors.common.primary} />
+                        <Text style={{color:colors.games.textPrimary,marginTop:15}}>{t('pleaseWait')}</Text>
                     </View>
                 </View>
             </Modal>

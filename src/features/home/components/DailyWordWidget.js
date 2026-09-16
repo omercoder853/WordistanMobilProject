@@ -29,7 +29,7 @@ const DailyWord = () => {
 
     const handleSpeak = () => {
         if (!isSpeaking) {
-            speak(lang == 'tr' ? dailyWord?.word : dailyWord?.meaning);
+            speak(lang == 'tr' ? dailyWord?.word : dailyWord?.meaning , lang == 'tr' ? 'en' : 'tr');
         }
         else {
             stop();

@@ -48,26 +48,31 @@ export const AuthProvider = ({ children }) => {
 
     const verifyToken = async (Actoken, ReToken) => {
         console.log("token is verifying...")
-        const decoded = jwtDecode(Actoken)
-        const currentTime = Date.now() / 1000;
+        try {
+            const decoded = jwtDecode(Actoken)
+            const currentTime = Date.now() / 1000;
 
-        if (currentTime > decoded.exp) {
-            console.log("token is not valid!! \nrefreshing...")
-            const data = await getNewToken();
-            if (data) {
-                setAccToken(data.acc_token);
-                setRefToken(data.ref_token);
-                setLogin(true);
+            if (currentTime > decoded.exp) {
+                console.log("token is not valid!! \nrefreshing...")
+                const data = await getNewToken();
+                if (data) {
+                    setAccToken(data.acc_token);
+                    setRefToken(data.ref_token);
+                    setLogin(true);
+                }
+                else {
+                    setLogin(false)
+                }
             }
             else {
-                setLogin(false)
+                console.log("token is valid")
+                setAccToken(Actoken);
+                setRefToken(ReToken);
+                setLogin(true)
             }
-        }
-        else {
-            console.log("token is valid")
-            setAccToken(Actoken);
-            setRefToken(ReToken);
-            setLogin(true)
+        } catch (error) {
+            console.log("Error decoding or verifying token:", error);
+            setLogin(false);
         }
     }
 
@@ -101,11 +106,13 @@ export const AuthProvider = ({ children }) => {
             setAccToken(null);
             setRefToken(null);
             setUser(null);
-            setLogin(false);
             console.log("Logout ediliyor...");
+            setLogin(false);
+            return true;
         }
         else {
             showToast(t('error') , t('logoutError') , "danger");
+            return false;
         }
     }
 

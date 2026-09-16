@@ -6,19 +6,29 @@ import { useFeedback } from "@/contextapis/FeedbackContext";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contextapis/AuthContext";
 import { useTheme } from "@/contextapis/ThemeContext";
+import { useState } from "react";
 
 export default function ConsoleButton({ item }) {
     const navigation = useNavigation();
     const { t } = useTranslation();
-    const { logout } = useAuth();
+    const { logout,setLogin } = useAuth();
     const { colors, isDark } = useTheme();
-    const { setAlertTitle, setAlertMessage, addAlertButton, setAlertVisible, hideAlert } = useFeedback();
+    const { setAlertTitle, setAlertMessage, addAlertButton, setAlertVisible, hideAlert,setAlertLoading } = useFeedback();
+    const [loading,setLoading] = useState(false);
+
+    async function logoutButton(){
+        setLoading(true);
+        const res = await logout();
+        setLoading(false);
+        hideAlert();
+    }
 
     function handleLogout() {
         setAlertTitle(t('warning'));
         setAlertMessage(t('logoutWarning'));
         addAlertButton({ text: t('cancel'), style: "cancel", action: () => hideAlert() });
-        addAlertButton({ text: t('exit'), style: "danger", action: logout });
+        addAlertButton({ text: t('exit'), style: "danger", action: logoutButton , needLoading : true });
+        setAlertLoading(loading)
         setAlertVisible(true);
     }
 

@@ -72,21 +72,24 @@ export const GameProvider = ({ children }) => {
         let used_indexes = new Set();
         let used_option_index = new Set();
         used_indexes.add(answer_index);
-        const correctAnswerIndex = randomIndexCreater({ target_words: null, length: numOptions });
+        const actualOptionsCount = Math.min(numOptions, words.length);
+        const correctAnswerIndex = randomIndexCreater({ target_words: null, length: actualOptionsCount });
         options[correctAnswerIndex] = words[answer_index].tr || words[answer_index].meaning;
         used_option_index.add(correctAnswerIndex);
 
-        for (let i = 1; i <= numOptions - 1; i++) {
+        for (let i = 1; i <= actualOptionsCount - 1; i++) {
             let random_index;
             let random_option_index;
+            let attempts = 0;
             do {
                 random_index = randomIndexCreater({ target_words: words, length: null });
-            } while (used_indexes.has(random_index));
+                attempts++;
+            } while (used_indexes.has(random_index) && attempts < 50);
 
             used_indexes.add(random_index);
 
             do {
-                random_option_index = randomIndexCreater({ target_words: null, length: numOptions });
+                random_option_index = randomIndexCreater({ target_words: null, length: actualOptionsCount });
             } while (used_option_index.has(random_option_index));
 
             used_option_index.add(random_option_index);
