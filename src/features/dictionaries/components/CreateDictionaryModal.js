@@ -1,7 +1,7 @@
 import {
     View, Modal, TextInput, Text, TouchableOpacity,
     TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView,
-    ActivityIndicator, Platform, StyleSheet
+    ActivityIndicator, Platform, StyleSheet, ScrollView
 } from "react-native";
 import { useState } from "react";
 import { Ionicons } from '@expo/vector-icons';
@@ -52,12 +52,18 @@ export default function CreateDictionary({ visible, setVisible }) {
             animationType="fade"
             onRequestClose={handleClose}
         >
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                <View style={[styles.overlay, { backgroundColor: dColors.modalOverlay }]}>
-                    <KeyboardAvoidingView
-                        behavior={Platform.OS === "ios" ? "padding" : "height"}
-                        style={styles.keyboardAvoid}
-                    >
+            <KeyboardAvoidingView
+                behavior={"padding"}
+                style={styles.keyboardAvoid}>
+                <ScrollView
+                    contentContainerStyle={[
+                        styles.overlay,
+                        { backgroundColor: dColors.modalOverlay }]}
+                    keyboardShouldPersistTaps="handled"
+                    showsVerticalScrollIndicator={false}
+                    keyboardDismissMode="on-drag">
+
+                    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
                         <View style={[styles.modalCard, { backgroundColor: dColors.modalBg, shadowColor: dColors.cardShadow }]}>
                             {/* Modal Header */}
                             <View style={[styles.headerRow, { borderBottomColor: dColors.cardBorder }]}>
@@ -172,9 +178,9 @@ export default function CreateDictionary({ visible, setVisible }) {
                                 </TouchableOpacity>
                             </View>
                         </View>
-                    </KeyboardAvoidingView>
-                </View>
-            </TouchableWithoutFeedback>
+                    </TouchableWithoutFeedback>
+                </ScrollView>
+            </KeyboardAvoidingView>
         </Modal>
     );
 }
@@ -185,10 +191,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: 20,
+        flexGrow: 1
     },
     keyboardAvoid: {
-        width: '100%',
-        alignItems: 'center',
+        flex: 1,
     },
     modalCard: {
         width: '100%',

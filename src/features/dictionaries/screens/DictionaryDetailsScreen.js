@@ -140,12 +140,12 @@ export default function DictDetails() {
                 transparent
                 onRequestClose={handleCloseModal}>
 
-                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                    <View style={[localStyles.modalOverlay, { backgroundColor: dColors.modalOverlay }]}>
-                        <KeyboardAvoidingView
-                            behavior={Platform.OS === "ios" ? "padding" : "height"}
-                            style={localStyles.keyboardAvoid}
-                        >
+                <KeyboardAvoidingView
+                    behavior="padding"
+                    style={localStyles.keyboardAvoid}
+                >
+                    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                        <View style={[localStyles.modalOverlay, { backgroundColor: dColors.modalOverlay }]}>
                             <View style={[localStyles.modalCard, { backgroundColor: dColors.modalBg, shadowColor: dColors.cardShadow }]}>
                                 {/* Header */}
                                 <View style={[localStyles.modalHeaderRow, { borderBottomColor: dColors.cardBorder }]}>
@@ -217,9 +217,9 @@ export default function DictDetails() {
                                     </TouchableOpacity>
                                 </View>
                             </View>
-                        </KeyboardAvoidingView>
-                    </View>
-                </TouchableWithoutFeedback>
+                        </View>
+                    </TouchableWithoutFeedback>
+                </KeyboardAvoidingView>
             </Modal>
         </View>
     );
@@ -247,8 +247,7 @@ const localStyles = StyleSheet.create({
         padding: 20,
     },
     keyboardAvoid: {
-        width: '100%',
-        alignItems: 'center',
+        flex: 1,
     },
     modalCard: {
         width: '100%',

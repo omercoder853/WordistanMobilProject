@@ -6,26 +6,20 @@ import {
   TouchableOpacity,
   TextInput,
   Linking,
-  Alert
+  KeyboardAvoidingView,
+  Platform,
+  ActivityIndicator
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contextapis/AuthContext";
 import aboutStyles from "../styles/AboutScreenStyle";
-import { useCallback } from "react";
 import { useTheme } from "@/contextapis/ThemeContext";
+import { useState } from "react";
+import { useFeedback } from "@/contextapis/FeedbackContext";
 
 // ─── Social channels data ───
 const socialChannels = [
-  {
-    id: "twitter",
-    labelKey: "contactTwitter",
-    url: "",
-    handle: "@wordistan",
-    icon: "logo-twitter",
-    iconColor: "#1DA1F2",
-    bgColor: "rgba(29, 161, 242, 0.1)",
-  },
   {
     id: "linkedin",
     labelKey: "contactLinkedin",
@@ -59,11 +53,13 @@ export default function HelpSupport() {
   const { t } = useTranslation();
   const { user } = useAuth();
   const { colors, isDark } = useTheme();
+  const [loading, setLoading] = useState(false);
+  const { showToast } = useFeedback();
 
   // Default email from user context
   const userEmail = user?.email || "";
-  const [subject, setSubject] = React.useState("");
-  const [message, setMessage] = React.useState("");
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
 
   const OpenUrl = async (url) => {
     const supported = await Linking.canOpenURL(url)
@@ -71,7 +67,7 @@ export default function HelpSupport() {
       await Linking.openURL(url);
     }
     else {
-      Alert.alert("This link can not be opened")
+      showToast(t('warning') , t('linkCantOpened') , "warning");
     }
   }
 
@@ -79,20 +75,58 @@ export default function HelpSupport() {
     if (channel.url) {
       OpenUrl(channel.url);
     } else {
-      Alert.alert("This link can not be opened");
+      showToast(t('warning') , t('linkCantOpened') , "warning");
     }
   };
 
-  const handleSendEmail = () => {
-    // no-op
+  const isValid = subject.trim().length >= 3 && message.trim().length >= 10;
+  const handleSendEmail = async () => {
+    if (!isValid || loading) return;
+    setLoading(true);
+    try {
+      const requestBody = {
+        _subject: subject.trim(),
+        email: userEmail,
+        message: message.trim(),
+        app: "Wordistan Mobile"
+      }
+      const response = await fetch("https://formspree.io/f/xzezbgwv", {
+        method: "POST",
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody)
+      })
+      if (response.ok) {
+        setMessage("");
+        setSubject("");
+        showToast(t('contactSuccessTitle'), t('contactSuccessDesc'), "success");
+      }
+      else {
+        console.log("Email gönderilemedi : ", response.status);
+        showToast(t('contactFailTitle', t('tryAgainLater'), "danger"));
+      }
+    }
+    catch (error) {
+      console.log("Email gönderilemedi : ", error);
+      showToast(t('contactFailTitle', t('tryAgainLater'), "danger"));
+    }
+    finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <View style={[aboutStyles.container, { backgroundColor: colors.common.background }]}>
+    <KeyboardAvoidingView
+      style={[aboutStyles.container, { backgroundColor: colors.common.background }]}
+      behavior="padding"
+      keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0}
+    >
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={aboutStyles.scrollContent}
-      >
+        keyboardShouldPersistTaps="handled">
         {/* ─── Contact Header ─── */}
         <View style={aboutStyles.contactHeader}>
           <Text style={[aboutStyles.contactTitle, { color: colors.profile.textPrimary }]}>{t("contactGetInTouch")}</Text>
@@ -133,7 +167,7 @@ export default function HelpSupport() {
             onChangeText={setSubject}
             placeholder={t("contactSubjectPlaceholder")}
             placeholderTextColor={colors.common.placeholder}
-          />
+            editable={!loading} />
 
           {/* Message */}
           <Text style={[aboutStyles.inputLabel, { color: colors.profile.textSecondary }]}>{t("contactMessageLabel")}</Text>
@@ -145,16 +179,17 @@ export default function HelpSupport() {
             placeholderTextColor={colors.common.placeholder}
             multiline
             numberOfLines={4}
-          />
+            editable={!loading}/>
 
           {/* Send Button */}
           <TouchableOpacity
             activeOpacity={0.8}
             onPress={handleSendEmail}
-            style={aboutStyles.sendButton}
-          >
-            <Ionicons name="send" size={16} color="#FFFFFF" />
-            <Text style={aboutStyles.sendButtonText}>{t("contactSendBtn")}</Text>
+            style={[aboutStyles.sendButton, !isValid && { backgroundColor: "#5B3FD360" }]}
+            disabled={!isValid || loading}>
+            {loading ? (<ActivityIndicator color={"#5B3FD3"} />) :
+              (<><Ionicons name="send" size={16} color="#FFFFFF" />
+                <Text style={aboutStyles.sendButtonText}>{t("contactSendBtn")}</Text></>)}
           </TouchableOpacity>
         </View>
 
@@ -203,6 +238,6 @@ export default function HelpSupport() {
           </Text>
         </View>
       </ScrollView>
-    </View>
+    </KeyboardAvoidingView>
   );
 }

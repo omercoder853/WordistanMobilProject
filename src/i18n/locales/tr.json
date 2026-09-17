@@ -306,6 +306,7 @@
   "aboutPrivacy": "Gizlilik Politikası",
   "aboutTerms": "Kullanım Koşulları",
   "aboutAllRights": "Tüm hakları saklıdır.",
+
   "___CONTACT_PAGE___": "",
   "contactGetInTouch": "Bize Ulaşın",
   "contactSubtitle": "Sizden haber almaktan mutluluk duyarız",
@@ -317,11 +318,15 @@
   "contactMessageLabel": "Mesaj",
   "contactMessagePlaceholder": "Mesajınızı buraya yazın...",
   "contactSendBtn": "Mesajı Gönder",
+  "contactSuccessTitle":"Mesajınız gönderildi!",
+  "contactSuccessDesc":"Size en kısa sürede dönüş yapacağız.",
+  "contactFailTitle":"Gönderilemedi!",
   "contactSocialTitle": "BİZİ TAKİP EDİN",
-  "contactTwitter": "Twitter / X",
   "contactLinkedin": "LinkedIn",
   "contactWebsite": "Web Sitesi",
   "contactGithub": "GitHub",
+  "linkCantOpened":"Bu bağlantı açılamıyor.",
+
   "___GAME_SESSIONS___": "",
   "gameSessions": "Oyun Geçmişi",
   "noGameSessions": "Henüz oyun geçmişi yok",
@@ -339,6 +344,7 @@
   "scoreExplanation": "Skor = (Doğru cevaplar / Toplam soru) × 100",
   "performanceExplanation": "Performans Skoru, skorunuz ve soru başına ortalama süre kullanılarak hesaplanan birleşik bir metriktir.",
   "totalGames": "Toplam Oyun",
+
   "___STATISTICS_CHARTS___": "",
   "last5": "Son 5",
   "last10": "Son 10",
