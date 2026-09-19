@@ -105,13 +105,14 @@ export default function Dictionary({ title, length, id, language }) {
         setAlertTitle(t("warning"));
         setAlertMessage(t("deleteDictConfirmQuestion", { name: title, count: length }));
         addAlertButton({ text: t("cancel"), style: "cancel", action: () => { hideAlert(), setVisible(true) } });
-        addAlertButton({ text: t("delete"), style: "danger", action: () => handleDeleteDict(id), needLoading: true });
+        addAlertButton({ text: t("delete"), style: "danger", action: () => handleDeleteDict(), needLoading: true });
         setAlertVisible(true);
     }
 
-    const handleDeleteDict = async (dict_id) => {
+    const handleDeleteDict = async () => {
         setAlertLoading(true);
-        const res = await deleteDictionary(dict_id);
+        console.log("🔄 Dictionary Card : Deleting dictionary with ID :", id);
+        const res = await deleteDictionary(id);
         if (res) {
             setDictReload(true);
         }

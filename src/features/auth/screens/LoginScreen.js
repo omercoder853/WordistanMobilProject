@@ -59,7 +59,7 @@ export default function LoginScreen() {
                 setUser(data['metadata']);
                 setLogin(true);
             } else {
-                console.log("Error while sign in! Status : ", status, data);
+                console.log("❌ Login Screen : Error while signing in! Status :", status, data);
                 setAlertTitle(t('loginFailed'));
                 setAlertMessage(t('checkYourLoginDetails'));
                 addAlertButton({ text: t('cancel'), style: "danger", action: hideAlert });

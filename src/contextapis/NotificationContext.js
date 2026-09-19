@@ -21,15 +21,15 @@ export const NotificationProvider = ({ children }) => {
     }, [isLogin]);
 
     const getNotifications = async () => {
-        console.log("Fetching notifications...");
+        console.log("🔄 Notification Context : Fetching notifications...");
         const { ok, status, data } = await apiClient.get(ENDPOINTS.getNotifications)
         if (ok) {
             setNotifications(data);
-            console.log("Notifications fetched successfully");
+            console.log("✅ Notification Context : Notifications fetched successfully.");
             return data;
         }
         else {
-            console.log("Error while fetching notifications. ", status, data)
+            console.log("❌ Notification Context : Error while fetching notifications :", status, data)
         }
     };
 
@@ -47,10 +47,10 @@ export const NotificationProvider = ({ children }) => {
             } catch {
                 setNotifications(prev => prev.map(n => ({ ...n, is_read: true })));
             }
-            console.log("All notifications read successfully");
+            console.log("✅ Notification Context : All notifications read successfully.");
             return true;
         } else {
-            console.log("Error while reading all notifications. ", status, data);
+            console.log("❌ Notification Context : Error while reading all notifications :", status, data);
         }
     };
 
@@ -61,11 +61,11 @@ export const NotificationProvider = ({ children }) => {
 
         const { ok, status, data } = await apiClient.patch(ENDPOINTS.readNotification(notification_id));
         if (ok) {
-            console.log("Notification read successfully");
+            console.log("✅ Notification Context : Notification read successfully.");
             return true;
         }
         else {
-            console.log("Error while reading notification", status, data);
+            console.log("❌ Notification Context : Error while reading notification :", status, data);
         }
     };
 
@@ -76,7 +76,7 @@ export const NotificationProvider = ({ children }) => {
             return true;
         }
         else {
-            console.log("Error while creating a new notification. ", status, data);
+            console.log("❌ Notification Context : Error while creating a new notification :", status, data);
         }
     };
 

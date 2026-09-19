@@ -32,7 +32,7 @@ export default function SaveWordModal({ modalVisible, setModalVisible, word, mea
                 isDaily
             );
         } catch (e) {
-            console.log("Error saving daily word:", e);
+            console.log("❌ Save Word Modal : Error saving daily word :", e);
         } finally {
             setLoading(false);
             setModalVisible(false);

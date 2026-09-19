@@ -33,7 +33,7 @@ export const UserStatsProvider = ({ children }) => {
                 if (pTrans) setPendingTranslated(pTrans);
                 if (pDict) setPendingDictCreated(pDict);
             } catch (e) {
-                console.log("Error loading pending stats data", e);
+                console.log("❌ User Stats Context : Error loading pending stats data :", e);
             }
         };
         loadPendingData();
@@ -62,7 +62,7 @@ export const UserStatsProvider = ({ children }) => {
     const getUserStats = useCallback(async () => {
         const { ok, status, data } = await apiClient.get(ENDPOINTS.stats, true)
         if (ok) {
-            console.log("Sync user stats : ", data);
+            console.log("✅ User Stats Context : Synced user stats :", data);
             await storage.set(STORAGE_KEYS.SESSION.USER_STATS, data);
             setUserStats(data);
             await clearPendingData();
@@ -70,7 +70,7 @@ export const UserStatsProvider = ({ children }) => {
         else {
             const savedUserStats = await storage.get(STORAGE_KEYS.SESSION.USER_STATS);
             if (savedUserStats) setUserStats(savedUserStats);
-            console.log("Error while fetching user stats!", status, data);
+            console.log("❌ User Stats Context : Error while fetching user stats :", status, data);
         }
     }, [clearPendingData]);
 
@@ -90,7 +90,7 @@ export const UserStatsProvider = ({ children }) => {
             setUserStats(null)
         }
         else if (isLogin) {
-            console.log("Login is scuccessfull. User stats are fetching")
+            console.log("🔄 User Stats Context : Login successful, fetching user stats...");
             const getData = async () => {
                 await getUserStats()
             };
@@ -107,10 +107,10 @@ export const UserStatsProvider = ({ children }) => {
         const { ok, status, data } = await apiClient.post(ENDPOINTS.incrementTranslation);
 
         if (ok) {
-            console.log("Backend translated has just updated.");
+            console.log("✅ User Stats Context : Backend translation count updated successfully.");
         }
         else {
-            console.log("Error while updating backend translated. ", status, data)
+            console.log("❌ User Stats Context : Error while updating backend translation count :", status, data);
         }
     };
 

@@ -11,7 +11,7 @@ const getData = async (key) => {
         const parsedData = JSON.parse(data)
         return parsedData
     }catch (error) {
-        console.log("Error while geting data from storage : " , error);
+        console.log("❌ Storage : Error while getting data from storage :", error);
         return null;
     }
 }
@@ -22,7 +22,7 @@ const setData = async (key,value) => {
         await AsyncStorage.setItem(PREFIX + key,safeValue);
         return true
     }catch (error) {
-        console.log("Error while setting data to storage : " , error);
+        console.log("❌ Storage : Error while setting data to storage :", error);
         return false;
     }
 }
@@ -32,7 +32,7 @@ const removeData = async (key) => {
         await AsyncStorage.removeItem(PREFIX + key);
         return true;
     }catch (error) {
-        console.log("Error wile deleting data from storage. " , error);
+        console.log("❌ Storage : Error while deleting data from storage :", error);
         return false;
     }
 }
@@ -42,7 +42,7 @@ const getSecureData = async (key) => {
         const data = await SecureStore.getItemAsync(SECURE_PREFIX + key);
         return data
     }catch (error) {
-        console.log("Error while getting data from secure storage. " , error)
+        console.log("❌ Secure Storage : Error while getting data from secure storage :", error);
         return null;
     }
 }
@@ -52,7 +52,7 @@ const setSecureData = async (key,value) => {
         await SecureStore.setItemAsync(SECURE_PREFIX + key,value);
         return true;
     }catch (error) {
-        console.log("Error while setting data to secure storage. , " , error);
+        console.log("❌ Secure Storage : Error while setting data to secure storage :", error);
         return false
     }
 }
@@ -62,7 +62,7 @@ const removeSecureData = async (key) => {
         await SecureStore.deleteItemAsync(SECURE_PREFIX + key);
         return true
     }catch (error) {
-        console.log("Error wile deleting data from secure storage. " , error);
+        console.log("❌ Secure Storage : Error while deleting data from secure storage :", error);
         return false;
     }
 }
@@ -76,7 +76,7 @@ const clearSession = async () => {
         await SecureStore.deleteItemAsync(SECURE_PREFIX + STORAGE_KEYS.SECURE.REFRESH_TOKEN);
         return true;
     }catch (error){
-        console.log("Error while clear session. " , error);
+        console.log("❌ Storage : Error while clearing session :", error);
         return false
     }
 }

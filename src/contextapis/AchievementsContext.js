@@ -26,7 +26,7 @@ export const AchievementsProvider = ({ children }) => {
                     setShownAchievements(data);
                 }
             } catch (e) {
-                console.log("Error loading shownAchievements:", e);
+                console.log("❌ Achievements Context : Error loading shownAchievements :", e);
             }
         };
         loadShownAchievements();
@@ -35,11 +35,11 @@ export const AchievementsProvider = ({ children }) => {
     const getAchievements = async () => {
         const { ok, status, data } = await apiClient.get(ENDPOINTS.achievements, false);
         if (ok) {
-            console.log("Achievements fetched successfully");
+            console.log("✅ Achievements Context : Achievements fetched successfully.");
             return data;
         }
         else {
-            console.log("Error while fetching achievements. ", status, data);
+            console.log("❌ Achievements Context : Error while fetching achievements :", status, data);
             return false;
         }
     }
@@ -47,10 +47,10 @@ export const AchievementsProvider = ({ children }) => {
     const getEarnedAchievements = async () => {
         const { ok, status, data } = await apiClient.get(ENDPOINTS.earnedAchievements);
         if (ok) {
-            console.log("Earned Achievements fetched successfully");
+            console.log("✅ Achievements Context : Earned achievements fetched successfully.");
             return data;
         } else {
-            console.log("Error while fetching earned achievements. ", status, data);
+            console.log("❌ Achievements Context : Error while fetching earned achievements :", status, data);
         }
     };
 
@@ -118,7 +118,7 @@ export const AchievementsProvider = ({ children }) => {
                 else progress = (userStats?.[ach.target_field] || 0);
 
                 if (progress >= ach.target_value && !newAchievement) {
-                    console.log("🏆 Yeni Başarım Kazanıldı:", ach);
+                    console.log("🏆 Achievements Context : New achievement earned :", ach);
                     setNewAchievement(ach);
                     incXP(ach.xp_reward)
 

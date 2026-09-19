@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useEffect } from "react";
 import i18n from '../i18n/i18n';
 import { ENDPOINTS } from "../constants/ApiConfig";
 import { jwtDecode } from "jwt-decode";
-import { getNewToken } from "../services/AuthService";
+import { getNewToken } from "../services/TokenService";
 import { storage } from "../storage/storage";
 import { STORAGE_KEYS } from "../constants/StorageKeys";
 import { apiClient } from "../services/ApiClient";
@@ -22,8 +22,8 @@ export const AuthProvider = ({ children }) => {
     const [appLanguage, setAppLanguage] = useState(null);
     const [vibrationPref, setVibrationPref] = useState(true);
     const navigation = useNavigation();
-    const {t} = useTranslation();
-    const { setAlertTitle, setAlertMessage, addAlertButton, setAlertVisible, hideAlert,showToast } = useFeedback();
+    const { t } = useTranslation();
+    const { setAlertTitle, setAlertMessage, addAlertButton, setAlertVisible, hideAlert, showToast } = useFeedback();
 
     useEffect(() => {
         const getTokens = async () => {
@@ -47,13 +47,13 @@ export const AuthProvider = ({ children }) => {
     }, [])
 
     const verifyToken = async (Actoken, ReToken) => {
-        console.log("token is verifying...")
+        console.log("🔄 Auth Context : Verifying token...");
         try {
             const decoded = jwtDecode(Actoken)
             const currentTime = Date.now() / 1000;
 
             if (currentTime > decoded.exp) {
-                console.log("token is not valid!! \nrefreshing...")
+                console.log("🔄 Auth Context : Token is expired, refreshing...");
                 const data = await getNewToken();
                 if (data) {
                     setAccToken(data.acc_token);
@@ -65,13 +65,13 @@ export const AuthProvider = ({ children }) => {
                 }
             }
             else {
-                console.log("token is valid")
+                console.log("✅ Auth Context : Token is valid.");
                 setAccToken(Actoken);
                 setRefToken(ReToken);
                 setLogin(true)
             }
         } catch (error) {
-            console.log("Error decoding or verifying token:", error);
+            console.log("❌ Auth Context : Error decoding or verifying token :", error);
             setLogin(false);
         }
     }
@@ -83,48 +83,48 @@ export const AuthProvider = ({ children }) => {
     }
 
     const register = async (registerData) => {
-        const { ok, status, data } = await apiClient.post(ENDPOINTS.register, registerData,false);
+        const { ok, status, data } = await apiClient.post(ENDPOINTS.register, registerData, false);
         if (ok) {
             setAlertTitle(t('allSet'));
             setAlertMessage(t('takingYouToLogin'));
-            addAlertButton({text:t('login') , style:"success" , action:()=>{navigation.navigate("Login"),hideAlert()}});
+            addAlertButton({ text: t('login'), style: "success", action: () => { navigation.navigate("Login"), hideAlert() } });
             setAlertVisible(true);
         }
         else {
             setAlertTitle(t('ooopsShort'));
             setAlertMessage(t('somethingWentWrong'));
-            addAlertButton({text:t('cancel') ,style:"danger" , action:()=>hideAlert()});
+            addAlertButton({ text: t('cancel'), style: "danger", action: () => hideAlert() });
             setAlertVisible(true);
         }
         return ok;
     }
 
     async function logout() {
-        console.log("Hafızada tutulan veriler siliniyor...")
+        console.log("🔄 Auth Context : Clearing session storage...");
         const res = await storage.clearSession();
         if (res) {
             setAccToken(null);
             setRefToken(null);
             setUser(null);
-            console.log("Logout ediliyor...");
+            console.log("✅ Auth Context : User logged out successfully.");
             setLogin(false);
             return true;
         }
         else {
-            showToast(t('error') , t('logoutError') , "danger");
+            showToast(t('error'), t('logoutError'), "danger");
             return false;
         }
     }
 
     const changePassword = async (currentPassword, newPassword) => {
-        const { ok, status, data } = await apiClient.post(ENDPOINTS.changePassword, 
+        const { ok, status, data } = await apiClient.post(ENDPOINTS.changePassword,
             { current_password: currentPassword, new_password: newPassword });
         if (ok) {
-            console.log("Password changed successfully");
+            console.log("✅ Auth Context : Password changed successfully.");
             return true;
         }
         else {
-            console.log("Operation is not successfull please try again later : ", status, data);
+            console.log("❌ Auth Context : Password change failed :", status, data);
             return false;
         }
     }
@@ -132,15 +132,15 @@ export const AuthProvider = ({ children }) => {
     const deleteAccount = async () => {
         const { ok, status, data } = await apiClient.delete(ENDPOINTS.deleteAccount)
         if (ok) {
-            console.log("User has just deleted successfully");
+            console.log("✅ Auth Context : User account deleted successfully.");
             await logout();
             return true;
         } else {
             setAlertTitle(t("deleteAccountFailed"));
             setAlertMessage(t("deleteAccountFailedMsg"));
-            addAlertButton({text: t("close"),style: "danger",action: hideAlert});
+            addAlertButton({ text: t("close"), style: "danger", action: hideAlert });
             setAlertVisible(true);
-            console.log("Deleting account is not successful:", status, data);
+            console.log("❌ Auth Context : Deleting account failed :", status, data);
             return false;
         }
     };

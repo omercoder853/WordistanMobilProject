@@ -370,5 +370,9 @@
   "avgScore": "Avg. Score",
   "avgPerformance": "Avg. Performance",
   "questions": "Questions",
-  "seconds": "s"
+  "seconds": "s",
+  "noInternetConnection": "No Internet Connection",
+  "syncPausedOfflineMsg": "Synchronization paused. It will resume automatically when connection is restored.",
+  "internetRestored": "Internet Connection Restored",
+  "syncResumedOnlineMsg": "Synchronization in progress, updating your data."
 }

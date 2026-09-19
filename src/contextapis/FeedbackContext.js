@@ -8,11 +8,13 @@ export const FeedbackProvider = ({children}) => {
     const [toastTitle , setToastTitle] = useState("");
     const [toastMessage , setToastMessage] = useState("");
     const [toastType , setToastType] = useState("default");
+    const [toastIcon, setToastIcon] = useState(null);
 
-    const showToast = (title, message, type = "default") => {
+    const showToast = (title, message, type = "default", icon = null) => {
         setToastTitle(title);
         setToastMessage(message);
         setToastType(type);
+        setToastIcon(icon);
         setToastVisible(true);
     }
 
@@ -21,6 +23,7 @@ export const FeedbackProvider = ({children}) => {
         setToastMessage("");
         setToastTitle("");
         setToastType("default");
+        setToastIcon(null);
     }
 
     const [alertVisible,setAlertVisible] = useState(false);
@@ -42,7 +45,7 @@ export const FeedbackProvider = ({children}) => {
     }
 
     return (
-        <FeedbackContext.Provider value={{ toastVisible, toastTitle, toastMessage, toastType, showToast, hideToast, 
+        <FeedbackContext.Provider value={{ toastVisible, toastTitle, toastMessage, toastType, toastIcon, showToast, hideToast, 
         alertVisible, alertTitle, alertMessage, alertButtons, 
         alertLoading , setAlertTitle, setAlertMessage, addAlertButton, setAlertVisible,setAlertLoading,hideAlert }}>
             {children}

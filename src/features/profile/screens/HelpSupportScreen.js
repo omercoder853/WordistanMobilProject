@@ -104,12 +104,12 @@ export default function HelpSupport() {
         showToast(t('contactSuccessTitle'), t('contactSuccessDesc'), "success");
       }
       else {
-        console.log("Email gönderilemedi : ", response.status);
+        console.log("❌ Help & Support Screen : Email could not be sent :", response.status);
         showToast(t('contactFailTitle', t('tryAgainLater'), "danger"));
       }
     }
     catch (error) {
-      console.log("Email gönderilemedi : ", error);
+      console.log("❌ Help & Support Screen : Email could not be sent :", error);
       showToast(t('contactFailTitle', t('tryAgainLater'), "danger"));
     }
     finally {

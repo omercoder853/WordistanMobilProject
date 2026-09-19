@@ -207,7 +207,7 @@ export default function MatchingPairsPage() {
             };
         }
         if (selectedAnswer === ind) {
-            console.log(checkList)
+            console.log("ℹ️ Matching Pairs Game : Current checklist :", checkList);
             const isCorrect = checkList && checkList[selectedQuestion] === ind;
             if (isCorrect) {
                 return {

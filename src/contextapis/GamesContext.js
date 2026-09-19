@@ -154,11 +154,11 @@ export const GameProvider = ({ children }) => {
     const getGameSessions = async () => {
         const { ok, status, data } = await apiClient.get(ENDPOINTS.gameSessions);
         if (ok) {
-            console.log("Game sessions fetched successfully");
+            console.log("✅ Games Context : Game sessions fetched successfully.");
             setGameSessions(data);
             return data;
         } else {
-            console.log("Error while fetching game sessions.", status, data);
+            console.log("❌ Games Context : Error while fetching game sessions :", status, data);
             return false;
         }
     };
@@ -166,7 +166,7 @@ export const GameProvider = ({ children }) => {
     const saveGameSession = async (sessionData) => {
         const { ok, status, data } = await apiClient.post(ENDPOINTS.saveGameSession, sessionData);
         if (ok) {
-            console.log("New game session created successfully:", data);
+            console.log("✅ Games Context : New game session created successfully :", data);
             incXP(sessionData.total_count);
             await getGameSessions();
             return data;

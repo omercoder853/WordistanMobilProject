@@ -25,7 +25,7 @@ const refreshAccessToken = async () => {
     const timer = setTimeout(() => controller.abort(), TIMEOUT)
 
     try {
-        console.log("Requesting for a new access token with refresh token...")
+        console.log("🔄 Token Service : Requesting new access token with refresh token...");
         const res = await fetch(BASE_URL + ENDPOINTS.refresh, {
             body: JSON.stringify({ refresh_token: refresh_token }),
             method: 'POST',
@@ -35,7 +35,7 @@ const refreshAccessToken = async () => {
 
         if (res.ok) {
             const data = await res.json();
-            console.log("Token refreshed successfully")
+            console.log("✅ Token Service : Token refreshed successfully.");
 
             await storage.setSecure(STORAGE_KEYS.SECURE.ACCESS_TOKEN, data['access_token']);
             await storage.setSecure(STORAGE_KEYS.SECURE.REFRESH_TOKEN, data['refresh_token']);
@@ -43,10 +43,10 @@ const refreshAccessToken = async () => {
         }
         else {
             const errNdy = await res.text();
-            console.log("Response is not ok. Status : ", res.status, errNdy);
+            console.log("❌ Token Service : Refresh response is not ok. Status :", res.status, errNdy);
         }
     } catch (error) {
-        console.log("Token could not be refreshed. ", error);
+        console.log("❌ Token Service : Token could not be refreshed :", error);
     } finally {
         clearTimeout(timer);
     }

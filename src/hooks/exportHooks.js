@@ -326,7 +326,7 @@ export default function useExports() {
             setAlertVisible(true);
         } finally {
             if (file && file.exists) {
-                console.log("File removed from cache");
+                console.log("🗑️ Export Hook : Temporary file removed from cache.");
                 file.delete();
             }
             setIsExporting(false);
@@ -433,7 +433,7 @@ export default function useExports() {
                 tempPrintFile.delete();
             }
             if (destFile && destFile.exists) {
-                console.log("PDF file removed from cache");
+                console.log("🗑️ Export Hook : Temporary PDF file removed from cache.");
                 destFile.delete();
             }
             setIsExporting(false);

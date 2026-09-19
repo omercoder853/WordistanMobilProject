@@ -12,7 +12,7 @@ import { useTheme } from '@/contextapis/ThemeContext';
 import { getToastStyles, getToastTheme } from './CustomToast.style';
 
 export default function CustomToast() {
-  const { toastVisible, toastTitle, toastMessage, toastType, hideToast } = useFeedback();
+  const { toastVisible, toastTitle, toastMessage, toastType, toastIcon, hideToast } = useFeedback();
   const { colors } = useTheme();
   const toastColors = colors.customToast;
   const styles = useMemo(() => getToastStyles(toastColors), [toastColors]);
@@ -86,7 +86,7 @@ export default function CustomToast() {
         clearTimeout(timerRef.current);
       }
     };
-  }, [toastVisible, toastTitle, toastMessage, toastType]);
+  }, [toastVisible, toastTitle, toastMessage, toastType, toastIcon]);
 
   if (!shouldRender) {
     return null;
@@ -94,6 +94,7 @@ export default function CustomToast() {
 
   const theme = getToastTheme(toastType, toastColors);
   const topInset = Math.max(insets?.top || 0, 16);
+  const iconName = toastIcon === 'wifi' ? 'wifi' : (toastIcon || theme.iconName);
 
   return (
     <Animated.View
@@ -131,7 +132,7 @@ export default function CustomToast() {
             },
           ]}
         >
-          <Ionicons name={theme.iconName} size={22} color={theme.iconColor} />
+          <Ionicons name={iconName} size={22} color={theme.iconColor} />
         </View>
 
         {/* Title and Message */}

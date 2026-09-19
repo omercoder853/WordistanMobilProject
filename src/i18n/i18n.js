@@ -22,7 +22,7 @@ const languageDetector = {
         return callback(savedLanguage);
       }
     } catch (error) {
-      console.log('Error reading language from AsyncStorage', error);
+      console.log('❌ i18n : Error reading language from AsyncStorage :', error);
     }
     
     // Get device locale if no preference is saved

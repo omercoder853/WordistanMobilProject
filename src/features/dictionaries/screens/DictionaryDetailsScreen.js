@@ -81,7 +81,7 @@ export default function DictDetails() {
                 setModalVisible(false);
             }
         } catch (error) {
-            console.log("Error saving word:", error);
+            console.log("❌ Dictionary Details Screen : Error saving word :", error);
         } finally {
             setLoading(false);
         }

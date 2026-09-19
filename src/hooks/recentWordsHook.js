@@ -15,7 +15,7 @@ export default function useRecentWords() {
                     setRecentWords(stored);
                 }
             } catch (e) {
-                console.log("Error loading recent words:", e);
+                console.log("❌ Recent Words Hook : Error loading recent words :", e);
             }
         };
         loadRecentWords();

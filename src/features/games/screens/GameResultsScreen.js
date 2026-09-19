@@ -107,12 +107,12 @@ export default function FinishGame() {
         try {
             const res = await saveGameSession(sessionData);
             if (res) {
-                console.log("Game results saved successfully");
+                console.log("✅ Game Results Screen : Game results saved successfully.");
             } else {
-                console.log("Failed to save game results.");
+                console.log("❌ Game Results Screen : Failed to save game results.");
             }
         } catch (error) {
-            console.log("Error while saving game results : ", error);
+            console.log("❌ Game Results Screen : Error while saving game results :", error);
         }
         setLoading(false);
         navigation.replace("MainTabs", { screen: target });

@@ -368,5 +368,9 @@
   "avgScore": "Ort. Skor",
   "avgPerformance": "Ort. Performans",
   "questions": "Soru",
-  "seconds": "sn"
+  "seconds": "sn",
+  "noInternetConnection": "İnternet Bağlantınız Yok",
+  "syncPausedOfflineMsg": "Senkronizasyon duraklatıldı. İnternet bağlantısı sağlandığında otomatik devam edecek.",
+  "internetRestored": "İnternet Bağlantısı Sağlandı",
+  "syncResumedOnlineMsg": "Senkronizasyon devam ediyor, verileriniz güncelleniyor."
 }
