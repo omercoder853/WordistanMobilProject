@@ -167,7 +167,7 @@ export const GameProvider = ({ children }) => {
         const { ok, status, data } = await apiClient.post(ENDPOINTS.saveGameSession, sessionData);
         if (ok) {
             console.log("✅ Games Context : New game session created successfully :", data);
-            incXP(sessionData.total_count);
+            incXP(sessionData.total_count, 'game_session');
             await getGameSessions();
             return data;
         } else {

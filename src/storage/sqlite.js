@@ -2,17 +2,17 @@ import * as SQLite from "expo-sqlite";
 
 let db = null;
 
-const getDB = async () => {
-    if (!db) {
-        db = await SQLite.openDatabaseAsync('wordistan.db');
-    }
-    return db;
+export const getDB = async () => {
+  if (!db) {
+    db = await SQLite.openDatabaseAsync('wordistan.db');
+  }
+  return db;
 };
 
 export const initDatabase = async () => {
-    const db = await getDB();
+  const db = await getDB();
 
-    await db.execAsync(`
+  await db.execAsync(`
     PRAGMA journal_mode = WAL;
     PRAGMA foreign_keys = ON;
 
@@ -38,6 +38,35 @@ export const initDatabase = async () => {
       FOREIGN KEY (dictionary_id) REFERENCES dictionaries (id) ON DELETE CASCADE
     );
 
+    CREATE TABLE IF NOT EXISTS user_stats (
+    user_id TEXT PRIMARY KEY NOT NULL,
+    total_xp INTEGER NOT NULL DEFAULT 0,
+    current_streak INTEGER NOT NULL DEFAULT 0,
+    max_streak INTEGER NOT NULL DEFAULT 0,
+    last_activity_date TEXT,
+    translated_words INTEGER NOT NULL DEFAULT 0,
+    saved_words INTEGER NOT NULL DEFAULT 0,
+    dict_created INTEGER NOT NULL DEFAULT 0,
+    updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+    level INTEGER NOT NULL DEFAULT 1,
+    xp_for_next DEFAULT 0,
+    required_xp_for_level DEFAULT 0
+  );
+
+    CREATE TABLE IF NOT EXISTS xp_logs (
+    id TEXT PRIMARY KEY NOT NULL,           
+    user_id TEXT NOT NULL,                   
+    action_type TEXT NOT NULL,                
+    amount INTEGER NOT NULL CHECK (amount > 0),
+    created_at TEXT DEFAULT (datetime('now')),                 
+    is_synced INTEGER DEFAULT 0        
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_local_xp_logs_synced 
+    ON xp_logs(is_synced, created_at ASC);
+    CREATE INDEX IF NOT EXISTS idx_local_xp_logs_user 
+    ON xp_logs(user_id);
+
     CREATE INDEX IF NOT EXISTS idx_words_dict_id ON words (dictionary_id);
     CREATE INDEX IF NOT EXISTS idx_words_sync ON words (is_synced);
     CREATE INDEX IF NOT EXISTS idx_dicts_sync ON dictionaries (is_synced);
@@ -45,352 +74,60 @@ export const initDatabase = async () => {
 
     DELETE FROM dictionaries WHERE id IS NULL OR id = 'null' OR id = 'undefined' OR id = '';
     DELETE FROM words WHERE id IS NULL OR id = 'null' OR id = 'undefined' OR id = '';
-  `);
-    console.log("✅ SQLite Storage : Database initialized successfully.");
-    return db;
-};
 
-const insertDictionary = async ({ id, user_id, name, description, language, is_synced }) => {
-    if (!id || id === 'null' || id === 'undefined') {
-        console.error("❌ SQLite Ekleme Hatası: Geçersiz dictionary ID (null/undefined).");
-        return false;
-    }
-    try {
-        const db = await getDB();
-        const result = await db.runAsync(
-            `INSERT INTO dictionaries (id, user_id, name, description, language, is_synced) 
-             VALUES (?, ?, ?, ?, ?, ?);`,
-            [String(id), String(user_id), name, description, language, is_synced]
-        );
-        return result.changes > 0;
-    } catch (error) {
-        console.error("❌ SQLite Ekleme Hatası:", error.message);
-        console.error("Gönderilen Parametreler:", { id, user_id, name, description, language, is_synced });
-        return false;
-    }
-};
+    CREATE TRIGGER IF NOT EXISTS trigger_on_xp_log_added
+    AFTER INSERT ON xp_logs
+    FOR EACH ROW
+    BEGIN
+        INSERT OR IGNORE INTO user_stats (
+            user_id, total_xp, current_streak, max_streak, last_activity_date,
+            translated_words, saved_words, dict_created, updated_at
+        )
+        VALUES (
+            NEW.user_id, 0, 0, 0, NULL,
+            0, 0, 0, datetime('now'));
 
-const updateDictionary = async ({ id, name, description, language }) => {
-    try {
-        const db = await getDB();
-        const result = await db.runAsync(
-            `UPDATE dictionaries 
-             SET name = ?, description = ?, language = ?, is_synced = 0 
-             WHERE id = ?;`,
-            [name, description ?? "", language, String(id)]
-        );
-        return result.changes > 0;
-    } catch (error) {
-        console.error("❌ SQLite Güncelleme Hatası:", error.message);
-        return false;
-    }
-};
+        UPDATE user_stats
+        SET
+            total_xp = total_xp + NEW.amount,
 
-const softDeleteDictionary = async (id) => {
-    try {
-        const db = await getDB();
-        if (!id || id === 'null' || id === 'undefined') {
-            const result = await db.runAsync(
-                `DELETE FROM dictionaries WHERE id IS NULL OR id = 'null' OR id = 'undefined';`
-            );
-            return result.changes > 0;
-        }
-        const result = await db.runAsync(
-            `UPDATE dictionaries SET is_deleted = 1, is_synced = 0 WHERE id = ?;`,
-            [String(id)]
-        );
-        return result.changes > 0;
-    } catch (error) {
-        console.error("❌ SQLite Soft Delete Hatası:", error.message);
-        return false;
-    }
-};
+            current_streak = CASE
+                WHEN NEW.action_type = 'streak' THEN
+                    CASE
+                        WHEN last_activity_date = date(NEW.created_at) THEN current_streak
+                        WHEN last_activity_date = date(NEW.created_at, '-1 day') THEN current_streak + 1
+                        ELSE 1
+                    END
+                ELSE current_streak
+            END,
 
-const selectDictionaries = async (user_id) => {
-    try {
-        const db = await getDB();
-        const rows = await db.getAllAsync(
-            `SELECT * FROM dictionaries 
-             WHERE user_id = ? AND is_deleted = 0 AND id IS NOT NULL AND id != 'null' AND id != 'undefined'
-             ORDER BY created_at`,
-            [String(user_id)]
-        );
-        return rows;
-    } catch (error) {
-        console.error("❌ SQLite Sözlük Çekme Hatası:", error.message);
-        console.error("Gönderilen Parametreler:", user_id);
-        return [];
-    }
-};
+            max_streak = CASE
+                WHEN NEW.action_type = 'streak' THEN
+                    MAX(
+                        max_streak,
+                        CASE
+                            WHEN last_activity_date = date(NEW.created_at) THEN current_streak
+                            WHEN last_activity_date = date(NEW.created_at, '-1 day') THEN current_streak + 1
+                            ELSE 1
+                        END
+                    )
+                ELSE max_streak
+            END,
 
-const selectOnlyLocalDictionaries = async (user_id) => {
-    try {
-        const db = await getDB();
-        const rows = await db.getAllAsync(
-            `SELECT id, user_id, name, description, language, created_at 
-             FROM dictionaries 
-             WHERE user_id = ? AND is_synced = 0 AND is_deleted = 0`,
-            [user_id]
-        );
-        return rows;
-    } catch (error) {
-        console.error("❌ SQLite Local Sözlük Çekme Hatası:", error.message);
-        console.error("Gönderilen Parametreler:", user_id);
-        return [];
-    }
-};
+            last_activity_date = CASE
+                WHEN NEW.action_type = 'streak' AND (last_activity_date IS NULL OR date(NEW.created_at) > last_activity_date)
+                THEN date(NEW.created_at)
+                ELSE last_activity_date
+            END,
 
-const selectOnlyDeletedDictionaries = async (user_id) => {
-    try {
-        const db = await getDB();
-        const rows = await db.getAllAsync(
-            `SELECT id FROM dictionaries WHERE user_id = ? AND is_deleted = 1`,
-            [user_id]
-        );
-        return rows.map((r) => r.id);
-    } catch (error) {
-        console.error("❌ SQLite Silinen Sözlük ID Hatası:", error.message);
-        console.error("Gönderilen Parametreler:", user_id);
-        return [];
-    }
-};
+            translated_words = translated_words + (CASE WHEN NEW.action_type = 'translated_words' THEN 1 ELSE 0 END),
+            saved_words      = saved_words + (CASE WHEN NEW.action_type = 'saved_words' THEN 1 ELSE 0 END),
+            dict_created     = dict_created + (CASE WHEN NEW.action_type = 'dict_created' THEN 1 ELSE 0 END),
+            updated_at       = datetime('now')
+        WHERE user_id = NEW.user_id;
+    END;`);
 
-const markDictionariesSynced = async (ids) => {
-    if (!Array.isArray(ids) || ids.length === 0) return true;
-    try {
-        const db = await getDB();
-        const placeholders = ids.map(() => '?').join(',');
-        await db.runAsync(
-            `UPDATE dictionaries SET is_synced = 1 WHERE id IN (${placeholders})`,
-            ids
-        );
-        return true;
-    } catch (error) {
-        console.error("❌ SQLite markDictionariesSynced Hatası:", error.message);
-        return false;
-    }
-};
-
-const hardDeleteDictionaries = async (ids) => {
-    if (!Array.isArray(ids) || ids.length === 0) return true;
-    try {
-        const db = await getDB();
-        const validIds = ids.filter(id => id && id !== 'null' && id !== 'undefined');
-        if (validIds.length > 0) {
-            const placeholders = validIds.map(() => '?').join(',');
-            await db.runAsync(
-                `DELETE FROM dictionaries WHERE id IN (${placeholders})`,
-                validIds.map(String)
-            );
-        }
-        await db.runAsync(`DELETE FROM dictionaries WHERE id IS NULL OR id = 'null' OR id = 'undefined';`);
-        return true;
-    } catch (error) {
-        console.error("❌ SQLite hardDeleteDictionaries Hatası:", error.message);
-        return false;
-    }
-};
-
-const upsertDictionaries = async (serverDicts, fallbackUserId = null) => {
-    if (!Array.isArray(serverDicts) || serverDicts.length === 0) return;
-    const db = await getDB();
-    await db.withTransactionAsync(async () => {
-        for (const dict of serverDicts) {
-            const dictId = dict.id || dict.dict_id || dict.dictionary_id;
-            const userId = dict.user_id || fallbackUserId;
-            if (!dictId || dictId === 'null' || dictId === 'undefined' || !userId) continue;
-
-            await db.runAsync(
-                `INSERT INTO dictionaries (id, user_id, name, description, language, is_synced, is_deleted, created_at)
-                 VALUES (?, ?, ?, ?, ?, 1, 0, ?)
-                 ON CONFLICT(id) DO UPDATE SET
-                 name = excluded.name,
-                 description = excluded.description,
-                 language = excluded.language,
-                 is_synced = 1,
-                 is_deleted = 0;`,
-                [String(dictId), String(userId), dict.name, dict.description ?? "", dict.language, dict.created_at ?? new Date().toISOString()]
-            );
-        }
-    });
-};
-
-// ─── WORDS OPERATIONS ───
-
-const insertWord = async ({ id, dictionary_id, word, meaning, is_synced = 0 }) => {
-    if (!id || id === 'null' || id === 'undefined' || !dictionary_id) {
-        console.error("❌ SQLite Kelime Ekleme Hatası: Geçersiz ID veya dictionary_id.");
-        return false;
-    }
-    try {
-        const db = await getDB();
-        const result = await db.runAsync(
-            `INSERT INTO words (id, dictionary_id, word, meaning, is_synced)
-             VALUES (?, ?, ?, ?, ?);`,
-            [String(id), String(dictionary_id), word, meaning, is_synced]
-        );
-        return result.changes > 0;
-    } catch (error) {
-        console.error("❌ SQLite Kelime Ekleme Hatası:", error.message);
-        return false;
-    }
-};
-
-const checkWordExists = async (dictionary_id, word) => {
-    if (!dictionary_id || !word) return false;
-    try {
-        const db = await getDB();
-        const row = await db.getFirstAsync(
-            `SELECT id FROM words 
-             WHERE dictionary_id = ? 
-               AND LOWER(TRIM(word)) = LOWER(TRIM(?)) 
-               AND is_deleted = 0;`,
-            [String(dictionary_id), String(word)]
-        );
-        return Boolean(row);
-    } catch (error) {
-        console.error("❌ SQLite checkWordExists Hatası:", error.message);
-        return false;
-    }
-};
-
-const selectWords = async (dictionary_id) => {
-    try {
-        const db = await getDB();
-        const rows = await db.getAllAsync(
-            `SELECT * FROM words WHERE dictionary_id = ? AND is_deleted = 0 ORDER BY added_at`,
-            [dictionary_id]
-        );
-        return rows;
-    } catch (error) {
-        console.error("❌ SQLite Kelime Çekme Hatası:", error.message);
-        return [];
-    }
-};
-
-const selectOnlyLocalWords = async (user_id) => {
-    try {
-        const db = await getDB();
-        const rows = await db.getAllAsync(
-            `SELECT w.id, w.dictionary_id, w.word, w.meaning, w.added_at 
-             FROM words w
-             JOIN dictionaries d ON w.dictionary_id = d.id
-             WHERE d.user_id = ? AND w.is_synced = 0 AND w.is_deleted = 0`,
-            [user_id]
-        );
-        return rows;
-    } catch (error) {
-        console.error("❌ SQLite Local Kelime Çekme Hatası:", error.message);
-        return [];
-    }
-};
-
-const selectOnlyDeletedWords = async (user_id) => {
-    try {
-        const db = await getDB();
-        const rows = await db.getAllAsync(
-            `SELECT w.id 
-             FROM words w
-             JOIN dictionaries d ON w.dictionary_id = d.id
-             WHERE d.user_id = ? AND w.is_deleted = 1`,
-            [user_id]
-        );
-        console.log("Deleted words ",rows);
-        return rows.map((r) => r.id);
-    } catch (error) {
-        console.error("❌ SQLite Silinen Kelime ID Hatası:", error.message);
-        return [];
-    }
-};
-
-const markWordsSynced = async (ids) => {
-    if (!Array.isArray(ids) || ids.length === 0) return true;
-    try {
-        const db = await getDB();
-        const placeholders = ids.map(() => '?').join(',');
-        await db.runAsync(
-            `UPDATE words SET is_synced = 1 WHERE id IN (${placeholders})`,
-            ids
-        );
-        return true;
-    } catch (error) {
-        console.error("❌ SQLite markWordsSynced Hatası:", error.message);
-        return false;
-    }
-};
-
-const hardDeleteWords = async (ids) => {
-    if (!Array.isArray(ids) || ids.length === 0) return true;
-    try {
-        const db = await getDB();
-        const placeholders = ids.map(() => '?').join(',');
-        await db.runAsync(
-            `DELETE FROM words WHERE id IN (${placeholders})`,
-            ids
-        );
-        return true;
-    } catch (error) {
-        console.error("❌ SQLite hardDeleteWords Hatası:", error.message);
-        return false;
-    }
-};
-
-const softDeleteWord = async (id) => {
-    try {
-        const db = await getDB();
-        const result = await db.runAsync(
-            `UPDATE words SET is_deleted = 1, is_synced = 0 WHERE id = ?;`,
-            [id]
-        );
-        return result.changes > 0;
-    } catch (error) {
-        console.error("❌ SQLite Kelime Soft Delete Hatası:", error.message);
-        return false;
-    }
-};
-
-const upsertWords = async (serverWords) => {
-    if (!Array.isArray(serverWords) || serverWords.length === 0) return;
-    const db = await getDB();
-    await db.withTransactionAsync(async () => {
-        for (const w of serverWords) {
-            await db.runAsync(
-                `INSERT INTO words (id, dictionary_id, word, meaning, is_synced, is_deleted, added_at)
-                 VALUES (?, ?, ?, ?, 1, 0, ?)
-                 ON CONFLICT(id) DO UPDATE SET
-                 word = excluded.word,
-                 meaning = excluded.meaning,
-                 is_synced = 1,
-                 is_deleted = 0;`,
-                [w.id, w.dictionary_id, w.word, w.meaning, w.added_at ?? new Date().toISOString()]
-            );
-        }
-    });
-};
-
-export const sqlite = {
-    // Dictionaries
-    insertDictionary: ({ id, user_id, name, description = "", language, is_synced = 0 }) =>
-        insertDictionary({ id, user_id, name, description, language, is_synced }),
-    updateDictionary: ({ id, name, description, language }) =>
-        updateDictionary({ id, name, description, language }),
-    softDeleteDictionary: (id) => softDeleteDictionary(id),
-    selectDictionaries: (user_id) => selectDictionaries(user_id),
-    selectOnlyLocalDictionaries: (user_id) => selectOnlyLocalDictionaries(user_id),
-    selectOnlyDeletedDictionaries: (user_id) => selectOnlyDeletedDictionaries(user_id),
-    markDictionariesSynced: (ids) => markDictionariesSynced(ids),
-    hardDeleteDictionaries: (ids) => hardDeleteDictionaries(ids),
-    upsertDictionaries: (dicts, fallbackUserId) => upsertDictionaries(dicts, fallbackUserId),
-
-    // Words
-    insertWord: ({ id, dictionary_id, word, meaning, is_synced = 0 }) =>
-        insertWord({ id, dictionary_id, word, meaning, is_synced }),
-    checkWordExists: (dictionary_id, word) => checkWordExists(dictionary_id, word),
-    selectWords: (dictionary_id) => selectWords(dictionary_id),
-    selectOnlyLocalWords: (user_id) => selectOnlyLocalWords(user_id),
-    selectOnlyDeletedWords: (user_id) => selectOnlyDeletedWords(user_id),
-    markWordsSynced: (ids) => markWordsSynced(ids),
-    hardDeleteWords: (ids) => hardDeleteWords(ids),
-    softDeleteWord: (id) => softDeleteWord(id),
-    upsertWords: (words) => upsertWords(words),
+    
+  console.log("✅ SQLite Storage : Database initialized successfully.");
+  return db;
 };

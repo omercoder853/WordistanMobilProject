@@ -7,10 +7,6 @@ export const STORAGE_KEYS = Object.freeze({
   SESSION: {
     USER: 'user',
     USER_STATS: 'userStats',
-    PENDING_TRANSLATED: 'pendingTranslated',
-    PENDING_SAVED_WORDS: 'pendingSavedWords',
-    PENDING_DICT_CREATED : 'pendingDictCreated',
-    PENDING_XP: 'pendingXP',
     DAILY_WORD: 'dailyWord',
     RECENT_WORDS: 'recentWords',
     SHOWN_ACHIEVEMENTS : 'shownAchievements',

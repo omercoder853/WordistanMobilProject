@@ -27,7 +27,7 @@ const METRIC_OPTIONS = [
 ];
 
 export default function Statistics() {
-    const { userStats, pendingEarnedXP } = useUserStats();
+    const { userStats } = useUserStats();
     const { gameSessions } = useGame();
     const { t } = useTranslation();
     const { colors, isDark } = useTheme();
@@ -38,9 +38,9 @@ export default function Statistics() {
     // ─── Level progress calculations ───
     const required_xp_for_level = userStats?.required_xp_for_level || 1;
     const xp_for_next = userStats?.xp_for_next || 0;
-    const earnedInLevel = Math.max(0, required_xp_for_level - xp_for_next + (pendingEarnedXP || 0));
+    const earnedInLevel = Math.max(0, required_xp_for_level - xp_for_next);
     const progressRatio = Math.min(Math.max(earnedInLevel / required_xp_for_level, 0), 1);
-    const remainingXP = Math.max(0, xp_for_next - (pendingEarnedXP || 0));
+    const remainingXP = Math.max(0, xp_for_next);
     const level = userStats?.level || 1;
 
     const animatedProgress = useRef(new Animated.Value(0)).current;

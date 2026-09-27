@@ -13,7 +13,9 @@ export default function ProfileStatsRow() {
     const { colors } = useTheme();
     const { earnedAchievementsList } = useAchievements();
 
-    const { translated_words, saved_words } = useUserStats();
+    const { userStats } = useUserStats();
+    const translated_words = userStats?.translated_words || 0;
+    const saved_words = userStats?.saved_words || 0;
     return (
         <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginVertical: 20 }}>
             <View style={styles.statColumn}>

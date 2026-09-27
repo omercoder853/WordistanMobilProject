@@ -8,7 +8,7 @@ const UserStatsBar = () => {
     const { colors } = useTheme();
     const statsColors = colors.home.statsBar;
     const { t } = useTranslation();
-    const { userStats, pendingEarnedXP } = useUserStats();
+    const { userStats } = useUserStats();
 
     return (
         <View style={styles.statRow}>
@@ -52,7 +52,7 @@ const UserStatsBar = () => {
                         <FontAwesome name="diamond" size={20} color={statsColors.diamondIcon} />
                     </View>
                     <View style={styles.statColumn}>
-                        <Text style={[styles.statValue, { color: statsColors.value }]}>{(userStats?.total_xp || 0) + (pendingEarnedXP || 0)}</Text>
+                        <Text style={[styles.statValue, { color: statsColors.value }]}>{userStats?.total_xp || 0}</Text>
                         <Text style={[styles.statLabel, { color: statsColors.label }]}>{t('xp')}</Text>
                     </View>
                 </View>

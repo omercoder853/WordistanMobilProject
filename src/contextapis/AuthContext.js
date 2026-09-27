@@ -6,6 +6,7 @@ import { getNewToken } from "../services/TokenService";
 import { storage } from "../storage/storage";
 import { STORAGE_KEYS } from "../constants/StorageKeys";
 import { apiClient } from "../services/ApiClient";
+import { syncService } from "../services/SyncServisManager";
 import { useFeedback } from "./FeedbackContext";
 import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
@@ -100,6 +101,13 @@ export const AuthProvider = ({ children }) => {
     }
 
     async function logout() {
+        try {
+            console.log("🔄 Auth Context : Syncing before logout...");
+            await syncService.syncAll();
+            console.log("✅ Auth Context : Pre-logout sync completed.");
+        } catch (e) {
+            console.log("⚠️ Auth Context : Sync before logout failed:", e.message);
+        }
         console.log("🔄 Auth Context : Clearing session storage...");
         const res = await storage.clearSession();
         if (res) {

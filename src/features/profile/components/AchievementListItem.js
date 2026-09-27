@@ -8,13 +8,13 @@ import { useTheme } from "@/contextapis/ThemeContext";
 export default function Achievement({ ach, isEarned }) {
     const { i18n } = useTranslation();
     const { colors, isDark } = useTheme();
-    const { userStats, pendingSavedWords, pendingTranslated, pendingDictCreated } = useUserStats();
+    const { userStats } = useUserStats();
     const lang = i18n.language;
 
     // Target value check: userStats + pending
-    const currentSaved = (userStats?.saved_words || 0) + (pendingSavedWords || 0);
-    const currentTranslated = (userStats?.translated_words || 0) + (pendingTranslated || 0);
-    const currentDicts = (userStats?.dict_created || userStats?.created_dicts || 0) + (pendingDictCreated || 0);
+    const currentSaved = userStats?.saved_words || 0;
+    const currentTranslated = userStats?.translated_words || 0;
+    const currentDicts = userStats?.dict_created || 0;
 
     let currentProgress = 0;
     if (ach.target_field === 'saved_words') {

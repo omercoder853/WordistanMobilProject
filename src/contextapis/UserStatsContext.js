@@ -1,142 +1,86 @@
-import { createContext, useContext, useState, useEffect, useCallback } from "react";
+import { createContext, useContext, useState, useEffect, useCallback, useRef } from "react";
 import { useAuth } from "./AuthContext";
-import { ENDPOINTS } from "../constants/ApiConfig";
-import { apiClient } from "../services/ApiClient";
-import { storage } from "../storage/storage";
-import { STORAGE_KEYS } from "../constants/StorageKeys";
+import { statsApi } from "@/api/StatsApi";
+import { syncEvents } from "@/services/SyncEvents";
 export const UserStatsContext = createContext();
 
 export const UserStatsProvider = ({ children }) => {
     const { isLogin } = useAuth();
 
     const [userStats, setUserStats] = useState(null);
-    const [pendingTranslated, setPendingTranslated] = useState(0);
-    const [pendingEarnedXP, setPendingEarnedXP] = useState(0);
-    const [pendingSavedWords, setPendingSavedWords] = useState(0);
-    const [pendingDictCreated, setPendingDictCreated] = useState(0);
     const [levelUpInfo, setLevelUpInfo] = useState(null);
+    const prevLevelRef = useRef(null);
 
-    const translated_words = pendingTranslated + (userStats?.translated_words || 0);
-    const saved_words = pendingSavedWords + (userStats?.saved_words || 0);
-    const dict_created = pendingDictCreated + (userStats?.dict_created || userStats?.created_dicts || 0);
-
-    // Load initial pending data from storage
+    // Level-up kontrolü: userStats değiştiğinde eski level ile karşılaştır
     useEffect(() => {
-        const loadPendingData = async () => {
-            try {
-                const pXP = await storage.get(STORAGE_KEYS.SESSION.PENDING_XP);
-                const pSaved = await storage.get(STORAGE_KEYS.SESSION.PENDING_SAVED_WORDS);
-                const pTrans = await storage.get(STORAGE_KEYS.SESSION.PENDING_TRANSLATED);
-                const pDict = await storage.get(STORAGE_KEYS.SESSION.PENDING_DICT_CREATED);
-                if (pXP) setPendingEarnedXP(pXP);
-                if (pSaved) setPendingSavedWords(pSaved);
-                if (pTrans) setPendingTranslated(pTrans);
-                if (pDict) setPendingDictCreated(pDict);
-            } catch (e) {
-                console.log("❌ User Stats Context : Error loading pending stats data :", e);
-            }
-        };
-        loadPendingData();
-    }, []);
-
-    useEffect(() => {
-        if (userStats && userStats.xp_for_next) {
-            const xpForNext = userStats.xp_for_next;
-            if (pendingEarnedXP > 0 && pendingEarnedXP >= xpForNext && !levelUpInfo) {
-                const oldLvl = userStats.level || 1;
-                const newLvl = oldLvl + 1;
-                setLevelUpInfo({
-                    oldLevel: oldLvl,
-                    newLevel: newLvl,
-                });
-            }
+        if (!userStats) return
+        const currentLevel = userStats.level || 1
+        if (prevLevelRef.current !== null && currentLevel > prevLevelRef.current) {
+            setLevelUpInfo({
+                oldLevel: prevLevelRef.current,
+                newLevel: currentLevel,
+            })
         }
-    }, [pendingEarnedXP, userStats, levelUpInfo]);
+        prevLevelRef.current = currentLevel
+    }, [userStats]);
+
+    const fetchAndSetStats = useCallback(async () => {
+        const result = await statsApi.fetchStats()
+        if (result.ok) {
+            setUserStats(result.data)
+        }
+    }, []);
 
     const dismissLevelUp = useCallback(async () => {
-        await clearPendingData();
         setLevelUpInfo(null);
-        await getUserStats();
-    }, [getUserStats]);
+        await fetchAndSetStats();
+    }, [fetchAndSetStats]);
 
-    const getUserStats = useCallback(async () => {
-        const { ok, status, data } = await apiClient.get(ENDPOINTS.stats, true)
-        if (ok) {
-            console.log("✅ User Stats Context : Synced user stats :", data);
-            await storage.set(STORAGE_KEYS.SESSION.USER_STATS, data);
-            setUserStats(data);
-            await clearPendingData();
-        }
-        else {
-            const savedUserStats = await storage.get(STORAGE_KEYS.SESSION.USER_STATS);
-            if (savedUserStats) setUserStats(savedUserStats);
-            console.log("❌ User Stats Context : Error while fetching user stats :", status, data);
-        }
-    }, [clearPendingData]);
-
-    const clearPendingData = useCallback(async () => {
-        setPendingEarnedXP(0);
-        setPendingSavedWords(0);
-        setPendingTranslated(0);
-        setPendingDictCreated(0);
-        await storage.set(STORAGE_KEYS.SESSION.PENDING_XP, 0);
-        await storage.set(STORAGE_KEYS.SESSION.PENDING_SAVED_WORDS, 0);
-        await storage.set(STORAGE_KEYS.SESSION.PENDING_TRANSLATED, 0);
-        await storage.set(STORAGE_KEYS.SESSION.PENDING_DICT_CREATED, 0);
-    }, []);
+    // Sync tamamlandığında (arka plan / internet geri geldiğinde) user stats'ı otomatik yenile
+    useEffect(() => {
+        const unsubscribe = syncEvents.onSyncComplete(() => {
+            console.log("🔄 User Stats Context : Sync completed, refreshing user stats...");
+            fetchAndSetStats();
+        });
+        return unsubscribe;
+    }, [fetchAndSetStats]);
 
     useEffect(() => {
         if (!isLogin) {
             setUserStats(null)
+            prevLevelRef.current = null
         }
         else if (isLogin) {
             console.log("🔄 User Stats Context : Login successful, fetching user stats...");
-            const getData = async () => {
-                await getUserStats()
-            };
-            getData();
+            fetchAndSetStats()
         }
-    }, [isLogin]);
+    }, [isLogin, fetchAndSetStats]);
 
-    const incTranslated = async (isRetry = false) => {
-        if (!isRetry) {
-            await storage.set(STORAGE_KEYS.SESSION.PENDING_TRANSLATED, pendingTranslated + 1);
-            setPendingTranslated(prev => prev + 1);
-            incXP(2)
-        }
-        const { ok, status, data } = await apiClient.post(ENDPOINTS.incrementTranslation);
+    const incTranslated = useCallback(async () => {
+        const result = await statsApi.incTranslated()
+        if (result) setUserStats(result)
+    }, [])
 
-        if (ok) {
-            console.log("✅ User Stats Context : Backend translation count updated successfully.");
-        }
-        else {
-            console.log("❌ User Stats Context : Error while updating backend translation count :", status, data);
-        }
-    };
+    const incSaved = useCallback(async () => {
+        const result = await statsApi.incSaved()
+        if (result) setUserStats(result)
+    }, [])
 
-    const incSaved = async () => {
-        setPendingSavedWords(prev => prev + 1);
-        await storage.set(STORAGE_KEYS.SESSION.PENDING_SAVED_WORDS, pendingSavedWords + 1)
-        incXP(3)
-    }
+    const incDictCreated = useCallback(async () => {
+        const result = await statsApi.incDictCreated()
+        if (result) setUserStats(result)
+    }, [])
 
-    const incDictCreated = async () => {
-        setPendingDictCreated(prev => prev + 1);
-        await storage.set(STORAGE_KEYS.SESSION.PENDING_DICT_CREATED, pendingDictCreated + 1);
-        incXP(10);
-    }
-
-    const incXP = async (amount) => {
-        await storage.set(STORAGE_KEYS.SESSION.PENDING_XP, pendingEarnedXP + amount);
-        setPendingEarnedXP(prev => prev + amount);
-    }
+    const incXP = useCallback(async (amount, type = 'game_session') => {
+        const result = await statsApi.incXP(amount, type)
+        if (result) setUserStats(result)
+    }, [])
 
 
     return (
         <UserStatsContext.Provider value={{
-            userStats, translated_words,
-            saved_words, dict_created, pendingEarnedXP, pendingSavedWords, pendingTranslated, pendingDictCreated,
-            incSaved, incTranslated, incDictCreated, incXP, setUserStats,
+            userStats, setUserStats, fetchAndSetStats,
+            incSaved, incTranslated, incDictCreated, incXP,
             levelUpInfo, dismissLevelUp
         }}>
             {children}

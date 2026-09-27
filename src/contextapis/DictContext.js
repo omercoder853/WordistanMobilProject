@@ -10,7 +10,7 @@ import { STORAGE_KEYS } from "../constants/StorageKeys";
 import { storage } from "../storage/storage";
 import { apiClient } from "../services/ApiClient";
 import { dictionaryApi } from "@/api/DictionaryApi";
-import { syncEvents } from "@/services/syncEvents";
+import { syncEvents } from "@/services/SyncEvents";
 
 const DictContext = createContext();
 

@@ -23,7 +23,7 @@ const AppHeader = () => {
     const insets = useSafeAreaInsets();
     const { t } = useTranslation();
     const { colors } = useTheme();
-    const { userStats, pendingEarnedXP } = useUserStats();
+    const { userStats } = useUserStats();
     const { user, setUser } = useAuth();
     const navigation = useNavigation();
     const { notifications, setNotificationPanel } = useNotification();
@@ -48,7 +48,7 @@ const AppHeader = () => {
     // XP progress calculation
     const required_xp_for_level = userStats?.required_xp_for_level || 1;
     const xp_for_next = userStats?.xp_for_next || 0;
-    const earnedInLevel = Math.max(0, required_xp_for_level - xp_for_next + (pendingEarnedXP || 0));
+    const earnedInLevel = Math.max(0, required_xp_for_level - xp_for_next);
     const progressRatio = Math.min(Math.max(earnedInLevel / required_xp_for_level, 0), 1);
 
     const animatedProgress = useRef(new Animated.Value(0)).current;

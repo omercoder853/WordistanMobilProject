@@ -5,7 +5,7 @@ import AuthStackNavigator from "../features/auth/AuthStackNavigator";
 import { initDatabase } from "@/storage/sqlite";
 import { useState, useEffect, useRef } from "react";
 import { NetworkUtils } from "@/utils/NetworkUtils";
-import { syncService } from "@/services/syncService";
+import { syncService } from "@/services/SyncServisManager";
 import { useFeedback } from "@/contextapis/FeedbackContext";
 import { useTranslation } from "react-i18next";
 
@@ -32,6 +32,9 @@ export default function RootNavigation() {
 
     useEffect(() => {
         if (databaseLoading || !isLogin) return;
+
+        // AppState listener başlat (background/active geçişlerinde sync)
+        syncService.initAppStateListener();
 
         const unsubscribe = NetworkUtils.listen(async (isOnline) => {
             const wasOnline = prevOnlineRef.current;
@@ -63,8 +66,12 @@ export default function RootNavigation() {
             }
         });
 
-        return () => unsubscribe();
+        return () => {
+            unsubscribe();
+            syncService.removeAppStateListener();
+        };
     }, [databaseLoading, isLogin]);
+
 
     if (isLoading || databaseLoading) {
         return (<LoadingPage />)

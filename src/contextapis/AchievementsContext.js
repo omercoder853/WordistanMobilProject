@@ -10,7 +10,7 @@ export const AchievementsContext = createContext();
 
 export const AchievementsProvider = ({ children }) => {
     const { isLogin } = useAuth();
-    const { userStats, pendingSavedWords, pendingTranslated, pendingDictCreated, incXP } = useUserStats();
+    const { userStats, incXP } = useUserStats();
     const [achievements, setAchievements] = useState([]);
     const [earnedAchievementsList, setEarnedAchievements] = useState([]);
     const [newAchievement, setNewAchievement] = useState(null);
@@ -96,16 +96,19 @@ export const AchievementsProvider = ({ children }) => {
             });
         }
         setNewAchievement(null);
-        await getEarnedAchievements();
+        const earnedData = await getEarnedAchievements();
+        if (earnedData) {
+            setEarnedAchievements(earnedData);
+        }
     }, [newAchievement, getEarnedAchievements]);
 
     // Target value check whenever pending data or userStats update (only AFTER initial fetch is done!)
     useEffect(() => {
         if (!isLogin || !isFetched || !achievements || achievements.length === 0) return;
 
-        const currentSaved = (userStats?.saved_words || 0) + (pendingSavedWords || 0);
-        const currentTranslated = (userStats?.translated_words || 0) + (pendingTranslated || 0);
-        const currentDicts = (userStats?.dict_created || userStats?.created_dicts || 0) + (pendingDictCreated || 0);
+        const currentSaved = userStats?.saved_words || 0;
+        const currentTranslated = userStats?.translated_words || 0;
+        const currentDicts = userStats?.dict_created || 0;
 
         for (const ach of achievements) {
             const alreadyEarned = isAlreadyEarned(ach.id);
@@ -120,16 +123,13 @@ export const AchievementsProvider = ({ children }) => {
                 if (progress >= ach.target_value && !newAchievement) {
                     console.log("🏆 Achievements Context : New achievement earned :", ach);
                     setNewAchievement(ach);
-                    incXP(ach.xp_reward)
+                    incXP(ach.xp_reward, 'achievement')
 
                     break;
                 }
             }
         }
     }, [
-        pendingSavedWords,
-        pendingTranslated,
-        pendingDictCreated,
         userStats,
         achievements,
         earnedAchievementsList,

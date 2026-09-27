@@ -1,35 +1,9 @@
 import { apiClient } from "@/services/ApiClient";
-import { storage } from "@/storage/storage";
-import { STORAGE_KEYS } from "@/constants/StorageKeys";
 import { ENDPOINTS } from "@/constants/ApiConfig";
 import { NetworkUtils } from "@/utils/NetworkUtils";
-import { sqlite } from "@/storage/sqlite";
-import * as Crypto from 'expo-crypto'
+import { dictionariesSQLite } from "@/storage/DictionariesSQLite";
+import { responder, getRandomId, getUserId } from "@/utils/ApiUtils"
 
-const responder = (ok, is_synced, status = 200, data = null) => {
-    return {
-        ok,
-        data,
-        status,
-        is_synced
-    }
-}
-
-const getRandomId = () => {
-    const id = Crypto.randomUUID();
-    if (id) return id;
-}
-
-const getUserId = async () => {
-    try {
-        const user = await storage.get(STORAGE_KEYS.SESSION.USER);
-        const user_id = user?.sub || user?.id || null;
-        return user_id;
-    } catch (error) {
-        console.log("❌ Dictionary API : User ID could not be retrieved :", error);
-        return null;
-    }
-};
 
 const createDictionary = async (name, description, language) => {
     const isOnline = await NetworkUtils.isOnline();
@@ -53,20 +27,20 @@ const createDictionary = async (name, description, language) => {
         if (cloudSuccess) {
             const serverId = serverItem?.id;
             const finalId = serverId ? String(serverId) : localId;
-            const sqliteOk = await sqlite.insertDictionary({ id: finalId, user_id, name, description, language, is_synced: 1 });
+            const sqliteOk = await dictionariesSQLite.insertDictionary({ id: finalId, user_id, name, description, language, is_synced: 1 });
             if (!sqliteOk) {
                 console.log("⚠️ Dictionary API : Cloud succeeded but local insert failed. Retrying...");
-                await sqlite.insertDictionary({ id: finalId, user_id, name, description, language, is_synced: 1 });
+                await dictionariesSQLite.insertDictionary({ id: finalId, user_id, name, description, language, is_synced: 1 });
             }
             return responder(true, true, 200, { ...(serverItem || {}), id: finalId, name, description, language });
         }
     }
 
-    const res = await sqlite.insertDictionary({ id: localId, user_id, name, description, language, is_synced: 0 });
+    const res = await dictionariesSQLite.insertDictionary({ id: localId, user_id, name, description, language, is_synced: 0 });
     if (res) {
         return responder(true, false, 201, { id: localId, user_id, name, description, language });
     } else {
-        console.log("❌ Dictionary API : Dictionary could not be created in SQLite.");
+        console.log("❌ Dictionary API : Dictionary could not be created in SQLite .");
         return responder(false, false, 400, null);
     }
 };
@@ -74,7 +48,7 @@ const createDictionary = async (name, description, language) => {
 const deleteDictionary = async (dictId) => {
     if (!dictId || dictId === 'null' || dictId === 'undefined') {
         console.log("❌ Dictionary API : Invalid dictId for deletion, cleaning up any corrupted entries :", dictId);
-        await sqlite.softDeleteDictionary(dictId);
+        await dictionariesSQLite.softDeleteDictionary(dictId);
         return responder(true, false, 200, null);
     }
 
@@ -83,7 +57,7 @@ const deleteDictionary = async (dictId) => {
         try {
             const { ok, status, data } = await apiClient.delete(ENDPOINTS.deleteDictionary + String(dictId));
             if (ok) {
-                await sqlite.hardDeleteDictionaries([String(dictId)]);
+                await dictionariesSQLite.hardDeleteDictionaries([String(dictId)]);
                 return responder(true, true, status, data);
             }
         } catch (error) {
@@ -91,7 +65,7 @@ const deleteDictionary = async (dictId) => {
         }
     }
 
-    const res = await sqlite.softDeleteDictionary(String(dictId));
+    const res = await dictionariesSQLite.softDeleteDictionary(String(dictId));
     return responder(res, false, 200, null);
 };
 
@@ -103,7 +77,7 @@ const fetchDicts = async () => {
         try {
             const { ok, status, data } = await apiClient.get(ENDPOINTS.dictionaries);
             if (ok && Array.isArray(data)) {
-                await sqlite.upsertDictionaries(data, user_id);
+                await dictionariesSQLite.upsertDictionaries(data, user_id);
                 return responder(true, true, 200, data);
             }
         } catch (error) {
@@ -112,7 +86,7 @@ const fetchDicts = async () => {
     }
 
     try {
-        const rows = await sqlite.selectDictionaries(user_id);
+        const rows = await dictionariesSQLite.selectDictionaries(user_id);
         return responder(true, false, 200, rows);
     } catch (error) {
         console.log("❌ Dictionary API : Error while fetching dictionaries from SQLite :", error);
@@ -126,7 +100,7 @@ const getWords = async (dictId) => {
         try {
             const { ok, status, data } = await apiClient.get(ENDPOINTS.words + "/" + dictId);
             if (ok && Array.isArray(data)) {
-                await sqlite.upsertWords(data);
+                await dictionariesSQLite.upsertWords(data);
                 return responder(true, true, 200, data);
             }
         } catch (error) {
@@ -135,7 +109,7 @@ const getWords = async (dictId) => {
     }
 
     try {
-        const localWords = await sqlite.selectWords(dictId);
+        const localWords = await dictionariesSQLite.selectWords(dictId);
         return responder(true, false, 200, localWords);
     } catch (error) {
         console.error("❌ Dictionary API : Error while fetching words from local storage :", error);
@@ -145,7 +119,7 @@ const getWords = async (dictId) => {
 
 const saveWord = async ({ dictionary_id, word, meaning }) => {
     // 1. Önce yerel veritabanında bu sözlük için kelime var mı kontrol et
-    const existsLocally = await sqlite.checkWordExists(dictionary_id, word);
+    const existsLocally = await dictionariesSQLite.checkWordExists(dictionary_id, word);
     if (existsLocally) {
         console.log("⚠️ Dictionary API : Word already exists in this dictionary (local check).");
         return responder(false, false, 409, { message: "Word already exists in the dictionary." });
@@ -164,7 +138,7 @@ const saveWord = async ({ dictionary_id, word, meaning }) => {
             }
             if (ok && data) {
                 const wordId = data.id ? String(data.id) : localWordId;
-                await sqlite.insertWord({
+                await dictionariesSQLite.insertWord({
                     id: wordId,
                     dictionary_id: String(dictionary_id),
                     word: data.word || word,
@@ -178,7 +152,7 @@ const saveWord = async ({ dictionary_id, word, meaning }) => {
         }
     }
 
-    const res = await sqlite.insertWord({
+    const res = await dictionariesSQLite.insertWord({
         id: localWordId,
         dictionary_id: String(dictionary_id),
         word,
@@ -196,11 +170,11 @@ const saveWord = async ({ dictionary_id, word, meaning }) => {
         });
     } else {
         // Eğer UNIQUE constraint gibi bir sebeple eklenemediyse tekrar kontrol edelim
-        const alreadyExists = await sqlite.checkWordExists(dictionary_id, word);
+        const alreadyExists = await dictionariesSQLite.checkWordExists(dictionary_id, word);
         if (alreadyExists) {
             return responder(false, false, 409, { message: "Word already exists in the dictionary." });
         }
-        console.log("❌ Dictionary API : Word could not be created in SQLite.");
+        console.log("❌ Dictionary API : Word could not be created in SQLite .");
         return responder(false, false, 400, null);
     }
 };
@@ -216,7 +190,7 @@ const deleteWord = async (wordId) => {
         try {
             const { ok, status, data } = await apiClient.delete(ENDPOINTS.wordDelete + String(wordId));
             if (ok) {
-                await sqlite.hardDeleteWords([String(wordId)]);
+                await dictionariesSQLite.hardDeleteWords([String(wordId)]);
                 return responder(true, true, status, data);
             }
         } catch (error) {
@@ -224,7 +198,7 @@ const deleteWord = async (wordId) => {
         }
     }
 
-    const res = await sqlite.softDeleteWord(String(wordId));
+    const res = await dictionariesSQLite.softDeleteWord(String(wordId));
     return responder(res, false, 200, null);
 };
 
