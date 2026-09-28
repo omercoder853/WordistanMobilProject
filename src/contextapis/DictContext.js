@@ -102,19 +102,36 @@ export const DictionaryProvider = ({ children }) => {
         return targetDict
     }
 
-    async function createDictionary({ name, description, language }) {
-        const { ok, is_synced, status, data } = await dictionaryApi.createDictionary(name, description, language);
+    async function createDictionary({ name, description, language, cover = 'dictionary_cover_1' }) {
+        const { ok, is_synced, status, data } = await dictionaryApi.createDictionary(name, description, language, cover);
         if (ok) {
             console.log("✅ Dict Context : New dictionary created at :", is_synced ? "cloud" : "local storage");
             incDictCreated();
             showToast(t('dictionaryCreated'), t('dictionaryCreatedSuccessfully'), "success");
-            setDictReload(true)
-            return true
+            setDictReload(true);
+            return true;
         }
         else {
             console.log("❌ Dict Context : Error while creating a new dictionary :", status, data);
-            showToast(t('ooops'), t('tryAgainLater'), "danger")
-            return false
+            showToast(t('ooops'), t('tryAgainLater'), "danger");
+            return false;
+        }
+    }
+
+    async function updateDictionary(dictId, updateFields) {
+        if (!dictId || !updateFields || Object.keys(updateFields).length === 0) {
+            return false;
+        }
+        const { ok, is_synced, status, data } = await dictionaryApi.updateDictionary(dictId, updateFields);
+        if (ok) {
+            console.log("✅ Dict Context : Dictionary updated successfully! (is_synced:", is_synced, ")");
+            showToast(t('operationSuccessful'), t('dictionaryUpdatedSuccessfully'), "success");
+            setDictReload(true);
+            return true;
+        } else {
+            console.log("❌ Dict Context : Error while updating dictionary :", status, data);
+            showToast(t('ooops'), t('dictUpdatingError'), "danger");
+            return false;
         }
     }
 
@@ -239,8 +256,8 @@ export const DictionaryProvider = ({ children }) => {
     }
 
     return (<DictContext.Provider value={{
-        dicts, getWords, getDict, createDictionary, setDictReload, deleteWord, ShareDictionary,
-        saveWord, dictReload, deleteDictionary, dailyWord, setDailyWord, removeDailyWord,dailyWordLoading
+        dicts, getWords, getDict, createDictionary, updateDictionary, setDictReload, deleteWord, ShareDictionary,
+        saveWord, dictReload, deleteDictionary, dailyWord, setDailyWord, removeDailyWord, dailyWordLoading
     }}>{children}</DictContext.Provider>)
 }
 

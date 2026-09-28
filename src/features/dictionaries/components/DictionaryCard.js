@@ -7,13 +7,16 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { useDictionary } from '@/contextapis/DictContext';
 import { useFeedback } from '@/contextapis/FeedbackContext';
 import { useTheme } from '@/contextapis/ThemeContext';
+import { COVERS } from '@/constants/DictionaryCovers';
+import CreateDictionary from './CreateDictionaryModal';
 
-export default function Dictionary({ title, length, id, language }) {
+export default function Dictionary({ title, length, id, language, description, cover , created_at}) {
     const { colors } = useTheme();
     const dColors = colors.dictionaries;
     const { t } = useTranslation();
     const navigation = useNavigation();
     const [visible, setVisible] = useState(false);
+    const [editVisible, setEditVisible] = useState(false);
     const [shareVisible, setShareVisible] = useState(false);
     const [selectedFileType, setSelectedFileType] = useState('.pdf');
     const [fileTypeOpen, setFileTypeOpen] = useState(false);
@@ -72,13 +75,9 @@ export default function Dictionary({ title, length, id, language }) {
         setVisible(true);
     };
 
-    const handleCloseOptions = (e) => {
-        e?.stopPropagation?.();
+    const handleOptionEdit = () => {
         setVisible(false);
-    };
-
-    const handleOptionPress = () => {
-        setVisible(false);
+        setEditVisible(true);
     };
 
     const handleOptionShare = () => {
@@ -137,7 +136,7 @@ export default function Dictionary({ title, length, id, language }) {
                 ]}
                 activeOpacity={0.8}>
                 <View style={styles.dictionaryRow}>
-                    <Image source={require('../assets/dictionary_default_cover.jpg')} style={styles.dictionaryCover} />
+                    <Image source={COVERS[cover] || COVERS["dictionary_cover_1"]} style={styles.dictionaryCover} />
                     <View style={{ flex: 1, paddingHorizontal: 12, gap: 2 }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Text style={{ flex: 1, fontWeight: '700', fontSize: 16, color: dColors.textPrimary }}>{title}</Text>
@@ -155,24 +154,24 @@ export default function Dictionary({ title, length, id, language }) {
                             <Text style={{ color: dColors.textSecondary, fontSize: 13, fontWeight: '500' }}>
                                 {length == 0 ? t('empty') : length + ' ' + t('words')}
                             </Text>
-                            <Text style={{ color: dColors.textMuted, fontSize: 11 }}>{t('lastUpdateStr')}</Text>
+                            <Text style={{ color: dColors.textMuted, fontSize: 11 }}>{t('created_at') + created_at.slice(0,10)}</Text>
                         </View>
                     </View>
                 </View>
             </TouchableOpacity>
 
             <Modal statusBarTranslucent={true} visible={visible} transparent animationType="fade" onRequestClose={() => setVisible(false)}>
-                <Pressable style={styles.overlay} onPress={handleCloseOptions}>
+                <Pressable style={styles.overlay} onPress={()=>setVisible(false)}>
                     <Pressable style={[styles.modalContainer, { backgroundColor: dColors.modalBg, shadowColor: dColors.cardShadow }]} onPress={(e) => e.stopPropagation()}>
                         <View style={[styles.modalHeader, { borderBottomColor: dColors.cardBorder }]}>
                             <Text style={[styles.modalTitle, { color: dColors.modalTitle }]}>{t('dictOptions')}</Text>
-                            <TouchableOpacity onPress={handleCloseOptions} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
+                            <TouchableOpacity onPress={()=>setVisible(false)} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
                                 <Ionicons name="close" size={20} color={dColors.textSecondary} />
                             </TouchableOpacity>
                         </View>
 
                         <View style={styles.modalOptionsList}>
-                            <TouchableOpacity style={styles.modalOptionItem} activeOpacity={0.7} onPress={() => handleOptionPress('edit')}>
+                            <TouchableOpacity style={styles.modalOptionItem} activeOpacity={0.7} onPress={handleOptionEdit}>
                                 <View style={[styles.modalOptionIconWrapper, { backgroundColor: dColors.badgeBg }]}>
                                     <Ionicons name="create-outline" size={20} color={dColors.badgeText} />
                                 </View>
@@ -277,6 +276,18 @@ export default function Dictionary({ title, length, id, language }) {
                     </Pressable>
                 </Pressable>
             </Modal>
+
+            <CreateDictionary
+                visible={editVisible}
+                setVisible={setEditVisible}
+                initialData={{
+                    id,
+                    name: title,
+                    description: description || "",
+                    cover: cover || "dictionary_cover_1",
+                    language
+                }}
+            />
         </>
     )
 }

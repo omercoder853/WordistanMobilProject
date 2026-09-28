@@ -1,6 +1,6 @@
 import { getDB } from "./sqlite";
 
-const insertDictionary = async ({ id, user_id, name, description, language, is_synced }) => {
+const insertDictionary = async ({ id, user_id, name, description, language, cover = 'dictionary_cover_1', is_synced }) => {
     if (!id || id === 'null' || id === 'undefined') {
         console.error("❌ SQLite Ekleme Hatası: Geçersiz dictionary ID (null/undefined).");
         return false;
@@ -8,26 +8,30 @@ const insertDictionary = async ({ id, user_id, name, description, language, is_s
     try {
         const db = await getDB();
         const result = await db.runAsync(
-            `INSERT INTO dictionaries (id, user_id, name, description, language, is_synced) 
-             VALUES (?, ?, ?, ?, ?, ?);`,
-            [String(id), String(user_id), name, description, language, is_synced]
+            `INSERT INTO dictionaries (id, user_id, name, description, language, cover, is_synced) 
+             VALUES (?, ?, ?, ?, ?, ?, ?);`,
+            [String(id), String(user_id), name, description, language, cover || 'dictionary_cover_1', is_synced]
         );
         return result.changes > 0;
     } catch (error) {
         console.error("❌ SQLite Ekleme Hatası:", error.message);
-        console.error("Gönderilen Parametreler:", { id, user_id, name, description, language, is_synced });
+        console.error("Gönderilen Parametreler:", { id, user_id, name, description, language, cover, is_synced });
         return false;
     }
 };
 
-const updateDictionary = async ({ id, name, description, language }) => {
+const updateDictionary = async ({ id, name, description, language, cover, is_synced = 0 }) => {
     try {
         const db = await getDB();
         const result = await db.runAsync(
             `UPDATE dictionaries 
-             SET name = ?, description = ?, language = ?, is_synced = 0 
+             SET name = COALESCE(?, name), 
+                 description = COALESCE(?, description), 
+                 language = COALESCE(?, language),
+                 cover = COALESCE(?, cover),
+                 is_synced = ? 
              WHERE id = ?;`,
-            [name, description ?? "", language, String(id)]
+            [name ?? null, description ?? null, language ?? null, cover ?? null, is_synced, String(id)]
         );
         return result.changes > 0;
     } catch (error) {
@@ -77,7 +81,7 @@ const selectOnlyLocalDictionaries = async (user_id) => {
     try {
         const db = await getDB();
         const rows = await db.getAllAsync(
-            `SELECT id, user_id, name, description, language, created_at 
+            `SELECT id, user_id, name, description, language, cover, created_at 
              FROM dictionaries 
              WHERE user_id = ? AND is_synced = 0 AND is_deleted = 0`,
             [user_id]
@@ -151,15 +155,16 @@ const upsertDictionaries = async (serverDicts, fallbackUserId = null) => {
             if (!dictId || dictId === 'null' || dictId === 'undefined' || !userId) continue;
 
             await db.runAsync(
-                `INSERT INTO dictionaries (id, user_id, name, description, language, is_synced, is_deleted, created_at)
-                 VALUES (?, ?, ?, ?, ?, 1, 0, ?)
+                `INSERT INTO dictionaries (id, user_id, name, description, language, cover, is_synced, is_deleted, created_at)
+                 VALUES (?, ?, ?, ?, ?, ?, 1, 0, ?)
                  ON CONFLICT(id) DO UPDATE SET
                  name = excluded.name,
                  description = excluded.description,
                  language = excluded.language,
+                 cover = excluded.cover,
                  is_synced = 1,
                  is_deleted = 0;`,
-                [String(dictId), String(userId), dict.name, dict.description ?? "", dict.language, dict.created_at ?? new Date().toISOString()]
+                [String(dictId), String(userId), dict.name, dict.description ?? "", dict.language, dict.cover || 'dictionary_cover_1', dict.created_at ?? new Date().toISOString()]
             );
         }
     });
@@ -320,10 +325,10 @@ const upsertWords = async (serverWords) => {
 
 export const dictionariesSQLite = {
     // Dictionaries
-    insertDictionary: ({ id, user_id, name, description = "", language, is_synced = 0 }) =>
-        insertDictionary({ id, user_id, name, description, language, is_synced }),
-    updateDictionary: ({ id, name, description, language }) =>
-        updateDictionary({ id, name, description, language }),
+    insertDictionary: ({ id, user_id, name, description = "", language, cover = 'dictionary_cover_1', is_synced = 0 }) =>
+        insertDictionary({ id, user_id, name, description, language, cover, is_synced }),
+    updateDictionary: ({ id, name, description, language, cover, is_synced = 0 }) =>
+        updateDictionary({ id, name, description, language, cover, is_synced }),
     softDeleteDictionary: (id) => softDeleteDictionary(id),
     selectDictionaries: (user_id) => selectDictionaries(user_id),
     selectOnlyLocalDictionaries: (user_id) => selectOnlyLocalDictionaries(user_id),

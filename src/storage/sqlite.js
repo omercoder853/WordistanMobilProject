@@ -22,6 +22,7 @@ export const initDatabase = async () => {
       name TEXT NOT NULL,
       description TEXT,
       language TEXT NOT NULL,
+      cover TEXT DEFAULT 'dictionary_cover_1',
       is_synced INTEGER DEFAULT 0,
       is_deleted INTEGER DEFAULT 0,
       created_at TEXT DEFAULT (datetime('now'))
@@ -141,7 +142,6 @@ export const initDatabase = async () => {
             updated_at       = datetime('now')
         WHERE user_id = NEW.user_id;
     END;`);
-
     
   console.log("✅ SQLite Storage : Database initialized successfully.");
   return db;

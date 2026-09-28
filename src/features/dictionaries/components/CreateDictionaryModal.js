@@ -1,48 +1,123 @@
 import {
     View, Modal, TextInput, Text, TouchableOpacity,
     TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView,
-    ActivityIndicator, Platform, StyleSheet, ScrollView
+    ActivityIndicator, StyleSheet, ScrollView, Image
 } from "react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Ionicons } from '@expo/vector-icons';
 import { useDictionary } from "../../../contextapis/DictContext";
+import { useFeedback } from "@/contextapis/FeedbackContext";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@/contextapis/ThemeContext";
+import { COVERS } from "@/constants/DictionaryCovers";
 
-export default function CreateDictionary({ visible, setVisible }) {
+const COVER_KEYS = Object.keys(COVERS);
+
+export default function CreateDictionary({ visible, setVisible, initialData = null }) {
     const { colors } = useTheme();
     const dColors = colors.dictionaries;
     const { t } = useTranslation();
+    const { showToast } = useFeedback();
+    const { createDictionary, updateDictionary } = useDictionary();
+
+    const isEditMode = Boolean(initialData?.id);
+
     const [dictName, setDictName] = useState("");
     const [dictDesc, setDictDesc] = useState("");
     const [dictLang, setDictLang] = useState("TR to ENG");
+    const [selectedCover, setSelectedCover] = useState("dictionary_cover_1");
     const [loading, setLoading] = useState(false);
-    const { createDictionary } = useDictionary();
 
-    const handleCreate = async () => {
-        if (!dictName.trim() || !dictDesc.trim() || loading) return;
-        setLoading(true);
-        try {
-            await createDictionary({ name: dictName.trim(), description: dictDesc.trim(), language: dictLang });
-            setDictName("");
-            setDictDesc("");
-            setVisible(false);
-        } catch (error) {
-            console.error("Create dictionary error:", error);
-        } finally {
-            setLoading(false);
+    useEffect(() => {
+        if (visible) {
+            if (initialData) {
+                setDictName(initialData.name || "");
+                setDictDesc(initialData.description || "");
+                setDictLang(initialData.language || "TR to ENG");
+                setSelectedCover(initialData.cover || "dictionary_cover_1");
+            } else {
+                setDictName("");
+                setDictDesc("");
+                setDictLang("TR to ENG");
+                setSelectedCover("dictionary_cover_1");
+            }
         }
-    };
+    }, [visible, initialData]);
 
     const handleClose = () => {
         if (!loading) {
             setVisible(false);
-            setDictName("");
-            setDictDesc("");
+            if (!isEditMode) {
+                setDictName("");
+                setDictDesc("");
+                setSelectedCover("dictionary_cover_1");
+            }
         }
     };
 
-    const isFormValid = dictName.trim().length > 0 && dictDesc.trim().length > 0;
+    const hasChanges = isEditMode
+        ? (dictName.trim() !== (initialData?.name || "").trim() ||
+           dictDesc.trim() !== (initialData?.description || "").trim() ||
+           selectedCover !== (initialData?.cover || "dictionary_cover_1"))
+        : true;
+
+    const isFormValid = dictName.trim().length >= 3 && dictDesc.trim().length > 0 && hasChanges;
+
+    const handleSubmit = async () => {
+        const trimmedName = dictName.trim();
+        const trimmedDesc = dictDesc.trim();
+
+        if (!trimmedName || !trimmedDesc || loading) return;
+
+        if (trimmedName.length < 3) {
+            showToast(t('warning'), t('nameMinLength'), 'warning');
+            return;
+        }
+
+        setLoading(true);
+        try {
+            if (isEditMode) {
+                const payload = {};
+                if (trimmedName !== (initialData?.name || "").trim()) {
+                    payload.name = trimmedName;
+                }
+                if (trimmedDesc !== (initialData?.description || "").trim()) {
+                    payload.description = trimmedDesc;
+                }
+                if (selectedCover !== (initialData?.cover || "dictionary_cover_1")) {
+                    payload.cover = selectedCover;
+                }
+
+                if (Object.keys(payload).length === 0) {
+                    showToast(t('info'), t('noChangesToSave'), 'info');
+                    setVisible(false);
+                    return;
+                }
+
+                const ok = await updateDictionary(initialData.id, payload);
+                if (ok) {
+                    setVisible(false);
+                }
+            } else {
+                const ok = await createDictionary({
+                    name: trimmedName,
+                    description: trimmedDesc,
+                    language: dictLang,
+                    cover: selectedCover
+                });
+                if (ok) {
+                    setDictName("");
+                    setDictDesc("");
+                    setSelectedCover("dictionary_cover_1");
+                    setVisible(false);
+                }
+            }
+        } catch (error) {
+            console.error("Dictionary submit error:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <Modal
@@ -67,11 +142,60 @@ export default function CreateDictionary({ visible, setVisible }) {
                         <View style={[styles.modalCard, { backgroundColor: dColors.modalBg, shadowColor: dColors.cardShadow }]}>
                             {/* Modal Header */}
                             <View style={[styles.headerRow, { borderBottomColor: dColors.cardBorder }]}>
-                                <Text style={[styles.modalTitle, { color: dColors.modalTitle }]}>{t('createNewDictionary')}</Text>
+                                <Text style={[styles.modalTitle, { color: dColors.modalTitle }]}>
+                                    {isEditMode ? t('editDictionary') : t('createNewDictionary')}
+                                </Text>
                                 <TouchableOpacity onPress={handleClose} disabled={loading} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
                                     <Ionicons name="close" size={22} color={dColors.textSecondary} />
                                 </TouchableOpacity>
                             </View>
+
+                            {/* Cover Selection Section */}
+                            <View style={styles.coverSectionHeader}>
+                                <Text style={[styles.fieldLabel, { color: dColors.textSecondary, marginBottom: 0 }]}>
+                                    {t('selectCover')}
+                                </Text>
+                                <View style={[styles.coverPreviewMini, { borderColor: dColors.cardBorder }]}>
+                                    <Image
+                                        source={COVERS[selectedCover] || COVERS["dictionary_cover_1"]}
+                                        style={styles.coverPreviewMiniImg}
+                                    />
+                                </View>
+                            </View>
+
+                            <ScrollView
+                                horizontal
+                                showsHorizontalScrollIndicator={false}
+                                contentContainerStyle={styles.coverListContainer}
+                                style={styles.coverScrollView}
+                            >
+                                {COVER_KEYS.map((coverKey) => {
+                                    const isSelected = selectedCover === coverKey;
+                                    return (
+                                        <TouchableOpacity
+                                            key={coverKey}
+                                            activeOpacity={0.75}
+                                            disabled={loading}
+                                            onPress={() => setSelectedCover(coverKey)}
+                                            style={[
+                                                styles.coverItem,
+                                                { borderColor: isSelected ? dColors.addBtnBg : dColors.cardBorder },
+                                                isSelected && styles.coverItemSelected
+                                            ]}
+                                        >
+                                            <Image
+                                                source={COVERS[coverKey]}
+                                                style={styles.coverItemImage}
+                                            />
+                                            {isSelected && (
+                                                <View style={[styles.checkBadge, { backgroundColor: dColors.addBtnBg }]}>
+                                                    <Ionicons name="checkmark" size={12} color="#FFFFFF" />
+                                                </View>
+                                            )}
+                                        </TouchableOpacity>
+                                    );
+                                })}
+                            </ScrollView>
 
                             {/* Name Input */}
                             <Text style={[styles.fieldLabel, { color: dColors.textSecondary }]}>{t('dictionaryName')}</Text>
@@ -109,47 +233,56 @@ export default function CreateDictionary({ visible, setVisible }) {
                                 onChangeText={setDictDesc}
                             />
 
-                            {/* Language Switcher */}
+                            {/* Language Switcher or Locked Indicator */}
                             <Text style={[styles.fieldLabel, { color: dColors.textSecondary }]}>{t('dictionaryLanguage')}</Text>
-                            <View style={[styles.langSegmentContainer, { backgroundColor: dColors.modalItemBg, borderColor: dColors.cardBorder }]}>
-                                <TouchableOpacity
-                                    activeOpacity={0.7}
-                                    onPress={() => setDictLang("TR to ENG")}
-                                    disabled={loading}
-                                    style={[
-                                        styles.langSegmentTab,
-                                        dictLang === "TR to ENG" && [styles.langSegmentActive, { backgroundColor: dColors.tabActive }]
-                                    ]}
-                                >
-                                    <Text
+                            {isEditMode ? (
+                                <View style={[styles.lockedLangContainer, { backgroundColor: dColors.modalItemBg, borderColor: dColors.cardBorder }]}>
+                                    <Ionicons name="lock-closed" size={14} color={dColors.textSecondary} />
+                                    <Text style={[styles.lockedLangText, { color: dColors.textSecondary }]}>
+                                        {dictLang === "TR to ENG" ? "TR → ENG" : "ENG → TR"}
+                                    </Text>
+                                </View>
+                            ) : (
+                                <View style={[styles.langSegmentContainer, { backgroundColor: dColors.modalItemBg, borderColor: dColors.cardBorder }]}>
+                                    <TouchableOpacity
+                                        activeOpacity={0.7}
+                                        onPress={() => setDictLang("TR to ENG")}
+                                        disabled={loading}
                                         style={[
-                                            styles.langSegmentText,
-                                            { color: dictLang === "TR to ENG" ? "#FFFFFF" : dColors.textSecondary }
+                                            styles.langSegmentTab,
+                                            dictLang === "TR to ENG" && [styles.langSegmentActive, { backgroundColor: dColors.tabActive }]
                                         ]}
                                     >
-                                        TR → ENG
-                                    </Text>
-                                </TouchableOpacity>
+                                        <Text
+                                            style={[
+                                                styles.langSegmentText,
+                                                { color: dictLang === "TR to ENG" ? "#FFFFFF" : dColors.textSecondary }
+                                            ]}
+                                        >
+                                            TR → ENG
+                                        </Text>
+                                    </TouchableOpacity>
 
-                                <TouchableOpacity
-                                    activeOpacity={0.7}
-                                    onPress={() => setDictLang("ENG to TR")}
-                                    disabled={loading}
-                                    style={[
-                                        styles.langSegmentTab,
-                                        dictLang === "ENG to TR" && [styles.langSegmentActive, { backgroundColor: dColors.tabActive }]
-                                    ]}
-                                >
-                                    <Text
+                                    <TouchableOpacity
+                                        activeOpacity={0.7}
+                                        onPress={() => setDictLang("ENG to TR")}
+                                        disabled={loading}
                                         style={[
-                                            styles.langSegmentText,
-                                            { color: dictLang === "ENG to TR" ? "#FFFFFF" : dColors.textSecondary }
+                                            styles.langSegmentTab,
+                                            dictLang === "ENG to TR" && [styles.langSegmentActive, { backgroundColor: dColors.tabActive }]
                                         ]}
                                     >
-                                        ENG → TR
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
+                                        <Text
+                                            style={[
+                                                styles.langSegmentText,
+                                                { color: dictLang === "ENG to TR" ? "#FFFFFF" : dColors.textSecondary }
+                                            ]}
+                                        >
+                                            ENG → TR
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
+                            )}
 
                             {/* Action Buttons */}
                             <View style={styles.actionButtonRow}>
@@ -167,13 +300,15 @@ export default function CreateDictionary({ visible, setVisible }) {
                                         { backgroundColor: dColors.addBtnBg },
                                         (!isFormValid || loading) && styles.submitButtonDisabled
                                     ]}
-                                    onPress={handleCreate}
+                                    onPress={handleSubmit}
                                     disabled={!isFormValid || loading}
                                 >
                                     {loading ? (
                                         <ActivityIndicator size="small" color="#FFFFFF" />
                                     ) : (
-                                        <Text style={styles.submitButtonText}>{t('create')}</Text>
+                                        <Text style={styles.submitButtonText}>
+                                            {isEditMode ? t('save') : t('create')}
+                                        </Text>
                                     )}
                                 </TouchableOpacity>
                             </View>
@@ -198,7 +333,7 @@ const styles = StyleSheet.create({
     },
     modalCard: {
         width: '100%',
-        maxWidth: 360,
+        maxWidth: 370,
         borderRadius: 24,
         padding: 22,
         elevation: 12,
@@ -211,7 +346,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingBottom: 14,
-        marginBottom: 16,
+        marginBottom: 12,
         borderBottomWidth: 1,
     },
     modalTitle: {
@@ -224,6 +359,57 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         marginBottom: 8,
         marginTop: 6,
+    },
+    coverSectionHeader: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginTop: 4,
+        marginBottom: 8,
+    },
+    coverPreviewMini: {
+        width: 32,
+        height: 32,
+        borderRadius: 8,
+        borderWidth: 1.5,
+        overflow: 'hidden',
+    },
+    coverPreviewMiniImg: {
+        width: '100%',
+        height: '100%',
+    },
+    coverScrollView: {
+        marginBottom: 12,
+    },
+    coverListContainer: {
+        gap: 10,
+        paddingVertical: 4,
+        paddingHorizontal: 2,
+    },
+    coverItem: {
+        width: 52,
+        height: 52,
+        borderRadius: 12,
+        borderWidth: 2,
+        overflow: 'hidden',
+        position: 'relative',
+    },
+    coverItemSelected: {
+        transform: [{ scale: 1.05 }],
+    },
+    coverItemImage: {
+        width: '100%',
+        height: '100%',
+    },
+    checkBadge: {
+        position: 'absolute',
+        top: 2,
+        right: 2,
+        width: 16,
+        height: 16,
+        borderRadius: 8,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     textInput: {
         borderRadius: 14,
@@ -258,6 +444,21 @@ const styles = StyleSheet.create({
     langSegmentText: {
         fontSize: 13,
         fontWeight: '700',
+    },
+    lockedLangContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 10,
+        borderRadius: 14,
+        borderWidth: 1,
+        marginBottom: 20,
+        gap: 8,
+    },
+    lockedLangText: {
+        fontSize: 13,
+        fontWeight: '700',
+        letterSpacing: 0.3,
     },
     actionButtonRow: {
         flexDirection: 'row',

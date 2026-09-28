@@ -5,7 +5,7 @@ import { dictionariesSQLite } from "@/storage/DictionariesSQLite";
 import { responder, getRandomId, getUserId } from "@/utils/ApiUtils"
 
 
-const createDictionary = async (name, description, language) => {
+const createDictionary = async (name, description, language, cover = 'dictionary_cover_1') => {
     const isOnline = await NetworkUtils.isOnline();
     const user_id = await getUserId();
     const localId = getRandomId();
@@ -15,7 +15,7 @@ const createDictionary = async (name, description, language) => {
         let serverItem = null;
         try {
             console.log("🔄 Dictionary API : Creating dictionary on cloud (Supabase)...");
-            const { ok, status, data } = await apiClient.post(ENDPOINTS.newDictionary, { name, description, language });
+            const { ok, status, data } = await apiClient.post(ENDPOINTS.newDictionary, { name, description, language, cover });
             if (ok) {
                 cloudSuccess = true;
                 serverItem = Array.isArray(data) ? data[0] : (data && typeof data === 'object' ? data : null);
@@ -27,21 +27,58 @@ const createDictionary = async (name, description, language) => {
         if (cloudSuccess) {
             const serverId = serverItem?.id;
             const finalId = serverId ? String(serverId) : localId;
-            const sqliteOk = await dictionariesSQLite.insertDictionary({ id: finalId, user_id, name, description, language, is_synced: 1 });
+            const sqliteOk = await dictionariesSQLite.insertDictionary({ id: finalId, user_id, name, description, language, cover, is_synced: 1 });
             if (!sqliteOk) {
                 console.log("⚠️ Dictionary API : Cloud succeeded but local insert failed. Retrying...");
-                await dictionariesSQLite.insertDictionary({ id: finalId, user_id, name, description, language, is_synced: 1 });
+                await dictionariesSQLite.insertDictionary({ id: finalId, user_id, name, description, language, cover, is_synced: 1 });
             }
-            return responder(true, true, 200, { ...(serverItem || {}), id: finalId, name, description, language });
+            return responder(true, true, 200, { ...(serverItem || {}), id: finalId, name, description, language, cover });
         }
     }
 
-    const res = await dictionariesSQLite.insertDictionary({ id: localId, user_id, name, description, language, is_synced: 0 });
+    const res = await dictionariesSQLite.insertDictionary({ id: localId, user_id, name, description, language, cover, is_synced: 0 });
     if (res) {
-        return responder(true, false, 201, { id: localId, user_id, name, description, language });
+        return responder(true, false, 201, { id: localId, user_id, name, description, language, cover });
     } else {
         console.log("❌ Dictionary API : Dictionary could not be created in SQLite .");
         return responder(false, false, 400, null);
+    }
+};
+
+const updateDictionary = async (dictId, updateFields) => {
+    if (!dictId || !updateFields || Object.keys(updateFields).length === 0) {
+        console.log("❌ Dictionary API : Invalid dictId or empty updateFields for update :", dictId, updateFields);
+        return responder(false, false, 400, null);
+    }
+
+    const isOnline = await NetworkUtils.isOnline();
+    let cloudSuccess = false;
+    let serverData = null;
+
+    if (isOnline) {
+        try {
+            console.log("🔄 Dictionary API : Updating dictionary on cloud (Supabase)...", dictId, updateFields);
+            const { ok, status, data } = await apiClient.patch(ENDPOINTS.updateDictionary(String(dictId)), updateFields);
+            if (ok) {
+                cloudSuccess = true;
+                serverData = data;
+            }
+        } catch (error) {
+            console.log("⚠️ Dictionary API : Cloud update failed, will save locally:", error);
+        }
+    }
+
+    const localRes = await dictionariesSQLite.updateDictionary({
+        id: String(dictId),
+        ...updateFields,
+        is_synced: cloudSuccess ? 1 : 0
+    });
+
+    if (localRes) {
+        return responder(true, cloudSuccess, 200, serverData || { id: dictId, ...updateFields });
+    } else {
+        console.log("❌ Dictionary API : Failed to update dictionary in SQLite.");
+        return responder(false, false, 500, null);
     }
 };
 
@@ -55,7 +92,7 @@ const deleteDictionary = async (dictId) => {
     const isOnline = await NetworkUtils.isOnline();
     if (isOnline) {
         try {
-            const { ok, status, data } = await apiClient.delete(ENDPOINTS.deleteDictionary + String(dictId));
+            const { ok, status, data } = await apiClient.delete(ENDPOINTS.deleteDictionary(String(dictId)));
             if (ok) {
                 await dictionariesSQLite.hardDeleteDictionaries([String(dictId)]);
                 return responder(true, true, status, data);
@@ -204,7 +241,8 @@ const deleteWord = async (wordId) => {
 
 export const dictionaryApi = {
     getWords: (dictId) => getWords(dictId),
-    createDictionary: (name, description, language) => createDictionary(name, description, language),
+    createDictionary: (name, description, language, cover) => createDictionary(name, description, language, cover),
+    updateDictionary: (dictId, updateFields) => updateDictionary(dictId, updateFields),
     deleteDictionary: (dictId) => deleteDictionary(dictId),
     fetchDicts: () => fetchDicts(),
     saveWord: ({ dictionary_id, word, meaning }) => saveWord({ dictionary_id, word, meaning }),
