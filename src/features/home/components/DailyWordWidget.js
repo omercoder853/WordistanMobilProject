@@ -7,6 +7,7 @@ import { useDictionary } from '@/contextapis/DictContext';
 import useSpeech from '@/hooks/useSpeech';
 import SaveWordModal from '@/shared/components/SaveWordModal';
 import { useTheme } from '@/contextapis/ThemeContext';
+import Skeleton from '@/shared/components/Skeleton';
 
 const DailyWord = () => {
     const { colors } = useTheme();
@@ -14,7 +15,7 @@ const DailyWord = () => {
     const { speak, stop, isSpeaking } = useSpeech();
     const { t, i18n } = useTranslation();
     const [modalVisible, setModalVisible] = useState(false);
-    const { dailyWord, setDictReload, deleteWord, dicts } = useDictionary();
+    const { dailyWord, setDictReload, deleteWord, dicts , dailyWordLoading } = useDictionary();
     const lang = i18n.language;
 
     const heartToggle = async () => {
@@ -45,40 +46,42 @@ const DailyWord = () => {
     const meaning = lang === 'tr' ? dailyWord?.meaning : dailyWord?.word;
 
     return (
-        <>
+        <>  
             <LinearGradient
                 colors={dwColors.gradient}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
-                style={[styles.dailyWordContainer, { shadowColor: dwColors.shadow }]}
-            >
+                style={[styles.dailyWordContainer, { shadowColor: dwColors.shadow }]}>
+
                 <View style={styles.dailyWordRow}>
                     <Text style={[styles.dailyWordTitle, { color: dwColors.title }]}>{t('wordOfTheDay')}</Text>
                     <View style={styles.dailyWordButtons}>
-                        <TouchableOpacity
+                        {dailyWordLoading ? (<Skeleton variant="glass" width={36} height={36} radius={20} />) : 
+                        (<TouchableOpacity
                             onPress={handleSpeak}
-                            style={[styles.actionBtn, { backgroundColor: dwColors.buttonBg }]}
-                        >
+                            style={[styles.actionBtn, { backgroundColor: dwColors.buttonBg }]}>
                             <Feather name="volume-2" size={20} color={dwColors.speakerIcon} />
-                        </TouchableOpacity>
-                        <TouchableOpacity
+                        </TouchableOpacity>) }
+                        {dailyWordLoading ? (<Skeleton variant="glass" width={36} height={36} style={{ marginLeft: 8 }} radius={20} />) : 
+                        (<TouchableOpacity
                             onPress={heartToggle}
-                            style={[styles.actionBtn, { backgroundColor: dwColors.buttonBg }]}
-                        >
+                            style={[styles.actionBtn, { backgroundColor: dwColors.buttonBg }]}>
                             <Entypo
                                 name={dailyWord?.is_saved ? "heart" : "heart-outlined"}
                                 size={20}
-                                color={dailyWord?.is_saved ? dwColors.heartActive : dwColors.heartInactive}
-                            />
-                        </TouchableOpacity>
-                    </View>
+                                color={dailyWord?.is_saved ? dwColors.heartActive : dwColors.heartInactive}/>
+                        </TouchableOpacity>)}
+                    </View> 
                 </View>
                 <Text style={[styles.dailyWordLabel, { color: dwColors.label }]}>{t('word')}</Text>
-                <Text style={[styles.dailyWordContent, { color: dwColors.content, fontSize: 28, marginTop: 5 }]}>{word}</Text>
+                {dailyWordLoading ? (<Skeleton variant="glass" width="80%" height={38} radius={10} style={{ marginTop: 5 }} />) : 
+                (<Text style={[styles.dailyWordContent, { color: dwColors.content, fontSize: 28, marginTop: 5 }]}>{word}</Text>)}
                 <Text style={[styles.dailyWordLabel, { color: dwColors.label }]}>{t('meaning')}</Text>
-                <Text style={[styles.dailyWordContent, { color: dwColors.content, fontSize: 18 }]}>{meaning}</Text>
+                {dailyWordLoading ? (<Skeleton variant="glass" width="80%" height={20} radius={10} style={{ marginTop: 5 }} />) : 
+                <Text style={[styles.dailyWordContent, { color: dwColors.content, fontSize: 18 }]}>{meaning}</Text>}
                 <Text style={[styles.dailyWordLabel, { color: dwColors.label }]}>{t('inSentence')}</Text>
-                <Text style={[styles.dailyWordContent, { color: dwColors.content }]}>{lang == 'tr' ? dailyWord?.example_en : dailyWord?.example_tr}</Text>
+                {dailyWordLoading ? (<Skeleton variant="glass" width="80%" height={34} radius={10} style={{ marginTop: 5 }} />) : 
+                <Text style={[styles.dailyWordContent, { color: dwColors.content }]}>{lang == 'tr' ? dailyWord?.example_en : dailyWord?.example_tr}</Text>}
             </LinearGradient>
 
             {/* Sözlük Seçim Modalı */}

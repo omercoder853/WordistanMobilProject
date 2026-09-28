@@ -1,19 +1,17 @@
-import { View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useAuth } from '@/contextapis/AuthContext';
-import HeaderTopRow from './components/HeaderTopRow';
-import ProfileHeader from './components/ProfileHeader';
-import ProfileStatsRow from './components/ProfileStatsRow';
-import { LinearGradient } from 'expo-linear-gradient';
-import { useEffect } from "react";
-import ProfileConsole from './components/ProfileConsole';
-import { storage } from '@/storage/storage';
-import { STORAGE_KEYS } from '@/constants/StorageKeys';
-import { useTheme } from '@/contextapis/ThemeContext';
+import React, { useEffect } from "react";
+import { View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useAuth } from "@/contextapis/AuthContext";
+import ProfileHeader from "./components/ProfileHeader";
+import ProfileStatsRow from "./components/ProfileStatsRow";
+import ProfileConsole from "./components/ProfileConsole";
+import { storage } from "@/storage/storage";
+import { STORAGE_KEYS } from "@/constants/StorageKeys";
+import { useTheme } from "@/contextapis/ThemeContext";
 
 const Profile = () => {
     const { user, setUser } = useAuth();
-    const { colors, isDark } = useTheme();
+    const { colors } = useTheme();
 
     useEffect(() => {
         if (!user) {
@@ -27,22 +25,21 @@ const Profile = () => {
         }
     }, [user]);
 
-    const gradientColors = isDark ? ['#1E1E24', '#1f1f1f'] : ['#e9d5ff', colors.common.background];
-
     return (
-        <LinearGradient colors={gradientColors} start={{ x: 0, y: 0 }}
-            end={{ x: 0, y: 0.5 }} style={{ flex: 1, alignItems: 'center' , paddingTop:40 }}>
-            <SafeAreaView style={{ flex: 1 }} edges={['top', 'left', 'right']}>
-                <View style={{ alignItems: 'center' }}>
-                    {/*<HeaderTopRow />*/}
+        <View style={{ flex: 1, width: "100%", backgroundColor: colors.common.background }}>
+            <SafeAreaView style={{ flex: 1, width: "100%" }} edges={["top", "left", "right"]}>
+                {/* Profil Başlığı ve İstatistik Kartı */}
+                <View style={{ width: "100%", alignItems: "center", paddingHorizontal: 16 }}>
                     <ProfileHeader />
                     <ProfileStatsRow />
                 </View>
-                <View style={{ flex: 1, width: '100%', alignItems: 'center', paddingHorizontal:15 }}>
+
+                {/* Profil Menü Listesi */}
+                <View style={{ flex: 1, width: "100%", paddingHorizontal: 16 }}>
                     <ProfileConsole />
                 </View>
             </SafeAreaView>
-        </LinearGradient>
+        </View>
     );
 };
 

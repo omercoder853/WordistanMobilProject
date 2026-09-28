@@ -6,6 +6,7 @@ export const UserStatsContext = createContext();
 
 export const UserStatsProvider = ({ children }) => {
     const { isLogin } = useAuth();
+    const [statsLoading , setStatsLoading] = useState(false);
 
     const [userStats, setUserStats] = useState(null);
     const [levelUpInfo, setLevelUpInfo] = useState(null);
@@ -25,10 +26,12 @@ export const UserStatsProvider = ({ children }) => {
     }, [userStats]);
 
     const fetchAndSetStats = useCallback(async () => {
+        setStatsLoading(true);
         const result = await statsApi.fetchStats()
         if (result.ok) {
             setUserStats(result.data)
         }
+        setStatsLoading(false);
     }, []);
 
     const dismissLevelUp = useCallback(async () => {
@@ -81,7 +84,7 @@ export const UserStatsProvider = ({ children }) => {
         <UserStatsContext.Provider value={{
             userStats, setUserStats, fetchAndSetStats,
             incSaved, incTranslated, incDictCreated, incXP,
-            levelUpInfo, dismissLevelUp
+            levelUpInfo, dismissLevelUp,statsLoading
         }}>
             {children}
         </UserStatsContext.Provider>

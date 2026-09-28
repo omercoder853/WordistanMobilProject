@@ -99,6 +99,10 @@
   "male":"Male",
   "other":"Other",
   "selectGender":"Select Your Gender",
+  "stepOf": "Step {{current}} of {{total}}",
+  "stepPersonalInfo": "Personal Info",
+  "stepPreferences": "Preferences",
+  "stepAccount": "Account Info",
   
   "___TRANSLATE___": "",
   "translate": "Translate",

@@ -99,6 +99,10 @@
   "male": "Erkek",
   "other": "Diğer",
   "selectGender": "Cinsiyetinizi Seçiniz",
+  "stepOf": "Adım {{current}} / {{total}}",
+  "stepPersonalInfo": "Kişisel Bilgiler",
+  "stepPreferences": "Tercihler",
+  "stepAccount": "Hesap Bilgileri",
 
   "___TRANSLATE___": "",
   "translate": "Çeviri",

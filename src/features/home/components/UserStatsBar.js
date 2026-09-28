@@ -3,17 +3,19 @@ import { AntDesign, FontAwesome } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { useUserStats } from '@/contextapis/UserStatsContext';
 import { useTheme } from '@/contextapis/ThemeContext';
+import Skeleton from '@/shared/components/Skeleton';
 
 const UserStatsBar = () => {
     const { colors } = useTheme();
     const statsColors = colors.home.statsBar;
     const { t } = useTranslation();
-    const { userStats } = useUserStats();
+    const { userStats,statsLoading } = useUserStats();
 
     return (
         <View style={styles.statRow}>
             {/* Streak Card */}
-            <TouchableOpacity
+            {statsLoading ? (<Skeleton height={72} radius={18} style={{ flex: 1 }} />) : 
+            (<TouchableOpacity
                 style={[
                     styles.statItemButton,
                     {
@@ -22,8 +24,7 @@ const UserStatsBar = () => {
                         shadowColor: statsColors.shadow,
                     }
                 ]}
-                activeOpacity={0.7}
-            >
+                activeOpacity={0.7}>
                 <View style={styles.statItemRow}>
                     <View style={[styles.iconBoxFire, { backgroundColor: statsColors.fireBg }]}>
                         <AntDesign name="fire" size={22} color={statsColors.fireIcon} />
@@ -33,10 +34,11 @@ const UserStatsBar = () => {
                         <Text style={[styles.statLabel, { color: statsColors.label }]}>{t('days')} {t('streak')}</Text>
                     </View>
                 </View>
-            </TouchableOpacity>
+            </TouchableOpacity>)}
 
             {/* XP Card */}
-            <TouchableOpacity
+            {statsLoading ? (<Skeleton height={72} radius={18} style={{ flex: 1 }} />) : 
+            (<TouchableOpacity
                 style={[
                     styles.statItemButton,
                     {
@@ -56,7 +58,7 @@ const UserStatsBar = () => {
                         <Text style={[styles.statLabel, { color: statsColors.label }]}>{t('xp')}</Text>
                     </View>
                 </View>
-            </TouchableOpacity>
+            </TouchableOpacity>)}
         </View>
     );
 };

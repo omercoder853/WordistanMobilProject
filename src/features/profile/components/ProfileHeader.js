@@ -1,24 +1,53 @@
+import React from "react";
 import { View, Text, Image } from "react-native";
 import styles from "../styles/styles";
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useAuth } from "@/contextapis/AuthContext";
 import { useTheme } from "@/contextapis/ThemeContext";
 
 export default function ProfileHeader() {
     const { user } = useAuth();
-    const { colors } = useTheme();
-    const imgSource = user?.gender == "male" ? require("@/shared/assets/default_avatar_boy.png") : require("@/shared/assets/default_avatar_girl.png");
+    const { colors, isDark } = useTheme();
+    const imgSource = user?.gender === "male" 
+        ? require("@/shared/assets/avatars/avatar_3.png") 
+        : require("@/shared/assets/avatars/avatar_2.png");
+
+    const ringBorderColor = isDark ? "#3A384A" : "#FFFFFF";
+    const nickBadgeBg = isDark ? "rgba(167, 139, 250, 0.15)" : "rgba(91, 63, 211, 0.08)";
+    const nickBadgeColor = isDark ? "#C084FC" : "#5B3FD3";
 
     return (
-        <View style={{ alignItems: 'center' , width:'100%' , borderBottomWidth:0.5 , paddingBottom:10 , 
-        borderBottomLeftRadius:10 , borderLeftWidth:1 , borderRightWidth:1,
-        borderBottomRightRadius:10,borderColor:"transparent" , borderBottomColor:colors.common.border }}>
-            <Image style={styles.profilePhoto} source={imgSource} />
-            <Text style={{ fontSize: 20, fontWeight: '900', marginBottom: 7, color: colors.profile.textPrimary }}>{user?.first_name + " " + user?.last_name}</Text>
-            <View style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }}>
-                <MaterialIcons name="email" size={15} color={colors.profile.textSecondary} />
-                <Text style={{ fontSize: 12, color: colors.profile.textSecondary }}>{user?.email}</Text>
+        <View style={styles.profileHeader}>
+            {/* Avatar with Elegant Ring */}
+            <View style={styles.avatarWrapper}>
+                <View style={[styles.avatarRing, { borderColor: ringBorderColor }]}>
+                    <Image style={styles.profilePhoto} source={imgSource} />
+                </View>
             </View>
+
+            {/* Full Name */}
+            <Text style={[styles.userName, { color: colors.profile.textPrimary }]}>
+                {(user?.first_name || "") + " " + (user?.last_name || "")}
+            </Text>
+
+            {/* Nickname Badge */}
+            {user?.nick_name ? (
+                <View style={[styles.nickBadge, { backgroundColor: nickBadgeBg }]}>
+                    <Text style={[styles.nickText, { color: nickBadgeColor }]}>
+                        @{user.nick_name}
+                    </Text>
+                </View>
+            ) : null}
+
+            {/* Email */}
+            {user?.email ? (
+                <View style={styles.userEmailRow}>
+                    <MaterialIcons name="mail-outline" size={14} color={colors.profile.textSecondary} />
+                    <Text style={[styles.userEmail, { color: colors.profile.textSecondary }]}>
+                        {user.email}
+                    </Text>
+                </View>
+            ) : null}
         </View>
     );
 }

@@ -18,8 +18,9 @@ export const DictionaryProvider = ({ children }) => {
     const { incSaved, incDictCreated } = useUserStats();
     const [dicts, setDicts] = useState([]);
     const { isLogin } = useAuth();
-    const [dictReload, setDictReload] = useState(false)
-    const [dailyWord, setDailyWord] = useState(null)
+    const [dictReload, setDictReload] = useState(false);
+    const [dailyWord, setDailyWord] = useState(null);
+    const [dailyWordLoading,setDailyWordLoading] = useState(false);
 
     const { shareAsJson, shareAsTxt, shareAsCsv, shareAsPdf } = useExports();
 
@@ -28,6 +29,7 @@ export const DictionaryProvider = ({ children }) => {
 
     useEffect(() => {
         const loadDailyWord = async () => {
+            setDailyWordLoading(true);
             const stored = await storage.get(STORAGE_KEYS.SESSION.DAILY_WORD)
             if (stored) {
                 const timestamp = Date.now()
@@ -44,6 +46,7 @@ export const DictionaryProvider = ({ children }) => {
                 console.log("ℹ️ Dict Context : There is no stored data for daily word.");
                 await getDailyWord();
             }
+            setDailyWordLoading(false);
         }
         loadDailyWord()
     }, [])
@@ -237,7 +240,7 @@ export const DictionaryProvider = ({ children }) => {
 
     return (<DictContext.Provider value={{
         dicts, getWords, getDict, createDictionary, setDictReload, deleteWord, ShareDictionary,
-        saveWord, dictReload, deleteDictionary, dailyWord, setDailyWord, removeDailyWord
+        saveWord, dictReload, deleteDictionary, dailyWord, setDailyWord, removeDailyWord,dailyWordLoading
     }}>{children}</DictContext.Provider>)
 }
 
