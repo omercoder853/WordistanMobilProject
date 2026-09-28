@@ -11,19 +11,19 @@ const ALLOWED_ACTIONS = [
 
 function validateXpLog({ id, user_id, type, amount }) {
   if (typeof id !== 'string' || id.trim().length === 0) {
-    console.log('Geçersiz id: Boş olamaz.');
+    console.log('Invalid id: Cant be empty.');
     return false;
   }
   if (typeof user_id !== 'string' || user_id.trim().length === 0) {
-    console.log('Geçersiz userId: Boş olamaz.');
+    console.log('Invalid userId: Cant be empty.');
     return false;
   }
   if (!ALLOWED_ACTIONS.includes(type)) {
-    console.log(`Geçersiz type: "${type}". İzin verilenler: ${ALLOWED_ACTIONS.join(', ')}`);
+    console.log(`Invalid type: "${type}". Allowed: ${ALLOWED_ACTIONS.join(', ')}`);
     return false;
   }
   if (typeof amount !== 'number' || !Number.isInteger(amount) || amount <= 0) {
-    console.log(`Geçersiz amount: Pozitif tam sayı olmalı. Gelen: ${amount}`);
+    console.log(`Invalid amount: Should be positive integer. Input: ${amount}`);
     return false;
   }
   return true;
@@ -122,7 +122,8 @@ const upsertUserStats = async (stats) => {
     try {
         const db = await getDB();
         await db.runAsync(
-            `INSERT INTO user_stats (user_id, total_xp, current_streak, max_streak, last_activity_date, translated_words, saved_words, dict_created, updated_at, level, xp_for_next, required_xp_for_level)
+            `INSERT INTO user_stats (user_id, total_xp, current_streak, max_streak, last_activity_date, 
+            translated_words, saved_words, dict_created, updated_at, level, xp_for_next, required_xp_for_level)
              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
              ON CONFLICT(user_id) DO UPDATE SET
                 total_xp = excluded.total_xp,

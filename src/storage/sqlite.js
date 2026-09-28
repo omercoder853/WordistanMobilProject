@@ -53,6 +53,21 @@ export const initDatabase = async () => {
     required_xp_for_level DEFAULT 0
   );
 
+    CREATE TABLE IF NOT EXISTS game_sessions (
+    id TEXT PRIMARY KEY NOT NULL,
+    user_id TEXT NOT NULL,
+    score FLOAT NOT NULL,
+    performance_score FLOAT,
+    game_mode TEXT NOT NULL,
+    total_count INTEGER NOT NULL,
+    correct_count INTEGER NOT NULL,
+    wrong_count INTEGER NOT NULL,
+    passed_count INTEGER NOT NULL,
+    duration_secs INTEGER NOT NULL,
+    is_synced INTEGER DEFAULT 0,
+    played_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
     CREATE TABLE IF NOT EXISTS xp_logs (
     id TEXT PRIMARY KEY NOT NULL,           
     user_id TEXT NOT NULL,                   

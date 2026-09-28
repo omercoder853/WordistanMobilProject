@@ -3,10 +3,10 @@ import Fruits from "@/shared/data/collections/fruits.json";
 import Animals from "@/shared/data/collections/animals.json";
 import Places from "@/shared/data/collections/places.json";
 import { useDictionary } from "./DictContext";
-import { ENDPOINTS } from "../constants/ApiConfig";
 import { useAuth } from "./AuthContext";
 import { useUserStats } from "./UserStatsContext";
-import { apiClient } from "../services/ApiClient";
+import { gamesApi } from "@/api/GamesApi";
+import { syncEvents } from "@/services/SyncEvents";
 
 const GameContext = createContext();
 
@@ -39,13 +39,26 @@ export const GameProvider = ({ children }) => {
             const fetchGameSessions = async () => {
                 try {
                     const sessions = await getGameSessions();
-                    setGameSessions(sessions);
+                    if (sessions) {
+                        setGameSessions(sessions);
+                    }
                 } catch (error) {
                     console.error('Error fetching game sessions:', error);
                 }
             };
             fetchGameSessions();
         }
+    }, [isLogin]);
+
+    // Sync tamamlandığında otomatik oyun oturumu yenileme
+    useEffect(() => {
+        const unsubscribe = syncEvents.onSyncComplete(() => {
+            if (isLogin) {
+                console.log("🔄 Games Context : Sync completed, triggering game sessions reload...");
+                getGameSessions();
+            }
+        });
+        return unsubscribe;
     }, [isLogin]);
 
     const resetGame = () => {
@@ -152,9 +165,9 @@ export const GameProvider = ({ children }) => {
     };
 
     const getGameSessions = async () => {
-        const { ok, status, data } = await apiClient.get(ENDPOINTS.gameSessions);
-        if (ok) {
-            console.log("✅ Games Context : Game sessions fetched successfully.");
+        const { ok, is_synced, status, data } = await gamesApi.getGameSessions();
+        if (ok && data) {
+            console.log("✅ Games Context : Game sessions fetched successfully from :", is_synced ? "cloud" : "local storage");
             setGameSessions(data);
             return data;
         } else {
@@ -164,14 +177,14 @@ export const GameProvider = ({ children }) => {
     };
 
     const saveGameSession = async (sessionData) => {
-        const { ok, status, data } = await apiClient.post(ENDPOINTS.saveGameSession, sessionData);
-        if (ok) {
-            console.log("✅ Games Context : New game session created successfully :", data);
+        const { ok, is_synced, status, data } = await gamesApi.saveGameSession(sessionData);
+        if (ok && data) {
+            console.log("✅ Games Context : New game session saved successfully at :", is_synced ? "cloud" : "local storage");
             incXP(sessionData.total_count, 'game_session');
             await getGameSessions();
             return data;
         } else {
-            console.error(`Failed to create new game session. Status: ${status}, Message: ${data}`);
+            console.error(`Failed to create new game session. Status: ${status}, Message:`, data);
             return null;
         }
     };

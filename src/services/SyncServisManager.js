@@ -8,6 +8,7 @@ import { STORAGE_KEYS } from '@/constants/StorageKeys';
 import { storage } from '@/storage/storage';
 import { syncEvents } from '@/services/SyncEvents';
 import { statsApi } from '@/api/StatsApi';
+import { gamesSQLite } from '@/storage/GamesSQLite';
 
 let isPulling = false;
 let isPushing = false;
@@ -108,6 +109,35 @@ export const syncService = {
     },
 
     /**
+     * Sunucudan güncel game_sessions çekip yerel SQLite'a yazar (PULL GAME SESSIONS).
+     * @returns {Promise<{success: boolean, count?: number}>}
+     */
+    pullGameSessions: async () => {
+        try {
+            const isOnline = await NetworkUtils.isOnline();
+            if (!isOnline) {
+                console.log("⚠️ Sync Service : pullGameSessions — İnternet yok, atlandı.");
+                return { success: false, message: "İnternet yok" };
+            }
+
+            console.log("🔄 Sync Service : pullGameSessions — Sunucudan game_sessions çekiliyor...");
+            const { ok, data } = await apiClient.get(ENDPOINTS.gameSessions);
+            if (ok && data && Array.isArray(data.sessions)) {
+                const user_id = await getUserId();
+                await gamesSQLite.upsertSessions(user_id, data.sessions);
+                console.log(`✅ Sync Service : pullGameSessions — ${data.sessions.length} oturum çekildi ve SQLite'a yazıldı.`);
+                return { success: true, count: data.sessions.length };
+            }
+
+            console.log("❌ Sync Service : pullGameSessions — Sunucu isteği başarısız");
+            return { success: false };
+        } catch (error) {
+            console.error("❌ Sync Service : pullGameSessions Hatası:", error.message);
+            return { success: false, message: error.message };
+        }
+    },
+
+    /**
      * Yerelde oluşturulan/silinen verileri sunucuya gönderir ve sunucu onayına göre yerel durumu günceller (PUSH).
      * @returns {Promise<{success: boolean, message?: string, data?: any} | null>}
      */
@@ -138,6 +168,7 @@ export const syncService = {
             const deletedWordIds = await dictionariesSQLite.selectOnlyDeletedWords(user_id);
 
             const localXPLogs = await statsSQLite.selectOnlyLocalLogs(user_id);
+            const localGameSessions = await gamesSQLite.selectUnsyncedGameSessions(user_id);
 
             const payload = {};
             if (localDicts.length > 0) {
@@ -169,6 +200,10 @@ export const syncService = {
                     created_at: l.created_at
                 }));
                 console.log(`📤 Sync Service : ${localXPLogs.length} XP log push'a dahil edildi`);
+            }
+            if (localGameSessions.length > 0) {
+                payload.game_sessions = localGameSessions;
+                console.log(`📤 Sync Service : ${localGameSessions.length} game sessions push'a dahil edildi`);
             }
 
             if (Object.keys(payload).length === 0) {
@@ -217,6 +252,12 @@ export const syncService = {
                     }
                 }
 
+                // 6. Sunucu tarafından onaylanan game_sessions oturumlarını senkronize edildi (is_synced = 1) olarak işaretle
+                if (Array.isArray(data.synced_game_sessions) && data.synced_game_sessions.length > 0) {
+                    console.log(`🔄 Sync Service : Marking ${data.synced_game_sessions.length} game sessions as synced in local GamesSQLite...`);
+                    await gamesSQLite.markSessionsSynced(data.synced_game_sessions);
+                }
+
                 console.log("✅ Sync Service : Local changes successfully synced with server.");
                 return { success: true, data };
             } else {
@@ -248,12 +289,13 @@ export const syncService = {
             const pushResult = await syncService.pushData();
             const pullDictResult = await syncService.pullDictionaries();
             const pullStatsResult = await syncService.pullUserStats();
+            const pullGamesResult = await syncService.pullGameSessions();
 
             // Sync tamamlandığında UI'ın güncellenmesi için event emit et
             syncEvents.emitSyncComplete();
             console.log("✅ Sync Service : Full synchronization completed. UI refresh triggered.");
 
-            return { push: pushResult, pullDicts: pullDictResult, pullStats: pullStatsResult };
+            return { push: pushResult, pullDicts: pullDictResult, pullStats: pullStatsResult, pullGames: pullGamesResult };
         } finally {
             isSyncingAll = false;
         }
