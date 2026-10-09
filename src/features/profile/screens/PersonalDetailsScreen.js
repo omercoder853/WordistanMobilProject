@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contextapis/AuthContext";
 import ChangePasswordModal from "../components/ChangePasswordModal";
 import DeleteAccountModal from "../components/DeleteAccountModal";
+import EditProfileModal from "../components/EditProfileModal";
 import { useTheme } from "@/contextapis/ThemeContext";
 import { AVATARS } from "@/constants/AvatarUrls";
 
@@ -29,6 +30,7 @@ export default function PersonalDetails() {
 
     const [passwordModalVisible, setPasswordModalVisible] = useState(false);
     const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+    const [editModalVisible, setEditModalVisible] = useState(false);
 
     const getFieldValue = (field) => {
         const val = user?.[field.userField];
@@ -47,9 +49,6 @@ export default function PersonalDetails() {
                 <View style={[styles.avatarSection, { backgroundColor: colors.profile.cardBg }]}>
                     <View style={styles.avatarWrapper}>
                         <Image style={styles.profilePhoto} source={imgSource} />
-                        <TouchableOpacity style={styles.editPhoto}>
-                            <MaterialCommunityIcons name="image-edit-outline" size={16} color="white" />
-                        </TouchableOpacity>
                     </View>
                     <Text style={[styles.avatarName, { color: colors.profile.textPrimary }]}>
                         {user?.first_name} {user?.last_name}
@@ -77,6 +76,19 @@ export default function PersonalDetails() {
                 {/* ─── Security Card (Change Password) ─── */}
                 <View style={[styles.detailsCard, { backgroundColor: colors.profile.cardBg, borderColor: colors.profile.cardBorder }]}>
                     <Text style={[styles.sectionTitle, { color: colors.profile.sectionTitle }]}>{t("security")}</Text>
+                    <View style={styles.profileDetailItem}>
+                        <View style={[styles.detailIconBox, { backgroundColor: "rgba(16, 185, 129, 0.1)" }]}>
+                            <Ionicons name="create-outline" size={20} color="#10B981" />
+                        </View>
+                        <Text style={[styles.profileLabel, { color: colors.profile.textPrimary }]}>{t("editProfile")}</Text>
+                        <TouchableOpacity
+                            style={[styles.changePasswordButton, { backgroundColor: '#10B981', shadowColor: '#10B981' }]}
+                            onPress={() => setEditModalVisible(true)}
+                        >
+                            <Text style={styles.changePasswordText}>{t("editProfile")}</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={[styles.separator, { backgroundColor: colors.profile.separator }]} />
                     <View style={styles.profileDetailItem}>
                         <View style={[styles.detailIconBox, { backgroundColor: "rgba(91, 63, 211, 0.1)" }]}>
                             <Ionicons name="key-outline" size={20} color="#5B3FD3" />
@@ -109,6 +121,11 @@ export default function PersonalDetails() {
             <DeleteAccountModal
                 visible={deleteModalVisible}
                 onClose={() => setDeleteModalVisible(false)}
+            />
+
+            <EditProfileModal
+                visible={editModalVisible}
+                onClose={() => setEditModalVisible(false)}
             />
         </View>
     )

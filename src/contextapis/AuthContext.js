@@ -12,6 +12,7 @@ import { syncEvents } from "../services/SyncEvents";
 import { useFeedback } from "./FeedbackContext";
 import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
+import { NetworkUtils } from "../utils/NetworkUtils";
 
 export const AuthenticationContext = createContext()
 
@@ -185,11 +186,38 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    const updateProfile = async (payload) => {
+        const online = await NetworkUtils.isOnline();
+        if (!online) {
+            showToast(t('noInternetConnection'), t('offlineProfileUpdateMsg'), 'danger', 'wifi');
+            return false;
+        }
+        try {
+            console.log("🔄 Auth Context : Updating profile...", payload);
+            const { ok, data } = await apiClient.patch(ENDPOINTS.updateMe, payload);
+            if (ok && data) {
+                console.log("✅ Auth Context : Profile updated successfully.");
+                await storage.set(STORAGE_KEYS.SESSION.USER, data);
+                setUser(data);
+                showToast(t('operationSuccessful'), t('profileUpdatedSuccess'), 'success');
+                return true;
+            } else {
+                console.log("❌ Auth Context : Profile update failed.");
+                showToast(t('error'), t('profileUpdateFailed'), 'danger');
+                return false;
+            }
+        } catch (error) {
+            console.log("❌ Auth Context : Profile update error:", error.message);
+            showToast(t('error'), t('profileUpdateFailed'), 'danger');
+            return false;
+        }
+    };
+
     return (<AuthenticationContext.Provider value={{
         isLogin, isLoading, setLogin, logout,
         setAccToken, getNewToken, setRefToken, setUser, user, accToken, refToken, registerData,
         setRegisterData, register, appLanguage, changeAppLanguage, changePassword, deleteAccount,
-        hydrateSession, fetchMe
+        hydrateSession, fetchMe, updateProfile
     }}>{children}</AuthenticationContext.Provider>)
 }
 

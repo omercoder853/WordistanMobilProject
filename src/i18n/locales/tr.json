@@ -381,5 +381,10 @@
   "noInternetConnection": "İnternet Bağlantınız Yok",
   "syncPausedOfflineMsg": "Senkronizasyon duraklatıldı. İnternet bağlantısı sağlandığında otomatik devam edecek.",
   "internetRestored": "İnternet Bağlantısı Sağlandı",
-  "syncResumedOnlineMsg": "Senkronizasyon devam ediyor, verileriniz güncelleniyor."
+  "syncResumedOnlineMsg": "Senkronizasyon devam ediyor, verileriniz güncelleniyor.",
+  "editProfile": "Profili Düzenle",
+  "selectAvatar": "Avatar Seç",
+  "profileUpdatedSuccess": "Profiliniz başarıyla güncellendi!",
+  "profileUpdateFailed": "Profil güncellenemedi. Lütfen tekrar deneyin.",
+  "offlineProfileUpdateMsg": "Profilinizi güncellemek için internet bağlantısı gereklidir."
 }

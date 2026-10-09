@@ -383,5 +383,10 @@
   "noInternetConnection": "No Internet Connection",
   "syncPausedOfflineMsg": "Synchronization paused. It will resume automatically when connection is restored.",
   "internetRestored": "Internet Connection Restored",
-  "syncResumedOnlineMsg": "Synchronization in progress, updating your data."
+  "syncResumedOnlineMsg": "Synchronization in progress, updating your data.",
+  "editProfile": "Edit Profile",
+  "selectAvatar": "Select Avatar",
+  "profileUpdatedSuccess": "Profile updated successfully!",
+  "profileUpdateFailed": "Failed to update profile. Please try again.",
+  "offlineProfileUpdateMsg": "Internet connection is required to update your profile."
 }
