@@ -8,6 +8,7 @@ import { useAuth } from "@/contextapis/AuthContext";
 import ChangePasswordModal from "../components/ChangePasswordModal";
 import DeleteAccountModal from "../components/DeleteAccountModal";
 import { useTheme } from "@/contextapis/ThemeContext";
+import { AVATARS } from "@/constants/AvatarUrls";
 
 // ─── Detail field config (icon + color per row) ───
 const detailFields = [
@@ -24,7 +25,7 @@ export default function PersonalDetails() {
     const { user } = useAuth();
     const { t } = useTranslation();
     const { colors, isDark } = useTheme();
-    const imgSource = user?.gender == "male" ? require("@/shared/assets/default_avatar_boy.png") : require("@/shared/assets/default_avatar_girl.png");
+    const imgSource = AVATARS[user?.avatar_url] || AVATARS["avatar_1"];
 
     const [passwordModalVisible, setPasswordModalVisible] = useState(false);
     const [deleteModalVisible, setDeleteModalVisible] = useState(false);

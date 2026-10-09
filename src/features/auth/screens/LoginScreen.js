@@ -39,7 +39,7 @@ export default function LoginScreen() {
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [focusedInput, setFocusedInput] = useState(null);
-    const { setLogin, setUser } = useAuth();
+    const { setLogin, hydrateSession } = useAuth();
     const [isLoading, setLoading] = useState(false);
     const { setAlertTitle, setAlertMessage, addAlertButton, setAlertVisible, hideAlert } = useFeedback();
 
@@ -53,10 +53,9 @@ export default function LoginScreen() {
             setLoading(true);
             const { ok, status, data } = await apiClient.post(ENDPOINTS.login, { email, password }, false);
             if (ok) {
-                await storage.setSecure(STORAGE_KEYS.SECURE.ACCESS_TOKEN, data['access_token']);
-                await storage.setSecure(STORAGE_KEYS.SECURE.REFRESH_TOKEN, data['refresh_token']);
-                await storage.set(STORAGE_KEYS.SESSION.USER, data['metadata']);
-                setUser(data['metadata']);
+                await storage.setSecure(STORAGE_KEYS.SECURE.ACCESS_TOKEN, data.access_token);
+                await storage.setSecure(STORAGE_KEYS.SECURE.REFRESH_TOKEN, data.refresh_token);
+                await hydrateSession({ profile: data.profile, user_stats: data.user_stats });
                 setLogin(true);
             } else {
                 console.log("❌ Login Screen : Error while signing in! Status :", status, data);

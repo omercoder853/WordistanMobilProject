@@ -7,6 +7,7 @@ import { useAuth } from "./AuthContext";
 import { useUserStats } from "./UserStatsContext";
 import { gamesApi } from "@/api/GamesApi";
 import { syncEvents } from "@/services/SyncEvents";
+import { gamesSQLite } from "@/storage/GamesSQLite";
 
 const GameContext = createContext();
 
@@ -23,7 +24,7 @@ const DEFAULT_SETTINGS = {
 };
 
 export const GameProvider = ({ children }) => {
-    const { isLogin } = useAuth();
+    const { isLogin, user } = useAuth();
     const { getWords } = useDictionary();
     const { incXP } = useUserStats();
 
@@ -35,31 +36,40 @@ export const GameProvider = ({ children }) => {
     const [gameSessions, setGameSessions] = useState([]);
 
     useEffect(() => {
-        if (isLogin) {
-            const fetchGameSessions = async () => {
-                try {
-                    const sessions = await getGameSessions();
-                    if (sessions) {
-                        setGameSessions(sessions);
-                    }
-                } catch (error) {
-                    console.error('Error fetching game sessions:', error);
-                }
-            };
-            fetchGameSessions();
+        if (!isLogin) {
+            setGameSessions([]);
+            return;
         }
-    }, [isLogin]);
+        const loadLocalSessions = async () => {
+            const userId = user?.id || user?.sub;
+            if (userId) {
+                const rows = await gamesSQLite.selectGameSessions(userId);
+                if (rows && rows.length > 0) {
+                    setGameSessions(gamesApi.EnrichGameSessions(rows));
+                } else {
+                    await getGameSessions();
+                }
+            }
+        };
+        loadLocalSessions();
+    }, [isLogin, user]);
 
-    // Sync tamamlandığında otomatik oyun oturumu yenileme
+    // Sync tamamlandığında yerel SQLite'tan en güncel oturumları oku (0 network isteği)
     useEffect(() => {
-        const unsubscribe = syncEvents.onSyncComplete(() => {
+        const unsubscribe = syncEvents.onSyncComplete(async () => {
             if (isLogin) {
-                console.log("🔄 Games Context : Sync completed, triggering game sessions reload...");
-                getGameSessions();
+                console.log("🔄 Games Context : Sync completed, reloading game sessions from SQLite...");
+                const userId = user?.id || user?.sub;
+                if (userId) {
+                    const rows = await gamesSQLite.selectGameSessions(userId);
+                    if (rows) {
+                        setGameSessions(gamesApi.EnrichGameSessions(rows));
+                    }
+                }
             }
         });
         return unsubscribe;
-    }, [isLogin]);
+    }, [isLogin, user]);
 
     const resetGame = () => {
         setQuestions([]);

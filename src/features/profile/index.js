@@ -1,29 +1,15 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useAuth } from "@/contextapis/AuthContext";
 import ProfileHeader from "./components/ProfileHeader";
 import ProfileStatsRow from "./components/ProfileStatsRow";
 import ProfileConsole from "./components/ProfileConsole";
-import { storage } from "@/storage/storage";
-import { STORAGE_KEYS } from "@/constants/StorageKeys";
 import { useTheme } from "@/contextapis/ThemeContext";
 
 const Profile = () => {
-    const { user, setUser } = useAuth();
+    const { user } = useAuth();
     const { colors } = useTheme();
-
-    useEffect(() => {
-        if (!user) {
-            const loadUser = async () => {
-                const userData = await storage.get(STORAGE_KEYS.SESSION.USER);
-                if (userData) {
-                    setUser(userData);
-                }
-            };
-            loadUser();
-        }
-    }, [user]);
 
     return (
         <View style={{ flex: 1, width: "100%", backgroundColor: colors.common.background }}>

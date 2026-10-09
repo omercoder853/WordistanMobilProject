@@ -7,6 +7,8 @@ import { storage } from "../storage/storage";
 import { STORAGE_KEYS } from "../constants/StorageKeys";
 import { apiClient } from "../services/ApiClient";
 import { syncService } from "../services/SyncServisManager";
+import { statsSQLite } from "../storage/StatsSQLite";
+import { syncEvents } from "../services/SyncEvents";
 import { useFeedback } from "./FeedbackContext";
 import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
@@ -47,6 +49,34 @@ export const AuthProvider = ({ children }) => {
         getTokens();
     }, [])
 
+    const hydrateSession = async ({ profile, user_stats }) => {
+        if (profile) {
+            await storage.set(STORAGE_KEYS.SESSION.USER, profile);
+            setUser(profile);
+        }
+        if (user_stats) {
+            await statsSQLite.upsertUserStats(user_stats);
+            syncEvents.emitSessionHydrated(user_stats);
+        }
+    };
+
+    const fetchMe = async () => {
+        try {
+            console.log("🔄 Auth Context : Fetching /me endpoint...");
+            const { ok, status, data } = await apiClient.get(ENDPOINTS.me, true);
+            if (ok && data) {
+                console.log("✅ Auth Context : /me successfully fetched");
+                await hydrateSession(data);
+                return true;
+            } else {
+                console.log("⚠️ Auth Context : /me request returned status:", status);
+            }
+        } catch (error) {
+            console.log("⚠️ Auth Context : /me fetch error:", error.message);
+        }
+        return false;
+    };
+
     const verifyToken = async (Actoken, ReToken) => {
         console.log("🔄 Auth Context : Verifying token...");
         try {
@@ -59,6 +89,7 @@ export const AuthProvider = ({ children }) => {
                 if (data) {
                     setAccToken(data.acc_token);
                     setRefToken(data.ref_token);
+                    await fetchMe();
                     setLogin(true);
                 }
                 else {
@@ -69,6 +100,7 @@ export const AuthProvider = ({ children }) => {
                 console.log("✅ Auth Context : Token is valid.");
                 setAccToken(Actoken);
                 setRefToken(ReToken);
+                await fetchMe();
                 setLogin(true)
             }
         } catch (error) {
@@ -156,7 +188,8 @@ export const AuthProvider = ({ children }) => {
     return (<AuthenticationContext.Provider value={{
         isLogin, isLoading, setLogin, logout,
         setAccToken, getNewToken, setRefToken, setUser, user, accToken, refToken, registerData,
-        setRegisterData, register, appLanguage, changeAppLanguage, changePassword, deleteAccount
+        setRegisterData, register, appLanguage, changeAppLanguage, changePassword, deleteAccount,
+        hydrateSession, fetchMe
     }}>{children}</AuthenticationContext.Provider>)
 }
 

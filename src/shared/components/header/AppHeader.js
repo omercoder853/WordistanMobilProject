@@ -9,8 +9,7 @@ import Svg, { Circle } from "react-native-svg";
 import { useNotification } from "@/contextapis/NotificationContext";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@/contextapis/ThemeContext";
-import { storage } from "@/storage/storage";
-import { STORAGE_KEYS } from "@/constants/StorageKeys";
+import { AVATARS } from "@/constants/AvatarUrls";
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
@@ -24,26 +23,12 @@ const AppHeader = () => {
     const { t } = useTranslation();
     const { colors } = useTheme();
     const { userStats } = useUserStats();
-    const { user, setUser } = useAuth();
+    const { user } = useAuth();
     const navigation = useNavigation();
     const { notifications, setNotificationPanel } = useNotification();
     const unreadCount = (notifications || []).filter(n => !n.is_read).length;
 
-    const imgSource = user?.gender === "male"
-        ? require('../../assets/default_avatar_boy.png')
-        : require('../../assets/default_avatar_girl.png');
-
-    useEffect(() => {
-        if (!user) {
-            const loadUser = async () => {
-                const userData = await storage.get(STORAGE_KEYS.SESSION.USER);
-                if (userData && setUser) {
-                    setUser(userData);
-                }
-            };
-            loadUser();
-        }
-    }, [user]);
+    const imgSource = AVATARS[user?.avatar_url] || AVATARS["avatar_1"];
 
     // XP progress calculation
     const required_xp_for_level = userStats?.required_xp_for_level || 1;

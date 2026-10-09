@@ -2,10 +2,11 @@ import { createContext, useContext, useState, useEffect, useCallback, useRef } f
 import { useAuth } from "./AuthContext";
 import { statsApi } from "@/api/StatsApi";
 import { syncEvents } from "@/services/SyncEvents";
+import { statsSQLite } from "@/storage/StatsSQLite";
 export const UserStatsContext = createContext();
 
 export const UserStatsProvider = ({ children }) => {
-    const { isLogin } = useAuth();
+    const { isLogin, user } = useAuth();
     const [statsLoading , setStatsLoading] = useState(false);
 
     const [userStats, setUserStats] = useState(null);
@@ -39,25 +40,51 @@ export const UserStatsProvider = ({ children }) => {
         await fetchAndSetStats();
     }, [fetchAndSetStats]);
 
-    // Sync tamamlandığında (arka plan / internet geri geldiğinde) user stats'ı otomatik yenile
+    // Session hydration: /login veya /me verisi geldiğinde state'i doğrudan güncelle
     useEffect(() => {
-        const unsubscribe = syncEvents.onSyncComplete(() => {
-            console.log("🔄 User Stats Context : Sync completed, refreshing user stats...");
-            fetchAndSetStats();
+        const unsubscribe = syncEvents.onSessionHydrated((freshStats) => {
+            console.log("💧 User Stats Context : Session hydrated with fresh stats");
+            if (freshStats) {
+                setUserStats(freshStats);
+            }
         });
         return unsubscribe;
-    }, [fetchAndSetStats]);
+    }, []);
+
+    // Sync tamamlandığında yerel SQLite'taki güncel istatistikleri oku (0 network isteği)
+    useEffect(() => {
+        const unsubscribe = syncEvents.onSyncComplete(async () => {
+            console.log("🔄 User Stats Context : Sync completed, reloading from local SQLite...");
+            const userId = user?.id || user?.sub;
+            if (userId) {
+                const localStats = await statsSQLite.getUserStats(userId);
+                if (localStats) {
+                    const { level, xp_for_next, required_xp_for_level } = statsApi.calculateLevelFields(localStats.total_xp);
+                    setUserStats({ ...localStats, level, xp_for_next, required_xp_for_level });
+                }
+            }
+        });
+        return unsubscribe;
+    }, [user]);
 
     useEffect(() => {
         if (!isLogin) {
-            setUserStats(null)
-            prevLevelRef.current = null
+            setUserStats(null);
+            prevLevelRef.current = null;
+        } else {
+            const loadLocalStats = async () => {
+                const userId = user?.id || user?.sub;
+                if (userId) {
+                    const localStats = await statsSQLite.getUserStats(userId);
+                    if (localStats) {
+                        const { level, xp_for_next, required_xp_for_level } = statsApi.calculateLevelFields(localStats.total_xp);
+                        setUserStats(prev => prev || { ...localStats, level, xp_for_next, required_xp_for_level });
+                    }
+                }
+            };
+            loadLocalStats();
         }
-        else if (isLogin) {
-            console.log("🔄 User Stats Context : Login successful, fetching user stats...");
-            fetchAndSetStats()
-        }
-    }, [isLogin, fetchAndSetStats]);
+    }, [isLogin, user]);
 
     const incTranslated = useCallback(async () => {
         const result = await statsApi.incTranslated()

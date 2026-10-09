@@ -11,13 +11,14 @@ import { storage } from "../storage/storage";
 import { apiClient } from "../services/ApiClient";
 import { dictionaryApi } from "@/api/DictionaryApi";
 import { syncEvents } from "@/services/SyncEvents";
+import { dictionariesSQLite } from "@/storage/DictionariesSQLite";
 
 const DictContext = createContext();
 
 export const DictionaryProvider = ({ children }) => {
     const { incSaved, incDictCreated } = useUserStats();
     const [dicts, setDicts] = useState([]);
-    const { isLogin } = useAuth();
+    const { isLogin, user } = useAuth();
     const [dictReload, setDictReload] = useState(false);
     const [dailyWord, setDailyWord] = useState(null);
     const [dailyWordLoading,setDailyWordLoading] = useState(false);
@@ -52,18 +53,39 @@ export const DictionaryProvider = ({ children }) => {
     }, [])
 
     useEffect(() => {
-        if (!isLogin || !dictReload) return;
-        fetchDicts()
-    }, [dictReload, isLogin])
+        if (!isLogin) {
+            setDicts([]);
+            return;
+        }
+        const loadLocalDicts = async () => {
+            const user_id = user?.id || user?.sub;
+            if (user_id) {
+                const rows = await dictionariesSQLite.selectDictionaries(user_id);
+                if (rows && rows.length > 0) {
+                    setDicts(rows);
+                    setDictReload(false);
+                } else if (dictReload) {
+                    fetchDicts();
+                }
+            }
+        };
+        loadLocalDicts();
+    }, [isLogin, user, dictReload]);
 
-    // Sync tamamlandığında otomatik UI refresh
+    // Sync tamamlandığında doğrudan yerel SQLite'tan en güncel sözlükleri oku (0 network isteği)
     useEffect(() => {
-        const unsubscribe = syncEvents.onSyncComplete(() => {
-            console.log("🔄 Dict Context : Sync completed, triggering reload...");
-            setDictReload(true);
+        const unsubscribe = syncEvents.onSyncComplete(async () => {
+            console.log("🔄 Dict Context : Sync completed, reloading dictionaries from SQLite...");
+            const user_id = user?.id || user?.sub;
+            if (user_id) {
+                const rows = await dictionariesSQLite.selectDictionaries(user_id);
+                if (rows) {
+                    setDicts(rows);
+                }
+            }
         });
         return unsubscribe;
-    }, []);
+    }, [user]);
 
     async function fetchDicts() {
         const { ok, status, data } = await dictionaryApi.fetchDicts();

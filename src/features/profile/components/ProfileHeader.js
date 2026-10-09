@@ -4,13 +4,12 @@ import styles from "../styles/styles";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useAuth } from "@/contextapis/AuthContext";
 import { useTheme } from "@/contextapis/ThemeContext";
+import { AVATARS } from "@/constants/AvatarUrls";
 
 export default function ProfileHeader() {
     const { user } = useAuth();
     const { colors, isDark } = useTheme();
-    const imgSource = user?.gender === "male" 
-        ? require("@/shared/assets/avatars/avatar_3.png") 
-        : require("@/shared/assets/avatars/avatar_2.png");
+    const imgSource = AVATARS[user?.avatar_url] || AVATARS["avatar_1"];
 
     const ringBorderColor = isDark ? "#3A384A" : "#FFFFFF";
     const nickBadgeBg = isDark ? "rgba(167, 139, 250, 0.15)" : "rgba(91, 63, 211, 0.08)";
