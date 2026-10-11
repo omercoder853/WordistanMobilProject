@@ -125,6 +125,7 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         marginBottom: 10,
         elevation: 2,
+        borderWidth:1.5
     },
     achievementTitle: {
         fontSize: 16,

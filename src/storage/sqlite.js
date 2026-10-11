@@ -23,6 +23,7 @@ export const initDatabase = async () => {
       description TEXT,
       language TEXT NOT NULL,
       cover TEXT DEFAULT 'dictionary_cover_1',
+      words_count INTEGER DEFAULT 0,
       is_synced INTEGER DEFAULT 0,
       is_deleted INTEGER DEFAULT 0,
       created_at TEXT DEFAULT (datetime('now'))

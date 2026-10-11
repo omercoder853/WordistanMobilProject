@@ -35,8 +35,8 @@ export default function Achievements() {
     }, { bronze: 0, silver: 0, gold: 0 });
 
     return (
-        <View style={{ flex: 1, alignItems: 'center', backgroundColor: colors.common.background }}>
-            <View style={[styles.achievementSumMainContainer, { backgroundColor: colors.profile.cardBg }]}>
+        <View style={{ flex: 1, alignItems: 'center', backgroundColor: colors.common.background}}>
+            <View style={[styles.achievementSumMainContainer, { backgroundColor: colors.profile.cardBg , borderColor:colors.profile.cardBorder}]}>
                 <Text style={[styles.achievementSumTitle, { color: colors.profile.textPrimary }]}>{t("achievementSummary")}</Text>
                 <View style={styles.achievementSumContainer}>
                     <ImageBackground style={styles.achievementSumCover}
@@ -85,7 +85,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderRadius: 10,
         marginTop: 10,
-        paddingTop: 5
+        paddingTop: 5,
+        borderWidth:1
     },
     achievementSumContainer: {
         flexDirection: 'row',

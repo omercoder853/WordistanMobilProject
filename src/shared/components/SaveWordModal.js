@@ -114,7 +114,7 @@ export default function SaveWordModal({ modalVisible, setModalVisible, word, mea
                                                     isSelected && modalStyles.dictItemNameSelected
                                                 ]}>{dict.name}</Text>
                                                 <Text style={modalStyles.dictItemLang}>
-                                                    {dict.language?.toUpperCase()} • {JSON.stringify(dict?.words?.[0]["count"]) || 0} {t('words')}
+                                                    {dict.language?.toUpperCase()} • {dict.words_count || 0} {t('words')}
                                                 </Text>
                                             </View>
                                         </View>

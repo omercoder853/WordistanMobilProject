@@ -168,6 +168,47 @@ const statisticsStyle = StyleSheet.create({
         color: "#6366F1",
     },
 
+    // ─── Max Streak Card ───
+    maxStreakCard: {
+        width: "95%",
+        marginTop: 14,
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: "#FFFFFF",
+        borderRadius: 18,
+        paddingVertical: 16,
+        paddingHorizontal: 16,
+        borderWidth: 1,
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.08,
+        shadowRadius: 10,
+        elevation: 3,
+    },
+    maxStreakIconBox: {
+        width: 44,
+        height: 44,
+        borderRadius: 14,
+        justifyContent: "center",
+        alignItems: "center",
+        marginRight: 14,
+    },
+    maxStreakLabel: {
+        flex: 1,
+        fontSize: 15,
+        fontWeight: "700",
+    },
+    maxStreakValue: {
+        fontSize: 28,
+        fontWeight: "800",
+        letterSpacing: 0.2,
+    },
+    maxStreakSuffix: {
+        fontSize: 12,
+        fontWeight: "600",
+        marginLeft: 6,
+        marginTop: 8,
+    },
+
     // ─── Average Score Badges ───
     avgRow: {
         flexDirection: "row",
@@ -181,11 +222,11 @@ const statisticsStyle = StyleSheet.create({
         borderRadius: 16,
         padding: 16,
         alignItems: "center",
-        shadowColor: "#000",
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.04,
         shadowRadius: 8,
         elevation: 2,
+        borderWidth:1
     },
     avgBadgeHeader: {
         flexDirection: "row",

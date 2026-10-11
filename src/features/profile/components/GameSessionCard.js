@@ -26,8 +26,17 @@ export default function GameSessionCard({ session, isBest, onPress }) {
             onPress={onPress}
             style={[
                 gameSessionsStyle.sessionCard,
-                { backgroundColor: colors.profile.cardBg, borderColor: colors.profile.cardBorder },
-                isBest && (isDark ? { backgroundColor: 'rgba(245, 158, 11, 0.15)', borderColor: '#FCD34D' } : gameSessionsStyle.sessionCardBest)
+                {
+                    backgroundColor: colors.profile.cardBg,
+                    borderColor: colors.profile.cardBorder,
+                    shadowColor: colors.profile.sessionCardShadow,
+                },
+                isBest && gameSessionsStyle.sessionCardBest,
+                isBest && {
+                    backgroundColor: colors.profile.sessionBestBg,
+                    borderColor: colors.profile.sessionBestBorder,
+                    shadowColor: colors.profile.sessionBestShadow,
+                },
             ]}
         >
             {/* Mode icon */}
@@ -43,16 +52,24 @@ export default function GameSessionCard({ session, isBest, onPress }) {
 
             {/* Right: score */}
             <View style={gameSessionsStyle.sessionRight}>
-                <Text style={[gameSessionsStyle.sessionScore, { color: colors.common.primary }, isBest && gameSessionsStyle.sessionScoreBest]}>
+                <Text
+                    style={[
+                        gameSessionsStyle.sessionScore,
+                        { color: colors.common.primary },
+                        isBest && { color: colors.profile.sessionBestScore },
+                    ]}
+                >
                     {session.score.toFixed(1)}
                 </Text>
                 <Text style={[gameSessionsStyle.sessionSubScore, { color: colors.profile.textSecondary }]}>
                     {session.correct_count}/{session.total_count}
                 </Text>
                 {isBest && (
-                    <View style={gameSessionsStyle.bestBadge}>
-                        <Ionicons name="trophy" size={10} color="#D97706" />
-                        <Text style={gameSessionsStyle.bestBadgeText}>{t("bestPerformance")}</Text>
+                    <View style={[gameSessionsStyle.bestBadge, { backgroundColor: colors.profile.sessionBestBadgeBg }]}>
+                        <Ionicons name="trophy" size={10} color={colors.profile.sessionBestBadgeText} />
+                        <Text style={[gameSessionsStyle.bestBadgeText, { color: colors.profile.sessionBestBadgeText }]}>
+                            {t("bestPerformance")}
+                        </Text>
                     </View>
                 )}
             </View>

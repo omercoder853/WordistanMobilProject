@@ -23,7 +23,6 @@ const gameSessionsStyle = StyleSheet.create({
     },
     summaryBadge: {
         flex: 1,
-        backgroundColor: "#FFFFFF",
         borderRadius: 14,
         paddingVertical: 14,
         paddingHorizontal: 16,
@@ -33,6 +32,7 @@ const gameSessionsStyle = StyleSheet.create({
         shadowOpacity: 0.04,
         shadowRadius: 8,
         elevation: 2,
+        borderWidth:1
     },
     summaryValue: {
         fontSize: 22,
@@ -50,20 +50,19 @@ const gameSessionsStyle = StyleSheet.create({
     sessionCard: {
         flexDirection: "row",
         alignItems: "center",
-        backgroundColor: "#FFFFFF",
         borderRadius: 16,
         padding: 14,
         marginTop: 10,
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.04,
-        shadowRadius: 6,
-        elevation: 2,
+        borderWidth: 1,
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+        elevation: 4,
     },
     sessionCardBest: {
         borderWidth: 1.5,
-        borderColor: "#FCD34D",
-        backgroundColor: "#FFFBEB",
+        shadowRadius: 10,
+        elevation: 0,
     },
     modeIconBox: {
         width: 44,
@@ -107,7 +106,6 @@ const gameSessionsStyle = StyleSheet.create({
     bestBadge: {
         flexDirection: "row",
         alignItems: "center",
-        backgroundColor: "#FEF3C7",
         paddingHorizontal: 8,
         paddingVertical: 3,
         borderRadius: 10,
@@ -117,7 +115,6 @@ const gameSessionsStyle = StyleSheet.create({
     bestBadgeText: {
         fontSize: 10,
         fontWeight: "700",
-        color: "#D97706",
     },
 
     // ─── Modal ───

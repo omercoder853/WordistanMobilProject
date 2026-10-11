@@ -64,9 +64,19 @@ const selectDictionaries = async (user_id) => {
     try {
         const db = await getDB();
         const rows = await db.getAllAsync(
-            `SELECT * FROM dictionaries 
-             WHERE user_id = ? AND is_deleted = 0 AND id IS NOT NULL AND id != 'null' AND id != 'undefined'
-             ORDER BY created_at`,
+            `SELECT
+            d.*,
+            COUNT(w.id) AS words_count
+        FROM dictionaries AS d
+        LEFT JOIN words AS w
+            ON w.dictionary_id = d.id
+        WHERE d.user_id = ?
+        AND d.is_deleted = 0
+        AND d.id IS NOT NULL
+        AND d.id != 'null'
+        AND d.id != 'undefined'
+        GROUP BY d.id
+        ORDER BY d.created_at`,
             [String(user_id)]
         );
         return rows;
@@ -153,10 +163,9 @@ const upsertDictionaries = async (serverDicts, fallbackUserId = null) => {
             const dictId = dict.id || dict.dict_id || dict.dictionary_id;
             const userId = dict.user_id || fallbackUserId;
             if (!dictId || dictId === 'null' || dictId === 'undefined' || !userId) continue;
-
             await db.runAsync(
-                `INSERT INTO dictionaries (id, user_id, name, description, language, cover, is_synced, is_deleted, created_at)
-                 VALUES (?, ?, ?, ?, ?, ?, 1, 0, ?)
+                `INSERT INTO dictionaries (id, user_id, name, description, language, cover,words_count, is_synced, is_deleted, created_at)
+                 VALUES (?, ?, ?, ?, ?, ?,?, 1, 0, ?)
                  ON CONFLICT(id) DO UPDATE SET
                  name = excluded.name,
                  description = excluded.description,
@@ -164,7 +173,7 @@ const upsertDictionaries = async (serverDicts, fallbackUserId = null) => {
                  cover = excluded.cover,
                  is_synced = 1,
                  is_deleted = 0;`,
-                [String(dictId), String(userId), dict.name, dict.description ?? "", dict.language, dict.cover || 'dictionary_cover_1', dict.created_at ?? new Date().toISOString()]
+                [String(dictId), String(userId), dict.name, dict.description ?? "", dict.language, dict.cover || 'dictionary_cover_1',dict.words[0].count, dict.created_at ?? new Date().toISOString()]
             );
         }
     });

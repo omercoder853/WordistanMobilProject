@@ -31,6 +31,7 @@ export default function Statistics() {
     const { gameSessions } = useGame();
     const { t } = useTranslation();
     const { colors, isDark } = useTheme();
+    const maxStreak = userStats?.max_streak || 0;
 
     const [filterCount, setFilterCount] = useState(5);
     const [selectedMetric, setSelectedMetric] = useState("score");
@@ -131,10 +132,40 @@ export default function Statistics() {
                 </Text>
             </View>
 
+            {/* ─── Max Streak Card ─── */}
+            <View
+                style={[
+                    styles.maxStreakCard,
+                    {
+                        backgroundColor: colors.profile.cardBg,
+                        borderColor: colors.profile.cardBorder,
+                        shadowColor: colors.common.shadow,
+                    },
+                ]}
+            >
+                <View style={[styles.maxStreakIconBox, { backgroundColor: colors.home.statsBar.fireBg }]}>
+                    <Ionicons name="flame" size={22} color={colors.home.statsBar.fireIcon} />
+                </View>
+                <Text style={[styles.maxStreakLabel, { color: colors.profile.textPrimary }]}>
+                    {t("maxStreak")}
+                </Text>
+                <Text style={[styles.maxStreakValue, { color: colors.home.statsBar.fireIcon }]}>
+                    {maxStreak}
+                </Text>
+                <Text style={[styles.maxStreakSuffix, { color: colors.profile.textSecondary }]}>
+                    {t("days")}
+                </Text>
+            </View>
+
             {/* ─── Average Score Badges ─── */}
             {hasSessions && (
                 <View style={styles.avgRow}>
-                    <View style={[styles.avgBadge, isDark && { backgroundColor: colors.common.card }]}>
+                    <View style={[styles.avgBadge, 
+                        { 
+                            backgroundColor: colors.profile.cardBg, 
+                            borderColor: colors.profile.cardBorder , 
+                            shadowColor: colors.common.shadow
+                        }]}>
                         <View style={styles.avgBadgeHeader}>
                             <Text style={[styles.avgBadgeLabel, { color: colors.profile.textSecondary }]}>{t("avgScore")}</Text>
                             <InfoTooltip text={t("scoreExplanation")} size={14} />
@@ -144,7 +175,12 @@ export default function Statistics() {
                         </Text>
                         <Text style={styles.avgBadgeSuffix}>/100</Text>
                     </View>
-                    <View style={[styles.avgBadge, isDark && { backgroundColor: colors.common.card }]}>
+                    <View style={[styles.avgBadge, 
+                        { 
+                            backgroundColor: colors.profile.cardBg, 
+                            borderColor: colors.profile.cardBorder , 
+                            shadowColor: colors.common.shadow
+                        }]}>
                         <View style={styles.avgBadgeHeader}>
                             <Text style={[styles.avgBadgeLabel, { color: colors.profile.textSecondary }]}>{t("avgPerformance")}</Text>
                             <InfoTooltip text={t("performanceExplanation")} size={14} />

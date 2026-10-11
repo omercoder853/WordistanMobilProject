@@ -33,7 +33,7 @@ export default function GameSessions() {
     }
 
     return (
-        <View style={[gameSessionsStyle.container, { backgroundColor: colors.common.background }]}>
+        <View style={[gameSessionsStyle.container, { backgroundColor: colors.common.background , borderColor:colors.profile.cardBorder }]}>
             {/* Summary badges */}
             <View style={gameSessionsStyle.summaryRow}>
                 <View style={[gameSessionsStyle.summaryBadge, { backgroundColor: colors.profile.cardBg, borderColor: colors.profile.cardBorder }]}>

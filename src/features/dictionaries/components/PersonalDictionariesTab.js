@@ -31,14 +31,14 @@ export default function Personal() {
                     showsVerticalScrollIndicator={false}
                     data={dicts}
                     renderItem={({ item }) => (
-                        <Dictionary 
+                        <Dictionary
                             id={item.id} 
                             title={item.name} 
                             description={item.description} 
                             cover={item.cover} 
                             language={item.language}
                             created_at={item.created_at || tarih} 
-                            length={JSON.stringify(item?.words?.[0]["count"] || 0)} 
+                            length={item.words_count} 
                         />
                     )}
                     keyExtractor={item => item.id}
