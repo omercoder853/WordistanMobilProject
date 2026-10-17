@@ -23,7 +23,7 @@ const AppHeader = () => {
     const { t } = useTranslation();
     const { colors } = useTheme();
     const { userStats } = useUserStats();
-    const { user } = useAuth();
+    const { user, isGuest,setLogin } = useAuth();
     const navigation = useNavigation();
     const { notifications, setNotificationPanel } = useNotification();
     const unreadCount = (notifications || []).filter(n => !n.is_read).length;
@@ -74,63 +74,74 @@ const AppHeader = () => {
             </View>
 
             <View style={styles.profileContainer}>
-                <TouchableOpacity
-                    onPress={() => navigation.navigate("Profile Navigation", { screen: "Statistics" })}
-                    activeOpacity={0.7}
-                    style={styles.avatarWithProgress}>
-                    <Svg
-                        width={svgSize}
-                        height={svgSize}
-                        style={{ position: 'absolute', top: -2, left: -2 }}>
-                        <Circle
-                            cx={svgSize / 2}
-                            cy={svgSize / 2}
-                            r={RADIUS}
-                            stroke={colors.header.progressRingBg}
-                            strokeWidth={STROKE_WIDTH}
-                            fill="none"
-                        />
-                        <AnimatedCircle
-                            cx={svgSize / 2}
-                            cy={svgSize / 2}
-                            r={RADIUS}
-                            stroke={colors.header.progressRingFill}
-                            strokeWidth={STROKE_WIDTH}
-                            fill="none"
-                            strokeDasharray={CIRCUMFERENCE}
-                            strokeDashoffset={animatedStrokeDashoffset}
-                            strokeLinecap="round"
-                            rotation="-90"
-                            origin={`${svgSize / 2}, ${svgSize / 2}`}
-                        />
-                    </Svg>
-                    <Image
-                        style={styles.profileImage}
-                        source={imgSource}
-                    />
-                    <View style={[styles.levelBadge, { backgroundColor: colors.header.levelBadgeBg, borderColor: colors.header.levelBadgeBorder }]}>
-                        <Text style={[styles.levelBadgeText, { color: colors.header.levelBadgeText }]}>{userStats?.level || 1}</Text>
-                    </View>
-                </TouchableOpacity>
+                {isGuest ? (
+                    <TouchableOpacity
+                    style={[styles.loginButton,{backgroundColor:colors.auth.primaryButtonBg}]} 
+                    onPress={()=>setLogin(false)}>
+                        <Text 
+                        style={{color:colors.auth.primaryButtonText,fontWeight:'900'}}>
+                            {t('login')}</Text>
+                    </TouchableOpacity>
+                    ) : 
+                
+                (
+                    <>
+                        <TouchableOpacity
+                            onPress={() => navigation.navigate("Profile Navigation", { screen: "Statistics" })}
+                            activeOpacity={0.7}
+                            style={styles.avatarWithProgress}>
+                            <Svg
+                                width={svgSize}
+                                height={svgSize}
+                                style={{ position: 'absolute', top: -2, left: -2 }}>
+                                <Circle
+                                    cx={svgSize / 2}
+                                    cy={svgSize / 2}
+                                    r={RADIUS}
+                                    stroke={colors.header.progressRingBg}
+                                    strokeWidth={STROKE_WIDTH}
+                                    fill="none"
+                                />
+                                <AnimatedCircle
+                                    cx={svgSize / 2}
+                                    cy={svgSize / 2}
+                                    r={RADIUS}
+                                    stroke={colors.header.progressRingFill}
+                                    strokeWidth={STROKE_WIDTH}
+                                    fill="none"
+                                    strokeDasharray={CIRCUMFERENCE}
+                                    strokeDashoffset={animatedStrokeDashoffset}
+                                    strokeLinecap="round"
+                                    rotation="-90"
+                                    origin={`${svgSize / 2}, ${svgSize / 2}`}
+                                />
+                            </Svg>
+                            <Image
+                                style={styles.profileImage}
+                                source={imgSource}
+                            />
+                            <View style={[styles.levelBadge, { backgroundColor: colors.header.levelBadgeBg, borderColor: colors.header.levelBadgeBorder }]}>
+                                <Text style={[styles.levelBadgeText, { color: colors.header.levelBadgeText }]}>{userStats?.level || 1}</Text>
+                            </View>
+                        </TouchableOpacity>
 
-                <TouchableOpacity
-                    onPress={() => setNotificationPanel(true)}
-                    activeOpacity={0.7}
-                    style={[styles.notificationButton, { backgroundColor: colors.header.iconButtonBg, borderColor: colors.header.iconButtonBorder }]}
-                >
-                    <Ionicons
-                        name={unreadCount > 0 ? "notifications" : "notifications-outline"}
-                        size={22}
-                        color={colors.header.iconButtonColor}
-                    />
-                    {unreadCount > 0 && (
-                        <View style={[styles.notificationBadge, { backgroundColor: colors.header.badgeBg, borderColor: colors.header.background }]}>
-                            <Text style={[styles.notificationBadgeText, { color: colors.header.badgeText }]}>
-                                {unreadCount > 99 ? '99+' : unreadCount}
-                            </Text>
-                        </View>
-                    )}
-                </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => setNotificationPanel(true)}
+                            activeOpacity={0.7}
+                            style={[styles.notificationButton, { backgroundColor: colors.header.iconButtonBg, borderColor: colors.header.iconButtonBorder }]}>
+                            <Ionicons
+                                name={unreadCount > 0 ? "notifications" : "notifications-outline"}
+                                size={22}
+                                color={colors.header.iconButtonColor}
+                            />
+                            {unreadCount > 0 && (
+                                <View style={[styles.notificationBadge, { backgroundColor: colors.header.badgeBg, borderColor: colors.header.background }]}>
+                                    <Text style={[styles.notificationBadgeText, { color: colors.header.badgeText }]}>
+                                        {unreadCount > 99 ? '99+' : unreadCount}
+                                    </Text>
+                                </View>
+                            )}
+                        </TouchableOpacity></>)}
             </View>
         </View>
     );
@@ -192,8 +203,8 @@ const styles = StyleSheet.create({
         width: 40,
         height: 40,
         borderRadius: 20,
-        marginRight:2,
-        marginBottom:4
+        marginRight: 2,
+        marginBottom: 4
     },
     avatarWithProgress: {
         width: 46,
@@ -250,4 +261,9 @@ const styles = StyleSheet.create({
         fontWeight: '800',
         textAlign: 'center',
     },
+    loginButton : {
+        paddingHorizontal:8,
+        paddingVertical:4,
+        borderRadius:5
+    }
 });

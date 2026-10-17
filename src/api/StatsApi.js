@@ -3,6 +3,8 @@ import { ENDPOINTS } from "@/constants/ApiConfig"
 import { NetworkUtils } from "@/utils/NetworkUtils"
 import { statsSQLite } from "@/storage/StatsSQLite"
 import { responder, getRandomId, getUserId } from "@/utils/ApiUtils"
+import { storage } from "@/storage/storage"
+import { STORAGE_KEYS } from "@/constants/StorageKeys"
 
 // ─── Level Hesaplama (PostgreSQL formüllerinin JS karşılığı) ───
 
@@ -38,7 +40,7 @@ const logXP = async ({ type, amount }) => {
     }
 
     const id = getRandomId()
-    console.log(`🔄 Stats API : logXP — type: ${type}, amount: ${amount}, id: ${id}`)
+    console.log(`🔄 Stats API : logXP — type: ${type}, amount: ${amount}`)
 
     const inserted = await statsSQLite.insertXP({ id, user_id, type, amount })
     if (!inserted) {
@@ -70,8 +72,9 @@ const logXP = async ({ type, amount }) => {
     const unsyncedCount = await statsSQLite.getUnsyncedLogCount(user_id)
     if (unsyncedCount >= 5) {
         console.log(`🔄 Stats API : logXP — ${unsyncedCount} senkron olmayan log var, otomatik push tetikleniyor...`)
-        const isOnline = await NetworkUtils.isOnline()
-        if (isOnline) {
+        const isOnline = await NetworkUtils.isOnline();
+        const isGuest = await storage.get(STORAGE_KEYS.SESSION.IS_GUEST);
+        if (isOnline && !isGuest) {
             pushXPLogs().catch(e =>
                 console.log("⚠️ Stats API : Otomatik push başarısız:", e.message)
             )
@@ -85,14 +88,15 @@ const logXP = async ({ type, amount }) => {
 
 const fetchStats = async () => {
     const isOnline = await NetworkUtils.isOnline()
-    const user_id = await getUserId()
+    const user_id = await getUserId();
+    const isGuest = await storage.get(STORAGE_KEYS.SESSION.IS_GUEST);
 
-    if (isOnline) {
+    if (isOnline && !isGuest) {
         try {
             console.log("🔄 Stats API : fetchStats — Sunucudan stats çekiliyor...")
             const { ok, status, data } = await apiClient.get(ENDPOINTS.stats, true)
             if (ok && data) {
-                console.log("✅ Stats API : fetchStats — Sunucudan başarıyla çekildi:", JSON.stringify(data))
+                console.log("✅ Stats API : fetchStats — Sunucudan başarıyla çekildi!")
                 await statsSQLite.upsertUserStats(data)
                 return responder(true, true, 200, data)
             } else {
@@ -109,7 +113,7 @@ const fetchStats = async () => {
         if (localStats) {
             const { level, xp_for_next, required_xp_for_level } = calculateLevelFields(localStats.total_xp)
             const enrichedStats = { ...localStats, level, xp_for_next, required_xp_for_level }
-            console.log("📦 Stats API : fetchStats — Yerelden okundu:", JSON.stringify(enrichedStats))
+            console.log("📦 Stats API : fetchStats — Yerelden okundu!")
             return responder(true, false, 200, enrichedStats)
         }
     }
@@ -150,10 +154,17 @@ const pushXPLogs = async () => {
     isPushingXPLogs = true
 
     try {
-        const isOnline = await NetworkUtils.isOnline()
+        const isOnline = await NetworkUtils.isOnline();
+        const isGuest = await storage.get(STORAGE_KEYS.SESSION.IS_GUEST);
+
         if (!isOnline) {
             console.log("⚠️ Stats API : pushXPLogs — İnternet bağlantısı yok")
             return { success: false, message: "İnternet yok" }
+        }
+
+        if (isGuest) {
+            console.log("⚠️ Stats API : pushXPLogs — Misafir hesabı kullanılıyor")
+            return { success: false, message: "misafir kullanıcı" }
         }
 
         const user_id = await getUserId()
@@ -175,7 +186,7 @@ const pushXPLogs = async () => {
             created_at: l.created_at
         }))
 
-        console.log(`🔄 Stats API : pushXPLogs — ${xpLogsPayload.length} log gönderiliyor:`, JSON.stringify(xpLogsPayload))
+        console.log(`🔄 Stats API : pushXPLogs — ${xpLogsPayload.length} log gönderiliyor!`)
 
         const { ok, data } = await apiClient.post(ENDPOINTS.syncPush, { xp_logs: xpLogsPayload })
 

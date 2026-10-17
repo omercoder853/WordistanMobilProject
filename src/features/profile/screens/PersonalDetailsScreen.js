@@ -23,9 +23,9 @@ const detailFields = [
 ];
 
 export default function PersonalDetails() {
-    const { user } = useAuth();
+    const { user, isGuest } = useAuth();
     const { t } = useTranslation();
-    const { colors, isDark } = useTheme();
+    const { colors } = useTheme();
     const imgSource = AVATARS[user?.avatar_url] || AVATARS["avatar_1"];
 
     const [passwordModalVisible, setPasswordModalVisible] = useState(false);
@@ -77,39 +77,89 @@ export default function PersonalDetails() {
                 <View style={[styles.detailsCard, { backgroundColor: colors.profile.cardBg, borderColor: colors.profile.cardBorder }]}>
                     <Text style={[styles.sectionTitle, { color: colors.profile.sectionTitle }]}>{t("security")}</Text>
                     <View style={styles.profileDetailItem}>
-                        <View style={[styles.detailIconBox, { backgroundColor: "rgba(16, 185, 129, 0.1)" }]}>
-                            <Ionicons name="create-outline" size={20} color="#10B981" />
+                        <View style={[styles.detailIconBox, { backgroundColor: colors.profile.editActionIconBg }]}>
+                            <Ionicons name="create-outline" size={20} color={colors.profile.editActionIcon} />
                         </View>
                         <Text style={[styles.profileLabel, { color: colors.profile.textPrimary }]}>{t("editProfile")}</Text>
                         <TouchableOpacity
-                            style={[styles.changePasswordButton, { backgroundColor: '#10B981', shadowColor: '#10B981' }]}
+                            disabled={isGuest}
+                            style={[
+                                styles.changePasswordButton,
+                                {
+                                    backgroundColor: colors.profile.editActionBg,
+                                    shadowColor: colors.profile.editActionBg,
+                                },
+                                isGuest && {
+                                    backgroundColor: colors.profile.actionDisabledBg,
+                                    shadowColor: colors.profile.actionDisabledBg,
+                                    shadowOpacity: 0,
+                                    elevation: 0,
+                                },
+                            ]}
                             onPress={() => setEditModalVisible(true)}
                         >
-                            <Text style={styles.changePasswordText}>{t("editProfile")}</Text>
+                            <Text style={[
+                                styles.changePasswordText,
+                                { color: isGuest ? colors.profile.actionDisabledText : colors.profile.actionButtonText },
+                            ]}>{t("editProfile")}</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={[styles.separator, { backgroundColor: colors.profile.separator }]} />
                     <View style={styles.profileDetailItem}>
-                        <View style={[styles.detailIconBox, { backgroundColor: "rgba(91, 63, 211, 0.1)" }]}>
-                            <Ionicons name="key-outline" size={20} color="#5B3FD3" />
+                        <View style={[styles.detailIconBox, { backgroundColor: colors.profile.passwordActionIconBg }]}>
+                            <Ionicons name="key-outline" size={20} color={colors.profile.passwordActionIcon} />
                         </View>
                         <Text style={[styles.profileLabel, { color: colors.profile.textPrimary }]}>{t("changePassword")}</Text>
                         <TouchableOpacity
-                            style={styles.changePasswordButton}
+                            disabled={isGuest}
+                            style={[
+                                styles.changePasswordButton,
+                                {
+                                    backgroundColor: colors.profile.securityActionBg,
+                                    shadowColor: colors.profile.securityActionBg,
+                                },
+                                isGuest && {
+                                    backgroundColor: colors.profile.actionDisabledBg,
+                                    shadowColor: colors.profile.actionDisabledBg,
+                                    shadowOpacity: 0,
+                                    elevation: 0,
+                                },
+                            ]}
                             onPress={() => setPasswordModalVisible(true)}
                         >
-                            <Text style={styles.changePasswordText}>{t("changePassword")}</Text>
+                            <Text style={[
+                                styles.changePasswordText,
+                                { color: isGuest ? colors.profile.actionDisabledText : colors.profile.actionButtonText },
+                            ]}>{t("changePassword")}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
 
                 {/* ─── Danger Zone (Delete Account) ─── */}
                 <TouchableOpacity
-                    style={[styles.deleteAccountButton, isDark && { backgroundColor: 'rgba(239, 68, 68, 0.15)', borderColor: 'rgba(239, 68, 68, 0.3)' }]}
+                    disabled={isGuest}
+                    style={[
+                        styles.deleteAccountButton,
+                        {
+                            backgroundColor: colors.profile.deleteActionBg,
+                            borderColor: colors.profile.deleteActionBorder,
+                        },
+                        isGuest && {
+                            backgroundColor: colors.profile.actionDisabledBg,
+                            borderColor: colors.profile.actionDisabledBorder,
+                        },
+                    ]}
                     onPress={() => setDeleteModalVisible(true)}
                 >
-                    <Ionicons name="trash-outline" size={18} color="#EF4444" />
-                    <Text style={styles.deleteAccountText}>{t("deleteAccount")}</Text>
+                    <Ionicons
+                        name="trash-outline"
+                        size={18}
+                        color={isGuest ? colors.profile.actionDisabledText : colors.profile.deleteActionIcon}
+                    />
+                    <Text style={[
+                        styles.deleteAccountText,
+                        { color: isGuest ? colors.profile.actionDisabledText : colors.profile.deleteActionIcon },
+                    ]}>{t("deleteAccount")}</Text>
                 </TouchableOpacity>
             </ScrollView>
 

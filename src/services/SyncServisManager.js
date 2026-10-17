@@ -65,7 +65,7 @@ export const syncService = {
                         await dictionariesSQLite.upsertWords(wordRes.data);
                     }
                 } catch (wordErr) {
-                    console.log("⚠️ Sync Service : Failed to pull words for dict:", dictId, wordErr);
+                    console.log("⚠️ Sync Service : Failed to pull words for dict:", wordErr);
                 }
             }
 
@@ -96,7 +96,7 @@ export const syncService = {
             const { ok, data } = await apiClient.get(ENDPOINTS.stats, true);
             if (ok && data) {
                 await statsSQLite.upsertUserStats(data);
-                console.log("✅ Sync Service : pullUserStats — Sunucudan çekildi ve SQLite'a yazıldı:", JSON.stringify(data));
+                console.log("✅ Sync Service : pullUserStats — Sunucudan çekildi ve SQLite'a yazıldı!");
                 return { success: true, data };
             }
 
@@ -211,9 +211,9 @@ export const syncService = {
                 return { success: true, message: "Senkronize edilecek yerel veri yok.", synced: false };
             }
 
-            console.log("📤 Sync Service : Push payload gönderiliyor:", JSON.stringify(Object.keys(payload)));
+            console.log("📤 Sync Service : Push payload gönderiliyor!");
             const { ok, status, data } = await apiClient.post(ENDPOINTS.syncPush, payload);
-            console.log("📥 Sync Service : Push response received :", status, JSON.stringify(data));
+            console.log("📥 Sync Service : Push response received :", status);
 
             if (ok && data?.success) {
                 // 1. Sunucu tarafından onaylanan sözlükleri senkronize edildi (is_synced = 1) olarak işaretle
@@ -287,6 +287,16 @@ export const syncService = {
         try {
             console.log("🔄 Sync Service : Full synchronization (Push -> Pull) started...");
             const pushResult = await syncService.pushData();
+            if (!pushResult?.success) {
+                console.warn("⚠️ Sync Service : Push failed, skipping pull to preserve local changes.");
+                return {
+                    push: pushResult,
+                    pullDicts: null,
+                    pullStats: null,
+                    pullGames: null
+                };
+            }
+
             const pullDictResult = await syncService.pullDictionaries();
             const pullStatsResult = await syncService.pullUserStats();
             const pullGamesResult = await syncService.pullGameSessions();
@@ -309,7 +319,13 @@ export const syncService = {
     initAppStateListener: () => {
         if (appStateSubscription) return;
 
+        
         appStateSubscription = AppState.addEventListener('change', async (nextState) => {
+            const isGuest = await storage.get(STORAGE_KEYS.SESSION.IS_GUEST);
+            if (isGuest) {
+                console.log("❌ Misafir hesabı kullanılıyor. App State etkisiz kalacak...");
+                return;
+            }
             if (nextState === 'background' || nextState === 'inactive') {
                 console.log("📱 Sync Service : Uygulama arka plana geçti, XP logları push ediliyor...");
                 const isOnline = await NetworkUtils.isOnline();

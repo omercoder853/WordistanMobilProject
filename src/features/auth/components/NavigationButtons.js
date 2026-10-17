@@ -22,7 +22,7 @@ export default function NavigationButtons({
                 onPress={onBack} 
                 style={[
                     styles.navigationButton, 
-                    { backgroundColor: aColors.secondaryButtonBg }, 
+                    { backgroundColor: aColors.secondaryButtonBg,borderColor:aColors.cardBorder }, 
                     loading && { opacity: 0.5 }
                 ]} 
                 disabled={loading}

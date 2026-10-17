@@ -1,18 +1,21 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import { BASE_URL, ENDPOINTS } from "../constants/ApiConfig";
-import { useState, useEffect } from "react";
 import { useAuth } from "./AuthContext";
 import { apiClient } from "../services/ApiClient";
+import { useFeedback } from "./FeedbackContext";
+import { useTranslation } from "react-i18next";
 
 const NotificationContext = createContext();
 
 export const NotificationProvider = ({ children }) => {
-    const { isLogin } = useAuth();
+    const { isLogin ,isGuest } = useAuth();
+    const { showToast } = useFeedback();
+    const { t } = useTranslation();
     const [notifications, setNotifications] = useState([]);
     const [notificationPanel, setNotificationPanel] = useState(false);
 
     useEffect(() => {
-        if (isLogin) {
+        if (isLogin && !isGuest) {
             const fetchNotifications = async () => {
                 await getNotifications();
             };
@@ -22,14 +25,17 @@ export const NotificationProvider = ({ children }) => {
 
     const getNotifications = async () => {
         console.log("🔄 Notification Context : Fetching notifications...");
-        const { ok, status, data } = await apiClient.get(ENDPOINTS.getNotifications)
+        const { ok, status, data } = await apiClient.get(ENDPOINTS.getNotifications);
         if (ok) {
             setNotifications(data);
             console.log("✅ Notification Context : Notifications fetched successfully.");
             return data;
         }
         else {
-            console.log("❌ Notification Context : Error while fetching notifications :", status, data)
+            if (status === 408) {
+                showToast(t("requestTimeout"), t("requestTimeoutMessage"), "danger", "wifi");
+            }
+            console.log("❌ Notification Context : Error while fetching notifications :", status, data);
         }
     };
 
@@ -50,6 +56,9 @@ export const NotificationProvider = ({ children }) => {
             console.log("✅ Notification Context : All notifications read successfully.");
             return true;
         } else {
+            if (status === 408) {
+                showToast(t("requestTimeout"), t("requestTimeoutMessage"), "danger", "wifi");
+            }
             console.log("❌ Notification Context : Error while reading all notifications :", status, data);
         }
     };
@@ -65,6 +74,9 @@ export const NotificationProvider = ({ children }) => {
             return true;
         }
         else {
+            if (status === 408) {
+                showToast(t("requestTimeout"), t("requestTimeoutMessage"), "danger", "wifi");
+            }
             console.log("❌ Notification Context : Error while reading notification :", status, data);
         }
     };
@@ -76,6 +88,9 @@ export const NotificationProvider = ({ children }) => {
             return true;
         }
         else {
+            if (status === 408) {
+                showToast(t("requestTimeout"), t("requestTimeoutMessage"), "danger", "wifi");
+            }
             console.log("❌ Notification Context : Error while creating a new notification :", status, data);
         }
     };

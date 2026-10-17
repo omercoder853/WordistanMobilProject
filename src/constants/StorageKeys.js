@@ -5,6 +5,7 @@ export const STORAGE_KEYS = Object.freeze({
   },
 
   SESSION: {
+    IS_GUEST : 'is_guest',
     USER: 'user',
     USER_STATS: 'userStats',
     DAILY_WORD: 'dailyWord',

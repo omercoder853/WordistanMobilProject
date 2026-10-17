@@ -3,6 +3,8 @@ import { ENDPOINTS } from "@/constants/ApiConfig";
 import { gamesSQLite } from "@/storage/GamesSQLite";
 import { NetworkUtils } from "@/utils/NetworkUtils";
 import { responder, getRandomId, getUserId } from "@/utils/ApiUtils";
+import { storage } from "@/storage/storage";
+import { STORAGE_KEYS } from "@/constants/StorageKeys";
 
 export function EnrichGameSessions(sessions) {
     if (!Array.isArray(sessions) || sessions.length === 0) {
@@ -79,12 +81,13 @@ export function EnrichGameSessions(sessions) {
 const getGameSessions = async () => {
     const isOnline = await NetworkUtils.isOnline();
     const user_id = await getUserId();
+    const isGuest = await storage.get(STORAGE_KEYS.SESSION.IS_GUEST);
     if (!user_id) {
         console.log("❌ Games API : getGameSessions — user_id is missing");
         return responder(false, false, 401, EnrichGameSessions([]));
     }
 
-    if (isOnline) {
+    if (isOnline && !isGuest) {
         try {
             console.log("🔄 Games API : Fetching game sessions from cloud (Supabase)...");
             const { ok, status, data } = await apiClient.get(ENDPOINTS.gameSessions);
@@ -113,6 +116,7 @@ const getGameSessions = async () => {
 const saveGameSession = async (rawData) => {
     const isOnline = await NetworkUtils.isOnline();
     const user_id = await getUserId();
+    const isGuest = await storage.get(STORAGE_KEYS.SESSION.IS_GUEST);
     if (!user_id) {
         console.log("❌ Games API : saveGameSession — user_id is missing");
         return responder(false, false, 401, null);
@@ -141,12 +145,12 @@ const saveGameSession = async (rawData) => {
         played_at: String(played_at)
     };
 
-    if (isOnline) {
+    if (isOnline && !isGuest) {
         try {
-            console.log("🔄 Games API : Saving game session to cloud (Supabase)... Payload:", JSON.stringify(sessionPayload));
+            console.log("🔄 Games API : Saving game session to cloud (Supabase)...");
             const { ok, status, data } = await apiClient.post(ENDPOINTS.saveGameSession, sessionPayload);
             if (ok && data) {
-                console.log("✅ Games API : Game session saved to cloud successfully :", data);
+                console.log("✅ Games API : Game session saved to cloud successfully!");
                 const serverSession = {
                     ...sessionPayload,
                     id: String(data.id || id),

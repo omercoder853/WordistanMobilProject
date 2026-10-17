@@ -8,6 +8,8 @@ import { NetworkUtils } from "@/utils/NetworkUtils";
 import { syncService } from "@/services/SyncServisManager";
 import { useFeedback } from "@/contextapis/FeedbackContext";
 import { useTranslation } from "react-i18next";
+import { storage } from "@/storage/storage";
+import { STORAGE_KEYS } from "@/constants/StorageKeys";
 
 export default function RootNavigation() {
     const [databaseLoading,setDatabaseLoading] = useState(true);
@@ -37,8 +39,13 @@ export default function RootNavigation() {
         syncService.initAppStateListener();
 
         const unsubscribe = NetworkUtils.listen(async (isOnline) => {
+            const isGuest = await storage.get(STORAGE_KEYS.SESSION.IS_GUEST);
             const wasOnline = prevOnlineRef.current;
             prevOnlineRef.current = isOnline;
+            if (isGuest) {
+                console.log("⚠️ Root Navigation : User has a guest account. Synchronization cant performed.");
+                return;
+            }
 
             if (!isOnline) {
                 if (wasOnline === true || wasOnline === null) {

@@ -5,12 +5,16 @@ import { useUserStats } from "./UserStatsContext";
 import { STORAGE_KEYS } from "../constants/StorageKeys";
 import { storage } from "../storage/storage";
 import { apiClient } from "../services/ApiClient";
+import { useFeedback } from "./FeedbackContext";
+import { useTranslation } from "react-i18next";
 
 export const AchievementsContext = createContext();
 
 export const AchievementsProvider = ({ children }) => {
-    const { isLogin } = useAuth();
+    const { isLogin,isGuest } = useAuth();
     const { userStats, incXP } = useUserStats();
+    const { showToast } = useFeedback();
+    const { t } = useTranslation();
     const [achievements, setAchievements] = useState([]);
     const [earnedAchievementsList, setEarnedAchievements] = useState([]);
     const [newAchievement, setNewAchievement] = useState(null);
@@ -19,6 +23,7 @@ export const AchievementsProvider = ({ children }) => {
 
     // Load shownAchievements from AsyncStorage on mount
     useEffect(() => {
+        if (isGuest) return;
         const loadShownAchievements = async () => {
             try {
                 const data = await storage.get(STORAGE_KEYS.SESSION.SHOWN_ACHIEVEMENTS);
@@ -39,6 +44,9 @@ export const AchievementsProvider = ({ children }) => {
             return data;
         }
         else {
+            if (status === 408) {
+                showToast(t("requestTimeout"), t("requestTimeoutMessage"), "danger", "wifi");
+            }
             console.log("❌ Achievements Context : Error while fetching achievements :", status, data);
             return false;
         }
@@ -50,12 +58,15 @@ export const AchievementsProvider = ({ children }) => {
             console.log("✅ Achievements Context : Earned achievements fetched successfully.");
             return data;
         } else {
+            if (status === 408) {
+                showToast(t("requestTimeout"), t("requestTimeoutMessage"), "danger", "wifi");
+            }
             console.log("❌ Achievements Context : Error while fetching earned achievements :", status, data);
         }
     };
 
     useEffect(() => {
-        if (!isLogin) {
+        if (!isLogin || isGuest) {
             setAchievements([]);
             setEarnedAchievements([]);
             setIsFetched(false);
@@ -104,7 +115,7 @@ export const AchievementsProvider = ({ children }) => {
 
     // Target value check whenever pending data or userStats update (only AFTER initial fetch is done!)
     useEffect(() => {
-        if (!isLogin || !isFetched || !achievements || achievements.length === 0) return;
+        if (!isLogin || !isFetched || !achievements || achievements.length === 0 || isGuest) return;
 
         const currentSaved = userStats?.saved_words || 0;
         const currentTranslated = userStats?.translated_words || 0;

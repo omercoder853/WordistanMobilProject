@@ -18,7 +18,7 @@ const DictContext = createContext();
 export const DictionaryProvider = ({ children }) => {
     const { incSaved, incDictCreated } = useUserStats();
     const [dicts, setDicts] = useState([]);
-    const { isLogin, user } = useAuth();
+    const { isLogin, user , isGuest } = useAuth();
     const [dictReload, setDictReload] = useState(false);
     const [dailyWord, setDailyWord] = useState(null);
     const [dailyWordLoading,setDailyWordLoading] = useState(false);
@@ -31,23 +31,28 @@ export const DictionaryProvider = ({ children }) => {
     useEffect(() => {
         const loadDailyWord = async () => {
             setDailyWordLoading(true);
-            const stored = await storage.get(STORAGE_KEYS.SESSION.DAILY_WORD)
-            if (stored) {
-                const timestamp = Date.now()
-                const today = new Date(timestamp).toISOString().split('T')[0]
-                if (stored.target_date === today) {
-                    setDailyWord(stored);
+            try {
+                const stored = await storage.get(STORAGE_KEYS.SESSION.DAILY_WORD)
+                if (stored) {
+                    const timestamp = Date.now()
+                    const today = new Date(timestamp).toISOString().split('T')[0]
+                    if (stored.target_date === today) {
+                        setDailyWord(stored);
+                    }
+                    else {
+                        console.log("ℹ️ Dict Context : There is no stored data for daily word.");
+                        await getDailyWord();
+                    }
                 }
                 else {
                     console.log("ℹ️ Dict Context : There is no stored data for daily word.");
                     await getDailyWord();
                 }
+            } catch (error) {
+                console.error("❌ Dict Context : Daily word could not be loaded:", error);
+            } finally {
+                setDailyWordLoading(false);
             }
-            else {
-                console.log("ℹ️ Dict Context : There is no stored data for daily word.");
-                await getDailyWord();
-            }
-            setDailyWordLoading(false);
         }
         loadDailyWord()
     }, [])
@@ -95,7 +100,11 @@ export const DictionaryProvider = ({ children }) => {
             return true;
         }
         else {
-            showToast(t('error'), t('errorFetchingDicts'), "danger")
+            if (status === 408) {
+                showToast(t("requestTimeout"), t("requestTimeoutMessage"), "danger", "wifi");
+            } else {
+                showToast(t('error'), t('errorFetchingDicts'), "danger");
+            }
             console.log("❌ Dict Context : Something went wrong while fetching dictionaries :", status, data);
         }
         setDictReload(false);
@@ -113,7 +122,11 @@ export const DictionaryProvider = ({ children }) => {
             return data;
         }
         else {
-            showToast(t("error"), t('errorFetchingWords'), "danger");
+            if (status === 408) {
+                showToast(t("requestTimeout"), t("requestTimeoutMessage"), "danger", "wifi");
+            } else {
+                showToast(t("error"), t('errorFetchingWords'), "danger");
+            }
             console.log("❌ Dict Context : Error while fetching words :", data, status);
             return false;
         }
@@ -135,7 +148,11 @@ export const DictionaryProvider = ({ children }) => {
         }
         else {
             console.log("❌ Dict Context : Error while creating a new dictionary :", status, data);
-            showToast(t('ooops'), t('tryAgainLater'), "danger");
+            if (status === 408) {
+                showToast(t("requestTimeout"), t("requestTimeoutMessage"), "danger", "wifi");
+            } else {
+                showToast(t('ooops'), t('tryAgainLater'), "danger");
+            }
             return false;
         }
     }
@@ -152,7 +169,11 @@ export const DictionaryProvider = ({ children }) => {
             return true;
         } else {
             console.log("❌ Dict Context : Error while updating dictionary :", status, data);
-            showToast(t('ooops'), t('dictUpdatingError'), "danger");
+            if (status === 408) {
+                showToast(t("requestTimeout"), t("requestTimeoutMessage"), "danger", "wifi");
+            } else {
+                showToast(t('ooops'), t('dictUpdatingError'), "danger");
+            }
             return false;
         }
     }
@@ -176,7 +197,11 @@ export const DictionaryProvider = ({ children }) => {
             showToast(t("wordAdded"), t("wordAddedSuccessfully"), "success");
             return true;
         } else {
-            showToast(t('error'), t('wordSavingError'), "danger");
+            if (status === 408) {
+                showToast(t("requestTimeout"), t("requestTimeoutMessage"), "danger", "wifi");
+            } else {
+                showToast(t('error'), t('wordSavingError'), "danger");
+            }
             console.log("❌ Dict Context : Error while saving word :", status, data);
             return false;
         }
@@ -195,13 +220,17 @@ export const DictionaryProvider = ({ children }) => {
             return true;
         } else {
             console.log("❌ Dict Context : Error while deleting word :", status, data);
-            showToast(t('ooops'), t('wordDeletingError'), "danger");
+            if (status === 408) {
+                showToast(t("requestTimeout"), t("requestTimeoutMessage"), "danger", "wifi");
+            } else {
+                showToast(t('ooops'), t('wordDeletingError'), "danger");
+            }
             return false;
         }
     }
 
     async function deleteDictionary(dict_id) {
-        const { ok, is_synced } = await dictionaryApi.deleteDictionary(dict_id);
+        const { ok, is_synced, status } = await dictionaryApi.deleteDictionary(dict_id);
         if (ok) {
             console.log("✅ Dict Context : Dictionary deleted successfully! (is_synced:", is_synced, ")");
             showToast(t('operationSuccessful'), t('dictDeletingSuccessfull'), "success");
@@ -209,21 +238,32 @@ export const DictionaryProvider = ({ children }) => {
             return true;
         } else {
             console.log("❌ Dict Context : Error while deleting dictionary :", dict_id);
-            showToast(t('ooops'), t('dictDeletingError'), "danger");
+            if (status === 408) {
+                showToast(t("requestTimeout"), t("requestTimeoutMessage"), "danger", "wifi");
+            } else {
+                showToast(t('ooops'), t('dictDeletingError'), "danger");
+            }
             return false;
         }
     }
 
     async function getDailyWord() {
+        if (isGuest) {
+            console.log("❌ Misafir hesabı kullanılıyor günün kelimesi çekilemez...")
+            return;
+        }
         console.log("🔄 Dict Context : Requesting daily word...");
         const { ok, status, data } = await apiClient.get(ENDPOINTS.dailyWord)
         if (ok) {
-            console.log("✅ Dict Context : Daily word fetched successfully :", data);
+            console.log("✅ Dict Context : Daily word fetched successfully!");
             setDailyWord(data);
             await storage.set(STORAGE_KEYS.SESSION.DAILY_WORD, data);
             return true;
         }
         else {
+            if (status === 408) {
+                showToast(t("requestTimeout"), t("requestTimeoutMessage"), "danger", "wifi");
+            }
             console.log("❌ Dict Context : Error while fetching daily word :", status, data);
             return null;
         }
@@ -235,7 +275,7 @@ export const DictionaryProvider = ({ children }) => {
             saved_id: saved_id,
             is_saved: true
         }
-        console.log("✅ Dict Context : Updated daily word :", updatedDailyWord);
+        console.log("✅ Dict Context : Updated daily word!");
         setDailyWord(updatedDailyWord)
         await storage.set(STORAGE_KEYS.SESSION.DAILY_WORD, updatedDailyWord);
     }
@@ -246,7 +286,7 @@ export const DictionaryProvider = ({ children }) => {
             saved_id: null,
             is_saved: false
         }
-        console.log("✅ Dict Context : Removed daily word :", updatedDailyWord);
+        console.log("✅ Dict Context : Removed daily word!");
         setDailyWord(updatedDailyWord)
         await storage.set(STORAGE_KEYS.SESSION.DAILY_WORD, updatedDailyWord);
     }

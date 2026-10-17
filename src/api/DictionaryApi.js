@@ -3,14 +3,17 @@ import { ENDPOINTS } from "@/constants/ApiConfig";
 import { NetworkUtils } from "@/utils/NetworkUtils";
 import { dictionariesSQLite } from "@/storage/DictionariesSQLite";
 import { responder, getRandomId, getUserId } from "@/utils/ApiUtils"
+import { storage } from "@/storage/storage";
+import { STORAGE_KEYS } from "@/constants/StorageKeys";
 
 
 const createDictionary = async (name, description, language, cover = 'dictionary_cover_1') => {
     const isOnline = await NetworkUtils.isOnline();
     const user_id = await getUserId();
     const localId = getRandomId();
+    const isGuest = await storage.get(STORAGE_KEYS.SESSION.IS_GUEST);
 
-    if (isOnline) {
+    if (isOnline && !isGuest) {
         let cloudSuccess = false;
         let serverItem = null;
         try {
@@ -47,17 +50,18 @@ const createDictionary = async (name, description, language, cover = 'dictionary
 
 const updateDictionary = async (dictId, updateFields) => {
     if (!dictId || !updateFields || Object.keys(updateFields).length === 0) {
-        console.log("❌ Dictionary API : Invalid dictId or empty updateFields for update :", dictId, updateFields);
+        console.log("❌ Dictionary API : Invalid dictId or empty updateFields for update!");
         return responder(false, false, 400, null);
     }
 
     const isOnline = await NetworkUtils.isOnline();
     let cloudSuccess = false;
     let serverData = null;
+    const isGuest = await storage.get(STORAGE_KEYS.SESSION.IS_GUEST);
 
-    if (isOnline) {
+    if (isOnline && !isGuest) {
         try {
-            console.log("🔄 Dictionary API : Updating dictionary on cloud (Supabase)...", dictId, updateFields);
+            console.log("🔄 Dictionary API : Updating dictionary on cloud (Supabase)...");
             const { ok, status, data } = await apiClient.patch(ENDPOINTS.updateDictionary(String(dictId)), updateFields);
             if (ok) {
                 cloudSuccess = true;
@@ -84,13 +88,15 @@ const updateDictionary = async (dictId, updateFields) => {
 
 const deleteDictionary = async (dictId) => {
     if (!dictId || dictId === 'null' || dictId === 'undefined') {
-        console.log("❌ Dictionary API : Invalid dictId for deletion, cleaning up any corrupted entries :", dictId);
+        console.log("❌ Dictionary API : Invalid dictId for deletion, cleaning up any corrupted entries :");
         await dictionariesSQLite.softDeleteDictionary(dictId);
         return responder(true, false, 200, null);
     }
 
     const isOnline = await NetworkUtils.isOnline();
-    if (isOnline) {
+    const isGuest = await storage.get(STORAGE_KEYS.SESSION.IS_GUEST);
+
+    if (isOnline && !isGuest) {
         try {
             const { ok, status, data } = await apiClient.delete(ENDPOINTS.deleteDictionary(String(dictId)));
             if (ok) {
@@ -109,8 +115,9 @@ const deleteDictionary = async (dictId) => {
 const fetchDicts = async () => {
     const isOnline = await NetworkUtils.isOnline();
     const user_id = await getUserId();
+    const isGuest = await storage.get(STORAGE_KEYS.SESSION.IS_GUEST);
 
-    if (isOnline) {
+    if (isOnline && !isGuest) {
         try {
             const { ok, status, data } = await apiClient.get(ENDPOINTS.dictionaries);
             if (ok && Array.isArray(data)) {
@@ -133,7 +140,9 @@ const fetchDicts = async () => {
 
 const getWords = async (dictId) => {
     const isOnline = await NetworkUtils.isOnline();
-    if (isOnline) {
+    const isGuest = await storage.get(STORAGE_KEYS.SESSION.IS_GUEST);
+
+    if (isOnline && !isGuest) {
         try {
             const { ok, status, data } = await apiClient.get(ENDPOINTS.words + "/" + dictId);
             if (ok && Array.isArray(data)) {
@@ -164,8 +173,9 @@ const saveWord = async ({ dictionary_id, word, meaning }) => {
 
     const isOnline = await NetworkUtils.isOnline();
     const localWordId = getRandomId();
+    const isGuest = await storage.get(STORAGE_KEYS.SESSION.IS_GUEST);
 
-    if (isOnline) {
+    if (isOnline && !isGuest) {
         try {
             console.log("🔄 Dictionary API : Adding word to cloud (Supabase)...");
             const { ok, status, data } = await apiClient.post(ENDPOINTS.newWord, { dictionary_id, word, meaning });
@@ -218,12 +228,14 @@ const saveWord = async ({ dictionary_id, word, meaning }) => {
 
 const deleteWord = async (wordId) => {
     if (!wordId || wordId === 'null' || wordId === 'undefined') {
-        console.log("❌ Dictionary API : Invalid wordId for deletion :", wordId);
+        console.log("❌ Dictionary API : Invalid wordId for deletion!");
         return responder(false, false, 400, null);
     }
 
     const isOnline = await NetworkUtils.isOnline();
-    if (isOnline) {
+    const isGuest = await storage.get(STORAGE_KEYS.SESSION.IS_GUEST);
+    
+    if (isOnline && !isGuest) {
         try {
             const { ok, status, data } = await apiClient.delete(ENDPOINTS.wordDelete + String(wordId));
             if (ok) {

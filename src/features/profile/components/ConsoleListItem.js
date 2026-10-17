@@ -22,24 +22,26 @@ const ITEM_THEMES = {
 export default function ConsoleButton({ item }) {
     const navigation = useNavigation();
     const { t } = useTranslation();
-    const { logout } = useAuth();
+    const { logout,isGuest } = useAuth();
     const { colors, isDark } = useTheme();
     const { setAlertTitle, setAlertMessage, addAlertButton, setAlertVisible, hideAlert, setAlertLoading } = useFeedback();
-    const [loading, setLoading] = useState(false);
 
     async function logoutButton() {
-        setLoading(true);
+        setAlertLoading(true);
         const res = await logout();
-        setLoading(false);
         hideAlert();
     }
 
     function handleLogout() {
         setAlertTitle(t("warning"));
-        setAlertMessage(t("logoutWarning"));
+        if (isGuest) {
+            setAlertMessage(t('logoutWarningGuest'))
+        }
+        else {
+            setAlertMessage(t("logoutWarning"));
+        }
         addAlertButton({ text: t("cancel"), style: "cancel", action: () => hideAlert() });
         addAlertButton({ text: t("exit"), style: "danger", action: logoutButton, needLoading: true });
-        setAlertLoading(loading);
         setAlertVisible(true);
     }
 

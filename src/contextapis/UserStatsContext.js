@@ -55,7 +55,7 @@ export const UserStatsProvider = ({ children }) => {
     useEffect(() => {
         const unsubscribe = syncEvents.onSyncComplete(async () => {
             console.log("🔄 User Stats Context : Sync completed, reloading from local SQLite...");
-            const userId = user?.id || user?.sub;
+            const userId = user?.id;
             if (userId) {
                 const localStats = await statsSQLite.getUserStats(userId);
                 if (localStats) {

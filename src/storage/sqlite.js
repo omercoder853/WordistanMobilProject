@@ -3,16 +3,16 @@ import * as SQLite from "expo-sqlite";
 let db = null;
 
 export const getDB = async () => {
-  if (!db) {
-    db = await SQLite.openDatabaseAsync('wordistan.db');
-  }
-  return db;
+    if (!db) {
+        db = await SQLite.openDatabaseAsync('wordistan.db');
+    }
+    return db;
 };
 
 export const initDatabase = async () => {
-  const db = await getDB();
+    const db = await getDB();
 
-  await db.execAsync(`
+    await db.execAsync(`
     PRAGMA journal_mode = WAL;
     PRAGMA foreign_keys = ON;
 
@@ -43,8 +43,8 @@ export const initDatabase = async () => {
     CREATE TABLE IF NOT EXISTS user_stats (
     user_id TEXT PRIMARY KEY NOT NULL,
     total_xp INTEGER NOT NULL DEFAULT 0,
-    current_streak INTEGER NOT NULL DEFAULT 0,
-    max_streak INTEGER NOT NULL DEFAULT 0,
+    current_streak INTEGER NOT NULL DEFAULT 1,
+    max_streak INTEGER NOT NULL DEFAULT 1,
     last_activity_date TEXT,
     translated_words INTEGER NOT NULL DEFAULT 0,
     saved_words INTEGER NOT NULL DEFAULT 0,
@@ -143,7 +143,38 @@ export const initDatabase = async () => {
             updated_at       = datetime('now')
         WHERE user_id = NEW.user_id;
     END;`);
-    
-  console.log("✅ SQLite Storage : Database initialized successfully.");
-  return db;
+
+    console.log("✅ SQLite Storage : Database initialized successfully.");
+    return db;
 };
+
+export const clearDatabase = async () => {
+    try {
+        const db = await getDB();
+        await db.execAsync(`
+        DELETE FROM dictionaries;
+        DELETE FROM words;
+        DELETE FROM user_stats;
+        DELETE FROM game_sessions;
+        DELETE FROM xp_logs;`)
+        return true;
+    } catch (error) {
+        console.log("❌ Error while clearing database : ", error);
+        return false;
+    }
+}
+
+export const updateUserId = async (old_id, new_id) => {
+    const tables = ["dictionaries", "user_stats", "game_sessions", "xp_logs"]
+    try {
+        const db = await getDB();
+        for (const table of tables) {
+            await db.runAsync(
+                `UPDATE ${table} SET user_id = ? WHERE user_id = ?`,
+                [new_id,old_id]
+            );
+        }
+    } catch (error) {
+        console.log("❌ Error while updating user ids!" , error);
+    }
+}
