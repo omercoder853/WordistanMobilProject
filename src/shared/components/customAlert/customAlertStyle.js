@@ -42,13 +42,20 @@ export const getAlertStyles = (alertColors = {}) => {
       gap: 5,
     },
 
+    alertButtonHorizontal:{
+      flex:1
+    },
+
+    alertButtonVertical:{
+      marginVertical:5,
+    },
+
     defaultButton: {
       backgroundColor: ca.defaultBtnBg || '#5B3FD3',
       paddingVertical: 12,
       paddingHorizontal: 30,
       borderRadius: 12,
       alignItems: 'center',
-      flex: 1,
     },
     cancel: {
       backgroundColor: ca.cancelBtnBg || '#6B7280',
@@ -56,7 +63,6 @@ export const getAlertStyles = (alertColors = {}) => {
       paddingHorizontal: 30,
       borderRadius: 12,
       alignItems: 'center',
-      flex: 1,
       borderWidth: 1,
       borderColor: ca.cancelBtnBorder || '#E5E7EB',
     },
@@ -67,7 +73,6 @@ export const getAlertStyles = (alertColors = {}) => {
       paddingHorizontal: 30,
       borderRadius: 12,
       alignItems: 'center',
-      flex: 1,
     },
 
     danger: {
@@ -76,13 +81,13 @@ export const getAlertStyles = (alertColors = {}) => {
       paddingHorizontal: 30,
       borderRadius: 12,
       alignItems: 'center',
-      flex: 1,
     },
 
     buttonText: {
       color: ca.buttonText || 'white',
       fontSize: 16,
       fontWeight: '600',
+      textAlign:"center"
     },
 
     defaultButtonDisabled: {
