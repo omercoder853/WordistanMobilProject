@@ -19,6 +19,9 @@
     },
     "android": {
       "package": "com.wordistan.mobile",
+      "permissions": [
+        "android.permission.VIBRATE"
+      ],
       "adaptiveIcon": {
         "foregroundImage": "./src/shared/assets/logo.png",
         "backgroundColor": "#ffffff"

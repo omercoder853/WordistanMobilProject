@@ -42,7 +42,6 @@ const insertXP = async (payload) => {
         return res.changes > 0
     } catch (error) {
         console.error("❌ SQLite Ekleme Hatası:", error.message);
-        console.error("Gönderilen Parametreler:", {...payload});
         return false;
     }
 }
@@ -60,7 +59,6 @@ const selectOnlyLocalLogs = async (user_id) => {
         return rows
     } catch (error) {
         console.error("❌ SQLite Local XP LOG Çekme Hatası:", error.message);
-        console.error("Gönderilen Parametreler:", user_id);
         return [];
     }
 }

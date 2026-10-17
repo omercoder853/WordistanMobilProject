@@ -1,4 +1,4 @@
-import { View, Text, Switch, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, Switch, ScrollView, TouchableOpacity, Vibration } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
 import * as Localization from "expo-localization";
@@ -15,7 +15,7 @@ export default function Preferences() {
     const [pageValue, setPageValue] = useState(null);
     const [themeValue, setThemeValue] = useState(themeMode || "system");
     const [autoCont, setAutoCont] = useState(null);
-    const [vibration, setVibration] = useState(null);
+    const [vibration, setVibration] = useState(true);
 
     const deviceLang = Localization.getLocales()[0]?.languageCode || "en";
 
@@ -92,18 +92,18 @@ export default function Preferences() {
         updateAutoCont();
     }, [autoCont]);
 
-    useEffect(() => {
-        if (vibration == null) return;
-        const updateVibration = async () => {
-            await storage.set(STORAGE_KEYS.PREFERENCES.VIBRATION_PREF, vibration);
-        };
-        updateVibration();
-    }, [vibration]);
-
     // Theme selector: updates local state, storage, and ThemeContext
     const handleThemeSelect = async (val) => {
         setThemeValue(val);
         setThemeMode(val);
+    };
+
+    const handleVibrationToggle = async (val) => {
+        setVibration(val);
+        await storage.set(STORAGE_KEYS.PREFERENCES.VIBRATION_PREF, val);
+        if (val) {
+            Vibration.vibrate(60);
+        }
     };
 
     return (
@@ -279,8 +279,8 @@ export default function Preferences() {
                             <Switch
                                 trackColor={{ false: isDark ? "#333544" : "#E2E8F0", true: colors.common.primary }}
                                 thumbColor="#FFFFFF"
-                                value={vibration ?? true}
-                                onValueChange={(val) => setVibration(val)}
+                                value={vibration}
+                                onValueChange={handleVibrationToggle}
                             />
                         </View>
                     </View>

@@ -43,10 +43,10 @@ const styles = StyleSheet.create({
         marginTop:10
     },
     navigationButton:{
-        backgroundColor:'#e86ad0',
         paddingVertical:9,
         paddingHorizontal:15,
-        borderRadius:10
+        borderRadius:10,
+        borderWidth:1
     },
     languageButton:{
         paddingVertical:13,

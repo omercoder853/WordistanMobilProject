@@ -70,7 +70,7 @@ export default function About() {
               >
                 <Ionicons name="shield-checkmark-outline" size={20} color="#10B981" />
               </View>
-              <Text style={aboutStyles.legalLabel}>{t("aboutPrivacy")}</Text>
+              <Text style={[aboutStyles.legalLabel,{color:colors.profile.textPrimary}]}>{t("aboutPrivacy")}</Text>
             </View>
             <Ionicons name="chevron-forward" size={18} color="#D1D5DB" />
           </TouchableOpacity>
@@ -92,7 +92,7 @@ export default function About() {
               >
                 <Ionicons name="document-text-outline" size={20} color="#3B82F6" />
               </View>
-              <Text style={aboutStyles.legalLabel}>{t("aboutTerms")}</Text>
+              <Text style={[aboutStyles.legalLabel,{color:colors.profile.textPrimary}]}>{t("aboutTerms")}</Text>
             </View>
             <Ionicons name="chevron-forward" size={18} color="#D1D5DB" />
           </TouchableOpacity>

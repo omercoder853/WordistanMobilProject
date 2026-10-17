@@ -72,11 +72,11 @@ export default function GameSetupPage() {
         setValue(null);
         setSource(selectedSource);
         if (selectedSource === "personal") {
-            const cleanedDicts = dicts.filter((dict) => dict["words"] && dict["words"].length >= 5);
+            const cleanedDicts = dicts.filter((dict) => dict?.["words_count"] >= 5);
             const formatted = cleanedDicts.map((dict) => ({
                 label: dict.name,
                 value: dict.id,
-                subtext: `${dict.words ? dict.words.length : 0} ${t('words') || 'kelime'}`
+                subtext: `${dict.words_count ? dict.words_count : 0} ${t('words') || 'kelime'}`
             }));
             setItems(formatted);
         } else {

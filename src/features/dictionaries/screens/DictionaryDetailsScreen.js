@@ -23,6 +23,7 @@ export default function DictDetails() {
     const { dictId } = route.params;
     const [words, setWords] = useState([]);
     const [reload, setReload] = useState(true);
+    const [loadError, setLoadError] = useState(false);
 
     // Modal & Add word state
     const [modalVisible, setModalVisible] = useState(false);
@@ -38,12 +39,22 @@ export default function DictDetails() {
 
         const fetchWords = async () => {
             try {
-                const fetchedWords = (await getWords(dictId)) || [];
+                const fetchedWords = await getWords(dictId);
                 if (isMounted) {
-                    setWords(fetchedWords);
+                    if (Array.isArray(fetchedWords)) {
+                        setWords(fetchedWords);
+                        setLoadError(false);
+                    } else {
+                        setWords([]);
+                        setLoadError(true);
+                    }
                 }
             } catch (error) {
                 console.error('Kelimeler çekilemedi:', error);
+                if (isMounted) {
+                    setWords([]);
+                    setLoadError(true);
+                }
             } finally {
                 if (isMounted) {
                     setPageLoading(false);
@@ -119,7 +130,11 @@ export default function DictDetails() {
                     keyExtractor={item => item.id.toString()}
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ paddingBottom: 80 }}
-                    ListEmptyComponent={(<EmptyDictionary />)} />) :
+                    ListEmptyComponent={loadError ? (
+                        <View style={{ margin: 20, padding: 16, borderRadius: 12, backgroundColor: dColors.guestNotice?.background || dColors.cardBg }}>
+                            <Text style={{ color: dColors.textSecondary, textAlign: "center" }}>{t("dictionaryWordsLoadError")}</Text>
+                        </View>
+                    ) : <EmptyDictionary />} />) :
                 (<View style={{ flex: 1, alignItems: 'center', marginTop: 150 }}>
                     <ActivityIndicator size="large" style={{ alignSelf: "center", transform: [{ scale: 2.5 }] }} color={dColors.tabActive} />
                 </View>)}

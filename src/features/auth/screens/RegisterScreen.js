@@ -35,6 +35,7 @@ export default function RegisterScreen() {
         birth_date: registerData["birth_date"] || maxDate.toISOString().split("T")[0],
         gender: registerData["gender"] || null,
         nick_name: registerData["nick_name"] || "",
+        avatar_url: registerData["avatar_url"] || "avatar_1",
         language: appLanguage || "en",
         email: "",
         password: "",
@@ -106,9 +107,9 @@ export default function RegisterScreen() {
     const validPassword = passwordRegex.test((formData.password || "").trim());
     const validPasswordConfirm = validPassword && formData.password.trim() === (formData.password_confirm || "").trim();
     const step2Valid = validEmail && validPassword && validPasswordConfirm;
-    const step2Error = (!validEmail && formData.email.length > 0) || 
-                       (!validPassword && formData.password.length > 0) || 
-                       (!validPasswordConfirm && formData.password_confirm.length > 0);
+    const step2Error = (!validEmail && formData.email.length > 0) ||
+        (!validPassword && formData.password.length > 0) ||
+        (!validPasswordConfirm && formData.password_confirm.length > 0);
 
     // Mevcut adımın geçerlilik ve hata durumları
     let isCurrentValid = false;
@@ -165,6 +166,7 @@ export default function RegisterScreen() {
             birth_date: formData.birth_date,
             gender: formData.gender,
             nick_name: formData.nick_name.trim(),
+            avatar_url: formData.avatar_url,
             email: formData.email.trim(),
             password: formData.password.trim(),
             password_confirm: formData.password_confirm.trim(),
@@ -176,12 +178,12 @@ export default function RegisterScreen() {
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: colors.auth.background }}>
             <StatusBar style={isDark ? "light" : "dark"} backgroundColor={colors.auth.background} />
-            <KeyboardAvoidingView 
-                behavior={Platform.OS === "ios" ? "padding" : "height"} 
+            <KeyboardAvoidingView
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
                 style={{ flex: 1 }}
                 keyboardVerticalOffset={Platform.OS === "ios" ? 10 : 0}
             >
-                <ScrollView 
+                <ScrollView
                     contentContainerStyle={{ flexGrow: 1, justifyContent: "center", alignItems: "center", paddingVertical: 20 }}
                     showsVerticalScrollIndicator={false}
                     keyboardShouldPersistTaps="handled"
@@ -195,36 +197,36 @@ export default function RegisterScreen() {
                             {/* Dinamik Form Alanı (Yumuşak Slide & Fade Animasyonuyla) */}
                             <Animated.View style={{ opacity: fadeAnim, transform: [{ translateX: slideAnim }] }}>
                                 {currentStep === 0 && (
-                                    <Step1Personal 
-                                        formData={formData} 
-                                        updateFormField={updateFormField} 
+                                    <Step1Personal
+                                        formData={formData}
+                                        updateFormField={updateFormField}
                                     />
                                 )}
                                 {currentStep === 1 && (
-                                    <Step2Preferences 
-                                        formData={formData} 
+                                    <Step2Preferences
+                                        formData={formData}
                                         updateFormField={updateFormField}
                                         changeAppLanguage={changeAppLanguage}
                                     />
                                 )}
                                 {currentStep === 2 && (
-                                    <Step3Account 
-                                        formData={formData} 
-                                        updateFormField={updateFormField} 
+                                    <Step3Account
+                                        formData={formData}
+                                        updateFormField={updateFormField}
                                     />
                                 )}
                             </Animated.View>
 
                             {/* Sabit Stepper (Adımlar değiştikçe çizgi ve daire animasyonlarıyla akar) */}
-                            <RegisterStepper 
-                                currentStepIndex={currentStep} 
-                                totalSteps={3} 
-                                isCurrentValid={isCurrentValid} 
-                                hasError={hasActiveError} 
+                            <RegisterStepper
+                                currentStepIndex={currentStep}
+                                totalSteps={3}
+                                isCurrentValid={isCurrentValid}
+                                hasError={hasActiveError}
                             />
 
                             {/* Sabit Butonlar */}
-                            <NavigationButtons 
+                            <NavigationButtons
                                 isFirst={currentStep === 0}
                                 isLast={currentStep === 2}
                                 onBack={handleBack}

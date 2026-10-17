@@ -15,7 +15,6 @@ const insertDictionary = async ({ id, user_id, name, description, language, cove
         return result.changes > 0;
     } catch (error) {
         console.error("❌ SQLite Ekleme Hatası:", error.message);
-        console.error("Gönderilen Parametreler:", { id, user_id, name, description, language, cover, is_synced });
         return false;
     }
 };
@@ -69,7 +68,7 @@ const selectDictionaries = async (user_id) => {
             COUNT(w.id) AS words_count
         FROM dictionaries AS d
         LEFT JOIN words AS w
-            ON w.dictionary_id = d.id
+            ON w.dictionary_id = d.id AND w.is_deleted = 0
         WHERE d.user_id = ?
         AND d.is_deleted = 0
         AND d.id IS NOT NULL
@@ -82,7 +81,6 @@ const selectDictionaries = async (user_id) => {
         return rows;
     } catch (error) {
         console.error("❌ SQLite Sözlük Çekme Hatası:", error.message);
-        console.error("Gönderilen Parametreler:", user_id);
         return [];
     }
 };
@@ -99,7 +97,6 @@ const selectOnlyLocalDictionaries = async (user_id) => {
         return rows;
     } catch (error) {
         console.error("❌ SQLite Local Sözlük Çekme Hatası:", error.message);
-        console.error("Gönderilen Parametreler:", user_id);
         return [];
     }
 };
@@ -114,7 +111,6 @@ const selectOnlyDeletedDictionaries = async (user_id) => {
         return rows.map((r) => r.id);
     } catch (error) {
         console.error("❌ SQLite Silinen Sözlük ID Hatası:", error.message);
-        console.error("Gönderilen Parametreler:", user_id);
         return [];
     }
 };
@@ -172,8 +168,9 @@ const upsertDictionaries = async (serverDicts, fallbackUserId = null) => {
                  language = excluded.language,
                  cover = excluded.cover,
                  is_synced = 1,
-                 is_deleted = 0;`,
-                [String(dictId), String(userId), dict.name, dict.description ?? "", dict.language, dict.cover || 'dictionary_cover_1',dict.words[0].count, dict.created_at ?? new Date().toISOString()]
+                 is_deleted = 0
+                 WHERE dictionaries.is_synced = 1 AND dictionaries.is_deleted = 0;`,
+                [String(dictId), String(userId), dict.name, dict.description ?? "", dict.language, dict.cover || 'dictionary_cover_1', dict.words?.[0]?.count ?? dict.words_count ?? 0, dict.created_at ?? new Date().toISOString()]
             );
         }
     });
@@ -259,7 +256,6 @@ const selectOnlyDeletedWords = async (user_id) => {
              WHERE d.user_id = ? AND w.is_deleted = 1`,
             [user_id]
         );
-        console.log("Deleted words ", rows);
         return rows.map((r) => r.id);
     } catch (error) {
         console.error("❌ SQLite Silinen Kelime ID Hatası:", error.message);
@@ -325,7 +321,8 @@ const upsertWords = async (serverWords) => {
                  word = excluded.word,
                  meaning = excluded.meaning,
                  is_synced = 1,
-                 is_deleted = 0;`,
+                 is_deleted = 0
+                 WHERE words.is_synced = 1 AND words.is_deleted = 0;`,
                 [w.id, w.dictionary_id, w.word, w.meaning, w.added_at ?? new Date().toISOString()]
             );
         }

@@ -37,7 +37,7 @@ export default function Personal() {
                             description={item.description} 
                             cover={item.cover} 
                             language={item.language}
-                            created_at={item.created_at || tarih} 
+                            created_at={item.created_at || ""} 
                             length={item.words_count} 
                         />
                     )}

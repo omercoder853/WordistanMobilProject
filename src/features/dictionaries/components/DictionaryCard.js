@@ -110,7 +110,7 @@ export default function Dictionary({ title, length, id, language, description, c
 
     const handleDeleteDict = async () => {
         setAlertLoading(true);
-        console.log("🔄 Dictionary Card : Deleting dictionary with ID :", id);
+        console.log("🔄 Dictionary Card : Deleting dictionary with ID!");
         const res = await deleteDictionary(id);
         if (res) {
             setDictReload(true);
@@ -240,10 +240,12 @@ export default function Dictionary({ title, length, id, language, description, c
                                     style={[styles.dropdownPicker, { backgroundColor: dColors.searchBarBg, borderColor: dColors.searchBarBorder }]}
                                     dropDownContainerStyle={[styles.dropdownContainer, { backgroundColor: dColors.searchBarBg, borderColor: dColors.searchBarBorder }]}
                                     textStyle={[styles.dropdownText, { color: dColors.textPrimary }]}
-                                    labelStyle={styles.dropdownLabel}
+                                    labelStyle={[styles.dropdownLabel,{color:dColors.textPrimary}]}
                                     placeholder={t('selectFileType')}
                                     zIndex={5000}
                                     zIndexInverse={1000}
+                                    arrowIconStyle={{tintColor:dColors.textPrimary}}
+                                    tickIconStyle={{tintColor: '#10b981'}}
                                 />
                             </View>
 
