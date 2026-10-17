@@ -68,6 +68,6 @@ async function request(endpoint, options = {}, needToken = true, isRetry = false
 export const apiClient = {
     get: (endpoint, needToken = true) => request(endpoint, { method: 'GET' }, needToken),
     post: (endpoint, body = null, needToken = true) => request(endpoint, { method: 'POST', ...(body ? { body: JSON.stringify(body) } : {}) }, needToken),
-    delete: (endpoint, needToken = true) => request(endpoint, { method: 'DELETE' }, needToken),
+    delete: (endpoint, body=null, needToken = true) => request(endpoint, { method: 'DELETE', ...(body ? { body: JSON.stringify(body) } : {}) }, needToken),
     patch: (endpoint, body = null, needToken = true) => request(endpoint, { method: 'PATCH', ...(body ? { body: JSON.stringify(body) } : {}) }, needToken)
 };

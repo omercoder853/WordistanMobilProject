@@ -14,12 +14,14 @@ export default function DeleteAccountModal({ visible, onClose }) {
 
     const [step, setStep] = useState(1);
     const [confirmText, setConfirmText] = useState("");
+    const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [loading, setLoading] = useState(false);
 
     const resetFields = () => {
         setStep(1);
         setConfirmText("");
+        setPassword("");
         setErrorMessage("");
         setLoading(false);
     };
@@ -29,17 +31,31 @@ export default function DeleteAccountModal({ visible, onClose }) {
         onClose();
     };
 
-    const handleDeleteAccount = async () => {
+    const handleContinue = () => {
         const expectedText = t("deleteAccountConfirmPlaceholder");
         if (confirmText.trim() !== expectedText) {
             setErrorMessage(t("deleteAccountConfirmMismatch"));
             return;
         }
 
+        setErrorMessage("");
+        setStep(3);
+    };
+
+    const handleDeleteAccount = async () => {
+        if (!password.trim()) {
+            setErrorMessage(t("fillAllFields"));
+            return;
+        }
+
+        setErrorMessage("");
         setLoading(true);
-        const result = await deleteAccount();
+        const result = await deleteAccount(password);
         setLoading(false);
-        resetFields();
+        setPassword("");
+        if (result) {
+            resetFields();
+        }
     };
 
     return (
@@ -65,13 +81,14 @@ export default function DeleteAccountModal({ visible, onClose }) {
                                 </TouchableOpacity>
                             </View>
                         </>
-                    ) : (
+                    ) : step === 2 ? (
                         <>
                             <Text style={[modalStyles.message, { color: colors.profile.textSecondary }]}>{t("deleteAccountConfirmLabel")}</Text>
 
                             <TextInput
                                 style={[
                                     modalStyles.input,
+                                    modalStyles.confirmInput,
                                     isDark && {
                                         backgroundColor: colors.common.surface,
                                         borderColor: "#EF4444",
@@ -90,6 +107,38 @@ export default function DeleteAccountModal({ visible, onClose }) {
                             <View style={modalStyles.buttonRow}>
                                 <TouchableOpacity style={modalStyles.closeButton} onPress={handleClose} disabled={loading}>
                                     <Text style={modalStyles.buttonText}>{t("close")}</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={modalStyles.dangerButton} onPress={handleContinue} disabled={loading}>
+                                    <Text style={modalStyles.buttonText}>{t("deleteAccountProceed")}</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </>
+                    ) : (
+                        <>
+                            <Text style={[modalStyles.message, { color: colors.profile.textSecondary }]}>{t("deleteAccountPasswordLabel")}</Text>
+
+                            <TextInput
+                                style={[
+                                    modalStyles.input,
+                                    isDark && {
+                                        backgroundColor: colors.common.surface,
+                                        borderColor: colors.common.border,
+                                        color: colors.profile.textPrimary,
+                                    },
+                                ]}
+                                placeholder={t("currentPassword")}
+                                placeholderTextColor={colors.profile.textSecondary}
+                                secureTextEntry
+                                autoCapitalize="none"
+                                value={password}
+                                onChangeText={setPassword}
+                            />
+
+                            {errorMessage ? <Text style={modalStyles.errorText}>{errorMessage}</Text> : null}
+
+                            <View style={modalStyles.buttonRow}>
+                                <TouchableOpacity style={modalStyles.closeButton} onPress={() => { setErrorMessage(""); setStep(2); }} disabled={loading}>
+                                    <Text style={modalStyles.buttonText}>{t("back")}</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={modalStyles.dangerButton} onPress={handleDeleteAccount} disabled={loading}>
                                     {loading
@@ -152,6 +201,8 @@ const modalStyles = StyleSheet.create({
         color: '#333',
         marginBottom: 10,
         backgroundColor: '#FEF2F2',
+    },
+    confirmInput: {
         textAlign: 'center',
         letterSpacing: 2,
         fontWeight: '600',

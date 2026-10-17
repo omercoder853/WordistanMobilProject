@@ -54,11 +54,11 @@ export default function ChangePasswordModal({ visible, onClose }) {
         }
 
         setLoading(true);
-        const ok = await changePassword(currentPassword, newPassword);
+        const {ok,status} = await changePassword(currentPassword, newPassword);
         setLoading(false);
         resetFields();
         const alert_title = ok ? t("passwordChangedSuccess") : t("passwordChangeFailed");
-        const alert_message = ok ? t("passwordChangedSuccessMsg") : t("passwordChangeFailedMsg");
+        const alert_message = ok ? t("passwordChangedSuccessMsg") : status===401 ? t('passwordIncorrect') : t("passwordChangeFailedMsg");
         const style = ok ? "success" : "danger";
         setAlertTitle(alert_title);
         setAlertMessage(alert_message);
