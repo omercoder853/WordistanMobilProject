@@ -83,6 +83,7 @@
   "password": "Şifre",
   "enterPasswordAgain": "Şifrenizi Tekrar Girin",
   "emailLabel": "E-Posta: ",
+  "fullNameLable":"Ad Soyad: ",
   "validEmailAddressWarning": "* Lütfen geçerli bir e-posta adresi girin",
   "loginPasswordLabel": "Şifre: ",
   "login": "Giriş Yap",

@@ -1,18 +1,18 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import i18n from '../i18n/i18n';
-import { ENDPOINTS } from "../constants/ApiConfig";
+import i18n from '@/i18n/i18n';
+import { ENDPOINTS } from "@/constants/ApiConfig";
 import { jwtDecode } from "jwt-decode";
-import { getNewToken } from "../services/TokenService";
-import { storage } from "../storage/storage";
-import { STORAGE_KEYS } from "../constants/StorageKeys";
-import { apiClient } from "../services/ApiClient";
-import { syncService } from "../services/SyncServisManager";
-import { statsSQLite } from "../storage/StatsSQLite";
-import { syncEvents } from "../services/SyncEvents";
+import { getNewToken } from "@/services/TokenService";
+import { storage } from "@/storage/storage";
+import { STORAGE_KEYS } from "@/constants/StorageKeys";
+import { apiClient } from "@/services/ApiClient";
+import { syncService } from "@/services/SyncServisManager";
+import { statsSQLite } from "@/storage/StatsSQLite";
+import { syncEvents } from "@/services/SyncEvents";
 import { useFeedback } from "./FeedbackContext";
 import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
-import { NetworkUtils } from "../utils/NetworkUtils";
+import { NetworkUtils } from "@/utils/NetworkUtils";
 import { getRandomId } from "@/utils/ApiUtils";
 import { clearDatabase } from "@/storage/sqlite";
 

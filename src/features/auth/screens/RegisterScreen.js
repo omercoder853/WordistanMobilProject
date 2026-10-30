@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
 import { View, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard, Animated, BackHandler } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "@/contextapis/AuthContext";
@@ -176,7 +175,7 @@ export default function RegisterScreen() {
     };
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: colors.auth.background }}>
+        <View style={{ flex: 1, backgroundColor: colors.auth.background }}>
             <StatusBar style={isDark ? "light" : "dark"} backgroundColor={colors.auth.background} />
             <KeyboardAvoidingView
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -238,6 +237,6 @@ export default function RegisterScreen() {
                     </TouchableWithoutFeedback>
                 </ScrollView>
             </KeyboardAvoidingView>
-        </SafeAreaView>
+        </View>
     );
 }

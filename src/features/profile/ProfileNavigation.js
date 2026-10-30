@@ -1,5 +1,4 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { View } from "react-native";
 import PersonalDetails from "./screens/PersonalDetailsScreen";
 import Statistics from "./screens/StatisticsScreen";
 import Achievements from "./screens/AchievementsScreen";
@@ -9,6 +8,7 @@ import About from "./screens/AboutScreen";
 import GameSessions from "./screens/GameSessionsScreen";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@/contextapis/ThemeContext";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Stack = createNativeStackNavigator();
 
@@ -17,7 +17,7 @@ export default function ProfileNavigation() {
     const { colors } = useTheme();
 
     return (
-        <View style={{ flex: 1, backgroundColor: colors.common.background }}>
+        <SafeAreaView edges={["bottom"]} style={{ flex: 1, backgroundColor: colors.common.background }}>
             <Stack.Navigator
                 screenOptions={{
                     // Profil navigasyonu: tüm ekranlar sağdan kayar
@@ -72,6 +72,6 @@ export default function ProfileNavigation() {
                     options={{ title: t("about") }}
                 />
             </Stack.Navigator>
-        </View>
+        </SafeAreaView>
     )
 }

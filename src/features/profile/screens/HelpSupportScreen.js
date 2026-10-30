@@ -58,6 +58,7 @@ export default function HelpSupport() {
 
   // Default email from user context
   const userEmail = user?.email || "";
+  const userFullName = (user?.first_name || "") + " " + (user.last_name || "")
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
 
@@ -79,7 +80,7 @@ export default function HelpSupport() {
     }
   };
 
-  const isValid = subject.trim().length >= 3 && message.trim().length >= 10;
+  const isValid = subject.trim().length >= 3 && message.trim().length >= 10 && userFullName!=="";
   const handleSendEmail = async () => {
     if (!isValid || loading) return;
     setLoading(true);
@@ -87,6 +88,7 @@ export default function HelpSupport() {
       const requestBody = {
         _subject: subject.trim(),
         email: userEmail,
+        name:userFullName,
         message: message.trim(),
         app: "Wordistan Mobile"
       }
@@ -151,12 +153,19 @@ export default function HelpSupport() {
             </View>
           </View>
 
+          {/* Name (read-only / pre-filled) */}
+          <Text style={[aboutStyles.inputLabel, { color: colors.profile.textSecondary }]}>{t("fullNameLable")}</Text>
+          <TextInput
+            style={[aboutStyles.textInput, { backgroundColor: isDark ? colors.common.surface : '#F9FAFB', borderColor: colors.profile.separator, color: colors.profile.textPrimary }]}
+            value={userFullName}
+            editable={userFullName.trim() == ""}
+          />
           {/* Email (read-only / pre-filled) */}
           <Text style={[aboutStyles.inputLabel, { color: colors.profile.textSecondary }]}>{t("emailLabel")}</Text>
           <TextInput
             style={[aboutStyles.textInput, { backgroundColor: isDark ? colors.common.surface : '#F9FAFB', borderColor: colors.profile.separator, color: colors.profile.textPrimary }]}
             value={userEmail}
-            editable={false}
+            editable={userEmail.trim() == ""}
           />
 
           {/* Subject */}

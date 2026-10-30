@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { View } from "react-native";
+import { Platform,View } from "react-native";
 import RootNavigation from '@/navigations/RootNavigation'
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { AuthProvider } from "@/contextapis/AuthContext";
@@ -10,12 +10,22 @@ import { FeedbackProvider } from "@/contextapis/FeedbackContext";
 import CustomToast from "@/shared/components/customToast/CustomToast";
 import CustomAlert from "@/shared/components/customAlert/CustomAlert";
 import {useTheme , ThemeProvider} from "@/contextapis/ThemeContext"
+import * as NavigationBar from 'expo-navigation-bar'
+import { useEffect } from "react";
 
 function MainContent() {
   const {isDark,themeMode,colors} = useTheme();
-  const baseTheme = isDark ? DarkTheme : DefaultTheme
+  const baseTheme = isDark ? DarkTheme : DefaultTheme;
+
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      NavigationBar.setButtonStyleAsync(isDark ? "light" : "dark");
+    }
+  }, [isDark]);
+
   return (
-    <View style={{ flex: 1, backgroundColor: colors.common.background }}>
+    <View
+    style={{ flex: 1, backgroundColor: colors.common.background }}>
       <StatusBar style={isDark ? "light" : "dark"} 
       backgroundColor="transparent"/>
       <FeedbackProvider>

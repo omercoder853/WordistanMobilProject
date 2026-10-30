@@ -6,13 +6,13 @@ import { useRoute } from "@react-navigation/native";
 import { useDictionary } from "@/contextapis/DictContext";
 import Word from "../components/WordListItem";
 import styles from "../styles/DictionaryStyles";
-import alertStyles from "@/shared/components/customAlert/customAlertStyle";
 import EmptyDictionary from "../components/EmptyDictionaryState";
 import { useTranslation } from "react-i18next";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useState } from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useTheme } from "@/contextapis/ThemeContext";
+import { SafeAreaView,useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function DictDetails() {
     const { colors } = useTheme();
@@ -24,6 +24,8 @@ export default function DictDetails() {
     const [words, setWords] = useState([]);
     const [reload, setReload] = useState(true);
     const [loadError, setLoadError] = useState(false);
+
+    const {bottom} = useSafeAreaInsets();
 
     // Modal & Add word state
     const [modalVisible, setModalVisible] = useState(false);
@@ -107,7 +109,8 @@ export default function DictDetails() {
     };
 
     return (
-        <View style={[styles.wordsTable, { flex: 1, backgroundColor: colors.common.background }]}>
+        <SafeAreaView edges={["bottom"]}
+         style={[styles.wordsTable, { flex: 1, backgroundColor: colors.common.background }]}>
             <LinearGradient
                 colors={['#c967e6', '#9c27b0']}
                 start={{ x: 0, y: 0 }}
@@ -141,7 +144,7 @@ export default function DictDetails() {
 
             {/* Floating Action Button */}
             <TouchableOpacity
-                style={[localStyles.fab, { backgroundColor: dColors.addBtnBg }]}
+                style={[localStyles.fab, { backgroundColor: dColors.addBtnBg , bottom:bottom + 20 }]}
                 onPress={() => setModalVisible(true)}
                 activeOpacity={0.8}>
                 <MaterialCommunityIcons name="plus" size={30} color={dColors.addBtnIcon} />
@@ -236,14 +239,13 @@ export default function DictDetails() {
                     </TouchableWithoutFeedback>
                 </KeyboardAvoidingView>
             </Modal>
-        </View>
+        </SafeAreaView>
     );
 }
 
 const localStyles = StyleSheet.create({
     fab: {
         position: 'absolute',
-        bottom: 24,
         right: 20,
         width: 56,
         height: 56,

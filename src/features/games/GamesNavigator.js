@@ -1,11 +1,11 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { View } from "react-native";
 import GameSetupPage from "./screens/GameSetup";
 import WordCompletionPage from "./screens/WordCompletionScreen";
 import MultipleChoiceGamePage from "./screens/MultipleChoiceScreen";
 import MatchingPairsPage from "./screens/MatchingPairsScreen";
 import FinishGame from "./screens/GameResultsScreen";
 import { useTheme } from "@/contextapis/ThemeContext";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Stack = createNativeStackNavigator();
 
@@ -13,7 +13,7 @@ export default function GamesNavigation() {
     const { colors } = useTheme();
 
     return (
-        <View style={{ flex: 1, backgroundColor: colors.common.background }}>
+        <SafeAreaView edges={["bottom"]} style={{ flex: 1, backgroundColor: colors.common.background }}>
             <Stack.Navigator
                 screenOptions={{
                     headerStyle: {
@@ -59,6 +59,6 @@ export default function GamesNavigation() {
                     options={{ headerShown: false, animation: "fade" }}
                 />
             </Stack.Navigator>
-        </View>
+        </SafeAreaView>
     )
 }

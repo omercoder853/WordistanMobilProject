@@ -2,7 +2,6 @@ import { View, Text, Image, TouchableOpacity, Animated, Easing, StyleSheet } fro
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useAuth } from "@/contextapis/AuthContext";
 import { useEffect, useRef } from "react";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useUserStats } from "@/contextapis/UserStatsContext";
 import { useNavigation } from "@react-navigation/native";
 import Svg, { Circle } from "react-native-svg";
@@ -19,7 +18,6 @@ const RADIUS = (AVATAR_SIZE + STROKE_WIDTH) / 2;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
 const AppHeader = () => {
-    const insets = useSafeAreaInsets();
     const { t } = useTranslation();
     const { colors } = useTheme();
     const { userStats } = useUserStats();
@@ -59,7 +57,7 @@ const AppHeader = () => {
         : "";
 
     return (
-        <View style={[styles.profileRowContainer, { paddingTop: insets.top + 10, backgroundColor: colors.header.background, shadowColor: colors.header.shadow }]}>
+        <View style={[styles.profileRowContainer, { paddingTop: 10, backgroundColor: colors.header.background, shadowColor: colors.header.shadow }]}>
             <View style={styles.greeting}>
                 <Image
                     style={[styles.logoImage, { borderColor: colors.header.logoBorder }]}

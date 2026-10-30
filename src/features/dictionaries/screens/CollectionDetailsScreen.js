@@ -9,6 +9,7 @@ import { useTheme } from "@/contextapis/ThemeContext";
 import { useState } from "react";
 import SaveWordModal from "@/shared/components/SaveWordModal";
 import { useDictionary } from "@/contextapis/DictContext";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function CollectionDetails() {
     const { colors } = useTheme();
@@ -55,7 +56,7 @@ export default function CollectionDetails() {
     };
 
     return (
-        <View style={[styles.detailsContainer, { backgroundColor: colors.common.background }]}>
+        <SafeAreaView edges={["bottom"]} style={[styles.detailsContainer, { backgroundColor: colors.common.background }]}>
             <LinearGradient 
                 colors={['#4F46E5', '#7C3AED']}
                 start={{ x: 0, y: 0 }} 
@@ -89,7 +90,7 @@ export default function CollectionDetails() {
                 word={selectedWord.word}
                 meaning={selectedWord.meaning}
             />
-        </View>
+        </SafeAreaView>
     );
 }
 
