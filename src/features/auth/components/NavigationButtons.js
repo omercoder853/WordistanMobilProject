@@ -11,6 +11,7 @@ export default function NavigationButtons({
     onNext,
     disabled = false,
     loading = false,
+    nextLabel,
 }) {
     const { t } = useTranslation();
     const { colors } = useTheme();
@@ -47,7 +48,7 @@ export default function NavigationButtons({
                     <ActivityIndicator color={aColors.primaryButtonText} />
                 ) : (
                     <Text style={{ color: aColors.primaryButtonText, fontWeight: "800", fontSize: 15 }}>
-                        {isLast ? t("createAccount") : t("next")}
+                        {nextLabel || (isLast ? t("createAccount") : t("next"))}
                     </Text>
                 )}
             </TouchableOpacity>

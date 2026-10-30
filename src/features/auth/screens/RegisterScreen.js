@@ -2,8 +2,10 @@ import React, { useState, useRef, useEffect } from "react";
 import { View, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard, Animated, BackHandler } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useNavigation } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contextapis/AuthContext";
 import { useTheme } from "@/contextapis/ThemeContext";
+import useTimer from "@/hooks/useTimer";
 import styles from "../styles/styles";
 
 import LogoArea from "../components/RegisterHeader";
@@ -12,16 +14,23 @@ import NavigationButtons from "../components/NavigationButtons";
 import Step1Personal from "../components/Step1Personal";
 import Step2Preferences from "../components/Step2Preferences";
 import Step3Account from "../components/Step3Account";
+import Step4Verification from "../components/Step4Verification";
 
 export default function RegisterScreen() {
     const navigation = useNavigation();
+    const { t } = useTranslation();
     const { colors, isDark } = useTheme();
     const aColors = colors.auth;
-    const { registerData, register, appLanguage, changeAppLanguage } = useAuth();
+    const { registerData, register, verifyOTP, resendOTP, appLanguage, changeAppLanguage } = useAuth();
 
-    // Adım Yönetimi (0: Kişisel, 1: Tercihler, 2: Hesap)
+    // Adım Yönetimi (0: Kişisel, 1: Tercihler, 2: Hesap, 3: E-posta doğrulama)
     const [currentStep, setCurrentStep] = useState(0);
     const [loading, setLoading] = useState(false);
+    const [otpLoading, setOtpLoading] = useState(false);
+    const [resendLoading, setResendLoading] = useState(false);
+    const { timer: resendTimer, timeLeft: resendCountdown } = useTimer();
+    const [otpCode, setOtpCode] = useState("");
+    const [verificationEmail, setVerificationEmail] = useState("");
 
     // Başlangıç tarihi
     const maxDate = new Date();
@@ -51,6 +60,8 @@ export default function RegisterScreen() {
     // Geçiş Animasyonu: Fade ve Slide
     const fadeAnim = useRef(new Animated.Value(1)).current;
     const slideAnim = useRef(new Animated.Value(0)).current;
+
+    const emailRef = useRef("");
 
     const animateTransition = (direction, callback) => {
         const slideOut = direction === "next" ? -25 : 25;
@@ -100,10 +111,16 @@ export default function RegisterScreen() {
     const step1Error = formData.nick_name.length > 0 && !usernameValid;
 
     // Adım 3 Validasyonu
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
     const emailRegex = /^\S+@\S+\.[a-z]{2,}$/;
     const validEmail = emailRegex.test((formData.email || "").trim());
-    const validPassword = passwordRegex.test((formData.password || "").trim());
+    const newPassword = (formData.password || "").trim();
+    const passwordRequirements = {
+        hasMinimumLength: newPassword.length >= 6,
+        hasLowercase: /[a-z]/.test(newPassword),
+        hasUppercase: /[A-Z]/.test(newPassword),
+        hasSpecialCharacter: /[^\w\s]/.test(newPassword),
+    };
+    const validPassword = Object.values(passwordRequirements).every(Boolean);
     const validPasswordConfirm = validPassword && formData.password.trim() === (formData.password_confirm || "").trim();
     const step2Valid = validEmail && validPassword && validPasswordConfirm;
     const step2Error = (!validEmail && formData.email.length > 0) ||
@@ -123,6 +140,9 @@ export default function RegisterScreen() {
     } else if (currentStep === 2) {
         isCurrentValid = step2Valid;
         hasActiveError = step2Error;
+    } else if (currentStep === 3) {
+        isCurrentValid = /^\d{6}$/.test(otpCode);
+        hasActiveError = otpCode.length > 0 && !isCurrentValid;
     }
 
     // Android Geri Tuşu Yönetimi
@@ -152,12 +172,18 @@ export default function RegisterScreen() {
     const handleNext = () => {
         if (currentStep < 2) {
             animateTransition("next", () => setCurrentStep((prev) => prev + 1));
-        } else {
+        } else if (currentStep === 2) {
             handleRegister();
+        } else {
+            handleVerifyOTP();
         }
     };
 
     const handleRegister = async () => {
+        if (emailRef.current.trim() === formData.email.trim()) {
+            animateTransition("next", () => setCurrentStep(3));
+            return;
+        }
         setLoading(true);
         const payload = {
             first_name: formData.first_name.trim(),
@@ -170,8 +196,49 @@ export default function RegisterScreen() {
             password: formData.password.trim(),
             password_confirm: formData.password_confirm.trim(),
         };
-        await register(payload);
-        setLoading(false);
+        try {
+            const ok = await register(payload);
+            if (ok) {
+                emailRef.current = payload.email
+                setVerificationEmail(payload.email);
+                setOtpCode("");
+                resendTimer.set(60);
+                resendTimer.start();
+                animateTransition("next", () => setCurrentStep(3));
+            }
+        } catch (error) {
+            console.error("❌ Register Screen : Registration failed:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleVerifyOTP = async () => {
+        if (!/^\d{6}$/.test(otpCode) || otpLoading) return;
+        setOtpLoading(true);
+        try {
+            await verifyOTP(verificationEmail,otpCode);
+        } catch (error) {
+            console.error("❌ Register Screen : OTP verification failed:", error);
+        } finally {
+            setOtpLoading(false);
+        }
+    };
+
+    const handleResendOTP = async () => {
+        if (resendCountdown > 0 || resendLoading) return;
+        setResendLoading(true);
+        try {
+            const ok = await resendOTP(verificationEmail);
+            if (ok) {
+                resendTimer.set(60);
+                resendTimer.start();
+            }
+        } catch (error) {
+            console.error("❌ Register Screen : OTP resend failed:", error);
+        } finally {
+            setResendLoading(false);
+        }
     };
 
     return (
@@ -214,12 +281,22 @@ export default function RegisterScreen() {
                                         updateFormField={updateFormField}
                                     />
                                 )}
+                                {currentStep === 3 && (
+                                    <Step4Verification
+                                        email={verificationEmail}
+                                        otpCode={otpCode}
+                                        setOtpCode={setOtpCode}
+                                        resendCountdown={resendCountdown}
+                                        resendLoading={resendLoading}
+                                        onResend={handleResendOTP}
+                                    />
+                                )}
                             </Animated.View>
 
                             {/* Sabit Stepper (Adımlar değiştikçe çizgi ve daire animasyonlarıyla akar) */}
                             <RegisterStepper
                                 currentStepIndex={currentStep}
-                                totalSteps={3}
+                                totalSteps={4}
                                 isCurrentValid={isCurrentValid}
                                 hasError={hasActiveError}
                             />
@@ -227,11 +304,12 @@ export default function RegisterScreen() {
                             {/* Sabit Butonlar */}
                             <NavigationButtons
                                 isFirst={currentStep === 0}
-                                isLast={currentStep === 2}
+                                isLast={currentStep >= 2}
                                 onBack={handleBack}
                                 onNext={handleNext}
                                 disabled={!isCurrentValid}
-                                loading={loading}
+                                loading={currentStep === 2 ? loading : currentStep === 3 ? otpLoading : false}
+                                nextLabel={currentStep === 3 ? t("verifyEmail") : undefined}
                             />
                         </View>
                     </TouchableWithoutFeedback>

@@ -36,6 +36,7 @@ const NotificationModal = ({ visible, notification, onClose }) => {
             transparent={true}
             animationType="fade"
             onRequestClose={onClose}
+            statusBarTranslucent
         >
             <TouchableOpacity
                 style={styles.overlay}

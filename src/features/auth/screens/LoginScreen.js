@@ -34,7 +34,6 @@ export default function LoginScreen() {
     const { colors, isDark } = useTheme();
     const aColors = colors.auth;
 
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
     const emailRegex = /^\S+@\S+\.[a-z]{2,}$/;
 
     const [email, setEmail] = useState("");
@@ -43,10 +42,17 @@ export default function LoginScreen() {
     const [focusedInput, setFocusedInput] = useState(null);
     const { setLogin, hydrateSession, manageGuest, setIsGuest, user } = useAuth();
     const [isLoading, setLoading] = useState(false);
-    const { setAlertTitle, setAlertMessage, addAlertButton, setAlertVisible, hideAlert, setVerticalButtons, showToast } = useFeedback();
+    const { setAlertTitle, setAlertMessage, addAlertButton, setAlertVisible,
+        hideAlert, setVerticalButtons, showToast } = useFeedback();
 
     const isValidEmail = emailRegex.test(email);
-    const isValidPassword = passwordRegex.test(password);
+    const passwordRequirements = {
+        hasMinimumLength: password.length >= 6,
+        hasLowercase: /[a-z]/.test(password),
+        hasUppercase: /[A-Z]/.test(password),
+        hasSpecialCharacter: /[^\w\s]/.test(password),
+    };
+    const isValidPassword = Object.values(passwordRequirements).every(Boolean);
     const anyError = !isValidEmail || !isValidPassword;
 
     const preLoginOps = async (data,useGuestData=false,guestId=null) => {
@@ -83,11 +89,26 @@ export default function LoginScreen() {
                     addAlertButton({ text: t('discardData'), style: "cancel", action: () => { hideAlert(),preLoginOps(data,false) } });
                     setVerticalButtons(true);
                     setAlertVisible(true);
-                }
-                else {
+                } else {
                     await preLoginOps(data,false);
                 }
 
+            }
+            else if (typeof data?.detail === "string" && data.detail.trim().toLowerCase() === "email not confirmed") {
+                hideAlert();
+                setAlertTitle(t("emailNotConfirmedTitle"));
+                setAlertMessage(t("emailNotConfirmedMessage"));
+                addAlertButton({ text: t("cancel"), style: "cancel", action: hideAlert });
+                addAlertButton({
+                    text: t("verifyEmail"),
+                    style: "success",
+                    action: () => {
+                        hideAlert();
+                        navigation.navigate("Email Verification", { email: email.trim() });
+                    },
+                });
+                setVerticalButtons(true);
+                setAlertVisible(true);
             } else {
                 console.log("❌ Login Screen : Error while signing in! Status :", status, data);
                 if (status === 408) {

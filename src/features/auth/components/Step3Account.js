@@ -17,11 +17,17 @@ export default function Step3Account({ formData, updateFormField }) {
     const password = formData?.password || "";
     const passwordVerification = formData?.password_confirm || "";
 
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
     const emailRegex = /^\S+@\S+\.[a-z]{2,}$/;
 
     const validEmail = emailRegex.test(email.trim());
-    const validPassword = passwordRegex.test(password.trim());
+    const newPassword = password.trim();
+    const passwordRequirements = {
+        hasMinimumLength: newPassword.length >= 6,
+        hasLowercase: /[a-z]/.test(newPassword),
+        hasUppercase: /[A-Z]/.test(newPassword),
+        hasSpecialCharacter: /[^\w\s]/.test(newPassword),
+    };
+    const validPassword = Object.values(passwordRequirements).every(Boolean);
     const validPasswordVerification = validPassword && password.trim() === passwordVerification.trim();
 
     return (

@@ -174,13 +174,14 @@ export const AuthProvider = ({ children }) => {
     const register = async (registerData) => {
         const { ok, status, data } = await apiClient.post(ENDPOINTS.register, registerData, false);
         if (ok) {
-            setAlertTitle(t('allSet'));
-            setAlertMessage(t('takingYouToLogin'));
-            addAlertButton({ text: t('login'), style: "success", action: () => { navigation.navigate("Login"), hideAlert() } });
+            hideAlert();
+            setAlertTitle(t("verificationStepTitle"));
+            setAlertMessage(t("verificationStepMessage", { email: registerData.email }));
+            addAlertButton({ text: t("continueVerification"), style: "success", action: hideAlert });
             setAlertVisible(true);
         }
         else {
-            if (data.detail.toLowerCase().includes("already registered")) {
+            if (typeof data?.detail === "string" && data.detail.toLowerCase().includes("already registered")) {
                 setAlertTitle(t('warning'));
                 setAlertMessage(t('emailExist'));
                 addAlertButton({ text: t('cancel'), style: "danger", action: () => hideAlert() });
@@ -198,6 +199,67 @@ export const AuthProvider = ({ children }) => {
         }
         return ok;
     }
+
+    const verifyOTP = async (email,code) => {
+        try {
+            const { ok, status } = await apiClient.post(ENDPOINTS.verifyOTP, { code: code.trim() , email:email.trim()}, false);
+            if (ok) {
+                hideAlert();
+                setAlertTitle(t("emailVerifiedTitle"));
+                setAlertMessage(t("emailVerifiedMessage"));
+                addAlertButton({
+                    text: t("login"),
+                    style: "success",
+                    action: () => {
+                        hideAlert();
+                        navigation.navigate("Login");
+                    },
+                });
+                setAlertVisible(true);
+                return true;
+            }
+
+            if (status === 408) {
+                showToast(t("requestTimeout"), t("requestTimeoutMessage"), "danger", "wifi");
+            } else {
+                hideAlert();
+                setAlertTitle(t("verificationFailedTitle"));
+                setAlertMessage(t("verificationFailedMessage"));
+                addAlertButton({ text: t("cancel"), style: "danger", action: hideAlert });
+                setAlertVisible(true);
+            }
+            return false;
+        } catch (error) {
+            console.error("❌ Auth Context : OTP verification failed:", error);
+            showToast(t("error"), t("verificationFailedMessage"), "danger");
+            return false;
+        }
+    };
+
+    const resendOTP = async (email) => {
+        try {
+            const { ok, status } = await apiClient.post(
+                ENDPOINTS.resendOTP,
+                { email: email.trim() },
+                false
+            );
+            if (ok) {
+                showToast(t("success"), t("verificationCodeResent"), "success");
+                return true;
+            }
+
+            if (status === 408) {
+                showToast(t("requestTimeout"), t("requestTimeoutMessage"), "danger", "wifi");
+            } else {
+                showToast(t("error"), t("verificationCodeResendFailed"), "danger");
+            }
+            return false;
+        } catch (error) {
+            console.error("❌ Auth Context : OTP resend failed:", error);
+            showToast(t("error"), t("verificationCodeResendFailed"), "danger");
+            return false;
+        }
+    };
 
     async function logout() {
         if (!isGuest) {
@@ -309,7 +371,7 @@ export const AuthProvider = ({ children }) => {
     return (<AuthenticationContext.Provider value={{
         isLogin, isLoading, setLogin, logout, isGuest,setIsGuest,
         setAccToken, getNewToken, setRefToken, setUser, user, accToken, refToken, registerData,
-        setRegisterData, register, appLanguage, changeAppLanguage, changePassword, deleteAccount,
+        setRegisterData, register, verifyOTP, resendOTP, appLanguage, changeAppLanguage, changePassword, deleteAccount,
         hydrateSession, fetchMe, updateProfile, manageGuest
     }}>{children}</AuthenticationContext.Provider>)
 }

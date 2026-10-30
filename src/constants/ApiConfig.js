@@ -10,6 +10,8 @@ export const ENDPOINTS = {
     changePassword:"/auth/change-password",
     deleteAccount:"/auth/delete-user",
     forgotPassword:"/auth/forgot-password",
+    verifyOTP:"/auth/verify-otp",
+    resendOTP:"/auth/resend-otp",
     stats:"/stats/",
     dictionaries:"/dictionaries",
     words:"/words",

@@ -21,33 +21,32 @@ export default function RegisterStepper({ currentStepIndex = 0, totalSteps = 3, 
         t("stepPersonalInfo"),
         t("stepPreferences"),
         t("stepAccount"),
+        t("stepVerification"),
     ];
 
     // Animasyon değerleri: Daireler için spring scale animasyonu
     const scaleAnim0 = useRef(new Animated.Value(1)).current;
     const scaleAnim1 = useRef(new Animated.Value(1)).current;
     const scaleAnim2 = useRef(new Animated.Value(1)).current;
-    const scaleAnims = [scaleAnim0, scaleAnim1, scaleAnim2];
+    const scaleAnim3 = useRef(new Animated.Value(1)).current;
+    const scaleAnims = [scaleAnim0, scaleAnim1, scaleAnim2, scaleAnim3];
 
     // Çizgi dolma animasyonu: 0->1 ve 1->2 arası çizgilerin akıcı dolması
     const lineAnim0 = useRef(new Animated.Value(currentStepIndex > 0 ? 1 : 0)).current;
     const lineAnim1 = useRef(new Animated.Value(currentStepIndex > 1 ? 1 : 0)).current;
-    const lineAnims = [lineAnim0, lineAnim1];
+    const lineAnim2 = useRef(new Animated.Value(currentStepIndex > 2 ? 1 : 0)).current;
+    const lineAnims = [lineAnim0, lineAnim1, lineAnim2];
 
     // Adım değiştikçe çizgilerin dolma/boşalma animasyonu
     useEffect(() => {
-        Animated.timing(lineAnim0, {
-            toValue: currentStepIndex >= 1 ? 1 : 0,
-            duration: 350,
-            useNativeDriver: false,
-        }).start();
-
-        Animated.timing(lineAnim1, {
-            toValue: currentStepIndex >= 2 ? 1 : 0,
-            duration: 350,
-            useNativeDriver: false,
-        }).start();
-    }, [currentStepIndex]);
+        lineAnims.forEach((animation, index) => {
+            Animated.timing(animation, {
+                toValue: currentStepIndex > index ? 1 : 0,
+                duration: 350,
+                useNativeDriver: false,
+            }).start();
+        });
+    }, [currentStepIndex, lineAnim0, lineAnim1, lineAnim2]);
 
     // Daire mikro-animasyonu
     useEffect(() => {
