@@ -5,7 +5,7 @@ import ConvertButton from "./components/ConvertButton";
 import RecentWords from "../home/components/RecentWords";
 import ResultArea from "./components/translateResult";
 import styles from "./styles/styles";
-import { useState } from "react";
+import { useState,useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@/contextapis/ThemeContext";
 
@@ -18,6 +18,7 @@ const Translate = ({ recentWords, addWord }) => {
     const [from, setFrom] = useState("TR");
     const [result, setResult] = useState("");
     const [suggestionDisplay, setSuggestionDisplay] = useState("none");
+    const inputRef = useRef("");
 
     return (
         <ScrollView
@@ -37,9 +38,10 @@ const Translate = ({ recentWords, addWord }) => {
                             setSuggestionDisplay={setSuggestionDisplay}
                             from={from}
                         />
-                        <Direction setDisplay={setDisplay} from={from} setFrom={setFrom} />
+                        <Direction setDisplay={setDisplay} from={from} setFrom={setFrom} inputRef={inputRef} />
                         <ConvertButton
                             setDisplay={setDisplay}
+                            inputRef={inputRef}
                             input={input}
                             addWord={addWord}
                             setResult={setResult}

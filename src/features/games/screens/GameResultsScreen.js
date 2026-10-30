@@ -1,10 +1,10 @@
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Modal, ActivityIndicator } from "react-native";
+import { BackHandler, View, Text, TouchableOpacity, StyleSheet, ScrollView, Modal, ActivityIndicator } from "react-native";
 import { useGame } from "@/contextapis/GamesContext";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import { Ionicons } from "@expo/vector-icons";
-import { useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useTheme } from "@/contextapis/ThemeContext";
 
 export default function FinishGame() {
@@ -16,6 +16,7 @@ export default function FinishGame() {
     const { numberQuestion, userAnswers, gameType, saveGameSession, seconds } = useGame();
 
     const [loading, setLoading] = useState(false);
+    const savingRef = useRef(false);
 
     let true_count = 0;
     let empty_count = 0;
@@ -93,8 +94,10 @@ export default function FinishGame() {
         },
     ];
 
-    const saveResults = async (target) => {
-        setLoading(true)
+    const saveResults = useCallback(async (target) => {
+        if (savingRef.current) return;
+        savingRef.current = true;
+        setLoading(true);
         const sessionData = {
             game_mode: String(gameType),
             score: success,
@@ -113,10 +116,22 @@ export default function FinishGame() {
             }
         } catch (error) {
             console.log("❌ Game Results Screen : Error while saving game results :", error);
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
         navigation.replace("MainTabs", { screen: target });
-    };
+    }, [empty_count, gameType, navigation, numberQuestion, saveGameSession, seconds, success, true_count, wrong_count, remainTime]);
+
+    useFocusEffect(
+        useCallback(() => {
+            const subscription = BackHandler.addEventListener("hardwareBackPress", () => {
+                saveResults("Home");
+                return true;
+            });
+
+            return () => subscription.remove();
+        }, [saveResults])
+    );
 
     return (
         <>

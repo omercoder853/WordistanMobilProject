@@ -9,6 +9,7 @@ export const ENDPOINTS = {
     updateMe : "/auth/me/update",
     changePassword:"/auth/change-password",
     deleteAccount:"/auth/delete-user",
+    forgotPassword:"/auth/forgot-password",
     stats:"/stats/",
     dictionaries:"/dictionaries",
     words:"/words",

@@ -180,7 +180,14 @@ export const AuthProvider = ({ children }) => {
             setAlertVisible(true);
         }
         else {
-            if (status === 408) {
+            if (data.detail.toLowerCase().includes("already registered")) {
+                setAlertTitle(t('warning'));
+                setAlertMessage(t('emailExist'));
+                addAlertButton({ text: t('cancel'), style: "danger", action: () => hideAlert() });
+                addAlertButton({ text: t('login'), action: () => {hideAlert(),navigation.navigate("Login")} });
+                setAlertVisible(true);
+            }
+            else if (status === 408) {
                 showToast(t("requestTimeout"), t("requestTimeoutMessage"), "danger", "wifi");
             } else {
                 setAlertTitle(t('ooopsShort'));

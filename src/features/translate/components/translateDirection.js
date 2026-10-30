@@ -3,11 +3,12 @@ import styles from '../styles/styles';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useTheme } from '@/contextapis/ThemeContext';
 
-export default function Direction({ setDisplay, from, setFrom }) {
+export default function Direction({ setDisplay, from, setFrom, inputRef }) {
     const { colors } = useTheme();
     const tColors = colors.translate;
 
     const toggleDirection = () => {
+        inputRef.current = "";
         setFrom(from === "TR" ? "EN" : "TR");
         setDisplay("none");
     };

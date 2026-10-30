@@ -256,7 +256,19 @@ export default function LoginScreen() {
                                     )}
                                 </TouchableOpacity>
 
-                                {/* Register Link */}
+                                <TouchableOpacity
+                                    accessibilityRole="button"
+                                    activeOpacity={0.7}
+                                    onPress={() => navigation.navigate("Forgot Password")}
+                                    style={styles.forgotPasswordButton}
+                                >
+                                    <MaterialIcons name="lock-reset" size={17} color={aColors.linkText} />
+                                    <Text style={[styles.forgotPasswordText, { color: aColors.linkText }]}>
+                                        {t('forgotPassword')}
+                                    </Text>
+                                </TouchableOpacity>
+
+
                                 <View style={styles.registerRow}>
                                     <View style={[styles.divider, { borderColor: colors.common.border }]}></View>
                                     <Text style={[styles.dontHaveAccountText, { color: aColors.linkSubtext }]}>
@@ -422,6 +434,19 @@ const styles = StyleSheet.create({
         fontWeight: '800',
         fontSize: 15,
         letterSpacing: 0.3,
+    },
+    forgotPasswordButton: {
+        alignSelf: 'flex-end',
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 5,
+        paddingVertical: 8,
+        paddingHorizontal: 2,
+        marginTop: 4,
+    },
+    forgotPasswordText: {
+        fontSize: 13,
+        fontWeight: '700',
     },
     lottieLoading: {
         height: 20,

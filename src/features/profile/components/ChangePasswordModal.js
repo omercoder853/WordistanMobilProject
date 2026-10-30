@@ -164,20 +164,18 @@ const modalStyles = StyleSheet.create({
         marginBottom: 10,
     },
     buttonRow: {
-        flexDirection: 'row',
+        flexDirection: 'column',
         gap: 10,
         marginTop: 5,
         width: '100%',
     },
     closeButton: {
-        flex: 1,
         backgroundColor: '#6B7280',
         paddingVertical: 12,
         borderRadius: 12,
         alignItems: 'center',
     },
     submitButton: {
-        flex: 1,
         backgroundColor: '#8e4a7c',
         paddingVertical: 12,
         borderRadius: 12,
