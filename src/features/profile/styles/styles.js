@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
         paddingVertical: 12,
         paddingHorizontal: 14,
         marginBottom: 9,
-        borderWidth: 1,
+        borderWidth: 2,
         overflow: 'hidden',
     },
     consoleIconBox: {

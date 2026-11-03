@@ -4,10 +4,23 @@ import { Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import aboutStyles from "../styles/AboutScreenStyle";
 import { useTheme } from "@/contextapis/ThemeContext";
+import { useFeedback } from "@/contextapis/FeedbackContext";
+import { Linking } from "react-native";
 
 export default function About() {
   const { t } = useTranslation();
   const { colors, isDark } = useTheme();
+  const {showToast} = useFeedback();
+
+  const OpenUrl = async (url) => {
+    const supported = await Linking.canOpenURL(url)
+    if (supported) {
+      await Linking.openURL(url);
+    }
+    else {
+      showToast(t('warning') , t('linkCantOpened') , "warning");
+    }
+  }
 
   return (
     <View style={[aboutStyles.container, { backgroundColor: colors.common.background }]}>
@@ -58,7 +71,7 @@ export default function About() {
           {/* Privacy Policy */}
           <TouchableOpacity
             activeOpacity={0.7}
-            onPress={() => { }}
+            onPress={() => OpenUrl("https://www.wordistan.com.tr/legal/privacy-policy")}
             style={aboutStyles.legalRow}
           >
             <View style={aboutStyles.legalRowLeft}>
@@ -80,7 +93,7 @@ export default function About() {
           {/* Terms of Use */}
           <TouchableOpacity
             activeOpacity={0.7}
-            onPress={() => { }}
+            onPress={() => OpenUrl("https://www.wordistan.com.tr/legal/terms-of-service")}
             style={aboutStyles.legalRow}
           >
             <View style={aboutStyles.legalRowLeft}>

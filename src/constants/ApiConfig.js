@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://wordistan-backend.onrender.com/api/v1'
+export const BASE_URL = 'https://api.wordistan.com.tr/api/v1'
 
 //bunları AUTHENTICATION ; NOTIFICATION ; GAMES ; DICTIONARY ; WORDS ; STATS ; ACHIEVEMENTS olarak ayırabiliriz
 export const ENDPOINTS = {

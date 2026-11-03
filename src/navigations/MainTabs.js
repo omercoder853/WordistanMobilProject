@@ -14,6 +14,7 @@ import { storage } from '../storage/storage';
 import { STORAGE_KEYS } from '../constants/StorageKeys';
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Pressable } from 'react-native';
 
 
 const Bottom = createBottomTabNavigator();
@@ -40,6 +41,12 @@ export default function MainTabs() {
             <Bottom.Navigator
                 initialRouteName={initialPage}
                 screenOptions={{
+                    tabBarButton: (props) => (
+                        <Pressable {...props} android_ripple={null} style={({ pressed }) => [
+                            props.style,
+                            {opacity:1}
+                        ]} />
+                    ),
                     header: () => <AppHeader />,
                     tabBarShowLabel: false,
                     tabBarStyle: {

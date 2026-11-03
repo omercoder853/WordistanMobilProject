@@ -1,6 +1,6 @@
 import { useAuth } from "../contextapis/AuthContext";
 import AppNavigation from "./AppNavigator";
-import LoadingPage from "../shared/components/LoadingScreen";
+import SplashScreen from "../shared/components/SplashScreen";
 import AuthStackNavigator from "../features/auth/AuthStackNavigator";
 import { initDatabase } from "@/storage/sqlite";
 import { useState, useEffect, useRef } from "react";
@@ -81,7 +81,7 @@ export default function RootNavigation() {
 
 
     if (isLoading || databaseLoading) {
-        return (<LoadingPage />)
+        return (<SplashScreen />)
     }
     else if (isLogin) {
         return (<AppNavigation />)

@@ -32,8 +32,8 @@ const socialChannels = [
   {
     id: "website",
     labelKey: "contactWebsite",
-    url: "https://wordistan-backend.onrender.com/",
-    handle: "wordistan.com",
+    url: "https://wordistan.com.tr",
+    handle: "wordistan.com.tr",
     icon: "globe-outline",
     iconColor: "#8B5CF6",
     bgColor: "rgba(139, 92, 246, 0.1)",
