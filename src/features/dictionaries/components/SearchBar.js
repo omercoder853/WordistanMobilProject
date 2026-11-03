@@ -6,14 +6,14 @@ import { useTranslation } from "react-i18next";
 import { useNavigation } from "@react-navigation/native";
 import { useTheme } from "@/contextapis/ThemeContext";
 import { useDictionary } from "@/contextapis/DictContext";
-import { COLLECTION_LIST } from "../data/CollectionList";
 
 const SearchBar = ({ currentTab = "Personal" }) => {
     const { colors } = useTheme();
     const dColors = colors.dictionaries;
-    const { t } = useTranslation();
+    const { t,i18n } = useTranslation();
     const navigation = useNavigation();
-    const { dicts } = useDictionary();
+    const { dicts,collections } = useDictionary();
+    const lang = i18n.language 
 
     const [query, setQuery] = useState("");
     const [suggestions, setSuggestions] = useState([]);
@@ -40,15 +40,14 @@ const SearchBar = ({ currentTab = "Personal" }) => {
             setSuggestions(results);
             setShowSuggestions(results.length > 0);
         } else {
-            const results = COLLECTION_LIST
+            const results = collections
                 .filter((c) =>
-                    t(c.title).toLowerCase().includes(trimmed) ||
-                    c.title.toLowerCase().includes(trimmed)
+                    c["title_" + lang].toLowerCase().includes(trimmed)
                 )
                 .slice(0, 5)
                 .map((c) => ({
                     id: c.id,
-                    name: t(c.title),
+                    name: c["title_" + lang],
                     type: "collection",
                     item: c,
                 }));
@@ -63,11 +62,8 @@ const SearchBar = ({ currentTab = "Personal" }) => {
         if (item.type === "personal") {
             navigation.navigate("DictDetails", { dictId: item.id });
         } else {
-            navigation.navigate("CollectionDetails", {
-                title: item.item.title,
-                data: item.item.data,
-                desc: item.item.desc,
-            });
+            console.log(item)
+            navigation.navigate("CollectionDetails", { id:item["id"], title:item.item["title_"+lang], desc:item.item["description_" + lang], count : item.count, level:item.item.level, owner:item.item.owner });
         }
     };
 

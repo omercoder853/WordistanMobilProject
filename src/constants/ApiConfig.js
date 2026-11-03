@@ -30,5 +30,7 @@ export const ENDPOINTS = {
     newNotification: "/notifications/new",
     readAllNotifications: "/notifications/read-all",
     readNotification: (notification_id) => `/notifications/${notification_id}/read`,
-    syncPush : "/sync/push"
+    syncPush : "/sync/push",
+    collections : "/collections/",
+    collectionWords : (collection_id) => `/collections/${collection_id}`
 }

@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useCallback } from "react";
 import { useAuth } from "./AuthContext";
 import { useUserStats } from "./UserStatsContext";
 import { useFeedback } from "./FeedbackContext";
@@ -22,6 +22,26 @@ export const DictionaryProvider = ({ children }) => {
     const [dictReload, setDictReload] = useState(false);
     const [dailyWord, setDailyWord] = useState(null);
     const [dailyWordLoading,setDailyWordLoading] = useState(false);
+    const [collections , setCollections] = useState([]);
+    const fetchCollections = useCallback(async (force = false) => {
+        if (!force && collections.length > 0) {
+            return true;
+        }
+
+        try {
+            const { ok, data, status } = await apiClient.get(ENDPOINTS.collections, false);
+            if (!ok || !Array.isArray(data)) {
+                console.error("❌ Dict Context : Collections could not be fetched.", status);
+                return false;
+            }
+
+            setCollections(data);
+            return true;
+        } catch (error) {
+            console.error("❌ Dict Context : Collections could not be fetched:", error);
+            return false;
+        }
+    }, [collections.length]);
 
     const { shareAsJson, shareAsTxt, shareAsCsv, shareAsPdf } = useExports();
 
@@ -319,7 +339,8 @@ export const DictionaryProvider = ({ children }) => {
 
     return (<DictContext.Provider value={{
         dicts, getWords, getDict, createDictionary, updateDictionary, setDictReload, deleteWord, ShareDictionary,
-        saveWord, dictReload, deleteDictionary, dailyWord, setDailyWord, removeDailyWord, dailyWordLoading
+        saveWord, dictReload, deleteDictionary, dailyWord, setDailyWord, removeDailyWord, dailyWordLoading,
+        collections, setCollections, fetchCollections
     }}>{children}</DictContext.Provider>)
 }
 
