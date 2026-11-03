@@ -18,6 +18,7 @@ export const STORAGE_KEYS = Object.freeze({
     LANGUAGE: 'language',
     VIBRATION_PREF: 'vibration',
     INITIAL_PAGE: 'initialPage',
-    AUTO_CONT : 'autoCont'
+    AUTO_CONT : 'autoCont',
+    ONBOARDING_COMPLETED: 'onboardingCompleted',
   }
 });

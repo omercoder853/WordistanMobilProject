@@ -10,14 +10,38 @@ import { useFeedback } from "@/contextapis/FeedbackContext";
 import { useTranslation } from "react-i18next";
 import { storage } from "@/storage/storage";
 import { STORAGE_KEYS } from "@/constants/StorageKeys";
+import Onboarding from "@/shared/components/onboarding";
 
 export default function RootNavigation() {
     const [databaseLoading,setDatabaseLoading] = useState(true);
+    const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(null);
     const { isLogin, isLoading } = useAuth();
     const { showToast } = useFeedback();
     const { t } = useTranslation();
     const isSyncingRef = useRef(false);
     const prevOnlineRef = useRef(null);
+
+    useEffect(() => {
+        let isActive = true;
+
+        const loadOnboardingStatus = async () => {
+            const completed = await storage.get(STORAGE_KEYS.PREFERENCES.ONBOARDING_COMPLETED);
+            if (isActive) {
+                setHasCompletedOnboarding(completed === true);
+            }
+        };
+
+        loadOnboardingStatus().catch((error) => {
+            console.error("Onboarding durumu yüklenemedi:", error);
+            if (isActive) {
+                setHasCompletedOnboarding(false);
+            }
+        });
+
+        return () => {
+            isActive = false;
+        };
+    }, []);
 
     useEffect(() => {
         const loadDatabase = async () => {
@@ -80,8 +104,25 @@ export default function RootNavigation() {
     }, [databaseLoading, isLogin]);
 
 
-    if (isLoading || databaseLoading) {
+    const completeOnboarding = async () => {
+        try {
+            const saved = await storage.set(STORAGE_KEYS.PREFERENCES.ONBOARDING_COMPLETED, true);
+            if (!saved) {
+                return false;
+            }
+            setHasCompletedOnboarding(true);
+            return true;
+        } catch (error) {
+            console.error("Onboarding durumu kaydedilemedi:", error);
+            return false;
+        }
+    };
+
+    if (isLoading || databaseLoading || hasCompletedOnboarding === null) {
         return (<SplashScreen />)
+    }
+    else if (!hasCompletedOnboarding) {
+        return (<Onboarding onComplete={completeOnboarding} />)
     }
     else if (isLogin) {
         return (<AppNavigation />)
