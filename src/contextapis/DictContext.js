@@ -23,6 +23,7 @@ export const DictionaryProvider = ({ children }) => {
     const [dailyWord, setDailyWord] = useState(null);
     const [dailyWordLoading,setDailyWordLoading] = useState(false);
     const [collections , setCollections] = useState([]);
+    
     const fetchCollections = useCallback(async (force = false) => {
         if (!force && collections.length > 0) {
             return true;
@@ -42,6 +43,26 @@ export const DictionaryProvider = ({ children }) => {
             return false;
         }
     }, [collections.length]);
+
+    const getCollectionWords = useCallback(async (collectionId) => {
+        if (!collectionId) {
+            console.error("Dict Context: collectionId is missing, cannot fetch collection words.");
+            return false;
+        }
+
+        try {
+            const { ok, data, status } = await apiClient.get(ENDPOINTS.collectionWords(collectionId));
+            if (ok && Array.isArray(data)) {
+                return data;
+            }
+
+            console.error("Dict Context: Collection words could not be fetched.", status);
+            return false;
+        } catch (error) {
+            console.error("Dict Context: Collection words could not be fetched:", error);
+            return false;
+        }
+    }, []);
 
     const { shareAsJson, shareAsTxt, shareAsCsv, shareAsPdf } = useExports();
 
@@ -340,7 +361,7 @@ export const DictionaryProvider = ({ children }) => {
     return (<DictContext.Provider value={{
         dicts, getWords, getDict, createDictionary, updateDictionary, setDictReload, deleteWord, ShareDictionary,
         saveWord, dictReload, deleteDictionary, dailyWord, setDailyWord, removeDailyWord, dailyWordLoading,
-        collections, setCollections, fetchCollections
+        collections, setCollections, fetchCollections, getCollectionWords
     }}>{children}</DictContext.Provider>)
 }
 

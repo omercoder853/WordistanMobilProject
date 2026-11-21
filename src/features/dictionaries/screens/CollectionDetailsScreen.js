@@ -10,8 +10,6 @@ import { useCallback, useEffect, useState } from "react";
 import SaveWordModal from "@/shared/components/SaveWordModal";
 import { useDictionary } from "@/contextapis/DictContext";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { apiClient } from "@/services/ApiClient";
-import { ENDPOINTS } from "@/constants/ApiConfig";
 
 export default function CollectionDetails() {
     const { colors } = useTheme();
@@ -22,7 +20,7 @@ export default function CollectionDetails() {
 
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedWord, setSelectedWord] = useState({ word: "", meaning: "" });
-    const { dicts, setDictReload } = useDictionary();
+    const { dicts, setDictReload, getCollectionWords } = useDictionary();
     const [words, setWords] = useState([]);
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
@@ -46,12 +44,11 @@ export default function CollectionDetails() {
         }
 
         try {
-            const { ok, data, status } = await apiClient.get(ENDPOINTS.collectionWords(id));
-            if (ok && Array.isArray(data)) {
+            const data = await getCollectionWords(id);
+            if (Array.isArray(data)) {
                 setWords(data);
                 setLoadFailed(false);
             } else {
-                console.error("Collection words could not be fetched.", status);
                 setLoadFailed(true);
                 if (!isRefresh) {
                     setWords([]);
@@ -67,7 +64,7 @@ export default function CollectionDetails() {
             setLoading(false);
             setRefreshing(false);
         }
-    }, [id]);
+    }, [getCollectionWords, id]);
 
     useEffect(() => {
         fetchWords();

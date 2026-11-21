@@ -19,29 +19,30 @@ import { STORAGE_KEYS } from "@/constants/StorageKeys";
 import { useTheme } from "@/contextapis/ThemeContext";
 
 export default function GameSetupPage() {
-    const { t } = useTranslation();
+    const { t,i18n } = useTranslation();
+    const lang = i18n.language;
     const { colors, isDark } = useTheme();
     const navigation = useNavigation();
-    const { dicts, setDictReload, getWords } = useDictionary();
+    const { dicts, setDictReload,fetchCollections,collections } = useDictionary();
     const { gameSettings, setGameSettings, resetGame, createQuestion } = useGame();
     const router = useRoute();
     const { gameType } = router.params || {};
 
     const [source, setSource] = useState(null);
     const [value, setValue] = useState(null);
-    const [numberQuestion, setNumberQuestion] = useState(gameSettings?.numberQuestion || 5);
-    const [seconds, setSeconds] = useState(gameSettings?.seconds || 5);
-    const [visibleFirstLetter, setVisibleFirstLetter] = useState(gameSettings?.visibleFirstLetter || false);
-    const [numberOptions, setNumberOptions] = useState(gameSettings?.numberOptions || 4);
-    const [perPage, setPerPage] = useState(gameSettings?.perPage || 4);
-    const [autoCont, setAutoCont] = useState(gameSettings?.autoCont || false);
+    const [numberQuestion, setNumberQuestion] = useState(5);
+    const [seconds, setSeconds] = useState(5);
+    const [visibleFirstLetter, setVisibleFirstLetter] = useState(false);
+    const [numberOptions, setNumberOptions] = useState(4);
+    const [perPage, setPerPage] = useState(4);
+    const [autoCont, setAutoCont] = useState(false);
 
     const [modalVisible, setModalVisible] = useState(false);
     const [items, setItems] = useState([]);
     const [maxQuestion, setMaxQuestion] = useState(30);
 
     useEffect(() => {
-        navigation.setOptions({ title: t('gameSettings') || 'Oyun Ayarları' });
+        navigation.setOptions({ title: t('gameSettings')});
     }, [t, navigation]);
 
     useEffect(() => {
@@ -62,6 +63,13 @@ export default function GameSetupPage() {
         getDicts();
     }, []);
 
+    useEffect(()=> {
+        const getCollections = async ()=> {
+            await fetchCollections();
+        }
+        getCollections();
+    },[]);
+
     const handleToggleAutoCont = async (val) => {
         setAutoCont(val);
         await storage.set(STORAGE_KEYS.PREFERENCES.AUTO_CONT, val);
@@ -76,52 +84,25 @@ export default function GameSetupPage() {
             const formatted = cleanedDicts.map((dict) => ({
                 label: dict.name,
                 value: dict.id,
-                subtext: `${dict.words_count ? dict.words_count : 0} ${t('words') || 'kelime'}`
+                subtext: `${dict.words_count ? dict.words_count : 0} ${t('words')}`
             }));
             setItems(formatted);
         } else {
-            setItems([
-                { label: t('fruitsCollectionTitle') || "Meyveler ve Sebzeler", value: "fruits", subtext: "30 " + (t('words') || "kelime") },
-                { label: t('animalsCollectionTitle') || "Hayvanlar", value: "animals", subtext: "20 " + (t('words') || "kelime") },
-                { label: t('placesCollectionTitle') || "Mekanlar ve Çevre", value: "places", subtext: "30 " + (t('words') || "kelime") }
-            ]);
+            const formatted_collections = collections.map((c)=> ({
+                label : c["title_" + lang] ?? "",
+                value: c["id"],
+                subtext : `${c.collection_words ? c.collection_words : 0} ${t('words')}`
+            }));
+            setItems(formatted_collections);
         }
     };
 
     // Handle selecting an item from the ActionSheet modal
-    const handleSelectItem = async (itemValue) => {
-        setValue(itemValue);
+    const handleSelectItem = async (item) => {
+        setNumberQuestion(5);
+        setValue(item.value);
         setModalVisible(false);
-
-        if (source === "personal") {
-            try {
-                const words = await getWords(itemValue);
-                if (words && Array.isArray(words)) {
-                    setMaxQuestion(words.length);
-                } else {
-                    setMaxQuestion(30);
-                }
-            } catch (err) {
-                setMaxQuestion(30);
-            }
-            setNumberQuestion(5);
-        } else {
-            switch (itemValue) {
-                case "fruits":
-                    setMaxQuestion(30);
-                    break;
-                case "animals":
-                    setMaxQuestion(20);
-                    break;
-                case "places":
-                    setMaxQuestion(30);
-                    break;
-                default:
-                    setMaxQuestion(20);
-                    break;
-            }
-            setNumberQuestion(5);
-        }
+        setMaxQuestion(Number.parseInt(item.subtext.split(" ")[0]));
     };
 
     const selectedItemLabel = useMemo(() => {
@@ -231,15 +212,18 @@ export default function GameSetupPage() {
                     </View>
 
                     {/* Numeric Options Card */}
-                    <View style={[styles.setupCard, { backgroundColor: colors.games.cardBg, borderColor: colors.games.cardBorder, shadowColor: colors.games.cardShadow }]}>
+                    <View style={[styles.setupCard, {display:value ? "flex" : "none", backgroundColor: colors.games.cardBg, borderColor: colors.games.cardBorder, shadowColor: colors.games.cardShadow }]}>
                         <Text style={[styles.setupOptionLabel, { color: colors.games.textPrimary }]}>{t('numberOfQuestions') || "Soru Sayısı"}</Text>
                         <NumericInput
                             value={numberQuestion}
                             setValue={setNumberQuestion}
                             maxValue={maxQuestion}
                             minValue={5}
-                            quantity={t('qQuestions') || "soru"}
+                            quantity={t('qQuestions')}
                         />
+                        <TouchableOpacity onPress={()=>setNumberQuestion(maxQuestion)}>
+                            <Text style={pageStyles.useAllButton}>{t('useAll')}</Text>
+                        </TouchableOpacity>
 
                         <Text style={[styles.setupOptionLabel, { color: colors.games.textPrimary }]}>{t('secondsPerQuestion') || "Soru Başı Saniye"}</Text>
                         <NumericInput
@@ -252,7 +236,7 @@ export default function GameSetupPage() {
                     </View>
 
                     {/* Game-Specific Settings Card */}
-                    <View style={[styles.setupCard, { backgroundColor: colors.games.cardBg, borderColor: colors.games.cardBorder, shadowColor: colors.games.cardShadow }]}>
+                    <View style={[styles.setupCard, {display:value ? "flex" : "none", backgroundColor: colors.games.cardBg, borderColor: colors.games.cardBorder, shadowColor: colors.games.cardShadow }]}>
                         {gameType === "wc" && (
                             <WcSettings
                                 visibleFirstLetter={visibleFirstLetter}
@@ -263,6 +247,7 @@ export default function GameSetupPage() {
                             <McqSettings
                                 numberOptions={numberOptions}
                                 setnumberOptions={setNumberOptions}
+                                numberQuestions = {numberQuestion}
                             />
                         )}
                         {gameType === "mp" && (
@@ -334,8 +319,8 @@ export default function GameSetupPage() {
                                 <Feather name="alert-circle" size={32} color={colors.games.textMuted} />
                                 <Text style={[actionSheetStyles.emptyText, { color: colors.games.textSecondary }]}>
                                     {source === "personal"
-                                        ? (t('noDictionaryFound') || "En az 5 kelimeli sözlük bulunamadı.")
-                                        : (t('noItemFound') || "Öğe bulunamadı.")}
+                                        ? (t('noDictionaryFound'))
+                                        : (t('noItemFound'))}
                                 </Text>
                             </View>
                         ) : (
@@ -353,7 +338,7 @@ export default function GameSetupPage() {
                                                 { backgroundColor: isDark ? colors.common.surface : '#F8FAFC', borderColor: colors.common.borderSubtle },
                                                 isSelected && { backgroundColor: isDark ? 'rgba(139, 92, 246, 0.25)' : '#F3E8FF', borderColor: colors.common.primary }
                                             ]}
-                                            onPress={() => handleSelectItem(item.value)}
+                                            onPress={() => handleSelectItem(item)}
                                         >
                                             <View style={{ flex: 1 }}>
                                                 <Text style={[
@@ -464,6 +449,12 @@ const pageStyles = StyleSheet.create({
         justifyContent: 'center',
         paddingVertical: 16,
         borderRadius: 20,
+    },
+    useAllButton:{
+        marginTop:-8,
+        marginBottom:10,
+        textAlign:"right",
+        color:"#5B3FD3"
     }
 });
 

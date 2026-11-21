@@ -1,7 +1,4 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import Fruits from "@/shared/data/collections/fruits.json";
-import Animals from "@/shared/data/collections/animals.json";
-import Places from "@/shared/data/collections/places.json";
 import { useDictionary } from "./DictContext";
 import { useAuth } from "./AuthContext";
 import { useUserStats } from "./UserStatsContext";
@@ -11,7 +8,7 @@ import { gamesSQLite } from "@/storage/GamesSQLite";
 
 const GameContext = createContext();
 
-const DEFAULT_SETTINGS = {
+export const DEFAULT_SETTINGS = {
     gameType: null,
     source: null,
     value: null,
@@ -25,10 +22,8 @@ const DEFAULT_SETTINGS = {
 
 export const GameProvider = ({ children }) => {
     const { isLogin, user } = useAuth();
-    const { getWords } = useDictionary();
+    const { getWords, getCollectionWords } = useDictionary();
     const { incXP } = useUserStats();
-
-    const collections = { fruits: Fruits, animals: Animals, places: Places };
 
     const [gameSettings, setGameSettings] = useState(DEFAULT_SETTINGS);
     const [questions, setQuestions] = useState([]);
@@ -126,7 +121,7 @@ export const GameProvider = ({ children }) => {
         const settings = customSettings || gameSettings;
         let data;
         if (settings.source === "collection") {
-            data = collections[settings.value];
+            data = await getCollectionWords(settings.value);
         } else if (settings.source === "personal") {
             data = await getWords(settings.value);
         }
