@@ -14,7 +14,7 @@ export default function Step1Personal({ formData, updateFormField }) {
     const [showDatePicker, setShowDatePicker] = useState(false);
 
     const maxDate = new Date();
-    maxDate.setFullYear(maxDate.getFullYear() - 12);
+    maxDate.setFullYear(maxDate.getFullYear() - 13);
     const minDate = new Date();
     minDate.setFullYear(minDate.getFullYear() - 80);
 

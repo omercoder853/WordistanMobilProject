@@ -11,6 +11,7 @@ import CustomToast from "@/shared/components/customToast/CustomToast";
 import CustomAlert from "@/shared/components/customAlert/CustomAlert";
 import {useTheme , ThemeProvider} from "@/contextapis/ThemeContext"
 import { useEffect } from "react";
+import { ErrorBoundary } from "@/shared/components/ErrorBoundary";
 
 function MainContent() {
   const {isDark,themeMode,colors} = useTheme();
@@ -39,9 +40,11 @@ function MainContent() {
 export default function App() {
   return (
     <SafeAreaProvider>
-      <ThemeProvider>
-        <MainContent/>
-      </ThemeProvider>
+      <ErrorBoundary>
+        <ThemeProvider>
+          <MainContent/>
+        </ThemeProvider>
+      </ErrorBoundary>
     </SafeAreaProvider>
   );
 }

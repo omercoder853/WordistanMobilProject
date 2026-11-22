@@ -5,6 +5,11 @@
     "version": "1.0.0",
     "scheme": "wordistan",
     "icon": "./src/shared/assets/logo.png",
+    "splash": {
+      "image": "./src/shared/assets/logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#121214"
+    },
     "userInterfaceStyle": "automatic",
     "backgroundColor": "#121214",
     "androidStatusBar": {
@@ -14,11 +19,12 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.wordistan.mobile",
+      "bundleIdentifier": "tr.com.wordistan.app",
       "icon": "./src/shared/assets/logo.png"
     },
     "android": {
-      "package": "com.wordistan.mobile",
+      "package": "tr.com.wordistan.app",
+      "versionCode": 1,
       "permissions": [
         "android.permission.VIBRATE"
       ],

@@ -55,6 +55,7 @@ export default function DeleteAccountModal({ visible, onClose }) {
         setPassword("");
         if (result) {
             resetFields();
+            onClose();
         }
     };
 

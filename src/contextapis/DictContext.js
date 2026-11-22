@@ -32,7 +32,7 @@ export const DictionaryProvider = ({ children }) => {
         try {
             const { ok, data, status } = await apiClient.get(ENDPOINTS.collections, false);
             if (!ok || !Array.isArray(data)) {
-                console.error("❌ Dict Context : Collections could not be fetched.", status);
+                console.error("❌ Dict Context : Collections could not be fetched.", status , data);
                 return false;
             }
 

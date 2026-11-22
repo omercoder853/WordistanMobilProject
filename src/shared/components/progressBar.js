@@ -31,18 +31,27 @@ const styles = StyleSheet.create({
     position: 'relative', 
   },
   progressBar: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
     height: '100%',
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#10B981',
+    zIndex: 0,
+    elevation: 0,
   },
   textOverlay: {
     ...StyleSheet.absoluteFillObject, 
     justifyContent: 'center', 
-    alignItems: 'center',    
+    alignItems: 'center',
+    zIndex: 10,
   },
   progressText: {
     fontSize: 10,
-    fontWeight: 'bold',
+    fontWeight: '800',
     color: '#333', 
+    letterSpacing: 0,
+    paddingTop:1
   },
 });
 

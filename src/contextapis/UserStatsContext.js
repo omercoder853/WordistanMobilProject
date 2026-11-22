@@ -37,8 +37,7 @@ export const UserStatsProvider = ({ children }) => {
 
     const dismissLevelUp = useCallback(async () => {
         setLevelUpInfo(null);
-        await fetchAndSetStats();
-    }, [fetchAndSetStats]);
+    }, []);
 
     // Session hydration: /login veya /me verisi geldiğinde state'i doğrudan güncelle
     useEffect(() => {

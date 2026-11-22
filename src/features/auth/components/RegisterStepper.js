@@ -1,12 +1,14 @@
 import React, { useEffect, useRef } from "react";
-import { View, Text, StyleSheet, Animated } from "react-native";
+import { View, Text, StyleSheet, Animated, Linking } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useTheme } from "@/contextapis/ThemeContext";
+import { useFeedback } from "@/contextapis/FeedbackContext";
 
 export default function RegisterStepper({ currentStepIndex = 0, totalSteps = 3, isCurrentValid = false, hasError = false }) {
     const { t } = useTranslation();
     const { colors, isDark } = useTheme();
+    const { showToast } = useFeedback();
     const aColors = colors.auth;
 
     // Renk paleti
@@ -15,6 +17,19 @@ export default function RegisterStepper({ currentStepIndex = 0, totalSteps = 3, 
     const activeThemeColor = aColors.chipActiveBg || (isDark ? "#C084FC" : "#B565F5");
     const inactiveBorderColor = isDark ? "#2A2B36" : "#E2E8F0";
     const inactiveTextColor = isDark ? "#64748B" : "#94A3B8";
+
+    const openLegalLink = async (url) => {
+        try {
+            const supported = await Linking.canOpenURL(url);
+            if (!supported) {
+                throw new Error(`Unsupported URL: ${url}`);
+            }
+            await Linking.openURL(url);
+        } catch (error) {
+            console.error("Failed to open legal link:", error);
+            showToast(t("warning"), t("linkCantOpened"), "warning");
+        }
+    };
 
     // Adım başlıkları
     const stepTitles = [
@@ -175,6 +190,25 @@ export default function RegisterStepper({ currentStepIndex = 0, totalSteps = 3, 
                     );
                 })}
             </View>
+            <Text style={[stepperStyles.legalNotice, { color: aColors.linkSubtext }]}>
+                <Trans
+                    i18nKey="registerLegalNotice"
+                    components={{
+                        terms: (
+                            <Text
+                                style={[stepperStyles.legalLink, { color: aColors.linkText }]}
+                                onPress={() => openLegalLink("https://www.wordistan.com.tr/legal/terms-of-service")}
+                            />
+                        ),
+                        privacy: (
+                            <Text
+                                style={[stepperStyles.legalLink, { color: aColors.linkText }]}
+                                onPress={() => openLegalLink("https://www.wordistan.com.tr/legal/privacy-policy")}
+                            />
+                        ),
+                    }}
+                />
+            </Text>
         </View>
     );
 }
@@ -236,5 +270,16 @@ const stepperStyles = StyleSheet.create({
     lineFill: {
         height: "100%",
         borderRadius: 2,
+    },
+    legalNotice: {
+        marginTop: 10,
+        paddingHorizontal: 8,
+        fontSize: 12,
+        lineHeight: 18,
+        textAlign: "center",
+    },
+    legalLink: {
+        fontWeight: "700",
+        textDecorationLine: "underline",
     },
 });

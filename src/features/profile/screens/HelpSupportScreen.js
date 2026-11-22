@@ -58,7 +58,7 @@ export default function HelpSupport() {
 
   // Default email from user context
   const userEmail = user?.email || "";
-  const userFullName = (user?.first_name || "") + " " + (user.last_name || "")
+  const userFullName = (user?.first_name || "") + " " + (user?.last_name || "")
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
 

@@ -9,12 +9,13 @@ import { AVATARS } from "@/constants/AvatarUrls";
 const AVATAR_KEYS = Object.keys(AVATARS);
 
 export default function Step2Preferences({ formData, updateFormField, changeAppLanguage }) {
-    const { t } = useTranslation();
+    const { t , i18n } = useTranslation();
     const { colors } = useTheme();
     const aColors = colors.auth;
+    const appLang = i18n.language;
 
     const username = formData?.nick_name || "";
-    const lang = formData?.language || "en";
+    const lang = formData?.language || appLang;
     const selectedAvatar = formData?.avatar_url || "avatar_1";
     const usernameValid = username && username.length >= 4;
 

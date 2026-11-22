@@ -2,6 +2,7 @@ import { BASE_URL } from "../constants/ApiConfig";
 import { storage } from "../storage/storage";
 import { STORAGE_KEYS } from "../constants/StorageKeys";
 import { getNewToken } from "./TokenService";
+import { syncEvents } from "./SyncEvents";
 
 const TIMEOUT = 15000;
 
@@ -29,6 +30,7 @@ async function request(endpoint, options = {}, needToken = true, isRetry = false
             } else {
                 await storage.removeSecure(STORAGE_KEYS.SECURE.ACCESS_TOKEN);
                 await storage.removeSecure(STORAGE_KEYS.SECURE.REFRESH_TOKEN);
+                syncEvents.emitSessionExpired();
                 return {
                     ok: false,
                     status: 401,

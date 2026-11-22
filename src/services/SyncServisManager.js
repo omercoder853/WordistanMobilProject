@@ -178,14 +178,14 @@ export const syncService = {
                 payload.deleted_dictionary_ids = deletedDictIds;
             }
             if (localWords.length > 0) {
-                // Backend WordPushItem bekliyor: id, dictionary_id, word, meaning, created_at
+                // Backend WordPushItem bekliyor: id, dictionary_id, word, meaning, added_at
                 // SQLite'tan gelen: id, dictionary_id, word, meaning, added_at
                 payload.words = localWords.map(w => ({
                     id: w.id,
                     dictionary_id: w.dictionary_id,
                     word: w.word,
                     meaning: w.meaning,
-                    created_at: w.added_at || null
+                    added_at: w.added_at || null
                 }));
             }
             if (deletedWordIds.length > 0) {

@@ -261,20 +261,16 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    async function logout() {
-        if (!isGuest) {
-            try {
-                console.log("🔄 Auth Context : Syncing before logout...");
-                const {success} = await syncService.pushData();
-                if (!success) {
-                    showToast(t('error'), t('logoutError'), "danger");
-                    return false;
-                }
-                console.log("✅ Auth Context : Pre-logout sync completed.");
-            } catch (e) {
-                console.log("⚠️ Auth Context : Sync before logout failed:", e.message);
-            }
-        }
+    useEffect(() => {
+        const unsubscribe = syncEvents.onSessionExpired(async () => {
+            console.log("⚠️ Auth Context : Session expired, performing logout...");
+            showToast(t("warning"), t("sessionExpired"), "warning");
+            await performLocalLogout();
+        });
+        return unsubscribe;
+    }, []);
+
+    const performLocalLogout = async () => {
         console.log("🔄 Auth Context : Clearing session storage...");
         const res = await storage.clearSession();
         const db_res = await clearDatabase();
@@ -287,11 +283,45 @@ export const AuthProvider = ({ children }) => {
             console.log("✅ Auth Context : User logged out successfully.");
             setLogin(false);
             return true;
-        }
-        else {
+        } else {
             showToast(t('error'), t('logoutError'), "danger");
             return false;
         }
+    };
+
+    const confirmUnsyncedLogout = () => {
+        hideAlert();
+        setAlertTitle(t('warning'));
+        setAlertMessage(t('unsyncedLogoutWarning'));
+        addAlertButton({ text: t('cancel'), style: "cancel", action: hideAlert });
+        addAlertButton({
+            text: t('logoutAnyway'),
+            style: "danger",
+            action: async () => {
+                hideAlert();
+                await performLocalLogout();
+            }
+        });
+        setAlertVisible(true);
+    };
+
+    async function logout(force = false) {
+        if (!isGuest && !force) {
+            try {
+                console.log("🔄 Auth Context : Syncing before logout...");
+                const pushRes = await syncService.pushData();
+                if (!pushRes?.success) {
+                    confirmUnsyncedLogout();
+                    return false;
+                }
+                console.log("✅ Auth Context : Pre-logout sync completed.");
+            } catch (e) {
+                console.log("⚠️ Auth Context : Sync before logout failed:", e.message);
+                confirmUnsyncedLogout();
+                return false;
+            }
+        }
+        return await performLocalLogout();
     }
 
     const changePassword = async (currentPassword, newPassword) => {
@@ -320,8 +350,8 @@ export const AuthProvider = ({ children }) => {
             console.log("✅ Auth Context : User account deleted successfully.");
             setAlertTitle(t('deleteAccountSuccess'))
             setAlertMessage(t('deleteAccountSuccessMsg'))
-            addAlertButton({ text: t("close"), style: "success", action: async ()=>{hideAlert(),await logout()} });
-            setAlertVisible();
+            addAlertButton({ text: t("close"), style: "success", action: async ()=>{hideAlert(),await logout(true)} });
+            setAlertVisible(true);
             return true;
         } else {
             if (status === 408) {

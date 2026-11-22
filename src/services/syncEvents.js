@@ -4,6 +4,7 @@
  */
 const listeners = new Set();
 const sessionListeners = new Set();
+const sessionExpiredListeners = new Set();
 
 export const syncEvents = {
     onSyncComplete: (callback) => {
@@ -19,6 +20,13 @@ export const syncEvents = {
     },
     emitSessionHydrated: (data) => {
         sessionListeners.forEach(cb => cb(data));
+    },
+    onSessionExpired: (callback) => {
+        sessionExpiredListeners.add(callback);
+        return () => sessionExpiredListeners.delete(callback);
+    },
+    emitSessionExpired: () => {
+        sessionExpiredListeners.forEach(cb => cb());
     }
 };
 
